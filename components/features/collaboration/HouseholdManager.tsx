@@ -6,7 +6,7 @@ export const HouseholdManager: React.FC = () => {
     const { households, activeHouseholdId, fetchHouseholds, createHousehold, setActiveHousehold } = useHouseholdStore();
     const [isCreating, setIsCreating] = useState(false);
     const [newHouseholdName, setNewHouseholdName] = useState('');
-    const [currency, setCurrency] = useState<'EUR' | 'USD' | 'GBP'>('EUR');
+    const [currency, setCurrency] = useState<'EUR' | 'USD' | 'GBP' | 'MXN' | 'COP' | 'ARS' | 'CLP' | 'CHF' | 'CAD' | 'AUD' | 'INR'>('EUR');
 
     useEffect(() => {
         fetchHouseholds();
@@ -46,8 +46,8 @@ export const HouseholdManager: React.FC = () => {
                         onChange={(e) => setNewHouseholdName(e.target.value)}
                         className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-800 outline-none focus:ring-2 focus:ring-onyx-500"
                     />
-                    <div className="flex gap-2">
-                        {['EUR', 'USD', 'GBP'].map((curr) => (
+                    <div className="flex flex-wrap gap-2">
+                        {['EUR', 'USD', 'GBP', 'MXN', 'COP', 'ARS', 'CLP', 'CHF', 'CAD', 'AUD', 'INR'].map((curr) => (
                             <button
                                 key={curr}
                                 onClick={() => setCurrency(curr as any)}

@@ -10,7 +10,7 @@ import { Transaction, Account, Debt, Ingredient, Trip, Budget, Goal, Recipe } fr
 const GEMINI_MODEL = 'gemini-2.5-flash';
 
 // Helper maps
-const CURRENCY_MAP = { EUR: '€', USD: '$', GBP: '£' };
+const CURRENCY_MAP: Record<string, string> = { EUR: '€', USD: '$', GBP: '£', MXN: '$', COP: '$', ARS: '$', CLP: '$', CAD: '$', AUD: '$', CHF: 'CHF', INR: '₹' };
 
 const LANG_PROMPTS = {
   ES: {
@@ -136,7 +136,7 @@ export const analyzeFinances = async (
   budgets: Budget[],
   goals: Goal[],
   language: 'ES' | 'EN' | 'FR' = 'ES',
-  currency: 'EUR' | 'USD' | 'GBP' = 'EUR'
+  currency: string = 'EUR'
 ): Promise<string> => {
   const ai = createGeminiClient();
   const t = LANG_PROMPTS[language];

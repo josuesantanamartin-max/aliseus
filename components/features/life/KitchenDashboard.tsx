@@ -116,10 +116,10 @@ export const KitchenDashboard: React.FC<KitchenDashboardProps> = ({ onOpenAiPlan
 
                <div className="flex items-center gap-3">
                   <div className="hidden md:flex flex-col items-end mr-4">
-                     <span className="text-[10px] font-black text-emerald-700 uppercase tracking-widest">Onyx Kitchen v2.0</span>
+                     <span className="text-[10px] font-black text-emerald-700 uppercase tracking-widest">Aliseus Kitchen v3.0</span>
                      <div className="flex items-center gap-1 mt-1">
                         <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
-                        <span className="text-[9px] font-bold text-gray-400 uppercase">Premium Active</span>
+                        <span className="text-[9px] font-black text-emerald-600 uppercase bg-emerald-100/50 px-2 py-0.5 rounded-md">Aliseus Premium</span>
                      </div>
                   </div>
                   <button onClick={() => setIsEditingLayout(!isEditingLayout)} className={`p-3 border rounded-2xl transition-all shadow-sm active:scale-90 ${isEditingLayout ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white border-gray-100 text-gray-400 hover:bg-gray-50'}`}>

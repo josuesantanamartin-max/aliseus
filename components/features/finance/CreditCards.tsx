@@ -3,6 +3,7 @@ import { useFinanceStore } from '../../../store/useFinanceStore';
 import { useFinanceControllers } from '../../../hooks/useFinanceControllers';
 import { Account } from '../../../types';
 import { CreditCard, Plus, Calendar, TrendingDown, RefreshCw, X, ArrowRightLeft, CheckCircle2 } from 'lucide-react';
+import { useCurrency } from '../../../hooks/useCurrency';
 
 interface CreditCardsProps {
   // All state managed via stores
@@ -11,6 +12,7 @@ interface CreditCardsProps {
 const CreditCards: React.FC<CreditCardsProps> = () => {
   const { accounts, setAccounts } = useFinanceStore();
   const { transfer } = useFinanceControllers();
+  const { formatPrice: formatEUR } = useCurrency();
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   // Form State
@@ -74,9 +76,6 @@ const CreditCards: React.FC<CreditCardsProps> = () => {
     ));
   };
 
-  const formatEUR = (amount: number) => {
-    return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(amount);
-  };
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -255,8 +254,8 @@ const CreditCards: React.FC<CreditCardsProps> = () => {
                   onClick={() => handleSettleCycle(card)}
                   disabled={cycleDebt <= 0}
                   className={`w-full py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all ${cycleDebt > 0
-                      ? 'bg-cyan-600 hover:bg-cyan-700 text-white shadow-lg shadow-cyan-500/20 active:scale-95'
-                      : 'bg-onyx-100 text-onyx-400 cursor-not-allowed'
+                    ? 'bg-cyan-600 hover:bg-cyan-700 text-white shadow-lg shadow-cyan-500/20 active:scale-95'
+                    : 'bg-onyx-100 text-onyx-400 cursor-not-allowed'
                     }`}
                 >
                   <TrendingDown className="w-4 h-4" />

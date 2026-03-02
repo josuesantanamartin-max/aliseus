@@ -4,6 +4,7 @@ import { Transaction, Account } from '../../../../../types';
 import { Pencil, Trash2, Repeat, ArrowUpRight, ArrowDownRight, ArrowRightLeft, Search, PlusCircle } from 'lucide-react';
 import { AnimatedList, AnimatedListItem } from '../../../../common/animations/AnimatedList';
 import { useUserStore } from '../../../../../store/useUserStore';
+import { useCurrency } from '../../../../../hooks/useCurrency';
 
 interface TransactionListProps {
     transactions: Transaction[];
@@ -13,10 +14,10 @@ interface TransactionListProps {
     accounts: Account[];
 }
 
-const formatEUR = (amount: number) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount);
 
 const TransactionList: React.FC<TransactionListProps> = ({ transactions, onEdit, onDelete, accounts }) => {
     const { setQuickAction } = useUserStore();
+    const { formatPrice } = useCurrency();
 
     // Group by date
     const groupedTransactions = transactions.reduce((groups, transaction) => {
@@ -80,7 +81,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions, onEdit,
                                     <div className="flex items-center gap-10 pr-2">
                                         <div className="text-right">
                                             <p className={`text-2xl font-bold tracking-tight ${t.type === 'INCOME' ? 'text-emerald-600' : 'text-cyan-900'}`}>
-                                                {t.type === 'INCOME' ? '+' : '-'}{formatEUR(t.amount)}
+                                                {t.type === 'INCOME' ? '+' : '-'}{formatPrice(t.amount, 2)}
                                             </p>
                                             <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mt-1 opacity-0 group-hover/item:opacity-100 transition-opacity">Ver Detalle</p>
                                         </div>

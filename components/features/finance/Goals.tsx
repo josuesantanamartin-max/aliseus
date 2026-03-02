@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useFinanceStore } from '../../../store/useFinanceStore';
 import { Goal } from '../../../types';
-import { Calculator, Calendar, Target, Plus, Clock, Pencil, Trash2, Sparkles, Banknote, Plane, Car, Home, Heart, Baby, PiggyBank, TrendingUp, GripVertical } from 'lucide-react';
+import { Calculator, Calendar, Target, Plus, Clock, Pencil, Trash2, Sparkles, Banknote, Plane, Car, Home, Heart, Baby, PiggyBank, TrendingUp, GripVertical, AlertCircle, CheckCircle2, Archive, CalendarDays } from 'lucide-react';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { cn } from '../../../utils/cn';
 
 interface GoalsProps {
   // All state managed via stores
@@ -126,10 +128,13 @@ const Goals: React.FC<GoalsProps> = () => {
 
     const today = new Date();
     const d = new Date(goal.deadline);
+
+    // Check if goal is expired
+    if (d < today) return acc;
+
     const months = (d.getFullYear() - today.getFullYear()) * 12 + (d.getMonth() - today.getMonth());
 
-    // If deadline is passed or this month, count as full amount needed (or cap it?) 
-    // Let's assume minimum 1 month to avoid infinity 
+    // Only count if it's a realistic future date
     return acc + (remaining / Math.max(months, 1));
   }, 0);
 
@@ -171,7 +176,7 @@ const Goals: React.FC<GoalsProps> = () => {
         </div>
         <div className="bg-white p-6 rounded-3xl border border-onyx-100 shadow-sm flex items-center justify-between group hover:shadow-md transition-all">
           <div>
-            <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-[0.2em] mb-2">Ahorro Mensual Ideal</p>
+            <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-[0.2em] mb-2">Aporte Mensual Pendiente</p>
             <h3 className="text-3xl font-black text-cyan-900 tracking-tight">{formatEUR(totalMonthlyNeeded)}<span className="text-sm text-onyx-400 font-bold">/mes</span></h3>
           </div>
           <div className="p-4 bg-sky-50 text-sky-600 rounded-2xl group-hover:scale-110 transition-transform">
@@ -215,20 +220,31 @@ const Goals: React.FC<GoalsProps> = () => {
                   onDrop={(e) => handleDrop(e, index)}
                   onDragEnd={handleDragEnd}
                   onClick={() => setSelectedGoalId(goal.id)}
-                  className={`p-5 rounded-2xl border cursor-pointer transition-all duration-300 group relative overflow-hidden select-none
-                    ${isSelected ? 'bg-gradient-to-br from-cyan-600 to-teal-600 text-white border-transparent shadow-xl scale-[1.02]' : 'bg-white text-cyan-900 border-onyx-100 hover:border-cyan-200 hover:bg-slate-50'}
-                    ${isDraggedOver ? 'border-cyan-400 border-2 scale-[1.01] shadow-md shadow-cyan-200' : ''}
-                    ${dragIndex === index ? 'opacity-50' : ''}`}
+                  className={cn(
+                    "p-5 rounded-2xl border cursor-pointer transition-all duration-300 group relative overflow-hidden select-none",
+                    isSelected ? "bg-gradient-to-br from-cyan-600 to-teal-600 text-white border-transparent shadow-xl scale-[1.02]" : "bg-white text-cyan-900 border-onyx-100 hover:border-cyan-200 hover:bg-slate-50",
+                    isDraggedOver && "border-cyan-400 border-2 scale-[1.01] shadow-md shadow-cyan-200",
+                    dragIndex === index && "opacity-50"
+                  )}
                 >
-                  <div className={`absolute left-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing ${isSelected ? 'text-white/30' : 'text-onyx-300'}`}>
+                  <div className={cn("absolute left-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing", isSelected ? "text-white/30" : "text-onyx-300")}>
                     <GripVertical className="w-4 h-4" />
                   </div>
-                  <div className="flex justify-between items-center mb-3 pl-3">
+                  <div className="flex justify-between items-center mb-3 pl-3 text-inherit">
                     <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-xl ${isSelected ? 'bg-white/10' : 'bg-onyx-50 text-onyx-500'}`}><GoalIcon className="w-5 h-5" /></div>
+                      <div className={cn("p-2 rounded-xl", isSelected ? "bg-white/10" : "bg-onyx-50 text-onyx-500")}>
+                        <GoalIcon className="w-5 h-5" />
+                      </div>
                       <div>
                         <p className="font-semibold text-sm leading-tight line-clamp-1">{goal.name}</p>
-                        <p className={`text-[9px] font-bold uppercase tracking-wider ${isSelected ? 'text-white/50' : 'text-onyx-400'}`}>{isCompleted ? 'Completado' : 'En Progreso'}</p>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <p className={cn("text-[8px] font-bold uppercase tracking-wider", isSelected ? "text-white/50" : "text-onyx-400")}>
+                            {isCompleted ? 'Completado' : 'En Progreso'}
+                          </p>
+                          {goal.deadline && new Date(goal.deadline) < new Date() && !isCompleted && (
+                            <span className={cn("px-1.5 py-0.5 rounded text-[7px] font-black uppercase tracking-tighter", isSelected ? "bg-white text-red-600" : "bg-red-50 text-red-600")}>Vencida</span>
+                          )}
+                        </div>
                       </div>
                     </div>
                     <div className="text-right">
@@ -236,8 +252,8 @@ const Goals: React.FC<GoalsProps> = () => {
                     </div>
                   </div>
                   {/* Mini Progress Bar */}
-                  <div className={`w-full h-1.5 rounded-full overflow-hidden ${isSelected ? 'bg-white/10' : 'bg-onyx-100'}`}>
-                    <div className={`h-full rounded-full ${isCompleted ? 'bg-emerald-400' : isSelected ? 'bg-cyan-400' : 'bg-cyan-500'}`} style={{ width: `${progress}%` }}></div>
+                  <div className={cn("w-full h-1.5 rounded-full overflow-hidden", isSelected ? "bg-white/10" : "bg-onyx-100")}>
+                    <div className={cn("h-full rounded-full", isCompleted ? "bg-emerald-400" : isSelected ? "bg-cyan-400" : "bg-cyan-500")} style={{ width: `${progress}%` }}></div>
                   </div>
                 </div>
               );
@@ -314,7 +330,15 @@ const Goals: React.FC<GoalsProps> = () => {
                     </div>
                     <h3 className="text-2xl md:text-3xl lg:text-5xl font-black text-cyan-900 tracking-tight mb-2">{selectedGoal.name}</h3>
                     <div className="flex flex-col gap-1">
-                      {selectedGoal.deadline && <p className="text-sm font-bold text-onyx-400 flex items-center gap-2"><Clock className="w-4 h-4" /> Objetivo: {new Date(selectedGoal.deadline).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}</p>}
+                      {selectedGoal.deadline && (
+                        <p className={cn(
+                          "text-sm font-bold flex items-center gap-2",
+                          new Date(selectedGoal.deadline) < new Date() && selectedGoal.currentAmount < selectedGoal.targetAmount ? "text-red-500" : "text-onyx-400"
+                        )}>
+                          <Clock className="w-4 h-4" /> Objetivo: {new Date(selectedGoal.deadline).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}
+                          {new Date(selectedGoal.deadline) < new Date() && selectedGoal.currentAmount < selectedGoal.targetAmount && <span className="bg-red-50 text-[10px] px-2 py-0.5 rounded-full border border-red-100 uppercase tracking-tighter">Fecha Pasada</span>}
+                        </p>
+                      )}
                       {selectedGoal.accountId && (() => {
                         const acc = accounts.find(a => a.id === selectedGoal.accountId);
                         return acc ? (
@@ -331,6 +355,37 @@ const Goals: React.FC<GoalsProps> = () => {
                   </div>
                 </div>
 
+                {/* Status Alert for Expired Goals */}
+                {selectedGoal.deadline && new Date(selectedGoal.deadline) < new Date() && selectedGoal.currentAmount < selectedGoal.targetAmount && (
+                  <div className="mb-8 p-6 bg-red-50 border border-red-100 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
+                    <div className="flex items-center gap-4">
+                      <div className="p-3 bg-white text-red-600 rounded-xl shadow-sm"><AlertCircle className="w-6 h-6" /></div>
+                      <div>
+                        <p className="font-black text-red-900 text-lg tracking-tight">¡Fecha objetivo alcanzada!</p>
+                        <p className="text-red-700/70 text-sm font-bold">Aún faltan {formatEUR(selectedGoal.targetAmount - selectedGoal.currentAmount)} para completar esta meta.</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-3 w-full md:w-auto">
+                      <button
+                        onClick={() => handleEdit(selectedGoal)}
+                        className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-white hover:bg-red-100 px-4 py-2.5 rounded-xl text-xs font-bold text-red-600 border border-red-200 transition-all uppercase tracking-widest"
+                      >
+                        <CalendarDays className="w-4 h-4" /> Renovar Fecha
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (window.confirm('¿Quieres archivar esta meta?')) {
+                            setGoals(prev => prev.filter(g => g.id !== selectedGoal.id));
+                          }
+                        }}
+                        className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 px-4 py-2.5 rounded-xl text-xs font-bold text-white shadow-lg shadow-red-900/10 transition-all uppercase tracking-widest"
+                      >
+                        <Archive className="w-4 h-4" /> Archivar
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
                   <div>
                     <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-1">Tu Progreso</p>
@@ -345,15 +400,17 @@ const Goals: React.FC<GoalsProps> = () => {
                       {selectedGoal.deadline && selectedGoal.currentAmount < selectedGoal.targetAmount && (() => {
                         const today = new Date();
                         const deadline = new Date(selectedGoal.deadline);
+                        if (deadline < today) return null;
+
                         const monthsDiff = (deadline.getFullYear() - today.getFullYear()) * 12 + (deadline.getMonth() - today.getMonth());
-                        const monthsRemaining = Math.max(1, monthsDiff); // Minimum 1 month to avoid division by zero or huge numbers
+                        const monthsRemaining = Math.max(1, monthsDiff);
                         const remainingAmount = selectedGoal.targetAmount - selectedGoal.currentAmount;
                         const monthlyNeeded = remainingAmount / monthsRemaining;
 
                         if (monthlyNeeded > 0) {
                           return (
                             <p className="text-xs font-bold text-cyan-600 bg-cyan-50 px-2 py-1 rounded-lg">
-                              Necesitas ahorrar: {formatEUR(monthlyNeeded)}/mes
+                              Necesitas aportar aún: {formatEUR(monthlyNeeded)}/mes
                             </p>
                           );
                         }
@@ -372,31 +429,97 @@ const Goals: React.FC<GoalsProps> = () => {
 
               {/* SIMULATOR FOR THIS GOAL */}
               <div className="bg-white p-8 rounded-onyx shadow-sm border border-onyx-100 group relative overflow-hidden transition-all duration-500 hover:shadow-md">
-                <div className="flex items-center gap-4 mb-6 relative z-10">
+                <div className="flex items-center gap-4 mb-10 relative z-10">
                   <div className="p-2.5 bg-onyx-50 text-cyan-900 rounded-xl"><Calculator className="w-5 h-5" /></div>
-                  <h3 className="text-lg font-bold text-cyan-900 uppercase tracking-widest">Proyección para {selectedGoal.name}</h3>
+                  <div>
+                    <h3 className="text-lg font-bold text-cyan-900 uppercase tracking-widest">Proyector de Ahorro</h3>
+                    <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mt-0.5">Define tu aportación y visualiza tu meta</p>
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
-                  <div className="space-y-4">
-                    <label className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest">Aportación Mensual (€)</label>
-                    <input autoFocus type="number" value={simMonthly} placeholder="0" onChange={(e) => setSimMonthly(e.target.value === '' ? '' : Number(e.target.value))} className="w-full text-2xl font-black bg-transparent border-b border-onyx-100 focus:border-cyan-500 outline-none transition-colors" />
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 relative z-10">
+                  <div className="lg:col-span-4 space-y-8">
+                    <div className="space-y-4">
+                      <label className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest px-1">Aportación Mensual (€)</label>
+                      <input
+                        autoFocus
+                        type="number"
+                        value={simMonthly}
+                        placeholder="Ahorro mensual..."
+                        onChange={(e) => setSimMonthly(e.target.value === '' ? '' : Number(e.target.value))}
+                        className="w-full text-lg md:text-xl font-black bg-transparent border-b border-onyx-100 focus:border-cyan-500 outline-none transition-colors pb-2"
+                      />
+                    </div>
+
+                    <div className="bg-gradient-to-br from-cyan-600 to-teal-600 text-white p-6 rounded-3xl shadow-xl shadow-cyan-900/10 relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/20 rounded-full blur-2xl -mr-10 -mt-10"></div>
+                      <div className="relative z-10">
+                        <p className="text-[10px] font-bold text-white/60 uppercase tracking-widest mb-1.5 leading-none">Alcanzarás tu meta en</p>
+                        <div className="flex items-baseline gap-2">
+                          <div className="text-3xl font-black">
+                            {typeof simMonthly === 'number' && simMonthly > 0
+                              ? formatTimeRemaining(Math.ceil((selectedGoal.targetAmount - selectedGoal.currentAmount) / simMonthly))
+                              : '---'}
+                          </div>
+                        </div>
+
+                        {(typeof simMonthly === 'number' && simMonthly > 0) ? (
+                          <div className="mt-4 pt-4 border-t border-white/10">
+                            <p className="text-[9px] text-cyan-200 font-bold uppercase tracking-widest mb-1">Fecha estimada</p>
+                            <p className="text-white font-bold text-sm">
+                              {new Date(new Date().setMonth(new Date().getMonth() + Math.ceil((selectedGoal.targetAmount - selectedGoal.currentAmount) / simMonthly))).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}
+                            </p>
+                          </div>
+                        ) : (
+                          <p className="text-[9px] text-cyan-200/60 font-medium leading-relaxed mt-4 italic">
+                            Introduce una aportación mensual para proyectar tu éxito financiero.
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="md:col-span-2 bg-gradient-to-br from-cyan-600 to-teal-600 text-white p-6 md:p-8 rounded-3xl shadow-xl shadow-cyan-900/10 flex flex-col justify-center relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/20 rounded-full blur-2xl -mr-10 -mt-10"></div>
-                    <div className="flex justify-between items-end relative z-10">
-                      <div>
-                        <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-1">Alcanzarás tu meta en</p>
-                        <div className="text-3xl font-black">
-                          {typeof simMonthly === 'number' && simMonthly > 0
-                            ? formatTimeRemaining(Math.ceil((selectedGoal.targetAmount - selectedGoal.currentAmount) / simMonthly))
-                            : '∞'}
+                  {/* VIZ SECTION */}
+                  <div className="lg:col-span-8 flex flex-col">
+                    <div className="flex-1 h-[240px] w-full min-h-[240px]">
+                      {typeof simMonthly === 'number' && simMonthly > 0 ? (
+                        <ResponsiveContainer width="100%" height="100%">
+                          <AreaChart
+                            data={Array.from({ length: Math.min(Math.ceil((selectedGoal.targetAmount - selectedGoal.currentAmount) / simMonthly), 24) + 1 }).map((_, i) => {
+                              const amount = selectedGoal.currentAmount + (simMonthly * i);
+                              return {
+                                month: i === 0 ? 'Hoy' : `Mes ${i}`,
+                                balance: amount,
+                                target: selectedGoal.targetAmount
+                              };
+                            })}
+                            margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                          >
+                            <defs>
+                              <linearGradient id="colorBalance" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#0891b2" stopOpacity={0.3} />
+                                <stop offset="95%" stopColor="#0891b2" stopOpacity={0} />
+                              </linearGradient>
+                            </defs>
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                            <XAxis dataKey="month" hide />
+                            <YAxis hide domain={[0, selectedGoal.targetAmount * 1.1]} />
+                            <Tooltip
+                              contentStyle={{ backgroundColor: '#fff', borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                              formatter={(value: number) => [formatEUR(value), 'Saldo Proyectado']}
+                              labelStyle={{ fontWeight: 'bold', color: '#0f172a' }}
+                            />
+                            <Area type="monotone" dataKey="balance" stroke="#0891b2" strokeWidth={3} fillOpacity={1} fill="url(#colorBalance)" />
+                            {/* Target Line */}
+                            <Area type="monotone" dataKey="target" stroke="#e2e8f0" strokeDasharray="5 5" fill="none" />
+                          </AreaChart>
+                        </ResponsiveContainer>
+                      ) : (
+                        <div className="h-full w-full bg-onyx-50/50 rounded-3xl border border-dashed border-onyx-100 flex flex-col items-center justify-center p-10 text-center">
+                          <div className="p-4 bg-white rounded-full shadow-sm text-onyx-200 mb-4 animate-pulse"><TrendingUp className="w-8 h-8" /></div>
+                          <p className="text-xs font-bold text-onyx-400 uppercase tracking-widest max-w-[200px]">Esperando aportación para generar curva de ahorro...</p>
                         </div>
-                      </div>
-                      {(typeof simMonthly === 'number' && simMonthly > 0) && <p className="text-[10px] text-cyan-300 font-bold bg-cyan-500/10 px-3 py-1 rounded-lg">
-                        Fecha: {new Date(new Date().setMonth(new Date().getMonth() + Math.ceil((selectedGoal.targetAmount - selectedGoal.currentAmount) / simMonthly))).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}
-                      </p>}
+                      )}
                     </div>
                   </div>
                 </div>

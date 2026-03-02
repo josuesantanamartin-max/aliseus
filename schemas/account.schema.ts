@@ -15,7 +15,7 @@ export const accountSchema = z
         balance: z
             .number()
             .finite('Balance must be a valid number'),
-        currency: z.enum(['EUR', 'USD', 'GBP']),
+        currency: z.enum(['EUR', 'USD', 'GBP', 'MXN', 'COP', 'ARS', 'CLP', 'CHF', 'CAD', 'AUD', 'INR']),
         isRemunerated: z.boolean().optional(),
         tae: z
             .number()

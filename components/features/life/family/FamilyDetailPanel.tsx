@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { FamilyMember } from '../../../../types';
 import { GrowthChart } from './GrowthChart';
+import { useCurrency } from '../../../../hooks/useCurrency';
 
 interface FamilyDetailPanelProps {
     member: FamilyMember;
@@ -14,6 +15,7 @@ interface FamilyDetailPanelProps {
 
 export const FamilyDetailPanel: React.FC<FamilyDetailPanelProps> = ({ member, onClose }) => {
     const isChild = member.role === 'CHILD';
+    const { formatPrice } = useCurrency();
 
     return (
         <div className="fixed inset-y-0 right-0 w-full md:w-[600px] bg-[#FAFAFA] shadow-2xl z-[150] flex flex-col animate-slide-in overflow-hidden border-l border-gray-100">
@@ -66,7 +68,7 @@ export const FamilyDetailPanel: React.FC<FamilyDetailPanelProps> = ({ member, on
                     <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
                         <Wallet className="w-6 h-6 text-emerald-500 mb-2" />
                         <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Balance</p>
-                        <h4 className="text-xl font-black text-gray-900 tracking-tight">{member.balance.toFixed(2)}€</h4>
+                        <h4 className="text-xl font-black text-gray-900 tracking-tight">{formatPrice(member.balance)}</h4>
                     </div>
                     <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
                         <Award className="w-6 h-6 text-blue-500 mb-2" />
@@ -107,7 +109,7 @@ export const FamilyDetailPanel: React.FC<FamilyDetailPanelProps> = ({ member, on
                                     <p className="text-[10px] font-bold text-gray-400">14 Feb, 2026</p>
                                 </div>
                             </div>
-                            <span className="text-sm font-black text-emerald-600">+10.00€</span>
+                            <span className="text-sm font-black text-emerald-600">+{formatPrice(10)}</span>
                         </div>
                         <div className="flex items-center justify-between group">
                             <div className="flex items-center gap-4">
@@ -119,7 +121,7 @@ export const FamilyDetailPanel: React.FC<FamilyDetailPanelProps> = ({ member, on
                                     <p className="text-[10px] font-bold text-gray-400">12 Feb, 2026</p>
                                 </div>
                             </div>
-                            <span className="text-sm font-black text-red-600">-4.99€</span>
+                            <span className="text-sm font-black text-red-600">-{formatPrice(4.99)}</span>
                         </div>
                     </div>
                 </div>

@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { MOCK_TRANSACTIONS, MOCK_DEBTS, MOCK_GOALS } from '../../../data/seeds/financeSeed';
 import { Language, Task, Reminder, CalendarEvent, WeeklyPlanState, MealTime, Recipe, Goal } from '../../../types';
+import { useCurrency } from '../../../hooks/useCurrency';
 
 interface CalendarModuleProps {
     onMenuClick?: () => void;
@@ -70,6 +71,7 @@ const CalendarModule: React.FC<CalendarModuleProps> = ({ language, weeklyPlan, o
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
     const t = CAL_TEXTS[language];
+    const { formatPrice } = useCurrency();
 
     const events = useMemo(() => {
         const generatedEvents: CalendarEvent[] = [];
@@ -128,7 +130,7 @@ const CalendarModule: React.FC<CalendarModuleProps> = ({ language, weeklyPlan, o
                     date: goal.deadline,
                     title: goal.name,
                     type: 'GOAL',
-                    details: `Meta: ${goal.targetAmount}€`,
+                    details: `Meta: ${formatPrice(goal.targetAmount)}`,
                     priority: 'MEDIUM',
                     icon: Target,
                     category: 'Ahorro',
@@ -170,7 +172,7 @@ const CalendarModule: React.FC<CalendarModuleProps> = ({ language, weeklyPlan, o
         });
 
         return generatedEvents;
-    }, [currentDate, weeklyPlan]);
+    }, [currentDate, weeklyPlan, formatPrice]);
 
     const getDaysInMonth = (date: Date) => {
         const year = date.getFullYear();

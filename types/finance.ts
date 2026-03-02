@@ -49,7 +49,7 @@ export interface Account {
     bankName?: string;
     type: 'BANK' | 'INVESTMENT' | 'CASH' | 'CREDIT' | 'DEBIT' | 'WALLET' | 'ASSET';
     balance: number;
-    currency: 'EUR' | 'USD' | 'GBP';
+    currency: 'EUR' | 'USD' | 'GBP' | 'MXN' | 'COP' | 'ARS' | 'CLP' | 'CHF' | 'CAD' | 'AUD' | 'INR';
     isRemunerated?: boolean;
     tae?: number;
     creditLimit?: number;

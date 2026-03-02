@@ -18,7 +18,7 @@ const CategoryDonutChart: React.FC<CategoryDonutChartProps> = ({
     height = 250
 }) => {
     const data = useMemo(() => {
-        const expenses = transactions.filter(t => {
+        const expenses = (transactions || []).filter(t => {
             const date = new Date(t.date);
             return t.type === 'EXPENSE' &&
                 t.category !== 'Transferencia' &&

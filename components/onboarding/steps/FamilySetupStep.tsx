@@ -51,7 +51,7 @@ const FamilySetupStep: React.FC = () => {
             ...userProfile,
             familyMembers: members
         });
-        setOnboardingStep(3); // Go to Currency
+        setOnboardingStep(4); // Go to Currency
     };
 
     return (
@@ -131,7 +131,7 @@ const FamilySetupStep: React.FC = () => {
 
             <div className="flex justify-between w-full max-w-md">
                 <button
-                    onClick={() => setOnboardingStep(1)}
+                    onClick={() => setOnboardingStep(2)}
                     className="px-6 py-3 text-gray-500 hover:text-gray-900 dark:hover:text-white font-medium transition-colors"
                 >
                     Atrás

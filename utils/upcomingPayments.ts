@@ -29,7 +29,7 @@ export function getUpcomingPayments(
     const upcomingPayments: UpcomingPayment[] = [];
 
     // 1. TRANSACCIONES RECURRENTES
-    const recurringTransactions = transactions.filter(t =>
+    const recurringTransactions = (transactions || []).filter(t =>
         t.isRecurring && t.type === 'EXPENSE'
     );
 
@@ -55,7 +55,7 @@ export function getUpcomingPayments(
     });
 
     // 2. PAGOS MÍNIMOS DE DEUDAS
-    debts.forEach(debt => {
+    (debts || []).forEach(debt => {
         const dayOfMonth = parseInt(debt.dueDate);
         const nextDueDate = getNextPaymentDate(dayOfMonth, today);
 
@@ -78,7 +78,7 @@ export function getUpcomingPayments(
     });
 
     // 3. TARJETAS DE CRÉDITO (fecha de pago)
-    const creditCards = accounts.filter(a => a.type === 'CREDIT' && a.paymentDay);
+    const creditCards = (accounts || []).filter(a => a.type === 'CREDIT' && a.paymentDay);
 
     creditCards.forEach(card => {
         if (card.paymentDay) {

@@ -13,7 +13,7 @@ interface FinanceState {
     debts: Debt[];
     categories: CategoryStructure[];
     widgets: DashboardWidget[];
-    currency: 'EUR' | 'USD' | 'GBP';
+    currency: 'EUR' | 'USD' | 'GBP' | 'MXN' | 'COP' | 'ARS' | 'CLP' | 'CHF' | 'CAD' | 'AUD' | 'INR';
 }
 
 interface FinanceActions {
@@ -24,7 +24,7 @@ interface FinanceActions {
     setDebts: (updater: Debt[] | ((prev: Debt[]) => Debt[])) => void;
     setCategories: (updater: CategoryStructure[] | ((prev: CategoryStructure[]) => CategoryStructure[])) => void;
     setWidgets: (updater: DashboardWidget[] | ((prev: DashboardWidget[]) => DashboardWidget[])) => void;
-    setCurrency: (currency: 'EUR' | 'USD' | 'GBP') => void;
+    setCurrency: (currency: 'EUR' | 'USD' | 'GBP' | 'MXN' | 'COP' | 'ARS' | 'CLP' | 'CHF' | 'CAD' | 'AUD' | 'INR') => void;
 
     // Shortcuts for common operations to reduce logic in components
     addTransaction: (transaction: Transaction) => Promise<void>;

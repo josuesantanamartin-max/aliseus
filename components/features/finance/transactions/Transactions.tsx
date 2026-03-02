@@ -3,6 +3,7 @@ import { useFinanceStore } from '../../../../store/useFinanceStore';
 import { useUserStore } from '../../../../store/useUserStore';
 import { useFinanceControllers } from '../../../../hooks/useFinanceControllers';
 import { Transaction, QuickAction } from '../../../../types';
+import { useCurrency } from '../../../../hooks/useCurrency';
 import {
   Plus, Database, FileUp, X, Upload, ArrowUpRight, ArrowDownRight, ArrowRightLeft, Repeat, Sparkles, Loader2
 } from 'lucide-react';
@@ -16,7 +17,6 @@ import { formatZodErrors } from '../../../../utils/validation';
 import { useErrorHandler } from '../../../../hooks/useErrorHandler';
 import { Button } from '../../../ui/Button';
 
-const formatEUR = (amount: number) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(amount);
 
 interface TransactionsProps {
   initialFilters?: { category?: string; subCategory?: string; initialDate?: string; type?: 'INCOME' | 'EXPENSE'; accountId?: string } | null;
@@ -30,6 +30,7 @@ const Transactions: React.FC<TransactionsProps> = ({
   const { transactions, accounts, debts, goals, categories } = useFinanceStore();
   const { currency, quickAction, setQuickAction } = useUserStore();
   const { addTransaction, transfer, editTransaction, deleteTransaction } = useFinanceControllers();
+  const { formatPrice: formatEUR, symbol } = useCurrency();
 
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -424,7 +425,7 @@ const Transactions: React.FC<TransactionsProps> = ({
                 <div className="col-span-1 md:col-span-2">
                   <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3">Cantidad</label>
                   <div className="relative group/input">
-                    <span className="absolute left-6 top-1/2 -translate-y-1/2 text-onyx-300 font-bold text-2xl group-focus-within/input:text-cyan-600 transition-colors">€</span>
+                    <span className="absolute left-6 top-1/2 -translate-y-1/2 text-onyx-300 font-bold text-2xl group-focus-within/input:text-cyan-600 transition-colors">{symbol}</span>
                     <input
                       required
                       type="number"

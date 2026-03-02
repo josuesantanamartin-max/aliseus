@@ -19,7 +19,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 const WidgetGallery: React.FC<WidgetGalleryProps> = ({ isOpen, onClose, onDragStart, onDragEnd }) => {
-    const { dashboardLayouts, activeLayoutId, activeDashboardView, addWidgetToLayout } = useUserStore();
+    const { dashboardLayouts = [], activeLayoutId, activeDashboardView, addWidgetToLayout } = useUserStore();
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string>(activeDashboardView || 'ALL');
     const [isDraggingLocal, setIsDraggingLocal] = useState(false);

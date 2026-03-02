@@ -5,8 +5,8 @@ import { DashboardDataProps } from '../WidgetRegistry';
 import { Sunrise, Calendar, Utensils, CreditCard, ChevronRight, AlertCircle, TrendingUp } from 'lucide-react';
 
 const IntelligentTomorrowWidget: React.FC<DashboardDataProps> = ({ onNavigate }) => {
-    const { debts } = useFinanceStore();
-    const { weeklyPlans, trips } = useLifeStore();
+    const { debts = [] } = useFinanceStore();
+    const { weeklyPlans = [], trips = [] } = useLifeStore();
 
     // Today and tomorrow dates for filtering
     const today = new Date();

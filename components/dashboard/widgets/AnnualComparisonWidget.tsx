@@ -12,7 +12,7 @@ const AnnualComparisonWidget: React.FC<DashboardDataProps> = ({
 
         const yearlyData = Array.from({ length: yearsToCompare }, (_, i) => {
             const year = currentYear - i;
-            const yearTransactions = transactions.filter(t => new Date(t.date).getFullYear() === year);
+            const yearTransactions = (transactions || []).filter(t => new Date(t.date).getFullYear() === year);
 
             const income = yearTransactions
                 .filter(t => t.type === 'INCOME' && t.category !== 'Transferencia')

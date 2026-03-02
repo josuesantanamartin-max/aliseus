@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useUserStore } from '../../../store/useUserStore';
 import { useFinanceStore } from '../../../store/useFinanceStore';
+import { useCurrency } from '../../../hooks/useCurrency';
 import { Wallet, Building2, Plus, Trash2, CreditCard, ArrowRight, Settings2 } from 'lucide-react';
 import { Account } from '../../../types';
 
@@ -18,6 +19,7 @@ const ACCOUNT_TYPES = [
 const AccountsStep: React.FC = () => {
     const { setOnboardingStep } = useUserStore();
     const { addAccount } = useFinanceStore();
+    const { symbol, formatPrice } = useCurrency();
 
     // Manage local list of accounts to be created
     const [accountsToCreate, setAccountsToCreate] = useState<Partial<Account>[]>(INITIAL_ACCOUNTS);
@@ -91,7 +93,7 @@ const AccountsStep: React.FC = () => {
             };
             addAccount(newAccount);
         });
-        setOnboardingStep(5); // Go to Import (Step 5)
+        setOnboardingStep(6); // Go to Import (Step 6)
     };
 
     return (
@@ -115,7 +117,7 @@ const AccountsStep: React.FC = () => {
                                 </div>
                                 <div>
                                     <h4 className="font-bold text-gray-900 dark:text-white">{acc.name}</h4>
-                                    <p className="text-xs text-gray-500">{acc.type} • {acc.balance} €</p>
+                                    <p className="text-xs text-gray-500">{acc.type} • {formatPrice(acc.balance || 0)}</p>
                                 </div>
                             </div>
                             <button
@@ -175,7 +177,7 @@ const AccountsStep: React.FC = () => {
                                     placeholder="0.00"
                                     className="w-full p-3 pr-10 rounded-xl border border-gray-200 dark:border-onyx-600 bg-white dark:bg-onyx-900 focus:ring-2 focus:ring-cyan-500 outline-none transition-all"
                                 />
-                                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">€</span>
+                                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">{symbol}</span>
                             </div>
                         </div>
                     </div>
@@ -252,7 +254,7 @@ const AccountsStep: React.FC = () => {
 
             <div className="flex justify-between w-full max-w-md">
                 <button
-                    onClick={() => setOnboardingStep(3)} // Back to Currency
+                    onClick={() => setOnboardingStep(4)} // Back to Currency
                     className="px-6 py-3 text-gray-500 hover:text-gray-900 dark:hover:text-white font-medium transition-colors"
                 >
                     Atrás

@@ -3,6 +3,7 @@ import { useFinanceStore } from '../../../store/useFinanceStore';
 import { useFinanceControllers } from '../../../hooks/useFinanceControllers';
 import { Debt, Transaction } from '../../../types';
 import { Calculator, Home, Car, CreditCard, Plus, Banknote, Clock, X, History, Flame, CalendarRange, PieChart, Sparkles, Trash2, GripVertical } from 'lucide-react';
+import { cn } from '../../../utils/cn';
 
 interface DebtsProps {
     // All state now managed via stores
@@ -14,6 +15,8 @@ const Debts: React.FC<DebtsProps> = () => {
 
     const [selectedDebtId, setSelectedDebtId] = useState<string>(debts[0]?.id || '');
     const [extraPayment, setExtraPayment] = useState<number>(0);
+    const [lumpSum, setLumpSum] = useState<number>(0);
+    const [simulatorMode, setSimulatorMode] = useState<'MONTHLY' | 'LUMP_SUM'>('MONTHLY');
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
     const [paymentAmount, setPaymentAmount] = useState('');
     const [selectedAccountId, setSelectedAccountId] = useState(accounts[0]?.id || '');
@@ -109,15 +112,23 @@ const Debts: React.FC<DebtsProps> = () => {
         }
     };
 
-    const calculatePayoff = (debt: Debt, extra: number) => {
-        let balance = debt.remainingBalance;
+    const calculatePayoff = (debt: Debt, extra: number, lump: number = 0) => {
+        let balance = Math.max(0, debt.remainingBalance - lump);
         let months = 0; let totalInterest = 0;
         const monthlyRate = (debt.interestRate / 100) / 12;
-        while (balance > 0 && months < 360) {
-            const interest = balance * monthlyRate; totalInterest += interest;
+
+        if (balance === 0) return { months: 0, totalInterest: 0, payoffDate: 'Hoy', isPossible: true };
+
+        while (balance > 0 && months < 600) { // Limit to 50 years to prevent infinite loops
+            const interest = balance * monthlyRate;
+            totalInterest += interest;
             const principalPayment = (debt.minPayment + extra) - interest;
+
             if (principalPayment <= 0 && extra === 0) return { isPossible: false, months: 0, totalInterest: 0, payoffDate: 'Nunca' };
-            balance -= principalPayment; months++; if (balance < 0) balance = 0;
+
+            balance -= principalPayment;
+            months++;
+            if (balance < 0) balance = 0;
         }
         const today = new Date(); today.setMonth(today.getMonth() + months);
         return { months, totalInterest, payoffDate: today.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }), isPossible: true };
@@ -194,8 +205,8 @@ const Debts: React.FC<DebtsProps> = () => {
         setNewStartDate(''); setNewEndDate('');
     };
 
-    const simulation = selectedDebt ? calculatePayoff(selectedDebt, extraPayment) : null;
-    const baseSimulation = selectedDebt ? calculatePayoff(selectedDebt, 0) : null;
+    const simulation = selectedDebt ? calculatePayoff(selectedDebt, simulatorMode === 'MONTHLY' ? extraPayment : 0, simulatorMode === 'LUMP_SUM' ? lumpSum : 0) : null;
+    const baseSimulation = selectedDebt ? calculatePayoff(selectedDebt, 0, 0) : null;
     const timeline = selectedDebt ? calculateTimeline(selectedDebt) : null;
     const formatEUR = (val: number) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(val);
 
@@ -443,25 +454,84 @@ const Debts: React.FC<DebtsProps> = () => {
                         </div>
 
                         <div className="bg-white p-10 rounded-onyx shadow-sm border border-onyx-100 hover:shadow-md transition-all duration-500 relative overflow-hidden group/accel">
-                            <div className="flex items-center gap-4 mb-10 pb-6 border-b border-onyx-50">
-                                <div className="p-2 bg-cyan-50 text-cyan-600 rounded-lg transition-transform group-hover/accel:scale-110">
-                                    <Calculator className="w-6 h-6" />
+                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-6 border-b border-onyx-50">
+                                <div className="flex items-center gap-4">
+                                    <div className="p-2 bg-cyan-50 text-cyan-600 rounded-lg transition-transform group-hover/accel:scale-110">
+                                        <Calculator className="w-6 h-6" />
+                                    </div>
+                                    <h3 className="text-xl font-bold text-cyan-900 tracking-tight">Acelerador de Amortización</h3>
                                 </div>
-                                <h3 className="text-xl font-bold text-cyan-900 tracking-tight">Acelerador de Amortización</h3>
+
+                                {/* Toggle Mode */}
+                                <div className="flex bg-onyx-50 p-1 rounded-xl border border-onyx-100">
+                                    <button
+                                        onClick={() => setSimulatorMode('MONTHLY')}
+                                        className={cn(
+                                            "px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all",
+                                            simulatorMode === 'MONTHLY' ? "bg-white text-cyan-900 shadow-sm" : "text-onyx-400 hover:text-onyx-600"
+                                        )}
+                                    >
+                                        Mensual
+                                    </button>
+                                    <button
+                                        onClick={() => setSimulatorMode('LUMP_SUM')}
+                                        className={cn(
+                                            "px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all",
+                                            simulatorMode === 'LUMP_SUM' ? "bg-white text-cyan-900 shadow-sm" : "text-onyx-400 hover:text-onyx-600"
+                                        )}
+                                    >
+                                        Extraordinario
+                                    </button>
+                                </div>
                             </div>
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
                                 <div>
-                                    <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-[0.2em] mb-8">Inyección Mensual Extra</label>
-                                    <div className="flex items-center gap-8">
-                                        <div className="flex-1 relative h-6 flex items-center">
-                                            <input type="range" min="0" max="2000" step="50" value={extraPayment} onChange={(e) => setExtraPayment(Number(e.target.value))} className="w-full h-1.5 bg-onyx-200 rounded-full appearance-none cursor-pointer accent-cyan-500" />
-                                        </div>
-                                        <div className="bg-gradient-to-br from-cyan-600 to-teal-600 px-6 py-3 rounded-xl font-bold text-white shadow-xl min-w-[110px] text-center text-lg transition-transform hover:scale-105">+{extraPayment}€</div>
-                                    </div>
+                                    {simulatorMode === 'MONTHLY' ? (
+                                        <>
+                                            <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-[0.2em] mb-8">Inyección Mensual Extra</label>
+                                            <div className="flex items-center gap-8">
+                                                <div className="flex-1 relative h-6 flex items-center">
+                                                    <input type="range" min="0" max="2000" step="50" value={extraPayment} onChange={(e) => setExtraPayment(Number(e.target.value))} className="w-full h-1.5 bg-onyx-200 rounded-full appearance-none cursor-pointer accent-cyan-500" />
+                                                </div>
+                                                <div className="bg-gradient-to-br from-cyan-600 to-teal-600 px-6 py-3 rounded-xl font-bold text-white shadow-xl min-w-[110px] text-center text-lg transition-transform hover:scale-105">+{extraPayment}€</div>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-[0.2em] mb-8">Amortización Extraordinaria (Hoy)</label>
+                                            <div className="space-y-6">
+                                                <div className="relative group/input">
+                                                    <input
+                                                        type="number"
+                                                        value={lumpSum || ''}
+                                                        onChange={(e) => setLumpSum(Number(e.target.value))}
+                                                        className="w-full p-6 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-3xl text-cyan-900 focus:bg-white outline-none transition-all placeholder:text-onyx-200"
+                                                        placeholder="0.00"
+                                                    />
+                                                    <span className="absolute right-6 top-1/2 -translate-y-1/2 text-onyx-300 font-bold text-xl group-focus-within/input:text-cyan-600 transition-colors">€</span>
+                                                </div>
+                                                <div className="flex gap-2">
+                                                    {[1000, 5000, 10000, 20000].map(val => (
+                                                        <button
+                                                            key={val}
+                                                            onClick={() => setLumpSum(val)}
+                                                            className="flex-1 py-2 bg-onyx-50 hover:bg-onyx-100 text-onyx-500 font-bold text-[10px] rounded-lg border border-onyx-100 transition-all"
+                                                        >
+                                                            +{val.toLocaleString('es-ES')}€
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
+
                                     <div className="mt-8 p-6 bg-cyan-50/50 rounded-2xl border border-cyan-100/50 flex gap-4">
                                         <div className="p-2 bg-white text-cyan-600 rounded-lg shadow-sm h-fit"><Sparkles className="w-4 h-4" /></div>
                                         <p className="text-[11px] text-cyan-900 font-semibold leading-relaxed">
-                                            Al inyectar capital extra, reduces drásticamente los intereses pagados y el tiempo de vida de la deuda.
+                                            {simulatorMode === 'MONTHLY'
+                                                ? "Al inyectar capital extra mensualmente, reduces drásticamente los intereses pagados y el tiempo de vida de la deuda."
+                                                : "Un pago extraordinario puntual reduce el capital pendiente de inmediato, ahorrando intereses de forma masiva sobre el capital amortizado."}
                                         </p>
                                     </div>
                                 </div>
@@ -479,9 +549,12 @@ const Debts: React.FC<DebtsProps> = () => {
                                             </div>
                                             <div className="space-y-3">
                                                 <div className="flex justify-between text-[10px] font-bold text-cyan-900 uppercase tracking-widest px-1">
-                                                    <span>Con Extra</span>
-                                                    <span className="text-emerald-600 font-bold flex items-center gap-1">
-                                                        <Flame className="w-3 h-3" /> -{baseSimulation.months - simulation.months} MESES
+                                                    <span className="flex items-center gap-2">
+                                                        {simulatorMode === 'MONTHLY' ? 'Con Extra Mensual' : 'Con Pago Único'}
+                                                        {simulation.months === 0 && <span className="text-[8px] bg-emerald-500 text-white px-1.5 py-0.5 rounded italic">PAGADO</span>}
+                                                    </span>
+                                                    <span className="text-emerald-600 font-black flex items-center gap-1">
+                                                        <Flame className="w-3 h-3" /> -{Math.max(0, baseSimulation.months - simulation.months)} MESES
                                                     </span>
                                                 </div>
                                                 <div className="w-full bg-onyx-200/50 h-2.5 rounded-full overflow-hidden shadow-inner">
@@ -489,10 +562,10 @@ const Debts: React.FC<DebtsProps> = () => {
                                                 </div>
                                             </div>
                                             <div className="pt-8 mt-4 border-t border-onyx-200/50 flex justify-between items-center">
-                                                <span className="text-[10px] font-bold text-onyx-500 uppercase tracking-widest">Ahorro Estimado</span>
+                                                <span className="text-[10px] font-bold text-onyx-500 uppercase tracking-widest">Ahorro Real Estimado</span>
                                                 <div className="text-right">
                                                     <span className="text-3xl font-bold text-emerald-600 tracking-tight">{formatEUR(Math.max(0, baseSimulation.totalInterest - simulation.totalInterest))}</span>
-                                                    <p className="text-[9px] font-bold text-emerald-500 uppercase tracking-widest mt-1">En Intereses Totales</p>
+                                                    <p className="text-[9px] font-bold text-emerald-500 uppercase tracking-widest mt-1">En Intereses Evitados</p>
                                                 </div>
                                             </div>
                                         </>

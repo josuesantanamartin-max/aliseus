@@ -9,7 +9,7 @@ const CurrencyOption = ({
     selected,
     onSelect
 }: {
-    code: 'EUR' | 'USD' | 'GBP';
+    code: string;
     symbol: string;
     name: string;
     selected: boolean;
@@ -47,7 +47,7 @@ const CurrencyStep: React.FC = () => {
     const handleBack = () => {
         // If profile includes FAMILY, go back to FamilySetup (Step 2), else Profile (Step 1)
         const isFamily = userProfile?.persona_type?.includes('FAMILY');
-        setOnboardingStep(isFamily ? 2 : 1);
+        setOnboardingStep(isFamily ? 3 : 2);
     };
 
     return (
@@ -59,28 +59,18 @@ const CurrencyStep: React.FC = () => {
                 Elige la moneda para Aliseus. Podrás añadir cuentas en otras monedas más tarde.
             </p>
 
-            <div className="grid grid-cols-1 gap-4 w-full mb-10">
-                <CurrencyOption
-                    code="EUR"
-                    symbol="€"
-                    name="Euro"
-                    selected={currency === 'EUR'}
-                    onSelect={() => setCurrency('EUR')}
-                />
-                <CurrencyOption
-                    code="USD"
-                    symbol="$"
-                    name="Dólar Estadounidense"
-                    selected={currency === 'USD'}
-                    onSelect={() => setCurrency('USD')}
-                />
-                <CurrencyOption
-                    code="GBP"
-                    symbol="£"
-                    name="Libra Esterlina"
-                    selected={currency === 'GBP'}
-                    onSelect={() => setCurrency('GBP')}
-                />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full mb-10 max-h-[50vh] overflow-y-auto p-2">
+                <CurrencyOption code="EUR" symbol="€" name="Euro" selected={currency === 'EUR'} onSelect={() => setCurrency('EUR')} />
+                <CurrencyOption code="USD" symbol="$" name="Dólar Estadounidense" selected={currency === 'USD'} onSelect={() => setCurrency('USD')} />
+                <CurrencyOption code="GBP" symbol="£" name="Libra Esterlina" selected={currency === 'GBP'} onSelect={() => setCurrency('GBP')} />
+                <CurrencyOption code="MXN" symbol="$" name="Peso Mexicano" selected={currency === 'MXN'} onSelect={() => setCurrency('MXN')} />
+                <CurrencyOption code="COP" symbol="$" name="Peso Colombiano" selected={currency === 'COP'} onSelect={() => setCurrency('COP')} />
+                <CurrencyOption code="ARS" symbol="$" name="Peso Argentino" selected={currency === 'ARS'} onSelect={() => setCurrency('ARS')} />
+                <CurrencyOption code="CLP" symbol="$" name="Peso Chileno" selected={currency === 'CLP'} onSelect={() => setCurrency('CLP')} />
+                <CurrencyOption code="CHF" symbol="CHF" name="Franco Suizo" selected={currency === 'CHF'} onSelect={() => setCurrency('CHF')} />
+                <CurrencyOption code="CAD" symbol="$" name="Dólar Canadiense" selected={currency === 'CAD'} onSelect={() => setCurrency('CAD')} />
+                <CurrencyOption code="AUD" symbol="$" name="Dólar Australiano" selected={currency === 'AUD'} onSelect={() => setCurrency('AUD')} />
+                <CurrencyOption code="INR" symbol="₹" name="Rupia India" selected={currency === 'INR'} onSelect={() => setCurrency('INR')} />
             </div>
 
             <div className="flex justify-between w-full max-w-md">
@@ -92,7 +82,7 @@ const CurrencyStep: React.FC = () => {
                 </button>
 
                 <button
-                    onClick={() => setOnboardingStep(4)} // Next is Accounts (Step 4)
+                    onClick={() => setOnboardingStep(5)} // Next is Accounts (Step 5)
                     className="px-8 py-3 bg-cyan-600 text-white rounded-xl font-bold shadow-lg hover:bg-cyan-700 hover:scale-105 transition-all"
                 >
                     Continuar

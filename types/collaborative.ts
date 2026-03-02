@@ -28,7 +28,7 @@ export interface Household {
     id: string;
     name: string;
     ownerId: string; // The creator/owner
-    currency: 'EUR' | 'USD' | 'GBP';
+    currency: 'EUR' | 'USD' | 'GBP' | 'MXN' | 'COP' | 'ARS' | 'CLP' | 'CHF' | 'CAD' | 'AUD' | 'INR';
     members: HouseholdMember[];
     sharedAccounts: string[]; // List of Account IDs shared in this household
     permissions: PermissionMatrix;

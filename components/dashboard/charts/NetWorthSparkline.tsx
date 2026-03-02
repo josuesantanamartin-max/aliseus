@@ -15,7 +15,7 @@ const NetWorthSparkline: React.FC<NetWorthSparklineProps> = ({
     trend = 'neutral'
 }) => {
     const chartData = useMemo(() => {
-        if (data.length === 0) return [];
+        if (!data || data.length === 0) return [];
         if (typeof data[0] === 'number') {
             return (data as number[]).map((value, i) => ({ value, index: i }));
         }
@@ -30,7 +30,7 @@ const NetWorthSparkline: React.FC<NetWorthSparklineProps> = ({
     );
 
     const numericValues = useMemo(() => {
-        if (data.length === 0) return [0];
+        if (!data || data.length === 0) return [0];
         if (typeof data[0] === 'number') {
             return data as number[];
         }

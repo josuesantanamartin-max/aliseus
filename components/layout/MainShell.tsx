@@ -10,8 +10,8 @@ import { useNotificationEngine } from '../../hooks/useNotificationEngine';
 // Lazy loaded modules
 const FinanceModule = React.lazy(() => import('../features/finance/FinanceModule'));
 const LifeModule = React.lazy(() => import('../features/life/LifeModule'));
-const SettingsModule = React.lazy(() => import('../features/settings/SettingsModule'));
-const CustomizableDashboard = React.lazy(() => import('../dashboard/BentoDashboard'));
+const SettingsPage = React.lazy(() => import('../features/settings/SettingsPage'));
+const CustomizableDashboard = React.lazy(() => import('../dashboard/AuraDashboard'));
 const HelpCenter = React.lazy(() => import('../pages/HelpCenter'));
 
 const MainShell: React.FC = () => {
@@ -46,7 +46,7 @@ const MainShell: React.FC = () => {
                             case 'dashboard': return <CustomizableDashboard />;
                             case 'finance': return <FinanceModule onMenuClick={() => setSidebarOpen(true)} onNavigate={handleGlobalNavigate} />;
                             case 'life': return <LifeModule onMenuClick={() => setSidebarOpen(true)} />;
-                            case 'settings': return <SettingsModule onMenuClick={() => setSidebarOpen(true)} />;
+                            case 'settings': return <SettingsPage onMenuClick={() => setSidebarOpen(true)} />;
                             case 'help': return <HelpCenter />;
                             default: return null;
                         }

@@ -10,10 +10,12 @@ import { FamilyMember } from '../../../types';
 import { FamilySharedCalendar } from './family/FamilySharedCalendar';
 import { FamilyDetailPanel } from './family/FamilyDetailPanel';
 import { AnimatePresence } from 'framer-motion';
+import { useCurrency } from '../../../hooks/useCurrency';
 
 export const FamilyManager: React.FC = () => {
     const { familyMembers } = useLifeStore();
     const { language } = useUserStore();
+    const { formatPrice } = useCurrency();
 
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<'ALL' | 'IMMEDIATE' | 'EXTENDED' | 'FRIENDS'>('ALL');
@@ -43,7 +45,7 @@ export const FamilyManager: React.FC = () => {
                 </div>
                 <div className="flex gap-3">
                     <button className="bg-white text-gray-900 px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-widest shadow-sm border border-gray-100 flex items-center gap-2 hover:bg-gray-50 transition-all active:scale-95">
-                        <Wallet className="w-4 h-4" /> Capital: {totalFamilyBalance.toFixed(2)}€
+                        <Wallet className="w-4 h-4" /> Capital: {formatPrice(totalFamilyBalance)}
                     </button>
                     <button className="bg-gray-900 text-white px-8 py-3 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl flex items-center gap-2 hover:bg-gray-800 transition-all active:scale-95">
                         <Plus className="w-5 h-5" /> Añadir Miembro
@@ -146,7 +148,7 @@ export const FamilyManager: React.FC = () => {
                                         <div className="grid grid-cols-2 gap-3 mb-6">
                                             <div className="p-4 bg-gray-50/50 rounded-2xl flex flex-col justify-center">
                                                 <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Balance</p>
-                                                <span className="text-lg font-black text-gray-900 tracking-tight">{member.balance.toFixed(2)}€</span>
+                                                <span className="text-lg font-black text-gray-900 tracking-tight">{formatPrice(member.balance)}</span>
                                             </div>
                                             <div className="p-4 bg-gray-50/50 rounded-2xl flex flex-col justify-center">
                                                 <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Última Actividad</p>

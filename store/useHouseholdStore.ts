@@ -14,7 +14,7 @@ interface HouseholdState {
 interface HouseholdActions {
     fetchHouseholds: () => Promise<void>;
     setActiveHousehold: (id: string) => void;
-    createHousehold: (name: string, currency: 'EUR' | 'USD' | 'GBP') => Promise<void>;
+    createHousehold: (name: string, currency: 'EUR' | 'USD' | 'GBP' | 'MXN' | 'COP' | 'ARS' | 'CLP' | 'CHF' | 'CAD' | 'AUD' | 'INR') => Promise<void>;
     fetchMembers: (householdId: string) => Promise<void>;
     inviteMember: (email: string, role: 'ADMIN' | 'MEMBER' | 'VIEWER') => Promise<void>;
 }

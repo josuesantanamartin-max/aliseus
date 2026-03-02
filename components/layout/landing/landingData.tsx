@@ -30,6 +30,12 @@ export const LANDING_TEXTS = {
         pricingSubtitle: "14 días de prueba gratis. Después, elige tu plan.",
         promoBadge: "🔥 14 días de prueba gratuita con acceso completo",
 
+        // Magic Connection (AI Optimization Moat)
+        magicTitle: "La Magia de la Conexión",
+        magicSubtitle: "El único sistema que une tu nevera, tu menú y tu bolsillo.",
+        magicExample: "Aliseus detectó que tu leche y el salmón caducan mañana, generó 3 recetas para aprovecharlos y ahorró 12€ en tu próxima compra.",
+        magicTag: "Ahorro Automático",
+
         // Billing Toggles
         billingMonthly: "Mensual",
         billingAnnual: "Anual",
@@ -97,6 +103,12 @@ export const LANDING_TEXTS = {
         pricingSubtitle: "14-day free trial with full access. Then choose your plan.",
         promoBadge: "🔥 14-day free trial with full access",
 
+        // Magic Connection (AI Optimization Moat)
+        magicTitle: "The Magic of Connection",
+        magicSubtitle: "The only system that unites your fridge, your menu, and your wallet.",
+        magicExample: "Aliseus detected that your milk and salmon expire tomorrow, generated 3 recipes to use them, and saved you €12 on your next grocery run.",
+        magicTag: "AI Auto-Savings",
+
         // Billing Toggles
         billingMonthly: "Monthly",
         billingAnnual: "Annual",
@@ -163,6 +175,12 @@ export const LANDING_TEXTS = {
         pricingTitle: "Investissement Intelligent",
         pricingSubtitle: "14 jours d'essai gratuit avec accès complet. Ensuite, choisissez votre plan.",
         promoBadge: "🔥 14 jours d'essai gratuit avec accès complet",
+
+        // Magic Connection (AI Optimization Moat)
+        magicTitle: "La Magie de la Connexion",
+        magicSubtitle: "Le seul système qui unit votre frigo, votre menu et votre portefeuille.",
+        magicExample: "Aliseus a détecté que votre lait et votre saumon expirent demain, a généré 3 recettes pour les utiliser et vous a fait économiser 12€ sur vos prochaines courses.",
+        magicTag: "Économies Auto-IA",
 
         // Billing Toggles
         billingMonthly: "Mensuel",

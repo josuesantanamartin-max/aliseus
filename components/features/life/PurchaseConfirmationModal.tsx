@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingItem, Account } from '../../../types';
-import { estimateTotalPrice, formatPrice } from '../../../utils/priceEstimation';
+import { estimateTotalPrice, formatPrice as estFormatPrice } from '../../../utils/priceEstimation';
 import { X, ShoppingCart, Check, AlertCircle, CreditCard } from 'lucide-react';
+import { useCurrency } from '../../../hooks/useCurrency';
 
 interface PurchaseConfirmationModalProps {
     isOpen: boolean;
@@ -25,6 +26,7 @@ export const PurchaseConfirmationModal: React.FC<PurchaseConfirmationModalProps>
     const [saveAsDefault, setSaveAsDefault] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
     const [isProcessing, setIsProcessing] = useState<boolean>(false);
+    const { symbol, formatPrice } = useCurrency();
 
     // Inicializar valores cuando se abre el modal
     useEffect(() => {
@@ -64,7 +66,7 @@ export const PurchaseConfirmationModal: React.FC<PurchaseConfirmationModalProps>
         }
 
         if (price <= 0) {
-            setError('El precio debe ser mayor a 0€');
+            setError(`El precio debe ser mayor a 0${symbol}`);
             return;
         }
 
@@ -160,7 +162,7 @@ export const PurchaseConfirmationModal: React.FC<PurchaseConfirmationModalProps>
                                 autoFocus
                             />
                             <span className="absolute right-5 top-1/2 -translate-y-1/2 text-2xl font-black text-gray-400">
-                                €
+                                {symbol}
                             </span>
                         </div>
                         <p className="text-xs text-gray-400 mt-2 ml-1">
@@ -180,14 +182,14 @@ export const PurchaseConfirmationModal: React.FC<PurchaseConfirmationModalProps>
                                     onClick={() => setSelectedAccountId(account.id)}
                                     disabled={isProcessing}
                                     className={`w-full p-4 rounded-2xl border-2 transition-all text-left flex items-center justify-between disabled:opacity-50 ${selectedAccountId === account.id
-                                            ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20'
-                                            : 'border-gray-200 dark:border-onyx-700 bg-white dark:bg-onyx-800 hover:border-emerald-300'
+                                        ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20'
+                                        : 'border-gray-200 dark:border-onyx-700 bg-white dark:bg-onyx-800 hover:border-emerald-300'
                                         }`}
                                 >
                                     <div className="flex items-center gap-3">
                                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${selectedAccountId === account.id
-                                                ? 'bg-emerald-500'
-                                                : 'bg-gray-200 dark:bg-onyx-700'
+                                            ? 'bg-emerald-500'
+                                            : 'bg-gray-200 dark:bg-onyx-700'
                                             }`}>
                                             <CreditCard className={`w-5 h-5 ${selectedAccountId === account.id ? 'text-white' : 'text-gray-500'
                                                 }`} />
@@ -201,7 +203,7 @@ export const PurchaseConfirmationModal: React.FC<PurchaseConfirmationModalProps>
                                     </div>
                                     <div className="text-right">
                                         <p className="font-black text-gray-900 dark:text-white">
-                                            {account.balance.toFixed(2)}€
+                                            {formatPrice(account.balance)}
                                         </p>
                                         <p className="text-[10px] text-gray-400 uppercase tracking-widest">
                                             Disponible

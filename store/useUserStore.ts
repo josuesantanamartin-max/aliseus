@@ -22,7 +22,7 @@ interface UserState {
     isDemoMode: boolean;
     activeApp: string;
     language: Language;
-    currency: 'EUR' | 'USD' | 'GBP';
+    currency: 'EUR' | 'USD' | 'GBP' | 'MXN' | 'COP' | 'ARS' | 'CLP' | 'CHF' | 'CAD' | 'AUD' | 'INR';
     theme: 'light' | 'dark' | 'system';
 
     financeActiveTab: string;
@@ -85,7 +85,7 @@ interface UserActions {
     setDemoMode: (value: boolean) => void;
     setActiveApp: (app: string) => void;
     setLanguage: (lang: Language) => void;
-    setCurrency: (currency: 'EUR' | 'USD' | 'GBP') => void;
+    setCurrency: (currency: 'EUR' | 'USD' | 'GBP' | 'MXN' | 'COP' | 'ARS' | 'CLP' | 'CHF' | 'CAD' | 'AUD' | 'INR') => void;
     setTheme: (theme: 'light' | 'dark' | 'system') => void;
     setSubscription: (sub: UserState['subscription']) => void;
     setUserProfile: (profile: UserState['userProfile']) => void;

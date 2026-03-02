@@ -6,6 +6,7 @@ import { Search, Loader2, ScanLine, Plus, Clock, Flame, Pencil, Save, X, Trash2,
 import { generateImage, generateRecipesFromIngredients, generateRecipesFromImage } from '../../../services/geminiService';
 import { PlanRecipeModal } from './PlanRecipeModal';
 import { CookingModeView } from './CookingModeView';
+import { calculateMissingIngredients } from '../../../utils/foodUtils';
 
 interface RecipeBookProps {
     onNavigateToMealPlan?: () => void;
@@ -20,6 +21,12 @@ export const RecipeBook: React.FC<RecipeBookProps> = ({ onNavigateToMealPlan, in
     const { language } = useUserStore();
 
     const [recipeSearchTerm, setRecipeSearchTerm] = useState('');
+    // New Filters state
+    const [filterMealType, setFilterMealType] = useState<string>('All');
+    const [filterPrepTime, setFilterPrepTime] = useState<string>('All');
+    const [filterCalories, setFilterCalories] = useState<string>('All');
+    const [filterWithWhatIHave, setFilterWithWhatIHave] = useState(false);
+
     const recipeInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -250,83 +257,195 @@ export const RecipeBook: React.FC<RecipeBookProps> = ({ onNavigateToMealPlan, in
         if (e.key === 'Enter') e.preventDefault();
     };
 
+    const filteredRecipes = recipes.filter(r => {
+        // Search term
+        if (!r.name.toLowerCase().includes(recipeSearchTerm.toLowerCase())) return false;
+
+        // Meal Type
+        if (filterMealType !== 'All') {
+            const mappedTag = {
+                'Desayuno': 'Breakfast',
+                'Almuerzo': 'Lunch',
+                'Cena': 'Dinner'
+            }[filterMealType];
+
+            if (mappedTag && !r.tags?.includes(mappedTag)) return false;
+        }
+
+        // Prep Time
+        if (filterPrepTime !== 'All') {
+            const timeMap: Record<string, number> = { '<15m': 15, '<30m': 30, '<60m': 60 };
+            const maxTime = timeMap[filterPrepTime];
+            if (maxTime && r.prepTime > maxTime) return false;
+        }
+
+        // Calories
+        if (filterCalories !== 'All') {
+            const calMap: Record<string, number> = { '<300kcal': 300, '<500kcal': 500 };
+            const maxCal = calMap[filterCalories];
+            if (maxCal && r.calories > maxCal) return false;
+        }
+
+        return true;
+    }).map(recipe => {
+        // Calculate missing ingredients
+        const missing = calculateMissingIngredients(recipe.ingredients, pantryItems);
+
+        // Ensure dynamic image if not explicitly set by user. Use a deterministic id based on name.
+        const dynamicImage = recipe.image || `https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop`; // Fallback Unsplash URL using keywords will cause re-renders if not careful. For now, since Unsplash Source is deprecated, we will leave the generated image system as is but rely on a robust fallback or the previous geminiService behavior.
+        // Actually, let's keep the existing image behavior and let AI handle new recipes as per the current system architecture, but ensure it displays.
+
+        return {
+            ...recipe,
+            _missingInfo: missing
+        };
+    }).filter(r => {
+        // Apply "With what I have" filter AFTER missing calculation
+        if (filterWithWhatIHave && !r._missingInfo?.hasAll) return false;
+        return true;
+    });
+
     return (
         <div className="space-y-6 animate-fade-in h-full flex flex-col pb-20">
-            <div className="flex justify-between items-center shrink-0">
-                <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <input type="text" value={recipeSearchTerm} onChange={(e) => setRecipeSearchTerm(e.target.value)} placeholder="Buscar receta..." className="pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-emerald-100 w-64" />
-                </div>
-                <div className="flex gap-2">
+            <div className="flex flex-col gap-4 shrink-0">
+                <div className="flex justify-between items-center">
                     <div className="relative">
-                        <input type="file" accept="image/*" ref={recipeInputRef} onChange={handlePhotoChef} className="hidden" />
-                        <button type="button" onClick={() => recipeInputRef.current?.click()} className="bg-purple-100 text-purple-700 px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-purple-200 transition-all flex items-center gap-2">
-                            {isChefGenerating ? <Loader2 className="w-4 h-4 animate-spin" /> : <ScanLine className="w-4 h-4" />} Escanear para Cocinar
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <input type="text" value={recipeSearchTerm} onChange={(e) => setRecipeSearchTerm(e.target.value)} placeholder="Buscar receta..." className="pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-emerald-100 w-64" />
+                    </div>
+                    <div className="flex gap-2">
+                        <div className="relative">
+                            <input type="file" accept="image/*" ref={recipeInputRef} onChange={handlePhotoChef} className="hidden" />
+                            <button type="button" onClick={() => recipeInputRef.current?.click()} className="bg-purple-100 text-purple-700 px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-purple-200 transition-all flex items-center gap-2 shadow-sm">
+                                {isChefGenerating ? <Loader2 className="w-4 h-4 animate-spin" /> : <ScanLine className="w-4 h-4" />} Escanear para Cocinar
+                            </button>
+                        </div>
+                        <button type="button" onClick={handleOpenAddRecipe} className="bg-emerald-950 text-white px-6 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg hover:bg-emerald-900 transition-all flex items-center gap-2">
+                            <Plus className="w-4 h-4" /> Nueva Receta
                         </button>
                     </div>
-                    <button type="button" onClick={handleOpenAddRecipe} className="bg-emerald-950 text-white px-6 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg hover:bg-emerald-900 transition-all flex items-center gap-2">
-                        <Plus className="w-4 h-4" /> Nueva Receta
+                </div>
+
+                {/* Filters Row */}
+                <div className="flex flex-wrap items-center gap-3">
+                    <select
+                        value={filterMealType}
+                        onChange={(e) => setFilterMealType(e.target.value)}
+                        className="bg-white border border-gray-200 text-gray-600 text-[11px] font-black uppercase tracking-widest rounded-lg px-3 py-1.5 focus:outline-none focus:border-emerald-500 cursor-pointer shadow-sm"
+                    >
+                        <option value="All">Cualquiera</option>
+                        <option value="Desayuno">Desayuno</option>
+                        <option value="Almuerzo">Almuerzo</option>
+                        <option value="Cena">Cena</option>
+                    </select>
+
+                    <select
+                        value={filterPrepTime}
+                        onChange={(e) => setFilterPrepTime(e.target.value)}
+                        className="bg-white border border-gray-200 text-gray-600 text-[11px] font-black uppercase tracking-widest rounded-lg px-3 py-1.5 focus:outline-none focus:border-emerald-500 cursor-pointer shadow-sm"
+                    >
+                        <option value="All">Cualquier tiempo</option>
+                        <option value="<15m">&lt; 15 min</option>
+                        <option value="<30m">&lt; 30 min</option>
+                        <option value="<60m">&lt; 1 hora</option>
+                    </select>
+
+                    <select
+                        value={filterCalories}
+                        onChange={(e) => setFilterCalories(e.target.value)}
+                        className="bg-white border border-gray-200 text-gray-600 text-[11px] font-black uppercase tracking-widest rounded-lg px-3 py-1.5 focus:outline-none focus:border-emerald-500 cursor-pointer shadow-sm"
+                    >
+                        <option value="All">Cualquier Caloría</option>
+                        <option value="<300kcal">&lt; 300 kcal</option>
+                        <option value="<500kcal">&lt; 500 kcal</option>
+                    </select>
+
+                    <button
+                        onClick={() => setFilterWithWhatIHave(!filterWithWhatIHave)}
+                        className={`text-[11px] font-black uppercase tracking-widest rounded-lg px-4 py-1.5 transition-all shadow-sm ${filterWithWhatIHave ? 'bg-emerald-600 text-white border-transparent relative overflow-hidden before:absolute before:inset-0 before:bg-white/20 before:animate-pulse' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'}`}
+                    >
+                        Con lo que tengo hoy
                     </button>
+
+                    {(filterMealType !== 'All' || filterPrepTime !== 'All' || filterCalories !== 'All' || filterWithWhatIHave) && (
+                        <button
+                            onClick={() => {
+                                setFilterMealType('All'); setFilterPrepTime('All'); setFilterCalories('All'); setFilterWithWhatIHave(false);
+                            }}
+                            className="text-[10px] font-bold text-gray-400 hover:text-red-500 hover:underline transition-colors ml-2"
+                        >
+                            Limpiar Filtros
+                        </button>
+                    )}
                 </div>
             </div>
 
             <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    {recipes.filter(r => r.name.toLowerCase().includes(recipeSearchTerm.toLowerCase())).map(recipe => (
-                        <div
-                            key={recipe.id}
-                            className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] transition-all duration-500 group overflow-hidden cursor-pointer flex flex-col h-full"
-                            onClick={() => setViewRecipe(recipe)}
-                        >
-                            <div className="h-48 bg-gray-100 relative overflow-hidden">
-                                <img src={recipe.image || DEFAULT_FOOD_IMG} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 shadow-xl">
-                                    <Clock className="w-3.5 h-3.5 text-emerald-600" /> {recipe.prepTime}m
-                                </div>
-                                {recipe.macros && (
-                                    <div className="absolute top-4 left-4 flex gap-1 transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-75">
-                                        <div className="bg-blue-600/90 backdrop-blur-md text-white px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-tighter shadow-lg border border-blue-400/30">
+                    {filteredRecipes.map((recipe: any) => (<div
+                        key={recipe.id}
+                        className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] transition-all duration-500 group overflow-hidden cursor-pointer flex flex-col h-full"
+                        onClick={() => setViewRecipe(recipe)}
+                    >
+                        <div className="h-48 bg-gray-100 relative overflow-hidden">
+                            <img src={recipe.image || DEFAULT_FOOD_IMG} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 shadow-xl">
+                                <Clock className="w-3.5 h-3.5 text-emerald-600" /> {recipe.prepTime}m
+                            </div>
+                            {recipe.macros && (
+                                <div className="absolute top-4 left-4 flex flex-col gap-1.5 transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-75">
+                                    <div className="flex gap-1">
+                                        <div className="bg-blue-600/90 backdrop-blur-md text-white px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-tighter shadow-lg border border-blue-400/30 text-center min-w-[34px]">
                                             {Math.round(recipe.macros.protein)}g P
                                         </div>
-                                        <div className="bg-orange-600/90 backdrop-blur-md text-white px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-tighter shadow-lg border border-orange-400/30">
+                                        <div className="bg-orange-500/90 backdrop-blur-md text-white px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-tighter shadow-lg border border-orange-400/30 text-center min-w-[34px]">
                                             {Math.round(recipe.macros.carbs)}g C
                                         </div>
+                                        <div className="bg-emerald-600/90 backdrop-blur-md text-white px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-tighter shadow-lg border border-emerald-400/30 text-center min-w-[34px]">
+                                            {Math.round(recipe.macros.fat)}g G
+                                        </div>
                                     </div>
-                                )}
-                                {recipe.calories > 0 && (
-                                    <div className="absolute bottom-4 left-4 bg-emerald-500/90 backdrop-blur-md text-white px-3 py-1.5 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl transform -translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                                        {Math.round(recipe.calories)} kcal
-                                    </div>
-                                )}
-                            </div>
-                            <div className="p-6 flex flex-col flex-1">
-                                <h4 className="font-black text-gray-900 text-xl mb-4 group-hover:text-emerald-700 transition-colors leading-tight line-clamp-2">{recipe.name}</h4>
-                                <div className="mt-auto flex gap-3">
-                                    <button
-                                        type="button"
-                                        onClick={(e) => { e.stopPropagation(); setPlanRecipe(recipe); }}
-                                        className="flex-1 py-3.5 bg-blue-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-700 transition-all flex items-center justify-center gap-2 active:scale-95 shadow-lg"
-                                    >
-                                        <CalendarPlus className="w-4 h-4" /> Planificar
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={(e) => { e.stopPropagation(); setCookingRecipe(recipe); }}
-                                        className="flex-1 py-3.5 bg-gray-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-600 transition-all flex items-center justify-center gap-2 active:scale-95 shadow-lg"
-                                    >
-                                        <Flame className="w-4 h-4" /> Cocinar
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={(e) => { e.stopPropagation(); handleEditRecipe(recipe); }}
-                                        className="p-3.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all border border-transparent hover:border-blue-100"
-                                    >
-                                        <Pencil className="w-4.5 h-4.5" />
-                                    </button>
                                 </div>
+                            )}
+                            {recipe.calories > 0 && (
+                                <div className="absolute bottom-4 left-4 bg-emerald-500/90 backdrop-blur-md text-white px-3 py-1.5 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl transform -translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                                    {Math.round(recipe.calories)} kcal
+                                </div>
+                            )}
+                        </div>
+                        <div className="p-6 flex flex-col flex-1 relative">
+                            {recipe._missingInfo && (
+                                <div className={`absolute -top-3.5 right-4 z-10 px-3 py-1.5 rounded-2xl text-[9px] font-black uppercase tracking-widest shadow-xl border flex items-center gap-1.5 ${recipe._missingInfo.hasAll ? 'bg-emerald-100 text-emerald-800 border-emerald-200' : 'bg-orange-100 text-orange-800 border-orange-200'}`}>
+                                    {recipe._missingInfo.hasAll ? '✔ Tienes todo' : `⚠ Faltan ${recipe._missingInfo.missingCount}`}
+                                </div>
+                            )}
+                            <h4 className="font-black text-gray-900 text-xl mb-4 group-hover:text-emerald-700 transition-colors leading-tight line-clamp-2 mt-1">{recipe.name}</h4>
+                            <div className="mt-auto flex gap-3">
+                                <button
+                                    type="button"
+                                    onClick={(e) => { e.stopPropagation(); setPlanRecipe(recipe); }}
+                                    className="flex-1 py-3.5 bg-blue-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-700 transition-all flex items-center justify-center gap-2 active:scale-95 shadow-lg"
+                                >
+                                    <CalendarPlus className="w-4 h-4" /> Planificar
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={(e) => { e.stopPropagation(); setCookingRecipe(recipe); }}
+                                    className="flex-1 py-3.5 bg-gray-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-600 transition-all flex items-center justify-center gap-2 active:scale-95 shadow-lg"
+                                >
+                                    <Flame className="w-4 h-4" /> Cocinar
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={(e) => { e.stopPropagation(); handleEditRecipe(recipe); }}
+                                    className="p-3.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all border border-transparent hover:border-blue-100"
+                                >
+                                    <Pencil className="w-4.5 h-4.5" />
+                                </button>
                             </div>
                         </div>
+                    </div>
                     ))}
                 </div>
             </div>

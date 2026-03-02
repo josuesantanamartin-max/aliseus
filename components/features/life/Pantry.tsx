@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useLifeStore } from '../../../store/useLifeStore';
 import { useUserStore } from '../../../store/useUserStore';
 import { Ingredient } from '../../../types';
-import { Search, Clock, Plus, Minus, X, ChevronLeft, ChevronRight, Wand2, Coffee, Sunset, Moon, Loader2, BookOpen, GripVertical, ChefHat, MoreHorizontal, Package, AlertTriangle } from 'lucide-react';
+import { Search, Clock, Plus, Minus, X, ChevronLeft, ChevronRight, Wand2, Coffee, Sunset, Moon, Loader2, BookOpen, GripVertical, ChefHat, MoreHorizontal, Package, AlertTriangle, ScanLine } from 'lucide-react';
+import { ReceiptScannerModal } from './ReceiptScannerModal';
 
 interface PantryProps {
    // All state managed via stores
@@ -40,6 +41,7 @@ export const Pantry: React.FC<PantryProps> = () => {
    const [searchTerm, setSearchTerm] = useState('');
    const [pantrySort, setPantrySort] = useState<'NAME' | 'EXPIRY' | 'QTY'>('EXPIRY'); // This state is no longer used for sorting in the new UI
    const [isAddPantryItemOpen, setIsAddPantryItemOpen] = useState(false);
+   const [isScannerOpen, setIsScannerOpen] = useState(false);
    const [pantryItemName, setPantryItemName] = useState('');
    const [pantryItemQty, setPantryItemQty] = useState<string>('');
    const [pantryItemUnit, setPantryItemUnit] = useState('pcs');
@@ -49,7 +51,10 @@ export const Pantry: React.FC<PantryProps> = () => {
 
    useEffect(() => {
       if (quickAction) {
-         if (quickAction.type === 'ADD_INGREDIENT' || quickAction.type === 'SCAN_RECEIPT') {
+         if (quickAction.type === 'SCAN_RECEIPT') {
+            setIsScannerOpen(true);
+            setQuickAction(null);
+         } else if (quickAction.type === 'ADD_INGREDIENT') {
             setIsAddPantryItemOpen(true);
             resetForm();
             setQuickAction(null);
@@ -94,6 +99,11 @@ export const Pantry: React.FC<PantryProps> = () => {
 
    const resetForm = () => {
       setPantryItemName(''); setPantryItemQty(''); setPantryItemExpiry('');
+   };
+
+   const handleSaveScannedItems = (items: Ingredient[]) => {
+      setPantryItems((prev: Ingredient[]) => [...prev, ...items]);
+      setIsScannerOpen(false);
    };
 
    // New functions for the refactored UI
@@ -273,6 +283,14 @@ export const Pantry: React.FC<PantryProps> = () => {
                   </div>
                </div>
             </div>
+         )}
+
+         {isScannerOpen && (
+            <ReceiptScannerModal
+               onClose={() => setIsScannerOpen(false)}
+               onSaveToPantry={handleSaveScannedItems}
+               onOpenManualEntry={() => setIsAddPantryItemOpen(true)}
+            />
          )}
       </div>
    );

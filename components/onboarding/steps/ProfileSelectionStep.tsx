@@ -76,9 +76,9 @@ const ProfileSelectionStep: React.FC = () => {
 
             // If 'FAMILY' or 'COUPLE' is selected, go to Family Setup (Step 2), otherwise skip to Currency (Step 3)
             if (selected.includes('FAMILY') || selected.includes('COUPLE')) {
-                setOnboardingStep(2);
-            } else {
                 setOnboardingStep(3);
+            } else {
+                setOnboardingStep(4);
             }
         }
     };
@@ -125,7 +125,7 @@ const ProfileSelectionStep: React.FC = () => {
 
             <div className="flex justify-between w-full max-w-md">
                 <button
-                    onClick={() => setOnboardingStep(0)}
+                    onClick={() => setOnboardingStep(1)}
                     className="px-6 py-3 text-gray-500 hover:text-gray-900 dark:hover:text-white font-medium transition-colors"
                 >
                     Atrás

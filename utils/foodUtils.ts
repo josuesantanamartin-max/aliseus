@@ -59,3 +59,68 @@ export const getIngredientCategory = (name: string): string => {
 
     return 'Other'; // Default
 };
+
+/**
+ * Calculates how many ingredients from a recipe are missing in the user's pantry.
+ * Normalizes units (g/l to mass measurements if possible, or basic comparison).
+ * @param recipeIngredients Ingredients required by the recipe
+ * @param pantryItems Items currently in the pantry
+ * @returns Object with missing count, total count, and a list of missing ingredient names
+ */
+export const calculateMissingIngredients = (
+    recipeIngredients: { name: string; quantity: number; unit: string }[],
+    pantryItems: { name: string; quantity: number; unit: string }[]
+) => {
+    // Helper to normalize to grams/ml for comparison
+    const getNormalizedQuantity = (q: number, u: string) => {
+        const unit = u.toLowerCase().trim();
+        if (unit === 'kg') return q * 1000;
+        if (unit === 'l') return q * 1000;
+        return q;
+    };
+
+    const getNormalizedUnit = (u: string) => {
+        const unit = u.toLowerCase().trim();
+        if (unit === 'kg' || unit === 'g') return 'g';
+        if (unit === 'l' || unit === 'ml') return 'ml';
+        return unit;
+    };
+
+    let missingCount = 0;
+    const missingItems: string[] = [];
+
+    recipeIngredients.forEach(reqIng => {
+        const normName = reqIng.name.toLowerCase().trim();
+        const reqUnit = getNormalizedUnit(reqIng.unit);
+        const reqQty = getNormalizedQuantity(reqIng.quantity, reqIng.unit);
+
+        const pantryItem = pantryItems.find(p => p.name.toLowerCase().trim() === normName);
+
+        if (!pantryItem) {
+            missingCount++;
+            missingItems.push(reqIng.name);
+            return;
+        }
+
+        const panUnit = getNormalizedUnit(pantryItem.unit);
+        if (panUnit !== reqUnit) {
+            // Units don't match, assume missing for safety unless handled by complex conversion
+            missingCount++;
+            missingItems.push(reqIng.name);
+            return;
+        }
+
+        const panQty = getNormalizedQuantity(pantryItem.quantity, pantryItem.unit);
+        if (panQty < reqQty) {
+            missingCount++;
+            missingItems.push(reqIng.name);
+        }
+    });
+
+    return {
+        missingCount,
+        totalCount: recipeIngredients.length,
+        missingItems,
+        hasAll: missingCount === 0
+    };
+};

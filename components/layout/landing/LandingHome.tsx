@@ -233,6 +233,123 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                 </div>
             </section>
 
+            {/* ── AI Magic Connection (The Moat) ── */}
+            <section className="py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-t border-slate-800 relative overflow-hidden">
+                <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-cyan-600/10 rounded-full blur-[100px] pointer-events-none" />
+                <div className="absolute bottom-0 left-1/4 w-[300px] h-[300px] bg-teal-600/10 rounded-full blur-[80px] pointer-events-none" />
+
+                <div className="max-w-7xl mx-auto px-6 relative z-10">
+                    <div className="flex flex-col lg:flex-row items-center gap-16">
+                        {/* Text Content */}
+                        <div className="lg:w-1/2 text-left">
+                            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500/20 to-teal-500/20 border border-cyan-500/30 text-cyan-300 px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-wider mb-6 shadow-[0_0_15px_rgba(6,182,212,0.5)]">
+                                <Sparkles className="w-4 h-4" />
+                                {t.magicTag}
+                            </div>
+                            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                                {t.magicTitle}
+                            </h2>
+                            <p className="text-xl text-cyan-200 font-light mb-8 italic">
+                                "{t.magicSubtitle}"
+                            </p>
+
+                            <div className="bg-white/5 backdrop-blur-md border border-white/10 p-6 rounded-2xl relative">
+                                <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-1.5 h-12 bg-gradient-to-b from-cyan-500 to-teal-500 rounded-full shadow-[0_0_10px_rgba(6,182,212,0.8)]"></div>
+                                <p className="text-slate-300 text-lg leading-relaxed">
+                                    {t.magicExample}
+                                </p>
+                            </div>
+
+                            <ul className="mt-8 space-y-4">
+                                {[
+                                    { text: "1. Detecta comida a punto de caducar", icon: CheckCircle2 },
+                                    { text: "2. Genera un menú semanal perfecto", icon: CheckCircle2 },
+                                    { text: "3. Crea tu lista de la compra", icon: CheckCircle2 },
+                                    { text: "4. Ajusta tu presupuesto al céntimo", icon: CheckCircle2 }
+                                ].map((item, i) => (
+                                    <li key={i} className="flex items-center gap-3 text-slate-400">
+                                        <item.icon className="w-5 h-5 text-emerald-400" />
+                                        <span className="font-medium text-white/80">{item.text}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Visual Mockup */}
+                        <div className="lg:w-1/2 w-full">
+                            <div className="relative p-8 bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-3xl shadow-2xl backdrop-blur-sm">
+                                {/* Flow Illustration */}
+                                <div className="flex flex-col gap-4 relative">
+
+                                    {/* Connection Line */}
+                                    <div className="absolute left-8 top-10 bottom-10 w-0.5 bg-gradient-to-b from-red-500 via-cyan-500 to-teal-500 opacity-30 z-0"></div>
+
+                                    {/* Fridge Item */}
+                                    <div className="flex items-center justify-between p-4 bg-slate-800/80 border border-red-500/30 rounded-2xl relative z-10 shadow-lg">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-10 h-10 bg-red-500/20 rounded-xl flex items-center justify-center">
+                                                <Archive className="w-5 h-5 text-red-400" />
+                                            </div>
+                                            <div>
+                                                <p className="font-bold text-white text-sm">Salmón Fresco</p>
+                                                <p className="text-red-400 text-xs">Cadució próxima detectada</p>
+                                            </div>
+                                        </div>
+                                        <span className="px-3 py-1 bg-red-500/20 text-red-400 text-xs font-bold rounded-full animate-pulse border border-red-500/30">Alerta 3 días</span>
+                                    </div>
+
+                                    {/* Arrow */}
+                                    <div className="flex justify-center -my-3 relative z-20">
+                                        <div className="w-8 h-8 bg-slate-800 border-2 border-slate-700 rounded-full flex items-center justify-center shadow-lg">
+                                            <ArrowRight className="w-4 h-4 text-cyan-400 rotate-90" />
+                                        </div>
+                                    </div>
+
+                                    {/* AI Magic */}
+                                    <div className="flex items-center justify-between p-4 bg-slate-800/80 border border-cyan-500/30 rounded-2xl relative overflow-hidden group z-10 shadow-lg shadow-cyan-900/40">
+                                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/10 to-transparent -translate-x-full group-hover:translate-x-full duration-1000 transition-transform"></div>
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-10 h-10 bg-cyan-500/20 rounded-xl flex items-center justify-center">
+                                                <Sparkles className="w-5 h-5 text-cyan-400" />
+                                            </div>
+                                            <div>
+                                                <p className="font-bold text-white text-sm">Receta: Salmón al Horno</p>
+                                                <p className="text-cyan-400 text-xs">Generado por IA para 4 personas</p>
+                                            </div>
+                                        </div>
+                                        <span className="px-3 py-1 bg-cyan-500/20 text-cyan-300 text-xs font-bold rounded-full border border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.3)]">Optimizando</span>
+                                    </div>
+
+                                    {/* Arrow */}
+                                    <div className="flex justify-center -my-3 relative z-20">
+                                        <div className="w-8 h-8 bg-slate-800 border-2 border-slate-700 rounded-full flex items-center justify-center shadow-lg">
+                                            <ArrowRight className="w-4 h-4 text-teal-400 rotate-90" />
+                                        </div>
+                                    </div>
+
+                                    {/* Budget / Savings */}
+                                    <div className="flex items-center justify-between p-4 bg-slate-800/80 border border-teal-500/30 rounded-2xl z-10 shadow-lg shadow-teal-900/40">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-10 h-10 bg-teal-500/20 rounded-xl flex items-center justify-center">
+                                                <PiggyBank className="w-5 h-5 text-teal-400" />
+                                            </div>
+                                            <div>
+                                                <p className="font-bold text-white text-sm">Presupuesto Actualizado</p>
+                                                <p className="text-teal-400 text-xs">Alineado con Lista de Compra</p>
+                                            </div>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-emerald-400 font-bold text-lg">12€</p>
+                                            <p className="text-emerald-500/70 text-[10px] uppercase font-bold tracking-wider">Ahorro Estimado</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* ── Module Pillars ── */}
             <section id="features" className="py-24 bg-white border-t border-gray-200">
                 <div className="max-w-7xl mx-auto px-6">

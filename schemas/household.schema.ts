@@ -28,7 +28,7 @@ export const householdSchema = z.object({
     id: z.string().optional(),
     name: z.string().min(1, "Household name is required"),
     ownerId: z.string(),
-    currency: z.enum(['EUR', 'USD', 'GBP']),
+    currency: z.enum(['EUR', 'USD', 'GBP', 'MXN', 'COP', 'ARS', 'CLP', 'CHF', 'CAD', 'AUD', 'INR']),
     members: z.array(householdMemberSchema).default([]),
     sharedAccounts: z.array(z.string()).default([]),
     permissions: permissionMatrixSchema,

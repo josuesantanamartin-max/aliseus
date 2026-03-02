@@ -1,15 +1,16 @@
 
 import React from 'react';
 import { ArrowUpCircle, ArrowDownCircle, Banknote } from 'lucide-react';
+import { useCurrency } from '../../../../../hooks/useCurrency';
 
 interface TransactionStatsProps {
     filteredIncome: number;
     filteredExpenses: number;
 }
 
-const formatEUR = (amount: number) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount);
 
 const TransactionStats: React.FC<TransactionStatsProps> = ({ filteredIncome, filteredExpenses }) => {
+    const { formatPrice: formatEUR } = useCurrency();
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             <div className="bg-white p-10 rounded-onyx border border-onyx-100 shadow-sm relative overflow-hidden group hover:shadow-xl transition-all duration-500">

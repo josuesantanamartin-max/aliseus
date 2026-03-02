@@ -96,9 +96,9 @@ export function getColSpanClass(size: WidgetSize): string {
     switch (size) {
         // Bento grid is grid-cols-4 lg:grid-cols-12
         case 'kpi': return 'col-span-4 sm:col-span-2 lg:col-span-3';          // 25% desktop
-        case 'sidebar': return 'col-span-4 sm:col-span-2 lg:col-span-3';      // 25% desktop
+        case 'sidebar': return 'col-span-4 sm:col-span-2 lg:col-span-4';      // 33% desktop
         case 'half': return 'col-span-4 lg:col-span-6';         // 50% desktop
-        case 'wide': return 'col-span-4 lg:col-span-9';         // 75% desktop
+        case 'wide': return 'col-span-4 lg:col-span-8';         // 66% desktop
         case 'full': return 'col-span-4 lg:col-span-12';        // 100% desktop
         default: return 'col-span-4 lg:col-span-6';
     }

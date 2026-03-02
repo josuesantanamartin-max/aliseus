@@ -20,7 +20,7 @@ const CashflowAreaChart: React.FC<CashflowAreaChartProps> = ({ transactions, hei
             const dateStr = date.toISOString().split('T')[0];
             const displayDate = date.toLocaleDateString('es-ES', { day: '2-digit', month: 'short' });
 
-            const dayTxs = transactions.filter(t => t.date.startsWith(dateStr) && t.category !== 'Transferencia');
+            const dayTxs = (transactions || []).filter(t => t.date.startsWith(dateStr) && t.category !== 'Transferencia');
             const inc = dayTxs.filter(t => t.type === 'INCOME').reduce((sum, t) => sum + t.amount, 0);
             const exp = dayTxs.filter(t => t.type === 'EXPENSE').reduce((sum, t) => sum + t.amount, 0);
 
@@ -56,7 +56,7 @@ const CashflowAreaChart: React.FC<CashflowAreaChartProps> = ({ transactions, hei
 
     return (
         <div style={{ width: '100%', height }}>
-            <ResponsiveContainer>
+            <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
                     data={data}
                     margin={{ top: 10, right: 10, left: -20, bottom: 0 }}

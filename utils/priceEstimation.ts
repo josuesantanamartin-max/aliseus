@@ -1,4 +1,5 @@
 import { ShoppingItem } from '../types';
+import { useUserStore } from '../store/useUserStore';
 
 // Precios promedio por categoría en EUR (basados en precios de supermercado español)
 const CATEGORY_PRICES: Record<string, number> = {
@@ -71,14 +72,24 @@ export function estimateTotalPrice(items: ShoppingItem[]): number {
  * @param currency - Código de moneda (default: EUR)
  * @returns Precio formateado como string
  */
-export function formatPrice(price: number, currency: 'EUR' | 'USD' | 'GBP' = 'EUR'): string {
-    const symbols = {
+export function formatPrice(price: number, currency?: string): string {
+    const activeCurrency = currency || useUserStore.getState().currency;
+    const symbols: Record<string, string> = {
         EUR: '€',
         USD: '$',
-        GBP: '£'
+        GBP: '£',
+        MXN: '$',
+        COP: '$',
+        ARS: '$',
+        CLP: '$',
+        CAD: '$',
+        AUD: '$',
+        CHF: 'CHF',
+        INR: '₹'
     };
 
-    return `${price.toFixed(2)}${symbols[currency]}`;
+    const symbol = symbols[activeCurrency] || '$';
+    return `${price.toFixed(2)}${symbol}`;
 }
 
 /**

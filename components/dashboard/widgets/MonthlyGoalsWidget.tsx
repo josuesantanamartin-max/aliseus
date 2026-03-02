@@ -12,7 +12,7 @@ const MonthlyGoalsWidget: React.FC<DashboardDataProps> = ({
         const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
         // Filtrar metas que tienen deadline en el mes actual
-        const monthlyGoals = goals.filter(goal => {
+        const monthlyGoals = (goals || []).filter(goal => {
             if (!goal.deadline) return false;
             const deadline = new Date(goal.deadline);
             return deadline >= monthStart && deadline <= monthEnd;
