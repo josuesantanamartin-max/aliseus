@@ -12,6 +12,18 @@ const formatEUR = (amount: number) => new Intl.NumberFormat('es-ES', { style: 'c
 const AccountsSummaryWidget: React.FC<AccountsSummaryWidgetProps> = ({ accounts, onNavigate }) => {
 
     // Group accounts by type or simplified logic
+    const getTypeName = (type: Account['type']) => {
+        switch (type) {
+            case 'BANK': return 'Banco';
+            case 'CREDIT': return 'Tarjeta Crédito';
+            case 'DEBIT': return 'Tarjeta Débito';
+            case 'INVESTMENT': return 'Inversión';
+            case 'CASH': return 'Efectivo';
+            case 'WALLET': return 'Billetera';
+            default: return type;
+        }
+    };
+
     const getIcon = (type: Account['type']) => {
         switch (type) {
             case 'BANK': return Landmark;
@@ -83,7 +95,7 @@ const AccountsSummaryWidget: React.FC<AccountsSummaryWidgetProps> = ({ accounts,
                                     </div>
                                     <div>
                                         <p className="font-bold text-sm text-onyx-900 dark:text-white">{account.name}</p>
-                                        <p className="text-[10px] font-bold text-onyx-400 dark:text-onyx-500 uppercase tracking-wider">{account.type}</p>
+                                        <p className="text-[10px] font-bold text-onyx-400 dark:text-onyx-500 uppercase tracking-wider">{getTypeName(account.type)}</p>
                                     </div>
                                 </div>
                                 <div className="text-right">

@@ -26,6 +26,12 @@ export const syncService = {
         if (error) throw error;
     },
 
+    async deleteAccount(id: string) {
+        if (!supabase) return;
+        const { error } = await supabase.from('finance_accounts').delete().eq('id', id);
+        if (error) throw error;
+    },
+
     async fetchTransactions() {
         if (!supabase) return [];
         const { data, error } = await supabase.from('finance_transactions').select('*');

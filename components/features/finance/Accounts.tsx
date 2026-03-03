@@ -14,7 +14,7 @@ interface AccountsProps {
 }
 
 const Accounts: React.FC<AccountsProps> = ({ onViewTransactions }) => {
-  const { accounts, setAccounts, transactions } = useFinanceStore();
+  const { accounts, setAccounts, transactions, addAccount, updateAccount, deleteAccount } = useFinanceStore();
   const { transfer } = useFinanceControllers();
 
   const [selectedAccountId, setSelectedAccountId] = useState<string | null>(null);
@@ -130,7 +130,7 @@ const Accounts: React.FC<AccountsProps> = ({ onViewTransactions }) => {
     e.stopPropagation();
     if (window.confirm('¿Estás seguro de eliminar esta cuenta?')) {
       if (selectedAccountId === id) setSelectedAccountId(null);
-      setAccounts((prev) => prev.filter(a => a.id !== id));
+      deleteAccount(id);
     }
   };
 
@@ -169,10 +169,10 @@ const Accounts: React.FC<AccountsProps> = ({ onViewTransactions }) => {
     }
 
     if (editingId) {
-      setAccounts((prev) => prev.map(a => a.id === editingId ? { ...accountData, id: editingId } : a));
+      updateAccount(editingId, accountData);
     } else {
       const newAccount = { ...accountData, id: Math.random().toString(36).substr(2, 9) };
-      setAccounts((prev) => [...prev, newAccount]);
+      addAccount(newAccount);
     }
     resetForm();
   };

@@ -81,7 +81,7 @@ const CategoryDonutChart: React.FC<CategoryDonutChartProps> = ({
 
     return (
         <div style={{ width: '100%', height }} className="relative">
-            <ResponsiveContainer>
+            <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                     <Pie
                         data={data}

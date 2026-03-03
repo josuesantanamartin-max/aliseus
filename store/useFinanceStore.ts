@@ -112,16 +112,22 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                 }));
             },
             updateAccount: (id, updates) => {
-                set((state) => ({
-                    accounts: state.accounts.map(acc =>
+                set((state) => {
+                    const accounts = state.accounts.map(acc =>
                         acc.id === id ? { ...acc, ...updates } : acc
-                    )
-                }));
+                    );
+                    const updatedAccount = accounts.find(a => a.id === id);
+                    if (updatedAccount) {
+                        syncService.saveAccount(updatedAccount).catch(e => console.error("Failed to sync account:", e));
+                    }
+                    return { accounts };
+                });
             },
             deleteAccount: (id) => {
                 set((state) => ({
                     accounts: state.accounts.filter(acc => acc.id !== id)
                 }));
+                syncService.deleteAccount(id).catch(e => console.error("Failed to sync account deletion:", e));
             },
             addBudget: (budget) => {
                 set((state) => ({ budgets: [...state.budgets, budget] }));

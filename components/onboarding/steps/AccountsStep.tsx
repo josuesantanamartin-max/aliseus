@@ -117,7 +117,7 @@ const AccountsStep: React.FC = () => {
                                 </div>
                                 <div>
                                     <h4 className="font-bold text-gray-900 dark:text-white">{acc.name}</h4>
-                                    <p className="text-xs text-gray-500">{acc.type} • {formatPrice(acc.balance || 0)}</p>
+                                    <p className="text-xs text-gray-500">{ACCOUNT_TYPES.find(t => t.value === acc.type)?.label || acc.type} • {formatPrice(acc.balance || 0)}</p>
                                 </div>
                             </div>
                             <button

@@ -180,13 +180,13 @@ export const RetirementSimulator: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <MetricCard
                             title="Capital Acumulado"
-                            value={formatPrice(result?.totalSavings, 0)}
+                            value={formatPrice(result?.totalSavings || 0, 0)}
                             subtitle="A la edad de retiro (Valor Real)"
                             icon={<TrendingUp className="text-green-500" />}
                         />
                         <MetricCard
                             title="Ingreso Mensual Sostenible"
-                            value={formatPrice(result?.monthlyIncome, 0)}
+                            value={formatPrice(result?.monthlyIncome || 0, 0)}
                             subtitle="Basado en la regla del 4%"
                             icon={<RefreshCw className={result?.monthlyIncome < formData.targetMonthlyIncome ? "text-red-500" : "text-emerald-500"} />}
                             highlight={result?.monthlyIncome < formData.targetMonthlyIncome}

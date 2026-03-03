@@ -13,11 +13,10 @@ import EditModeToolbar from './EditModeToolbar';
 
 // New Zone Imports
 import IntelligenceHeader from './zones/IntelligenceHeader';
-import CriticalAlerts from './zones/CriticalAlerts';
-import FinancialPulse from './zones/FinancialPulse';
 import LifeSnapshot from './zones/LifeSnapshot';
 import AuraThemeBar, { AuraTheme } from './zones/AuraThemeBar';
 import AuraCommandBar from './zones/AuraCommandBar';
+import AuraFinanceOverview from './zones/AuraFinanceOverview';
 
 // Utility for formatting currency
 const formatCurrency = (val: number) =>
@@ -196,19 +195,8 @@ const AuraDashboard: React.FC = () => {
                 {/* --- DYNAMIC VIEWS --- */}
                 <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
                     {activeTheme === 'finances' && (
-                        <div className="space-y-6">
-                            <CriticalAlerts />
-                            <div className="flex flex-col lg:grid lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-                                <div className="lg:col-span-7 xl:col-span-8 w-full">
-                                    <FinancialPulse />
-                                </div>
-                                <div className="lg:col-span-5 xl:col-span-4 w-full h-full">
-                                    <div className="space-y-6">
-                                        {React.createElement(WIDGET_REGISTRY['BUDGET_STATUS'], widgetProps)}
-                                        {React.createElement(WIDGET_REGISTRY['ACCOUNTS_SUMMARY'], widgetProps)}
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="mx-auto w-full space-y-8 pb-12">
+                            <AuraFinanceOverview />
                         </div>
                     )}
 
