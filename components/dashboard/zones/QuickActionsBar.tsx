@@ -3,13 +3,13 @@ import { Plus, UploadCloud, Plane, Target, BarChart2, Users } from 'lucide-react
 import { useUserStore } from '../../../store/useUserStore';
 
 export default function QuickActionsBar() {
-    const { setActiveSection } = useUserStore();
+    const { setActiveApp, setLifeActiveTab, setFinanceActiveTab } = useUserStore();
 
     const actions = [
         { label: 'Añadir Transacción', icon: Plus, action: () => alert('Mock: Add Transaction Modal'), color: 'text-brand-500', bg: 'bg-brand-50 dark:bg-brand-500/10' },
         { label: 'Importar CSV', icon: UploadCloud, action: () => alert('Mock: Import CSV Modal'), color: 'text-sky-500', bg: 'bg-sky-50 dark:bg-sky-500/10' },
-        { label: 'Buscar Vuelos', icon: Plane, action: () => setActiveSection('viajes'), color: 'text-violet-500', bg: 'bg-violet-50 dark:bg-violet-500/10' },
-        { label: 'Objetivos', icon: Target, action: () => setActiveSection('objetivos'), color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-500/10' },
+        { label: 'Buscar Vuelos', icon: Plane, action: () => { setActiveApp('life'); setLifeActiveTab('travel'); }, color: 'text-violet-500', bg: 'bg-violet-50 dark:bg-violet-500/10' },
+        { label: 'Objetivos', icon: Target, action: () => { setActiveApp('finance'); setFinanceActiveTab('goals'); }, color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-500/10' },
         { label: 'Informe Mensual', icon: BarChart2, action: () => alert('Mock: Monthly Report Modal'), color: 'text-amber-500', bg: 'bg-amber-50 dark:bg-amber-500/10' },
         { label: 'Gestión Familiar', icon: Users, action: () => alert('Mock: Family Management Modal'), color: 'text-rose-500', bg: 'bg-rose-50 dark:bg-rose-500/10' },
     ];
