@@ -20,6 +20,8 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
 
     const { loadFromCloud, setMockData, clearAllData } = useFinanceStore();
 
+    const [isInitializing, setIsInitializing] = React.useState(true);
+
     // --- AUTH INITIALIZATION ---
     useEffect(() => {
         console.log("[AuthGate] Initializing Auth...", { isDemoMode, isAuthenticated, hash: window.location.hash });
@@ -49,16 +51,17 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                     addSyncLog({ message: "Conectado a Onyx Cloud (Supabase)", timestamp: Date.now(), type: "SYSTEM" });
                 } else {
                     console.log("[AuthGate] No active session found.");
-                    // Only apply demo mode if NO real session exists
-                    if (isDemoMode) {
+                    // Only apply demo mode if NO real session exists AND we are not handling a redirect hash
+                    if (isDemoMode && !window.location.hash.includes('access_token')) {
                         console.log("[AuthGate] Falling back to Demo Mode.");
                         setMockData();
                         setAuthenticated(true);
                     }
                 }
+                setIsInitializing(false);
             });
 
-            const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+            const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange((event, session) => {
                 console.log("[AuthGate] Auth state changed:", event, session?.user?.email);
                 if (session) {
                     setAuthenticated(true);
@@ -76,14 +79,30 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                 } else if (!isDemoMode) {
                     setAuthenticated(false);
                     setUserProfile(null);
-                    clearAllData(); // Clear sensitive data if logging out
+                } else {
+                    // Supabase client is not available
+                    if (isDemoMode && !window.location.hash.includes('access_token')) {
+                        setMockData();
+                        setAuthenticated(true);
+                    } else if (!isDemoMode && !window.location.hash.includes('access_token')) {
+                        // If no supabase, not in demo mode, and not an OAuth redirect, ensure authenticated is false
+                        setAuthenticated(false);
+                        setUserProfile(null);
+                        clearAllData();
+                    }
+                    setIsInitializing(false);
                 }
             });
 
-            return () => subscription.unsubscribe();
-        } else if (isDemoMode) {
-            setMockData();
-            setAuthenticated(true);
+            return () => {
+                authSubscription.unsubscribe();
+            };
+        } else {
+            if (isDemoMode && !window.location.hash.includes('access_token')) {
+                setMockData();
+                setAuthenticated(true);
+            }
+            setIsInitializing(false);
         }
     }, [isDemoMode, setAuthenticated, setDemoMode, addSyncLog, setUserProfile, loadFromCloud, setMockData, clearAllData]);
 
@@ -153,6 +172,15 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
             alert("Para activar el login real, configura las claves de Supabase en tu entorno.");
         }
     };
+
+    if (isInitializing && !isAuthenticated && window.location.hash.includes('access_token')) {
+        // Prevent flashing the landing page while Supabase processes the OAuth callback
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-black">
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+        );
+    }
 
     if (!isAuthenticated) {
         return <OnyxLanding onLogin={handleLogin} language={language} setLanguage={setLanguage} />;
