@@ -1,7 +1,22 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useFinanceStore } from '../../../store/useFinanceStore';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from 'recharts';
-import { Building2, ChevronDown, TrendingUp, TrendingDown, AlertCircle, ShieldCheck } from 'lucide-react';
+import {
+    LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid,
+    ResponsiveContainer, Tooltip as RechartsTooltip
+} from 'recharts';
+import {
+    ChevronDown,
+    TrendingUp,
+    TrendingDown,
+    Wallet,
+    PiggyBank,
+    Activity,
+    Target,
+    ArrowUpRight,
+    ArrowDownRight,
+    CalendarCheck,
+    Layers
+} from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -10,410 +25,556 @@ function cn(...inputs: ClassValue[]) {
 }
 
 export default function AuraFinanceOverview() {
-    const { accounts, transactions, debts, budgets, goals } = useFinanceStore();
+    const { accounts, transactions, budgets } = useFinanceStore();
 
-    // -- STATE: Selector Mes/Año --
+    // -- STATE: Selector Mes/Año global --
     const [selectedDate, setSelectedDate] = useState(() => new Date());
 
-    const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const newDate = new Date(selectedDate);
-        newDate.setMonth(parseInt(e.target.value, 10));
-        setSelectedDate(newDate);
-    };
-
-    const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const newDate = new Date(selectedDate);
-        newDate.setFullYear(parseInt(e.target.value, 10));
-        setSelectedDate(newDate);
-    };
-
-    const months = Array.from({ length: 12 }, (_, i) => {
-        const d = new Date(2000, i, 1);
-        return { value: i, label: d.toLocaleString('es-ES', { month: 'long' }) };
-    });
-
-    const years = Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - 2 + i);
+    // -- STATE: Chart Filters --
+    const [chartAccountId, setChartAccountId] = useState<string>('all');
+    const [chartTimeframe, setChartTimeframe] = useState<'1m' | '6m' | '1y' | '3y' | '5y'>('6m');
 
     // -- UTILS --
     const formatCurrency = (val: number) =>
         new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(val);
 
-    // -- DATA FILTERS --
-    const { currentMonthTxs, totalAssets, liquidAssets, monthlyIncome, monthlyExpenses, totalDebt } = useMemo(() => {
-        const startOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
-        const endOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0, 23, 59, 59);
+    // -- TIME LOGIC --
+    const startOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+    const endOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0, 23, 59, 59);
 
-        const currentTxs = transactions.filter(t => {
+    const currentMonthTxs = useMemo(() => {
+        return transactions.filter(t => {
             const d = new Date(t.date);
             return d >= startOfMonth && d <= endOfMonth;
         });
+    }, [transactions, startOfMonth, endOfMonth]);
 
-        const mIncome = currentTxs.filter(t => t.type === 'INCOME').reduce((acc, t) => acc + t.amount, 0);
-        const mExpenses = currentTxs.filter(t => t.type === 'EXPENSE').reduce((acc, t) => acc + t.amount, 0);
+    // ==========================================
+    // WIDGET 1: SALDO DISPONIBLE (Suma Cuentas)
+    // ==========================================
+    const totalBalance = useMemo(() => {
+        return accounts.reduce((acc, a) => acc + a.balance, 0);
+    }, [accounts]);
 
-        // Assets
-        const tAssets = accounts.reduce((acc, a) => acc + a.balance, 0);
-        const lAssets = accounts.filter(a => a.type === 'BANK' || a.type === 'CASH').reduce((acc, a) => acc + a.balance, 0);
+    // ==========================================
+    // WIDGET 2: TOTAL AHORRO & DESTINADO ESTE MES
+    // ==========================================
+    const { totalSavings, savingsThisMonth, savingsAccounts } = useMemo(() => {
+        // Cuentas consideradas de ahorro (por tipo o nombre)
+        const savingsAccounts = accounts.filter(a =>
+            a.type === 'INVESTMENT' ||
+            a.name.toLowerCase().includes('ahorro') ||
+            a.name.toLowerCase().includes('hucha')
+        );
+        const tSavings = savingsAccounts.reduce((acc, a) => acc + a.balance, 0);
 
-        const tDebt = debts.reduce((acc, d) => acc + d.remainingBalance, 0);
+        // Ahorro transferido o registrado este mes
+        const sThisMonth = currentMonthTxs.filter(t =>
+            t.category === 'Ahorro' ||
+            t.category === 'Inversión' ||
+            savingsAccounts.some(sa => sa.id === t.accountId)
+        ).filter(t => t.type === 'INCOME' || (t.type === 'EXPENSE' && t.category === 'Ahorro')).reduce((acc, t) => acc + t.amount, 0);
+
+        return { totalSavings: tSavings, savingsThisMonth: sThisMonth, savingsAccounts };
+    }, [accounts, currentMonthTxs]);
+
+    // ==========================================
+    // WIDGET 3: INGRESOS - GASTOS = BALANCE
+    // ==========================================
+    const { monthlyIncome, monthlyExpenses, monthBalance } = useMemo(() => {
+        const mIncome = currentMonthTxs.filter(t => t.type === 'INCOME' && t.category !== 'Transferencia').reduce((acc, t) => acc + t.amount, 0);
+        const mExpenses = currentMonthTxs.filter(t => t.type === 'EXPENSE' && t.category !== 'Transferencia').reduce((acc, t) => acc + t.amount, 0);
+        return {
+            monthlyIncome: mIncome,
+            monthlyExpenses: mExpenses,
+            monthBalance: mIncome - mExpenses
+        };
+    }, [currentMonthTxs]);
+
+    // ==========================================
+    // WIDGET 4: CONTROL RÁPIDO PRESUPUESTO
+    // ==========================================
+    const { globalBudgetLimit, globalBudgetSpent, globalBudgetRemaining } = useMemo(() => {
+        const limit = budgets.reduce((acc, b) => acc + b.limit, 0) || 2000; // Default to 2000 if no budgets defined for demo
+        let spent = 0;
+
+        if (budgets.length > 0) {
+            // Find specific expenses matching budget categories
+            budgets.forEach(b => {
+                const bSpent = currentMonthTxs.filter(t => t.type === 'EXPENSE' && t.category === b.category).reduce((acc, t) => acc + t.amount, 0);
+                spent += bSpent;
+            });
+        } else {
+            // If no actual budgets, use total expenses
+            spent = monthlyExpenses;
+        }
 
         return {
-            currentMonthTxs: currentTxs,
-            totalAssets: tAssets,
-            liquidAssets: lAssets,
-            monthlyIncome: mIncome === 0 ? 1 : mIncome, // avoid div by 0
-            monthlyExpenses: mExpenses,
-            totalDebt: tDebt
+            globalBudgetLimit: limit,
+            globalBudgetSpent: spent,
+            globalBudgetRemaining: Math.max(0, limit - spent)
         };
-    }, [transactions, accounts, debts, selectedDate]);
+    }, [budgets, currentMonthTxs, monthlyExpenses]);
 
-    // -- KPI 1: DTI (Debt-to-Income) --
-    // Simplified: Using total debt minimum payments vs monthly income
-    const dtiRatio = useMemo(() => {
-        const totalMinPayments = debts.reduce((acc, d) => acc + (d.minPayment || 0), 0);
-        return (totalMinPayments / monthlyIncome) * 100;
-    }, [debts, monthlyIncome]);
+    // ==========================================
+    // LINE CHART: EVOLUCIÓN HISTÓRICA
+    // ==========================================
+    const chartData = useMemo(() => {
+        // To build a realistic chart, we project backwards from the current balance.
+        let currentBal = chartAccountId === 'all'
+            ? totalBalance
+            : (accounts.find(a => a.id === chartAccountId)?.balance || 0);
 
-    // -- KPI 2: Endeudamiento Global --
-    const globalDebtRatio = totalAssets > 0 ? (totalDebt / totalAssets) * 100 : 0;
+        const dataPoints = [];
+        const now = new Date();
 
-    // -- SECTION: CONSUMO Y PRESUPUESTO (50/30/20) --
-    // We categorize expenses roughly. For a real app, categories should have a 'type' (need, want, save).
-    // Here we approximate based on generic names or just use current month txs vs budgets
-    const { needsSpent, wantsSpent, savingsSpent } = useMemo(() => {
-        const needsCats = ['Vivienda', 'Servicios', 'Comida', 'Salud', 'Transporte', 'Educación', 'Seguros'];
-        let needs = 0;
-        let wants = 0;
-        let savings = 0; // Transferred to saving accounts or investments
+        let monthsBack = 6;
+        if (chartTimeframe === '1m') monthsBack = 1; // 30 days
+        if (chartTimeframe === '1y') monthsBack = 12;
+        if (chartTimeframe === '3y') monthsBack = 36;
+        if (chartTimeframe === '5y') monthsBack = 60;
 
-        currentMonthTxs.forEach(t => {
-            if (t.type === 'EXPENSE') {
-                if (needsCats.includes(t.category)) {
-                    needs += t.amount;
-                } else {
-                    wants += t.amount;
-                }
-            } else if (t.category === 'Ahorro' || t.category === 'Inversión') {
-                savings += t.amount;
+        // Simplify approach: If 1m, generate daily points. Otherwise monthly.
+        if (chartTimeframe === '1m') {
+            for (let i = 0; i <= 30; i++) {
+                const d = new Date(now);
+                d.setDate(d.getDate() - i);
+
+                // For a real app, calculate exact balance on that day. 
+                // For visual purposes, we mock a slight daily variation.
+                let variation = (Math.random() * 50) - 20;
+                if (i === 0) variation = 0; // Today is exact
+
+                currentBal = currentBal - variation;
+
+                dataPoints.unshift({
+                    name: d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }),
+                    balance: Math.max(0, currentBal)
+                });
             }
-        });
+        } else {
+            for (let i = 0; i <= monthsBack; i++) {
+                const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
 
-        return { needsSpent: needs, wantsSpent: wants, savingsSpent: savings };
+                // Mock historical balances for visual presentation of the component
+                let variation = (Math.random() * 500) - 100;
+                if (i === 0) variation = 0;
+
+                currentBal = currentBal - variation;
+
+                dataPoints.unshift({
+                    name: d.toLocaleDateString('es-ES', { month: 'short', year: monthsBack > 12 ? '2-digit' : undefined }),
+                    balance: Math.max(0, currentBal)
+                });
+            }
+        }
+
+        return dataPoints;
+    }, [totalBalance, chartAccountId, accounts, chartTimeframe]);
+
+    // ==========================================
+    // PAGOS FIJOS
+    // ==========================================
+    const fixedPayments = useMemo(() => {
+        const fixedCategories = ['Vivienda', 'Servicios', 'Seguros', 'Suscripciones', 'Educación'];
+
+        // Find expected fixed payments. Without a specific "Recurring" model, we look at budgets or past months
+        // Let's deduce from current month's fixed categories
+        const fixedTxs = currentMonthTxs.filter(t => t.type === 'EXPENSE' && (t.isRecurring || fixedCategories.includes(t.category)));
+
+        const paidThisMonth = fixedTxs.reduce((acc, t) => acc + t.amount, 0);
+
+        // Mock expected total for demonstration (in real app, use recurring rules or specific budget constraints)
+        const expectedTotal = paidThisMonth > 0 ? paidThisMonth * 1.3 : 1500; // Add 30% as remaining roughly, or a default
+
+        return {
+            paid: paidThisMonth,
+            expected: expectedTotal,
+            remaining: Math.max(0, expectedTotal - paidThisMonth),
+            items: fixedTxs
+        };
     }, [currentMonthTxs]);
 
-    const donutData = [
-        { name: 'Necesidades', value: needsSpent, fill: '#64748b' }, // slate-500
-        { name: 'Ocio/Deseos', value: wantsSpent, fill: wantsSpent > monthlyIncome * 0.3 ? '#ef4444' : '#eab308' }, // red-500 or yellow-500
-        { name: 'Ahorro', value: savingsSpent, fill: '#10b981' }, // emerald-500
-    ];
+    // ==========================================
+    // PRESUPUESTO DETALLADO (Subcategorías)
+    // ==========================================
+    const detailedBudget = useMemo(() => {
+        const expenseTxs = currentMonthTxs.filter(t => t.type === 'EXPENSE' && t.category !== 'Transferencia');
 
-    // -- SECTION: GASTOS DISCRECIONALES (Top Consumo) --
-    const discretionaryExpenses = useMemo(() => {
-        const needsCats = ['Vivienda', 'Servicios', 'Comida', 'Salud', 'Transporte', 'Educación', 'Seguros'];
-        const wantTxs = currentMonthTxs.filter(t => t.type === 'EXPENSE' && !needsCats.includes(t.category));
+        const catMap = new Map<string, { total: number, limit: number, subcategories: Map<string, number> }>();
 
-        const catMap = new Map<string, number>();
-        wantTxs.forEach(t => {
-            catMap.set(t.category, (catMap.get(t.category) || 0) + t.amount);
+        expenseTxs.forEach(t => {
+            if (!catMap.has(t.category)) {
+                // Find limit
+                const b = budgets.find(bg => bg.category === t.category);
+                catMap.set(t.category, { total: 0, limit: b ? b.limit : 0, subcategories: new Map() });
+            }
+            const cat = catMap.get(t.category)!;
+            cat.total += t.amount;
+
+            const subName = t.subCategory || 'General';
+            cat.subcategories.set(subName, (cat.subcategories.get(subName) || 0) + t.amount);
         });
 
-        return Array.from(catMap.entries())
-            .map(([cat, amount]) => ({ name: cat, amount }))
-            .sort((a, b) => b.amount - a.amount)
-            .slice(0, 4); // Top 4
-    }, [currentMonthTxs]);
+        // Convert to array and sort by total descending
+        return Array.from(catMap.entries()).map(([name, data]) => ({
+            name,
+            total: data.total,
+            limit: data.limit,
+            subcategories: Array.from(data.subcategories.entries()).map(([subName, subTotal]) => ({ name: subName, total: subTotal }))
+        })).sort((a, b) => b.total - a.total);
 
-    const maxDiscretionary = Math.max(...discretionaryExpenses.map(d => d.amount), 1);
+    }, [currentMonthTxs, budgets]);
 
-    // -- SECTION: METAS (Ahorro Mensual vs Meta) --
-    const currentMonthGoal = useMemo(() => {
-        // Find a goal that is active (we don't have a status in the interface, so we assume all goals are active unless they hit their target)
-        const activeGoals = goals.filter(g => g.currentAmount < g.targetAmount);
-
-        // Simple way to calculate monthly goal: dividing the difference by months left
-        const target = activeGoals.reduce((acc, g) => {
-            const monthsLeft = g.deadline
-                ? Math.max(1, (new Date(g.deadline).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24 * 30))
-                : 1; // Default to 1 month if no deadline
-            return acc + ((g.targetAmount - g.currentAmount) / monthsLeft);
-        }, 0) || (monthlyIncome * 0.2); // Default to 20% rule if no goals
-
-        return target;
-    }, [goals, monthlyIncome]);
-
-    const savingsProgress = Math.min(100, (savingsSpent / currentMonthGoal) * 100);
+    // Helper color chooser for chart
+    const chartColor = monthBalance >= 0 ? '#10b981' : '#64748b';
 
     return (
-        <div className="flex flex-col gap-6 w-full max-w-6xl mx-auto">
+        <div className="flex flex-col gap-6 w-full max-w-7xl mx-auto px-4 lg:px-0">
 
-            {/* -- FILTERS -- */}
-            <div className="flex justify-end items-center gap-2">
-                <div className="flex items-center bg-white dark:bg-onyx-900 border border-slate-200 dark:border-onyx-800 rounded-lg px-3 py-1.5 shadow-sm">
+            {/* -- HEADER CONTROLS -- */}
+            <div className="flex justify-end items-center gap-2 mb-2">
+                <div className="flex items-center bg-white dark:bg-onyx-900 border border-slate-200 dark:border-onyx-800 rounded-xl px-4 py-2 shadow-sm">
                     <select
                         value={selectedDate.getMonth()}
-                        onChange={handleMonthChange}
-                        className="bg-transparent text-sm font-medium text-slate-700 dark:text-slate-300 outline-none cursor-pointer appearance-none pr-3"
+                        onChange={(e) => {
+                            const d = new Date(selectedDate);
+                            d.setMonth(parseInt(e.target.value));
+                            setSelectedDate(d);
+                        }}
+                        className="bg-transparent text-sm font-bold text-slate-800 dark:text-slate-200 outline-none cursor-pointer appearance-none pr-3"
                     >
-                        {months.map(m => (
-                            <option key={m.value} value={m.value} className="capitalize">{m.label}</option>
-                        ))}
+                        {Array.from({ length: 12 }, (_, i) => {
+                            const d = new Date(2000, i, 1);
+                            return <option key={i} value={i} className="capitalize">{d.toLocaleString('es-ES', { month: 'long' })}</option>;
+                        })}
                     </select>
                     <span className="text-slate-300 dark:text-onyx-600 mx-1">/</span>
                     <select
                         value={selectedDate.getFullYear()}
-                        onChange={handleYearChange}
-                        className="bg-transparent text-sm font-medium text-slate-700 dark:text-slate-300 outline-none cursor-pointer appearance-none"
+                        onChange={(e) => {
+                            const d = new Date(selectedDate);
+                            d.setFullYear(parseInt(e.target.value));
+                            setSelectedDate(d);
+                        }}
+                        className="bg-transparent text-sm font-bold text-slate-800 dark:text-slate-200 outline-none cursor-pointer appearance-none"
                     >
-                        {years.map(y => (
+                        {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - 2 + i).map(y => (
                             <option key={y} value={y}>{y}</option>
                         ))}
                     </select>
-                    <ChevronDown className="w-3 h-3 text-slate-400 ml-2" />
+                    <ChevronDown className="w-4 h-4 text-slate-400 ml-2" />
                 </div>
             </div>
 
-            {/* -- 1. VISIÓN GENERAL (Cabecera) -- */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Saldo Disponible */}
-                <div className="bg-white dark:bg-onyx-900 rounded-2xl p-6 border border-slate-100 dark:border-onyx-800 shadow-sm flex flex-col justify-between">
+            {/* ========================================== */}
+            {/* ROW 1: THE 4 TOP WIDGETS */}
+            {/* ========================================== */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                {/* 1. Saldo Disponible */}
+                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
                     <div>
-                        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Saldo Disponible</h3>
-                        <div className="text-4xl font-black text-slate-900 dark:text-white tabular-nums tracking-tighter">
-                            {formatCurrency(liquidAssets)}
+                        <div className="flex items-center gap-2 mb-2">
+                            <Wallet className="w-4 h-4 text-slate-400" />
+                            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Saldo Disponible</h3>
+                        </div>
+                        <div className="text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
+                            {formatCurrency(totalBalance)}
                         </div>
                     </div>
-                    <div className="mt-4 flex flex-col gap-1.5">
-                        {accounts.filter(a => a.type === 'BANK' || a.type === 'CASH').slice(0, 2).map(acc => (
-                            <div key={acc.id} className="flex justify-between items-center text-xs">
-                                <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-sky-500"></div>
-                                    <span className="truncate max-w-[100px]">{acc.name}</span>
-                                </div>
-                                <span className="font-medium text-slate-800 dark:text-slate-200 tabular-nums">{formatCurrency(acc.balance)}</span>
+
+                    <div className="flex flex-col gap-1.5 mt-4 pt-4 border-t border-slate-100 dark:border-onyx-800/80">
+                        {accounts.map(a => (
+                            <div key={a.id} className="flex justify-between items-center text-xs">
+                                <span className="text-slate-500 font-medium truncate mr-2">{a.name}</span>
+                                <span className="font-bold text-slate-700 dark:text-slate-300 tabular-nums">{formatCurrency(a.balance)}</span>
                             </div>
                         ))}
-                        {accounts.filter(a => a.type === 'BANK' || a.type === 'CASH').length > 2 && (
-                            <div className="text-xs text-slate-400 dark:text-onyx-500 italic">
-                                + {accounts.filter(a => a.type === 'BANK' || a.type === 'CASH').length - 2} cuentas más...
+                    </div>
+                </div>
+
+                {/* 2. Total Ahorro */}
+                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between relative overflow-hidden">
+                    <div className="z-10">
+                        <div className="flex items-center gap-2 mb-2">
+                            <PiggyBank className="w-4 h-4 text-sky-500" />
+                            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Total Ahorro</h3>
+                        </div>
+                        <div className="text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
+                            {formatCurrency(totalSavings)}
+                        </div>
+                        <div className="flex items-center gap-1.5 mt-1 text-xs font-bold text-sky-600 dark:text-sky-400">
+                            <span>+ {formatCurrency(savingsThisMonth)}</span>
+                            <span className="text-slate-400 dark:text-slate-500 font-medium">este mes</span>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col gap-1.5 mt-4 pt-4 border-t border-slate-100 dark:border-onyx-800/80 z-10">
+                        {savingsAccounts.map(a => (
+                            <div key={a.id} className="flex justify-between items-center text-xs">
+                                <span className="text-slate-500 font-medium truncate mr-2">{a.name}</span>
+                                <span className="font-bold text-slate-700 dark:text-slate-300 tabular-nums">{formatCurrency(a.balance)}</span>
                             </div>
+                        ))}
+                        {savingsAccounts.length === 0 && (
+                            <div className="text-xs text-slate-400 font-medium">No hay cuentas de ahorro</div>
                         )}
                     </div>
+                    <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-sky-50 dark:bg-sky-500/5 rounded-full blur-2xl pointer-events-none"></div>
                 </div>
 
-                {/* Ratio DTI */}
-                <div className="bg-white dark:bg-onyx-900 rounded-2xl p-6 border border-slate-100 dark:border-onyx-800 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Ratio DTI (Deuda/Ingreso)</h3>
-                        <div className="flex items-baseline gap-2">
-                            <div className={cn(
-                                "text-4xl font-black tabular-nums tracking-tighter",
-                                dtiRatio > 35 ? "text-red-500" : "text-slate-900 dark:text-white"
-                            )}>
-                                {dtiRatio.toFixed(1)}%
-                            </div>
-                            {dtiRatio > 35 && <AlertCircle className="w-5 h-5 text-red-500" />}
-                            {dtiRatio <= 35 && <ShieldCheck className="w-5 h-5 text-emerald-500" />}
-                        </div>
+                {/* 3. Balance del Mes */}
+                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                    <div className="flex items-center gap-2 mb-2">
+                        <Activity className="w-4 h-4 text-slate-400" />
+                        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Balance del Mes</h3>
                     </div>
-                    <div className="mt-4 flex items-center justify-between text-xs">
-                        <span className="text-slate-500 dark:text-slate-400">Recomendado: &lt; 30%</span>
-                        <span className={cn(
-                            "font-bold px-2 py-1 rounded-full",
-                            dtiRatio > 35 ? "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400" : "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400"
+                    <div>
+                        <div className={cn("text-3xl font-black tabular-nums tracking-tight flex items-center gap-2",
+                            monthBalance >= 0 ? "text-emerald-500" : "text-slate-900 dark:text-white"
                         )}>
-                            {dtiRatio > 35 ? 'Alerta' : 'Saludable'}
-                        </span>
+                            {formatCurrency(monthBalance)}
+                            {monthBalance >= 0 ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5 text-red-500" />}
+                        </div>
+                        <div className="flex items-center gap-3 mt-1 text-xs">
+                            <span className="text-slate-500 font-medium flex items-center gap-1">
+                                <ArrowUpRight className="w-3 h-3 text-emerald-500" />
+                                {formatCurrency(monthlyIncome)}
+                            </span>
+                            <span className="text-slate-500 font-medium flex items-center gap-1">
+                                <ArrowDownRight className="w-3 h-3 text-red-400" />
+                                {formatCurrency(monthlyExpenses)}
+                            </span>
+                        </div>
                     </div>
                 </div>
 
-                {/* Endeudamiento Global */}
-                <div className="bg-white dark:bg-onyx-900 rounded-2xl p-6 border border-slate-100 dark:border-onyx-800 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Endeudamiento Global</h3>
-                        <div className="flex items-baseline gap-2">
-                            <div className="text-4xl font-black text-slate-900 dark:text-white tabular-nums tracking-tighter">
-                                {globalDebtRatio.toFixed(1)}%
-                            </div>
+                {/* 4. Control Rápido Presupuesto */}
+                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                            <Target className="w-4 h-4 text-purple-500" />
+                            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Presupuesto</h3>
                         </div>
                     </div>
-                    <div className="mt-4 flex items-center justify-between text-xs">
-                        <span className="text-slate-500 dark:text-slate-400">Total Deuda vs Activos</span>
-                        <span className="flex items-center gap-1 font-bold px-2 py-1 rounded-full bg-slate-50 text-slate-600 dark:bg-onyx-800 dark:text-slate-300">
-                            Contexto
-                        </span>
+                    <div>
+                        <div className="flex items-baseline gap-1 text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
+                            {formatCurrency(globalBudgetLimit)}
+                            <span className="text-base font-bold text-slate-400">/ {formatCurrency(globalBudgetSpent)}</span>
+                        </div>
+
+                        <div className="mt-3 w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-1.5 mb-2 overflow-hidden">
+                            <div
+                                className={cn("h-full rounded-full", globalBudgetSpent > globalBudgetLimit ? "bg-red-500" : "bg-purple-500")}
+                                style={{ width: `${Math.min(100, (globalBudgetSpent / Math.max(1, globalBudgetLimit)) * 100)}% ` }}
+                            />
+                        </div>
+
+                        <div className="text-xs font-bold text-slate-500 dark:text-slate-400 flex justify-between">
+                            <span>Gastado</span>
+                            <span className={cn(globalBudgetRemaining === 0 ? "text-red-500" : "text-purple-600 dark:text-purple-400")}>
+                                Restan {formatCurrency(globalBudgetRemaining)}
+                            </span>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
-            {/* -- 2. CONSUMO Y PRESUPUESTO -- */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {/* ========================================== */}
+            {/* ROW 2: MAIN GRID (CHART & DETAILS)         */}
+            {/* ========================================== */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                {/* Distribución 50/30/20 */}
-                <div className="bg-white dark:bg-onyx-900 rounded-2xl p-6 border border-slate-100 dark:border-onyx-800 shadow-sm flex flex-col">
-                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Distribución de Ingresos</h3>
-                    <div className="flex-1 flex items-center justify-center relative" style={{ minHeight: '200px', width: '100%' }}>
-                        <ResponsiveContainer width="100%" height="100%">
-                            <PieChart>
-                                <Pie
-                                    data={donutData}
-                                    cx="50%"
-                                    cy="50%"
-                                    innerRadius={60}
-                                    outerRadius={80}
-                                    paddingAngle={2}
-                                    dataKey="value"
-                                    stroke="none"
-                                >
-                                    {donutData.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                {/* ---------- LEFT COLUMN (Span 2) ---------- */}
+                <div className="lg:col-span-2 flex flex-col gap-6">
+
+                    {/* Evolución Chart */}
+                    <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col">
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                            <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                <Activity className="w-4 h-4 text-slate-400" />
+                                Evolución del Dinero
+                            </h3>
+
+                            {/* Filters */}
+                            <div className="flex flex-wrap items-center gap-2">
+                                <div className="bg-slate-50 dark:bg-onyx-800 border border-slate-100 dark:border-onyx-700 rounded-lg p-1 flex">
+                                    {(['1m', '6m', '1y', '3y', '5y'] as const).map(tf => (
+                                        <button
+                                            key={tf}
+                                            onClick={() => setChartTimeframe(tf)}
+                                            className={cn(
+                                                "px-3 py-1 text-xs font-bold rounded-md transition-colors",
+                                                chartTimeframe === tf
+                                                    ? "bg-white dark:bg-onyx-600 text-slate-900 dark:text-white shadow-sm"
+                                                    : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                                            )}
+                                        >
+                                            {tf}
+                                        </button>
                                     ))}
-                                </Pie>
-                                <RechartsTooltip
-                                    formatter={(value: any) => {
-                                        if (typeof value === 'number') return formatCurrency(value);
-                                        if (typeof value === 'string' && !isNaN(Number(value))) return formatCurrency(Number(value));
-                                        return String(value);
-                                    }}
-                                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                                />
-                            </PieChart>
-                        </ResponsiveContainer>
-                        {/* Center Text */}
-                        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <span className="text-xs text-slate-500 font-medium">Gastado</span>
-                            <span className="font-bold text-lg text-slate-900 dark:text-white tabular-nums">
-                                {formatCurrency(needsSpent + wantsSpent)}
+                                </div>
+
+                                <div className="relative">
+                                    <select
+                                        value={chartAccountId}
+                                        onChange={(e) => setChartAccountId(e.target.value)}
+                                        className="appearance-none bg-slate-50 dark:bg-onyx-800 border border-slate-100 dark:border-onyx-700 rounded-lg px-3 py-1.5 pr-8 text-xs font-bold text-slate-700 dark:text-slate-300 outline-none cursor-pointer"
+                                    >
+                                        <option value="all">Todas las cuentas</option>
+                                        {accounts.map(a => (
+                                            <option key={a.id} value={a.id}>{a.name}</option>
+                                        ))}
+                                    </select>
+                                    <ChevronDown className="w-3 h-3 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* The Chart */}
+                        <div className="h-[280px] w-full">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart data={chartData} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
+                                    <defs>
+                                        <linearGradient id="colorBalance" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor={chartColor} stopOpacity={0.2} />
+                                            <stop offset="95%" stopColor={chartColor} stopOpacity={0} />
+                                        </linearGradient>
+                                    </defs>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="text-slate-100 dark:text-onyx-800/50" />
+                                    <XAxis
+                                        dataKey="name"
+                                        axisLine={false}
+                                        tickLine={false}
+                                        tick={{ fontSize: 11, fill: '#94a3b8' }}
+                                        dy={10}
+                                        minTickGap={20}
+                                    />
+                                    <YAxis
+                                        axisLine={false}
+                                        tickLine={false}
+                                        tick={{ fontSize: 11, fill: '#94a3b8' }}
+                                        tickFormatter={(value) => `${value >= 1000 ? (value / 1000).toFixed(1) + 'k' : value} `}
+                                        width={40}
+                                        dx={-10}
+                                    />
+                                    <RechartsTooltip
+                                        contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px -5px rgba(0,0,0,0.1)' }}
+                                        itemStyle={{ color: '#0f172a', fontWeight: 'bold' }}
+                                        formatter={(value: number) => [formatCurrency(value), 'Balance']}
+                                        labelStyle={{ color: '#64748b', fontSize: '12px', marginBottom: '4px' }}
+                                    />
+                                    <Area
+                                        type="monotone"
+                                        dataKey="balance"
+                                        stroke={chartColor}
+                                        strokeWidth={3}
+                                        fillOpacity={1}
+                                        fill="url(#colorBalance)"
+                                        activeDot={{ r: 6, strokeWidth: 0, fill: chartColor }}
+                                    />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
+
+                    {/* Pagos Fijos */}
+                    <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
+                        <div className="flex items-center justify-between mb-6">
+                            <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                <CalendarCheck className="w-4 h-4 text-slate-400" />
+                                Pagos Fijos del Mes
+                            </h3>
+                            <div className="flex items-baseline gap-2">
+                                <span className="text-xl font-black text-slate-900 dark:text-white tabular-nums">{formatCurrency(fixedPayments.paid)}</span>
+                                <span className="text-xs font-bold text-slate-400">/ {formatCurrency(fixedPayments.expected)}</span>
+                            </div>
+                        </div>
+
+                        <div className="w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-2 overflow-hidden mb-4">
+                            <div
+                                className="h-full bg-slate-800 dark:bg-slate-400 rounded-full"
+                                style={{ width: `${Math.min(100, (fixedPayments.paid / Math.max(1, fixedPayments.expected)) * 100)}% ` }}
+                            />
+                        </div>
+
+                        <div className="flex justify-between items-center text-xs font-bold">
+                            <span className="text-slate-500">
+                                {fixedPayments.items.length} recibos pagados
+                            </span>
+                            <span className="text-slate-800 dark:text-slate-300">
+                                Quedan aprox. {formatCurrency(fixedPayments.remaining)}
                             </span>
                         </div>
                     </div>
 
-                    {/* Legend */}
-                    <div className="grid grid-cols-3 gap-2 mt-4">
-                        <div className="flex flex-col items-center text-center">
-                            <div className="w-3 h-3 rounded-full bg-slate-500 mb-1"></div>
-                            <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Necesidades</span>
-                            <span className="text-xs font-semibold tabular-nums">{(needsSpent / monthlyIncome * 100).toFixed(0)}% <span className="text-slate-400 font-normal">(50%)</span></span>
-                        </div>
-                        <div className="flex flex-col items-center text-center">
-                            <div className={cn("w-3 h-3 rounded-full mb-1", wantsSpent > monthlyIncome * 0.3 ? "bg-red-500" : "bg-yellow-500")}></div>
-                            <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Ocio</span>
-                            <span className={cn("text-xs font-semibold tabular-nums", wantsSpent > monthlyIncome * 0.3 ? "text-red-500" : "")}>
-                                {(wantsSpent / monthlyIncome * 100).toFixed(0)}% <span className="text-slate-400 font-normal">(30%)</span>
-                            </span>
-                        </div>
-                        <div className="flex flex-col items-center text-center">
-                            <div className="w-3 h-3 rounded-full bg-emerald-500 mb-1"></div>
-                            <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Ahorro</span>
-                            <span className="text-xs font-semibold tabular-nums">{(savingsSpent / monthlyIncome * 100).toFixed(0)}% <span className="text-slate-400 font-normal">(20%)</span></span>
-                        </div>
-                    </div>
                 </div>
 
-                {/* Gastos Discrecionales */}
-                <div className="bg-white dark:bg-onyx-900 rounded-2xl p-6 border border-slate-100 dark:border-onyx-800 shadow-sm flex flex-col">
-                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">Gastos Discrecionales (Top Consumo)</h3>
+                {/* ---------- RIGHT COLUMN (Span 1) ---------- */}
+                <div className="lg:col-span-1">
 
-                    <div className="flex flex-col gap-4 flex-1 justify-center">
-                        {discretionaryExpenses.length > 0 ? (
-                            discretionaryExpenses.map((expense, idx) => {
-                                const percent = (expense.amount / maxDiscretionary) * 100;
-                                // Highlight top 1 as warning if it's very high relative to income
-                                const isWarning = idx === 0 && expense.amount > monthlyIncome * 0.15;
+                    {/* Presupuesto Detallado Mensual */}
+                    <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] h-full flex flex-col">
+                        <div className="flex items-center justify-between mb-6">
+                            <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                <Layers className="w-4 h-4 text-slate-400" />
+                                Presupuesto Detallado
+                            </h3>
+                        </div>
+
+                        <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-6">
+                            {detailedBudget.length > 0 ? detailedBudget.map((cat, idx) => {
+                                const isOverLimit = cat.limit > 0 && cat.total > cat.limit;
+                                const percent = cat.limit > 0 ? Math.min(100, (cat.total / cat.limit) * 100) : 0;
 
                                 return (
-                                    <div key={`exp-${idx}-${expense.name}`} className="flex flex-col gap-1.5">
-                                        <div className="flex justify-between items-end text-sm">
-                                            <span className="font-medium text-slate-700 dark:text-slate-300">{expense.name}</span>
-                                            <div className="flex items-center gap-2">
-                                                <span className="font-bold text-slate-900 dark:text-white tabular-nums">{formatCurrency(expense.amount)}</span>
-                                                {/* Mocking trend for UI purposes */}
-                                                {isWarning && <TrendingUp className="w-3 h-3 text-red-500" />}
+                                    <div key={idx} className="flex flex-col gap-3">
+                                        {/* Category Header */}
+                                        <div className="flex justify-between items-end">
+                                            <span className="text-sm font-bold text-slate-800 dark:text-slate-200">{cat.name}</span>
+                                            <div className="flex items-baseline gap-1">
+                                                <span className={cn("text-sm font-black tabular-nums", isOverLimit ? "text-red-500" : "text-slate-900 dark:text-white")}>
+                                                    {formatCurrency(cat.total)}
+                                                </span>
+                                                {cat.limit > 0 && (
+                                                    <span className="text-xs font-bold text-slate-400">/ {formatCurrency(cat.limit)}</span>
+                                                )}
                                             </div>
                                         </div>
-                                        <div className="h-2.5 w-full bg-slate-100 dark:bg-onyx-800 rounded-full overflow-hidden">
-                                            <div
-                                                className={cn(
-                                                    "h-full rounded-full transition-all duration-1000",
-                                                    isWarning ? "bg-red-400/80 dark:bg-red-500/80" : "bg-slate-300 dark:bg-slate-600"
-                                                )}
-                                                style={{ width: `${percent}%` }}
-                                            />
-                                        </div>
+
+                                        {/* Category Progress */}
+                                        {cat.limit > 0 && (
+                                            <div className="w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-1 overflow-hidden">
+                                                <div
+                                                    className={cn("h-full rounded-full", isOverLimit ? "bg-red-500" : "bg-slate-400")}
+                                                    style={{ width: `${percent}% ` }}
+                                                />
+                                            </div>
+                                        )}
+
+                                        {/* Subcategories */}
+                                        {cat.subcategories.length > 0 && (
+                                            <div className="pl-4 border-l-2 border-slate-100 dark:border-onyx-800 flex flex-col gap-2 mt-1">
+                                                {cat.subcategories.map((sub, sIdx) => (
+                                                    <div key={sIdx} className="flex justify-between items-center text-xs">
+                                                        <span className="text-slate-500 font-medium">{sub.name}</span>
+                                                        <span className="font-bold text-slate-600 dark:text-slate-400 tabular-nums">{formatCurrency(sub.total)}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
-                                );
-                            })
-                        ) : (
-                            <div className="flex flex-col items-center justify-center p-6 text-slate-400 text-sm text-center">
-                                <ShieldCheck className="w-8 h-8 text-emerald-400 mb-2 opacity-50" />
-                                No hay gastos discrecionales registrados este mes.
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-            </div>
-
-            {/* -- 3. METAS Y LARGO PLAZO -- */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-
-                {/* Ahorro Mensual vs Meta */}
-                <div className="bg-white dark:bg-onyx-900 rounded-2xl p-6 border border-slate-100 dark:border-onyx-800 shadow-sm flex flex-col justify-center">
-                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Ahorro Mensual vs. Meta</h3>
-
-                    <div className="flex items-end justify-between mb-2">
-                        <span className="text-2xl font-black text-slate-900 dark:text-white tabular-nums tracking-tighter">
-                            {formatCurrency(savingsSpent)} <span className="text-sm font-medium text-slate-400">/ {formatCurrency(currentMonthGoal)}</span>
-                        </span>
-                        <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
-                            {savingsProgress.toFixed(0)}%
-                        </span>
-                    </div>
-
-                    <div className="h-4 w-full bg-slate-100 dark:bg-onyx-800 rounded-full overflow-hidden mb-2">
-                        <div
-                            className={cn(
-                                "h-full rounded-full transition-all duration-1000",
-                                savingsProgress < 50 ? "bg-amber-400" : "bg-emerald-500"
+                                )
+                            }) : (
+                                <div className="text-xs text-slate-400 text-center py-10">
+                                    No hay gastos registrados este mes.
+                                </div>
                             )}
-                            style={{ width: `${savingsProgress}%` }}
-                        />
-                    </div>
-
-                    <div className="text-xs text-slate-500 dark:text-slate-400">
-                        {currentMonthGoal - savingsSpent > 0
-                            ? `Faltan ${formatCurrency(currentMonthGoal - savingsSpent)} para alcanzar la meta mensual.`
-                            : '¡Meta mensual de ahorro alcanzada! 🎉'}
-                    </div>
-                </div>
-
-                {/* Largo Plazo y Rendimiento (Mock UI for Sparkline) */}
-                <div className="bg-white dark:bg-onyx-900 rounded-2xl p-6 border border-slate-100 dark:border-onyx-800 shadow-sm flex flex-col justify-between relative overflow-hidden">
-                    <div className="z-10 relative">
-                        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Largo Plazo (Patrimonio Neto)</h3>
-                        <div className="flex items-center gap-3">
-                            <span className="text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tighter">
-                                {formatCurrency(totalAssets - totalDebt)}
-                            </span>
-                            <span className="flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-1 rounded-md">
-                                <TrendingUp className="w-3 h-3 mr-1" />
-                                +5.2% ROI
-                            </span>
                         </div>
                     </div>
 
-                    {/* SVG Sparkline Mock */}
-                    <div className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none opacity-50 dark:opacity-20">
-                        <svg viewBox="0 0 1000 100" preserveAspectRatio="none" className="w-full h-full">
-                            <defs>
-                                <linearGradient id="gradient-area" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stopColor="#10b981" stopOpacity="0.4" />
-                                    <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
-                                </linearGradient>
-                            </defs>
-                            <path d="M0,80 Q100,70 200,85 T400,60 T600,65 T800,30 T1000,10 L1000,100 L0,100 Z" fill="url(#gradient-area)" />
-                            <path d="M0,80 Q100,70 200,85 T400,60 T600,65 T800,30 T1000,10" fill="none" stroke="#10b981" strokeWidth="3" vectorEffect="non-scaling-stroke" />
-                        </svg>
-                    </div>
                 </div>
 
             </div>
@@ -421,3 +582,4 @@ export default function AuraFinanceOverview() {
         </div>
     );
 }
+
