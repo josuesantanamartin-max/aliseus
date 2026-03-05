@@ -190,20 +190,24 @@ export const syncService = {
         const userId = await getCurrentUserId();
         if (!userId) return;
 
-        // Upsert each account with its new sort_order (only send minimal fields needed)
-        const updates = accounts.map((a, index) => ({
-            id: a.id,
-            user_id: userId,
-            sort_order: index,
-            updated_at: new Date().toISOString(),
-        }));
-
-        const { error } = await supabase.from('finance_accounts').upsert(updates, { onConflict: 'id' });
-        if (error) {
-            console.error('[syncService] saveAccountsOrder FAILED:', error.message);
-            throw error;
+        // Use individual UPDATE per account — avoids NOT NULL constraint issues from partial upserts
+        let failed = 0;
+        for (let i = 0; i < accounts.length; i++) {
+            const { error } = await supabase
+                .from('finance_accounts')
+                .update({ sort_order: i, updated_at: new Date().toISOString() })
+                .eq('id', accounts[i].id)
+                .eq('user_id', userId);
+            if (error) {
+                console.error('[syncService] saveAccountsOrder UPDATE failed for', accounts[i].id, ':', error.message);
+                failed++;
+            }
         }
-        console.log('[syncService] saveAccountsOrder OK —', accounts.length, 'accounts');
+        if (failed === 0) {
+            console.log('[syncService] saveAccountsOrder OK — updated', accounts.length, 'accounts order');
+        } else {
+            console.warn('[syncService] saveAccountsOrder —', failed, 'of', accounts.length, 'updates failed');
+        }
     },
 
     async saveAccount(account: Account) {
