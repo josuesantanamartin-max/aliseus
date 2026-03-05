@@ -3,28 +3,191 @@ import { supabase } from './supabaseClient';
 import { Transaction, Account, Budget, Goal, Debt, Ingredient, Recipe, ShoppingItem, FamilyMember } from '../types';
 import { WeeklyPlan } from '../types/life';
 
+// ─── Mappers: camelCase (app) ↔ snake_case (Supabase) ──────────────────────
+
+const toDbAccount = (a: Account, userId: string) => ({
+    id: a.id,
+    user_id: userId,
+    name: a.name,
+    bank_name: a.bankName ?? null,
+    balance: a.balance,
+    currency: a.currency,
+    type: a.type,
+    color: (a as any).color ?? null,
+    is_manual: true,
+    is_remunerated: a.isRemunerated ?? null,
+    tae: a.tae ?? null,
+    credit_limit: a.creditLimit ?? null,
+    cutoff_day: a.cutoffDay ?? null,
+    payment_day: a.paymentDay ?? null,
+    payment_mode: a.paymentMode ?? null,
+    statement_balance: a.statementBalance ?? null,
+    linked_account_id: a.linkedAccountId ?? null,
+    cadastral_reference: a.cadastralReference ?? null,
+    cadastral_data: a.cadastralData ?? null,
+    updated_at: new Date().toISOString(),
+});
+
+const fromDbAccount = (row: any): Account => ({
+    id: row.id,
+    name: row.name,
+    bankName: row.bank_name ?? undefined,
+    balance: Number(row.balance),
+    currency: row.currency,
+    type: row.type,
+    color: row.color ?? undefined,
+    isRemunerated: row.is_remunerated ?? undefined,
+    tae: row.tae != null ? Number(row.tae) : undefined,
+    creditLimit: row.credit_limit != null ? Number(row.credit_limit) : undefined,
+    cutoffDay: row.cutoff_day ?? undefined,
+    paymentDay: row.payment_day ?? undefined,
+    paymentMode: row.payment_mode ?? undefined,
+    statementBalance: row.statement_balance != null ? Number(row.statement_balance) : undefined,
+    linkedAccountId: row.linked_account_id ?? undefined,
+    cadastralReference: row.cadastral_reference ?? undefined,
+    cadastralData: row.cadastral_data ?? undefined,
+} as any);
+
+const toDbTransaction = (t: Transaction, userId: string) => ({
+    id: t.id,
+    user_id: userId,
+    account_id: t.accountId,
+    amount: t.amount,
+    date: t.date,
+    description: t.description,
+    category: t.category,
+    sub_category: t.subCategory ?? null,
+    type: t.type,
+    status: 'COMPLETED',
+    notes: t.notes ?? null,
+    is_recurring: t.isRecurring ?? false,
+    frequency: t.frequency ?? null,
+    recurrence_id: (t as any).recurrenceId ?? null,
+    updated_at: new Date().toISOString(),
+});
+
+const fromDbTransaction = (row: any): Transaction => ({
+    id: row.id,
+    accountId: row.account_id,
+    amount: Number(row.amount),
+    date: row.date,
+    description: row.description,
+    category: row.category,
+    subCategory: row.sub_category ?? undefined,
+    type: row.type,
+    notes: row.notes ?? undefined,
+    isRecurring: row.is_recurring ?? false,
+    frequency: row.frequency ?? undefined,
+} as any);
+
+const toDbGoal = (g: Goal, userId: string) => ({
+    id: g.id,
+    user_id: userId,
+    name: g.name,
+    target_amount: g.targetAmount,
+    current_amount: g.currentAmount,
+    deadline: g.deadline ?? null,
+    category: (g as any).category ?? null,
+    icon: (g as any).icon ?? null,
+    color: (g as any).color ?? null,
+    is_pinned: (g as any).isPinned ?? false,
+    status: (g as any).status ?? 'IN_PROGRESS',
+    updated_at: new Date().toISOString(),
+});
+
+const fromDbGoal = (row: any): Goal => ({
+    id: row.id,
+    name: row.name,
+    targetAmount: Number(row.target_amount),
+    currentAmount: Number(row.current_amount),
+    deadline: row.deadline ?? undefined,
+    accountId: row.account_id ?? undefined,
+    category: row.category ?? undefined,
+    icon: row.icon ?? undefined,
+    color: row.color ?? undefined,
+    isPinned: row.is_pinned ?? false,
+    status: row.status ?? 'IN_PROGRESS',
+} as any);
+
+const toDbBudget = (b: Budget, userId: string) => ({
+    id: b.id,
+    user_id: userId,
+    category: b.category,
+    sub_category: (b as any).subCategory ?? null,
+    limit: b.limit,
+    period: b.period,
+    budget_type: b.budgetType,
+    percentage: b.percentage ?? null,
+    start_date: b.startDate ?? null,
+    end_date: b.endDate ?? null,
+    updated_at: new Date().toISOString(),
+});
+
+const fromDbBudget = (row: any): Budget => ({
+    id: row.id,
+    category: row.category,
+    subCategory: row.sub_category ?? undefined,
+    limit: Number(row.limit),
+    period: row.period,
+    budgetType: row.budget_type,
+    percentage: row.percentage != null ? Number(row.percentage) : undefined,
+    startDate: row.start_date ?? undefined,
+    endDate: row.end_date ?? undefined,
+    name: row.name ?? undefined,
+    alertThreshold: row.alert_threshold != null ? Number(row.alert_threshold) : undefined,
+} as any);
+
+const toDbDebt = (d: Debt, userId: string) => ({
+    id: d.id,
+    user_id: userId,
+    name: d.name,
+    total_amount: d.originalAmount,
+    remaining_balance: d.remainingBalance,
+    interest_rate: d.interestRate,
+    minimum_payment: d.minPayment,
+    due_date: d.dueDate ?? null,
+    category: d.type,
+    updated_at: new Date().toISOString(),
+});
+
+const fromDbDebt = (row: any): Debt => ({
+    id: row.id,
+    name: row.name,
+    type: row.category ?? 'LOAN',
+    originalAmount: Number(row.total_amount),
+    remainingBalance: Number(row.remaining_balance),
+    interestRate: Number(row.interest_rate ?? 0),
+    minPayment: Number(row.minimum_payment ?? 0),
+    dueDate: row.due_date ?? '',
+    payments: [],
+} as any);
+
+// ─── Helper to get current user ID ────────────────────────────────────────
+async function getCurrentUserId(): Promise<string | null> {
+    if (!supabase) return null;
+    const { data: { user } } = await supabase.auth.getUser();
+    return user?.id ?? null;
+}
+
+// ─── syncService ───────────────────────────────────────────────────────────
 export const syncService = {
     // --- FINANCE ---
 
     async fetchAccounts() {
         if (!supabase) return [];
         const { data, error } = await supabase.from('finance_accounts').select('*');
-        if (error) throw error;
-        return data as Account[];
+        if (error) { console.error('[syncService] fetchAccounts error:', error.message); throw error; }
+        return (data ?? []).map(fromDbAccount);
     },
 
     async saveAccount(account: Account) {
         if (!supabase) return;
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) { console.warn('[syncService] saveAccount: no authenticated user, skipping.'); return; }
+        const userId = await getCurrentUserId();
+        if (!userId) { console.warn('[syncService] saveAccount: no authenticated user, skipping.'); return; }
 
-        const { error } = await supabase.from('finance_accounts').upsert({
-            ...account,
-            user_id: user.id,
-            updated_at: new Date().toISOString()
-        });
+        const { error } = await supabase.from('finance_accounts').upsert(toDbAccount(account, userId));
         if (error) {
-            console.error('[syncService] saveAccount FAILED:', error.message, error.details, account);
+            console.error('[syncService] saveAccount FAILED:', error.message, error.details, error.hint);
             throw error;
         }
         console.log('[syncService] saveAccount OK:', account.id, account.name);
@@ -39,22 +202,18 @@ export const syncService = {
     async fetchTransactions() {
         if (!supabase) return [];
         const { data, error } = await supabase.from('finance_transactions').select('*');
-        if (error) throw error;
-        return data as Transaction[];
+        if (error) { console.error('[syncService] fetchTransactions error:', error.message); throw error; }
+        return (data ?? []).map(fromDbTransaction);
     },
 
     async saveTransaction(transaction: Transaction) {
         if (!supabase) return;
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) { console.warn('[syncService] saveTransaction: no authenticated user, skipping.'); return; }
+        const userId = await getCurrentUserId();
+        if (!userId) { console.warn('[syncService] saveTransaction: no authenticated user, skipping.'); return; }
 
-        const { error } = await supabase.from('finance_transactions').upsert({
-            ...transaction,
-            user_id: user.id,
-            updated_at: new Date().toISOString()
-        });
+        const { error } = await supabase.from('finance_transactions').upsert(toDbTransaction(transaction, userId));
         if (error) {
-            console.error('[syncService] saveTransaction FAILED:', error.message, error.details, transaction);
+            console.error('[syncService] saveTransaction FAILED:', error.message, error.details, error.hint);
             throw error;
         }
         console.log('[syncService] saveTransaction OK:', transaction.id);
@@ -70,40 +229,32 @@ export const syncService = {
         if (!supabase) return [];
         const { data, error } = await supabase.from('finance_budgets').select('*');
         if (error) throw error;
-        return data as Budget[];
+        return (data ?? []).map(fromDbBudget);
     },
 
     async saveBudget(budget: Budget) {
         if (!supabase) return;
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        const userId = await getCurrentUserId();
+        if (!userId) return;
 
-        const { error } = await supabase.from('finance_budgets').upsert({
-            ...budget,
-            user_id: user.id,
-            updated_at: new Date().toISOString()
-        });
-        if (error) throw error;
+        const { error } = await supabase.from('finance_budgets').upsert(toDbBudget(budget, userId));
+        if (error) { console.error('[syncService] saveBudget FAILED:', error.message); throw error; }
     },
 
     async fetchGoals() {
         if (!supabase) return [];
         const { data, error } = await supabase.from('finance_goals').select('*');
         if (error) throw error;
-        return data as Goal[];
+        return (data ?? []).map(fromDbGoal);
     },
 
     async saveGoal(goal: Goal) {
         if (!supabase) return;
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        const userId = await getCurrentUserId();
+        if (!userId) return;
 
-        const { error } = await supabase.from('finance_goals').upsert({
-            ...goal,
-            user_id: user.id,
-            updated_at: new Date().toISOString()
-        });
-        if (error) throw error;
+        const { error } = await supabase.from('finance_goals').upsert(toDbGoal(goal, userId));
+        if (error) { console.error('[syncService] saveGoal FAILED:', error.message); throw error; }
     },
 
     async deleteGoal(id: string) {
@@ -116,20 +267,16 @@ export const syncService = {
         if (!supabase) return [];
         const { data, error } = await supabase.from('finance_debts').select('*');
         if (error) throw error;
-        return data as Debt[];
+        return (data ?? []).map(fromDbDebt);
     },
 
     async saveDebt(debt: Debt) {
         if (!supabase) return;
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        const userId = await getCurrentUserId();
+        if (!userId) return;
 
-        const { error } = await supabase.from('finance_debts').upsert({
-            ...debt,
-            user_id: user.id,
-            updated_at: new Date().toISOString()
-        });
-        if (error) throw error;
+        const { error } = await supabase.from('finance_debts').upsert(toDbDebt(debt, userId));
+        if (error) { console.error('[syncService] saveDebt FAILED:', error.message); throw error; }
     },
 
     // --- LIFE ---
@@ -143,12 +290,12 @@ export const syncService = {
 
     async savePantryItem(item: Ingredient) {
         if (!supabase) return;
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        const userId = await getCurrentUserId();
+        if (!userId) return;
 
         const { error } = await supabase.from('life_pantry').upsert({
             ...item,
-            user_id: user.id,
+            user_id: userId,
             updated_at: new Date().toISOString()
         });
         if (error) throw error;
@@ -169,12 +316,12 @@ export const syncService = {
 
     async saveRecipe(recipe: Recipe) {
         if (!supabase) return;
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        const userId = await getCurrentUserId();
+        if (!userId) return;
 
         const { error } = await supabase.from('life_recipes').upsert({
             ...recipe,
-            user_id: user.id,
+            user_id: userId,
             updated_at: new Date().toISOString()
         });
         if (error) throw error;
@@ -195,12 +342,12 @@ export const syncService = {
 
     async saveShoppingItem(item: ShoppingItem) {
         if (!supabase) return;
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        const userId = await getCurrentUserId();
+        if (!userId) return;
 
         const { error } = await supabase.from('life_shopping_list').upsert({
             ...item,
-            user_id: user.id,
+            user_id: userId,
             updated_at: new Date().toISOString()
         });
         if (error) throw error;
@@ -221,11 +368,11 @@ export const syncService = {
 
     async saveWeeklyPlan(weeklyPlans: WeeklyPlan[]) {
         if (!supabase) return;
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        const userId = await getCurrentUserId();
+        if (!userId) return;
 
         const { error } = await supabase.from('life_weekly_plan').upsert({
-            user_id: user.id,
+            user_id: userId,
             plan_data: weeklyPlans,
             updated_at: new Date().toISOString()
         });
@@ -241,12 +388,12 @@ export const syncService = {
 
     async saveFamilyMember(member: FamilyMember) {
         if (!supabase) return;
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        const userId = await getCurrentUserId();
+        if (!userId) return;
 
         const { error } = await supabase.from('life_family_members').upsert({
             ...member,
-            user_id: user.id,
+            user_id: userId,
             updated_at: new Date().toISOString()
         });
         if (error) throw error;
