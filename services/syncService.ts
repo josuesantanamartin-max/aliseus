@@ -5,7 +5,7 @@ import { WeeklyPlan } from '../types/life';
 
 // ─── Mappers: camelCase (app) ↔ snake_case (Supabase) ──────────────────────
 
-const toDbAccount = (a: Account, userId: string) => ({
+const toDbAccount = (a: Account, userId: string, sortOrder?: number) => ({
     id: a.id,
     user_id: userId,
     name: a.name,
@@ -25,6 +25,7 @@ const toDbAccount = (a: Account, userId: string) => ({
     linked_account_id: a.linkedAccountId ?? null,
     cadastral_reference: a.cadastralReference ?? null,
     cadastral_data: a.cadastralData ?? null,
+    sort_order: sortOrder ?? (a as any).sortOrder ?? 999,
     updated_at: new Date().toISOString(),
 });
 
@@ -46,6 +47,7 @@ const fromDbAccount = (row: any): Account => ({
     linkedAccountId: row.linked_account_id ?? undefined,
     cadastralReference: row.cadastral_reference ?? undefined,
     cadastralData: row.cadastral_data ?? undefined,
+    sortOrder: row.sort_order ?? 999,
 } as any);
 
 const toDbTransaction = (t: Transaction, userId: string) => ({
@@ -175,9 +177,33 @@ export const syncService = {
 
     async fetchAccounts() {
         if (!supabase) return [];
-        const { data, error } = await supabase.from('finance_accounts').select('*');
+        const { data, error } = await supabase
+            .from('finance_accounts')
+            .select('*')
+            .order('sort_order', { ascending: true });
         if (error) { console.error('[syncService] fetchAccounts error:', error.message); throw error; }
         return (data ?? []).map(fromDbAccount);
+    },
+
+    async saveAccountsOrder(accounts: Account[]) {
+        if (!supabase) return;
+        const userId = await getCurrentUserId();
+        if (!userId) return;
+
+        // Upsert each account with its new sort_order (only send minimal fields needed)
+        const updates = accounts.map((a, index) => ({
+            id: a.id,
+            user_id: userId,
+            sort_order: index,
+            updated_at: new Date().toISOString(),
+        }));
+
+        const { error } = await supabase.from('finance_accounts').upsert(updates, { onConflict: 'id' });
+        if (error) {
+            console.error('[syncService] saveAccountsOrder FAILED:', error.message);
+            throw error;
+        }
+        console.log('[syncService] saveAccountsOrder OK —', accounts.length, 'accounts');
     },
 
     async saveAccount(account: Account) {

@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { useFinanceControllers } from '../../../hooks/useFinanceControllers';
 import { fetchCadastralData, isValidCadastralReference } from '../../../services/catastroService';
+import { syncService } from '../../../services/syncService';
 
 interface AccountsProps {
   onViewTransactions: (accountId: string) => void;
@@ -202,7 +203,12 @@ const Accounts: React.FC<AccountsProps> = ({ onViewTransactions }) => {
     const [moved] = reordered.splice(dragIndex, 1);
     reordered.splice(dropIndex, 0, moved);
     const hidden = accounts.filter(a => a.type === 'CREDIT' || a.type === 'DEBIT');
-    setAccounts(() => [...reordered, ...hidden]);
+    const newAccounts = [...reordered, ...hidden];
+    setAccounts(() => newAccounts);
+    // Persist the new sort order to Supabase
+    syncService.saveAccountsOrder(reordered).catch(err =>
+      console.error('[Accounts] Failed to save order:', err)
+    );
     setDragIndex(null);
     setDragOverIndex(null);
   };
