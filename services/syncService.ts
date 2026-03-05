@@ -313,9 +313,20 @@ export const syncService = {
 
         const { error } = await supabase.from('finance_debts').upsert(toDbDebt(debt, userId));
         if (error) { console.error('[syncService] saveDebt FAILED:', error.message); throw error; }
+        console.log('[syncService] saveDebt OK:', debt.id);
     },
 
-    // --- LIFE ---
+    async deleteBudget(id: string) {
+        if (!supabase) return;
+        const { error } = await supabase.from('finance_budgets').delete().eq('id', id);
+        if (error) { console.error('[syncService] deleteBudget FAILED:', error.message); throw error; }
+    },
+
+    async deleteDebt(id: string) {
+        if (!supabase) return;
+        const { error } = await supabase.from('finance_debts').delete().eq('id', id);
+        if (error) { console.error('[syncService] deleteDebt FAILED:', error.message); throw error; }
+    },
 
     async fetchPantry() {
         if (!supabase) return [];

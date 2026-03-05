@@ -135,48 +135,52 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
             },
             addBudget: (budget) => {
                 set((state) => ({ budgets: [...state.budgets, budget] }));
+                syncService.saveBudget(budget).catch(e => console.error('[store] addBudget sync failed:', e));
             },
             updateBudget: (id, updates) => {
                 set((state) => ({
-                    budgets: state.budgets.map(b =>
-                        b.id === id ? { ...b, ...updates } : b
-                    )
+                    budgets: state.budgets.map(b => b.id === id ? { ...b, ...updates } : b)
                 }));
+                // Re-fetch updated item to sync full object
+                const store = useFinanceStore.getState();
+                const updated = store.budgets.find(b => b.id === id);
+                if (updated) syncService.saveBudget({ ...updated, ...updates }).catch(e => console.error('[store] updateBudget sync failed:', e));
             },
             deleteBudget: (id) => {
-                set((state) => ({
-                    budgets: state.budgets.filter(b => b.id !== id)
-                }));
+                set((state) => ({ budgets: state.budgets.filter(b => b.id !== id) }));
+                syncService.deleteBudget(id).catch(e => console.error('[store] deleteBudget sync failed:', e));
             },
             addGoal: (goal) => {
                 set((state) => ({ goals: [...state.goals, goal] }));
+                syncService.saveGoal(goal).catch(e => console.error('[store] addGoal sync failed:', e));
             },
             updateGoal: (id, updates) => {
                 set((state) => ({
-                    goals: state.goals.map(g =>
-                        g.id === id ? { ...g, ...updates } : g
-                    )
+                    goals: state.goals.map(g => g.id === id ? { ...g, ...updates } : g)
                 }));
+                const store = useFinanceStore.getState();
+                const updated = store.goals.find(g => g.id === id);
+                if (updated) syncService.saveGoal({ ...updated, ...updates }).catch(e => console.error('[store] updateGoal sync failed:', e));
             },
             deleteGoal: (id) => {
-                set((state) => ({
-                    goals: state.goals.filter(g => g.id !== id)
-                }));
+                set((state) => ({ goals: state.goals.filter(g => g.id !== id) }));
+                syncService.deleteGoal(id).catch(e => console.error('[store] deleteGoal sync failed:', e));
             },
             addDebt: (debt) => {
                 set((state) => ({ debts: [...state.debts, debt] }));
+                syncService.saveDebt(debt).catch(e => console.error('[store] addDebt sync failed:', e));
             },
             updateDebt: (id, updates) => {
                 set((state) => ({
-                    debts: state.debts.map(d =>
-                        d.id === id ? { ...d, ...updates } : d
-                    )
+                    debts: state.debts.map(d => d.id === id ? { ...d, ...updates } : d)
                 }));
+                const store = useFinanceStore.getState();
+                const updated = store.debts.find(d => d.id === id);
+                if (updated) syncService.saveDebt({ ...updated, ...updates }).catch(e => console.error('[store] updateDebt sync failed:', e));
             },
             deleteDebt: (id) => {
-                set((state) => ({
-                    debts: state.debts.filter(d => d.id !== id)
-                }));
+                set((state) => ({ debts: state.debts.filter(d => d.id !== id) }));
+                syncService.deleteDebt(id).catch(e => console.error('[store] deleteDebt sync failed:', e));
             },
             updateAccountBalance: async (accountId, amount) => {
                 set((state) => {
