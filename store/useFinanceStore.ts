@@ -92,7 +92,11 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                 }
             },
             addAccount: async (account) => {
-                set((state) => ({ accounts: [...state.accounts, account] }));
+                set((state) => {
+                    // Assign sortOrder = end of list so new accounts appear last
+                    const withOrder = { ...account, sortOrder: (account as any).sortOrder ?? state.accounts.length };
+                    return { accounts: [...state.accounts, withOrder] };
+                });
                 try {
                     await syncService.saveAccount(account);
                 } catch (e) {
@@ -208,7 +212,7 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                     }
 
                     set({
-                        accounts,
+                        accounts: accounts.sort((a, b) => ((a as any).sortOrder ?? 999) - ((b as any).sortOrder ?? 999)),
                         transactions: transactions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
                         budgets,
                         goals,
