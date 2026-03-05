@@ -10,7 +10,7 @@ import { useHouseholdStore } from '../store/useHouseholdStore';
 const toDbAccount = (a: Account, userId: string, sortOrder?: number) => ({
     id: a.id,
     user_id: userId,
-            household_id: useHouseholdStore.getState().activeHouseholdId,
+    household_id: useHouseholdStore.getState().activeHouseholdId,
     name: a.name,
     bank_name: a.bankName ?? null,
     balance: a.balance,
@@ -62,7 +62,7 @@ const fromDbAccount = (row: any): Account => ({
 const toDbTransaction = (t: Transaction, userId: string) => ({
     id: t.id,
     user_id: userId,
-            household_id: useHouseholdStore.getState().activeHouseholdId,
+    household_id: useHouseholdStore.getState().activeHouseholdId,
     account_id: t.accountId,
     amount: t.amount,
     date: t.date,
@@ -95,7 +95,7 @@ const fromDbTransaction = (row: any): Transaction => ({
 const toDbGoal = (g: Goal, userId: string) => ({
     id: g.id,
     user_id: userId,
-            household_id: useHouseholdStore.getState().activeHouseholdId,
+    household_id: useHouseholdStore.getState().activeHouseholdId,
     name: g.name,
     target_amount: g.targetAmount,
     current_amount: g.currentAmount,
@@ -125,7 +125,7 @@ const fromDbGoal = (row: any): Goal => ({
 const toDbBudget = (b: Budget, userId: string) => ({
     id: b.id,
     user_id: userId,
-            household_id: useHouseholdStore.getState().activeHouseholdId,
+    household_id: useHouseholdStore.getState().activeHouseholdId,
     category: b.category,
     sub_category: (b as any).subCategory ?? null,
     limit: b.limit,
@@ -154,7 +154,7 @@ const fromDbBudget = (row: any): Budget => ({
 const toDbDebt = (d: Debt, userId: string) => ({
     id: d.id,
     user_id: userId,
-            household_id: useHouseholdStore.getState().activeHouseholdId,
+    household_id: useHouseholdStore.getState().activeHouseholdId,
     name: d.name,
     total_amount: d.originalAmount,
     remaining_balance: d.remainingBalance,
@@ -210,7 +210,7 @@ export const syncService = {
                 .from('finance_accounts')
                 .update({ sort_order: i, updated_at: new Date().toISOString() })
                 .eq('id', accounts[i].id)
-                .eq('user_id', userId);
+
             if (error) {
                 console.error('[syncService] saveAccountsOrder UPDATE failed for', accounts[i].id, ':', error.message);
                 failed++;

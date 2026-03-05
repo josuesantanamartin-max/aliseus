@@ -39,13 +39,13 @@ export const householdService = {
     async getHouseholdMembers(householdId: string) {
         if (!supabase) throw new Error('Supabase client not initialized');
 
+        // Read from secure view
         const { data, error } = await supabase
-            .from('household_members')
-            .select('*, user:user_id(email, user_metadata)') // Assumes public view or similar, might need adjustment
+            .from('vw_household_members')
+            .select('*')
             .eq('household_id', householdId);
 
         if (error) throw error;
-        // We map user to return a friendly structure if needed, but for now return raw
         return data;
     },
 
@@ -55,19 +55,66 @@ export const householdService = {
     async inviteMember(householdId: string, email: string, role: string) {
         if (!supabase) throw new Error('Supabase client not initialized');
 
+        const { data: user } = await supabase.auth.getUser();
+        if (!user.user) throw new Error('Not authenticated');
+
         const { data, error } = await supabase
-            .from('household_invites')
+            .from('household_invitations')
             .insert({
                 household_id: householdId,
-                email,
+                email: email.toLowerCase().trim(),
                 role,
-                created_by: (await supabase.auth.getUser()).data.user?.id
+                created_by: user.user.id
             })
             .select()
             .single();
 
         if (error) throw error;
         return data;
+    },
+
+    /**
+     * Accept an invitation using its token.
+     */
+    async acceptInvitation(token: string) {
+        if (!supabase) throw new Error('Supabase client not initialized');
+
+        const { data: user } = await supabase.auth.getUser();
+        if (!user.user) throw new Error('Not authenticated');
+
+        // 1. Fetch the invitation
+        const { data: invite, error: fetchError } = await supabase
+            .from('household_invitations')
+            .select('*')
+            .eq('token', token)
+            .eq('status', 'PENDING')
+            .single();
+
+        if (fetchError || !invite) throw new Error('Invitación no válida o expirada.');
+
+        // Security check: email matches
+        if (invite.email !== user.user.email) {
+            throw new Error('Esta invitación fue enviada a otro correo electrónico.');
+        }
+
+        // 2. Add user to household
+        const { error: insertError } = await supabase
+            .from('household_members')
+            .insert({
+                household_id: invite.household_id,
+                user_id: user.user.id,
+                role: invite.role
+            });
+
+        if (insertError) throw insertError;
+
+        // 3. Update invite status
+        await supabase
+            .from('household_invitations')
+            .update({ status: 'ACCEPTED' })
+            .eq('id', invite.id);
+
+        return invite.household_id;
     },
 
     /**

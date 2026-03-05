@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import AuthGate from './components/auth/AuthGate';
 import MainShell from './components/layout/MainShell';
+import AcceptInvite from './components/pages/AcceptInvite';
 import ThemeManager from './components/common/ThemeManager';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import Toast from './components/common/Toast';
@@ -20,6 +21,9 @@ const App: React.FC = () => {
         monitoringService.init();
         console.log('[App] Monitoring service initialized');
     }, []);
+
+    const isInviteRoute = window.location.pathname.startsWith('/invite/');
+    const inviteToken = isInviteRoute ? window.location.pathname.split('/')[2] : null;
 
     // Set user context when user changes
     useEffect(() => {
@@ -42,7 +46,11 @@ const App: React.FC = () => {
             <PerformanceMonitor />
             <AuthGate>
                 <ThemeManager />
-                <MainShell />
+                {isInviteRoute && inviteToken ? (
+                    <AcceptInvite token={inviteToken} />
+                ) : (
+                    <MainShell />
+                )}
                 <br />
                 <Toast />
                 <CookieConsent />

@@ -77,7 +77,8 @@ export const useHouseholdStore = create<HouseholdState & HouseholdActions>()(
             inviteMember: async (email, role) => {
                 const { activeHouseholdId } = get();
                 if (!activeHouseholdId) throw new Error("No active household");
-                await householdService.inviteMember(activeHouseholdId, email, role);
+                const invite = await householdService.inviteMember(activeHouseholdId, email, role);
+                return invite;
             }
         }),
         {

@@ -5,10 +5,10 @@ import { useUserStore } from '../../../../store/useUserStore';
 import { stripeService } from '../../../../services/stripeService';
 
 export const SubscriptionPanel = () => {
-    const { subscription, language } = useUserStore();
+    const { subscription, language, userProfile } = useUserStore();
     const isSpanish = language === 'ES';
 
-    const planName = subscription.plan === 'FAMILIA' ? 'Premium' : subscription.plan === 'PERSONAL' ? 'Pro' : 'Basic';
+    const planName = subscription.plan === 'FAMILIA' ? 'Premium (Familiar)' : subscription.plan === 'PERSONAL' ? 'Pro' : 'Basic';
 
     const getStatusLabel = () => {
         if (subscription.status === 'ACTIVE') return isSpanish ? 'Suscripción Activa' : 'Active Subscription';
@@ -17,8 +17,25 @@ export const SubscriptionPanel = () => {
     };
 
     const featuresList = isSpanish
-        ? ['Acceso ilimitado a todas las herramientas', 'Gestión de miembros ilimitados', 'Transacciones sincronizadas automáticamente', 'Predicciones asistidas por IA', 'Sin anuncios ni banners', 'Soporte prioritario']
-        : ['Unlimited access to all tools', 'Unlimited members management', 'Automated transaction syncing', 'AI-assisted predictions', 'No ads or banners', 'Priority support'];
+        ? ['Acceso ilimitado a todas las herramientas', 'Gestión de hasta 5 miembros', 'Transacciones sincronizadas al instante', 'Predicciones asistidas por IA', 'Sin anuncios ni banners', 'Soporte prioritario']
+        : ['Unlimited access to all tools', 'Manage up to 5 members', 'Instantly synced transactions', 'AI-assisted predictions', 'No ads or banners', 'Priority support'];
+
+    const handleUpgradeToFamily = async (interval: 'month' | 'year') => {
+        if (!userProfile?.id) return;
+        try {
+            const priceId = interval === 'month'
+                ? 'price_1T1atC3IoYNgqHKqk5IFpCDe'
+                : 'price_1T1atD3IoYNgqHKq5Rqk8byX';
+
+            await stripeService.createCheckoutSession({
+                priceId,
+                userId: userProfile.id
+            });
+        } catch (error) {
+            console.error('Error upgrading:', error);
+            alert(isSpanish ? 'Error al iniciar el pago con Stripe' : 'Error starting Stripe checkout');
+        }
+    };
 
     return (
         <motion.div
@@ -58,14 +75,28 @@ export const SubscriptionPanel = () => {
                     </div>
                     <div className="flex flex-col gap-3 shrink-0">
                         <button
-                            onClick={() => stripeService.createPortalSession()}
+                            onClick={() => stripeService.createPortalSession({ customerId: userProfile?.id })}
                             className="px-8 py-4 bg-white text-indigo-900 rounded-2xl text-xs font-black uppercase tracking-widest shadow-xl shadow-black/20 hover:bg-gray-50 transition-all active:scale-95 text-center flex items-center justify-center gap-2"
                         >
                             {isSpanish ? 'Gestionar en Stripe' : 'Manage in Stripe'} <ExternalLink className="w-4 h-4" />
                         </button>
-                        <button className="px-8 py-4 bg-indigo-800/50 text-indigo-200 border border-indigo-700 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-800 transition-all text-center">
-                            {isSpanish ? 'Cambiar Plan' : 'Change Plan'}
-                        </button>
+
+                        {subscription.plan !== 'FAMILIA' && (
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => handleUpgradeToFamily('month')}
+                                    className="flex-1 px-4 py-3 bg-indigo-500 hover:bg-indigo-400 text-white border border-indigo-400 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all text-center"
+                                >
+                                    Familiar (3,99€/mes)
+                                </button>
+                                <button
+                                    onClick={() => handleUpgradeToFamily('year')}
+                                    className="flex-1 px-4 py-3 bg-indigo-500 hover:bg-indigo-400 text-white border border-indigo-400 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all text-center"
+                                >
+                                    Familiar (24,99€/año)
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
 

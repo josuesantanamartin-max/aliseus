@@ -135,7 +135,7 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                 const { error } = await supabase.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
-                        redirectTo: window.location.origin
+                        redirectTo: window.location.href
                     }
                 });
                 if (error) {
