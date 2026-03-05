@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { supabase } from '../../services/supabaseClient';
 import { useUserStore } from '../../store/useUserStore';
 import { useFinanceStore } from '../../store/useFinanceStore';
+import { useLifeStore } from '../../store/useLifeStore';
 import OnyxLanding from '../layout/OnyxLanding';
 import OnboardingWizard from '../onboarding/OnboardingWizard';
 
@@ -19,6 +20,12 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
     } = useUserStore();
 
     const { loadFromCloud, setMockData, clearAllData } = useFinanceStore();
+    const { loadFromCloud: loadLifeFromCloud } = useLifeStore();
+
+    const loadAll = () => {
+        loadFromCloud();
+        loadLifeFromCloud();
+    };
 
     const [isInitializing, setIsInitializing] = React.useState(true);
 
@@ -54,7 +61,7 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                     };
 
                     setUserProfile(profile);
-                    loadFromCloud();
+                    loadAll();
                     addSyncLog({ message: "Conectado a Onyx Cloud (Supabase)", timestamp: Date.now(), type: "SYSTEM" });
                 } else {
                     console.log("[AuthGate] No active session found.");
@@ -83,7 +90,7 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
 
                     setUserProfile(profile);
                     if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-                        loadFromCloud();
+                        loadAll();
                     }
                 } else {
                     // User signed out
