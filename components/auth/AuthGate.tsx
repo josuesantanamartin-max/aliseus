@@ -3,6 +3,7 @@ import { supabase } from '../../services/supabaseClient';
 import { useUserStore } from '../../store/useUserStore';
 import { useFinanceStore } from '../../store/useFinanceStore';
 import { useLifeStore } from '../../store/useLifeStore';
+import { useHouseholdStore } from '../../store/useHouseholdStore';
 import OnyxLanding from '../layout/OnyxLanding';
 import OnboardingWizard from '../onboarding/OnboardingWizard';
 
@@ -22,9 +23,14 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
     const { loadFromCloud, setMockData, clearAllData } = useFinanceStore();
     const { loadFromCloud: loadLifeFromCloud } = useLifeStore();
 
-    const loadAll = () => {
-        loadFromCloud();
-        loadLifeFromCloud();
+    const loadAll = async () => {
+        try {
+            await useHouseholdStore.getState().fetchHouseholds();
+            await loadFromCloud();
+            await loadLifeFromCloud();
+        } catch (error) {
+            console.error('[AuthGate] Error loadAll:', error);
+        }
     };
 
     const [isInitializing, setIsInitializing] = React.useState(true);

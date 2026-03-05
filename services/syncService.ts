@@ -3,12 +3,14 @@ import { supabase } from './supabaseClient';
 import { Transaction, Account, Budget, Goal, Debt, Ingredient, Recipe, ShoppingItem, FamilyMember } from '../types';
 import { Trip } from '../types/travel';
 import { WeeklyPlan } from '../types/life';
+import { useHouseholdStore } from '../store/useHouseholdStore';
 
 // ─── Mappers: camelCase (app) ↔ snake_case (Supabase) ──────────────────────
 
 const toDbAccount = (a: Account, userId: string, sortOrder?: number) => ({
     id: a.id,
     user_id: userId,
+            household_id: useHouseholdStore.getState().activeHouseholdId,
     name: a.name,
     bank_name: a.bankName ?? null,
     balance: a.balance,
@@ -60,6 +62,7 @@ const fromDbAccount = (row: any): Account => ({
 const toDbTransaction = (t: Transaction, userId: string) => ({
     id: t.id,
     user_id: userId,
+            household_id: useHouseholdStore.getState().activeHouseholdId,
     account_id: t.accountId,
     amount: t.amount,
     date: t.date,
@@ -92,6 +95,7 @@ const fromDbTransaction = (row: any): Transaction => ({
 const toDbGoal = (g: Goal, userId: string) => ({
     id: g.id,
     user_id: userId,
+            household_id: useHouseholdStore.getState().activeHouseholdId,
     name: g.name,
     target_amount: g.targetAmount,
     current_amount: g.currentAmount,
@@ -121,6 +125,7 @@ const fromDbGoal = (row: any): Goal => ({
 const toDbBudget = (b: Budget, userId: string) => ({
     id: b.id,
     user_id: userId,
+            household_id: useHouseholdStore.getState().activeHouseholdId,
     category: b.category,
     sub_category: (b as any).subCategory ?? null,
     limit: b.limit,
@@ -149,6 +154,7 @@ const fromDbBudget = (row: any): Budget => ({
 const toDbDebt = (d: Debt, userId: string) => ({
     id: d.id,
     user_id: userId,
+            household_id: useHouseholdStore.getState().activeHouseholdId,
     name: d.name,
     total_amount: d.originalAmount,
     remaining_balance: d.remainingBalance,
@@ -349,6 +355,7 @@ export const syncService = {
         const { error } = await supabase.from('life_pantry').upsert({
             ...item,
             user_id: userId,
+            household_id: useHouseholdStore.getState().activeHouseholdId,
             updated_at: new Date().toISOString()
         });
         if (error) throw error;
@@ -375,6 +382,7 @@ export const syncService = {
         const { error } = await supabase.from('life_recipes').upsert({
             ...recipe,
             user_id: userId,
+            household_id: useHouseholdStore.getState().activeHouseholdId,
             updated_at: new Date().toISOString()
         });
         if (error) throw error;
@@ -401,6 +409,7 @@ export const syncService = {
         const { error } = await supabase.from('life_shopping_list').upsert({
             ...item,
             user_id: userId,
+            household_id: useHouseholdStore.getState().activeHouseholdId,
             updated_at: new Date().toISOString()
         });
         if (error) throw error;
@@ -426,6 +435,7 @@ export const syncService = {
 
         const { error } = await supabase.from('life_weekly_plan').upsert({
             user_id: userId,
+            household_id: useHouseholdStore.getState().activeHouseholdId,
             plan_data: weeklyPlans,
             updated_at: new Date().toISOString()
         });
@@ -447,6 +457,7 @@ export const syncService = {
         const { error } = await supabase.from('life_family_members').upsert({
             ...member,
             user_id: userId,
+            household_id: useHouseholdStore.getState().activeHouseholdId,
             updated_at: new Date().toISOString()
         });
         if (error) throw error;
@@ -492,6 +503,7 @@ export const syncService = {
         const dbObj = {
             id: trip.id,
             user_id: userId,
+            household_id: useHouseholdStore.getState().activeHouseholdId,
             destination: trip.destination,
             country: trip.country || '',
             start_date: trip.startDate,
