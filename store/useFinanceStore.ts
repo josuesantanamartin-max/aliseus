@@ -196,7 +196,7 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
             },
             loadFromCloud: async () => {
                 try {
-                    const [accounts, transactions, budgets, goals, debts] = await Promise.all([
+                    const [cloudAccounts, cloudTransactions, cloudBudgets, cloudGoals, cloudDebts] = await Promise.all([
                         syncService.fetchAccounts(),
                         syncService.fetchTransactions(),
                         syncService.fetchBudgets(),
@@ -204,24 +204,28 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                         syncService.fetchDebts(),
                     ]);
 
-                    console.log(`[loadFromCloud] Fetched: ${accounts.length} accounts, ${transactions.length} transactions, ${budgets.length} budgets, ${goals.length} goals, ${debts.length} debts`);
+                    console.log(`[loadFromCloud] Fetched: ${cloudAccounts.length} accounts, ${cloudTransactions.length} tx, ${cloudBudgets.length} budgets, ${cloudGoals.length} goals, ${cloudDebts.length} debts`);
 
-                    // Safety guard: if ALL arrays are empty, Supabase may have returned
-                    // an error or the user has no data yet — don't overwrite existing local state.
-                    const hasAnyData = accounts.length > 0 || transactions.length > 0 || budgets.length > 0 || goals.length > 0 || debts.length > 0;
-
+                    // If ALL arrays are empty, Supabase may not have data yet — skip entirely
+                    const hasAnyData = cloudAccounts.length > 0 || cloudTransactions.length > 0 || cloudBudgets.length > 0 || cloudGoals.length > 0 || cloudDebts.length > 0;
                     if (!hasAnyData) {
                         console.log('[loadFromCloud] Cloud returned no data — keeping existing local state.');
                         return;
                     }
 
-                    set({
-                        accounts: accounts.sort((a, b) => ((a as any).sortOrder ?? 999) - ((b as any).sortOrder ?? 999)),
-                        transactions: transactions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
-                        budgets,
-                        goals,
-                        debts
-                    });
+                    // Merge per entity: only overwrite if cloud has data for that entity.
+                    // This prevents a silent save failure from wiping local data.
+                    set((state) => ({
+                        accounts: cloudAccounts.length > 0
+                            ? cloudAccounts.sort((a, b) => ((a as any).sortOrder ?? 999) - ((b as any).sortOrder ?? 999))
+                            : state.accounts,
+                        transactions: cloudTransactions.length > 0
+                            ? cloudTransactions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                            : state.transactions,
+                        budgets: cloudBudgets.length > 0 ? cloudBudgets : state.budgets,
+                        goals: cloudGoals.length > 0 ? cloudGoals : state.goals,
+                        debts: cloudDebts.length > 0 ? cloudDebts : state.debts,
+                    }));
                     console.log('[loadFromCloud] Store updated from cloud successfully.');
                 } catch (e) {
                     console.error("[loadFromCloud] Failed to load from cloud:", e);

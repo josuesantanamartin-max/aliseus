@@ -289,8 +289,13 @@ export const syncService = {
         const userId = await getCurrentUserId();
         if (!userId) return;
 
-        const { error } = await supabase.from('finance_goals').upsert(toDbGoal(goal, userId));
-        if (error) { console.error('[syncService] saveGoal FAILED:', error.message); throw error; }
+        const dbObj = toDbGoal(goal, userId);
+        const { error } = await supabase.from('finance_goals').upsert(dbObj);
+        if (error) {
+            console.error('[syncService] saveGoal FAILED:', error.message, error.details, error.hint, JSON.stringify(dbObj));
+            throw error;
+        }
+        console.log('[syncService] saveGoal OK:', goal.id, goal.name);
     },
 
     async deleteGoal(id: string) {
