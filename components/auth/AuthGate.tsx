@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { supabase } from '../../services/supabaseClient';
 import { useUserStore } from '../../store/useUserStore';
 import { useFinanceStore } from '../../store/useFinanceStore';
@@ -22,14 +22,21 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
 
     const [isInitializing, setIsInitializing] = React.useState(true);
 
-    // --- AUTH INITIALIZATION ---
+    // Capture isDemoMode at mount time via ref so changes to it don't re-trigger
+    // the auth initialization effect (which would cause duplicate listeners and
+    // potentially clearAllData() firing after Google OAuth sets isDemoMode to false).
+    const isDemoModeRef = useRef(isDemoMode);
+
+    // --- AUTH INITIALIZATION --- runs ONCE on mount ---
     useEffect(() => {
-        console.log("[AuthGate] Initializing Auth...", { isDemoMode, isAuthenticated, hash: window.location.hash });
+        const initialDemoMode = isDemoModeRef.current;
+        console.log("[AuthGate] Initializing Auth...", { initialDemoMode, isAuthenticated, hash: window.location.hash });
 
         if (supabase) {
             supabase.auth.getSession().then(({ data: { session }, error }) => {
                 if (error) {
                     console.error("[AuthGate] Error getting session:", error);
+                    setIsInitializing(false);
                     return;
                 }
 
@@ -52,7 +59,7 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                 } else {
                     console.log("[AuthGate] No active session found.");
                     // Only apply demo mode if NO real session exists AND we are not handling a redirect hash
-                    if (isDemoMode && !window.location.hash.includes('access_token')) {
+                    if (initialDemoMode && !window.location.hash.includes('access_token')) {
                         console.log("[AuthGate] Falling back to Demo Mode.");
                         setMockData();
                         setAuthenticated(true);
@@ -75,22 +82,16 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                     };
 
                     setUserProfile(profile);
-                    loadFromCloud();
-                } else if (!isDemoMode) {
+                    if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+                        loadFromCloud();
+                    }
+                } else {
+                    // User signed out
                     setAuthenticated(false);
                     setUserProfile(null);
-                } else {
-                    // Supabase client is not available
-                    if (isDemoMode && !window.location.hash.includes('access_token')) {
-                        setMockData();
-                        setAuthenticated(true);
-                    } else if (!isDemoMode && !window.location.hash.includes('access_token')) {
-                        // If no supabase, not in demo mode, and not an OAuth redirect, ensure authenticated is false
-                        setAuthenticated(false);
-                        setUserProfile(null);
+                    if (!isDemoModeRef.current) {
                         clearAllData();
                     }
-                    setIsInitializing(false);
                 }
             });
 
@@ -98,13 +99,14 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                 authSubscription.unsubscribe();
             };
         } else {
-            if (isDemoMode && !window.location.hash.includes('access_token')) {
+            if (initialDemoMode && !window.location.hash.includes('access_token')) {
                 setMockData();
                 setAuthenticated(true);
             }
             setIsInitializing(false);
         }
-    }, [isDemoMode, setAuthenticated, setDemoMode, addSyncLog, setUserProfile, loadFromCloud, setMockData, clearAllData]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); // Run ONCE on mount — isDemoMode changes must NOT re-trigger auth init
 
     const handleLogin = async (method: 'DEMO' | 'GOOGLE' | 'EMAIL' | 'NOTION', data?: { email: string, password: string, isRegister: boolean }) => {
         console.log(`[AuthGate] handleLogin called with method: ${method}`);

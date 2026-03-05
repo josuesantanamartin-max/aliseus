@@ -16,14 +16,18 @@ export const syncService = {
     async saveAccount(account: Account) {
         if (!supabase) return;
         const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        if (!user) { console.warn('[syncService] saveAccount: no authenticated user, skipping.'); return; }
 
         const { error } = await supabase.from('finance_accounts').upsert({
             ...account,
             user_id: user.id,
             updated_at: new Date().toISOString()
         });
-        if (error) throw error;
+        if (error) {
+            console.error('[syncService] saveAccount FAILED:', error.message, error.details, account);
+            throw error;
+        }
+        console.log('[syncService] saveAccount OK:', account.id, account.name);
     },
 
     async deleteAccount(id: string) {
@@ -42,14 +46,18 @@ export const syncService = {
     async saveTransaction(transaction: Transaction) {
         if (!supabase) return;
         const { data: { user } } = await supabase.auth.getUser();
-        if (!user) return;
+        if (!user) { console.warn('[syncService] saveTransaction: no authenticated user, skipping.'); return; }
 
         const { error } = await supabase.from('finance_transactions').upsert({
             ...transaction,
             user_id: user.id,
             updated_at: new Date().toISOString()
         });
-        if (error) throw error;
+        if (error) {
+            console.error('[syncService] saveTransaction FAILED:', error.message, error.details, transaction);
+            throw error;
+        }
+        console.log('[syncService] saveTransaction OK:', transaction.id);
     },
 
     async deleteTransaction(id: string) {

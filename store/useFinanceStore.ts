@@ -196,8 +196,17 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                         syncService.fetchDebts(),
                     ]);
 
-                    // We overwrite even if empty to ensure the UI reflects the cloud state
-                    // (especially important when switching accounts or devices)
+                    console.log(`[loadFromCloud] Fetched: ${accounts.length} accounts, ${transactions.length} transactions, ${budgets.length} budgets, ${goals.length} goals, ${debts.length} debts`);
+
+                    // Safety guard: if ALL arrays are empty, Supabase may have returned
+                    // an error or the user has no data yet — don't overwrite existing local state.
+                    const hasAnyData = accounts.length > 0 || transactions.length > 0 || budgets.length > 0 || goals.length > 0 || debts.length > 0;
+
+                    if (!hasAnyData) {
+                        console.log('[loadFromCloud] Cloud returned no data — keeping existing local state.');
+                        return;
+                    }
+
                     set({
                         accounts,
                         transactions: transactions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
@@ -205,8 +214,9 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                         goals,
                         debts
                     });
+                    console.log('[loadFromCloud] Store updated from cloud successfully.');
                 } catch (e) {
-                    console.error("Failed to load from cloud:", e);
+                    console.error("[loadFromCloud] Failed to load from cloud:", e);
                 }
             },
             setMockData: () => set({
