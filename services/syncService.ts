@@ -1,6 +1,7 @@
 
 import { supabase } from './supabaseClient';
 import { Transaction, Account, Budget, Goal, Debt, Ingredient, Recipe, ShoppingItem, FamilyMember } from '../types';
+import { Trip } from '../types/travel';
 import { WeeklyPlan } from '../types/life';
 
 // ─── Mappers: camelCase (app) ↔ snake_case (Supabase) ──────────────────────
@@ -457,6 +458,69 @@ export const syncService = {
         if (error) throw error;
     },
 
+    // --- TRIPS (TRAVEL) ---
+    async fetchTrips() {
+        if (!supabase) return [];
+        const { data, error } = await supabase.from('life_trips').select('*');
+        if (error) throw error;
+
+        // Map from snake_case back to camelCase
+        return data.map(dbTrip => ({
+            id: dbTrip.id,
+            destination: dbTrip.destination,
+            country: dbTrip.country,
+            startDate: dbTrip.start_date,
+            endDate: dbTrip.end_date,
+            budget: Number(dbTrip.budget),
+            spent: Number(dbTrip.spent),
+            status: dbTrip.status,
+            image: dbTrip.image,
+            flights: dbTrip.flights,
+            accommodations: dbTrip.accommodations,
+            itinerary: dbTrip.itinerary,
+            checklist: dbTrip.checklist,
+            linkedGoalId: dbTrip.linked_goal_id
+        })) as Trip[];
+    },
+
+    async saveTrip(trip: Trip) {
+        if (!supabase) return;
+        const userId = await getCurrentUserId();
+        if (!userId) return;
+
+        // Map camelCase to snake_case for Supabase
+        const dbObj = {
+            id: trip.id,
+            user_id: userId,
+            destination: trip.destination,
+            country: trip.country || '',
+            start_date: trip.startDate,
+            end_date: trip.endDate,
+            budget: trip.budget || 0,
+            spent: trip.spent || 0,
+            status: trip.status || 'UPCOMING',
+            image: trip.image || '',
+            flights: trip.flights || [],
+            accommodations: trip.accommodations || [],
+            itinerary: trip.itinerary || [],
+            checklist: trip.checklist || [],
+            linked_goal_id: trip.linkedGoalId || null,
+            updated_at: new Date().toISOString()
+        };
+
+        const { error } = await supabase.from('life_trips').upsert(dbObj);
+        if (error) {
+            console.error('[syncService] saveTrip FAILED:', error);
+            throw error;
+        }
+    },
+
+    async deleteTrip(tripId: string) {
+        if (!supabase) return;
+        const { error } = await supabase.from('life_trips').delete().eq('id', tripId);
+        if (error) throw error;
+    },
+
     // --- BULK SYNC OPERATIONS ---
 
     async syncAllFromCloud() {
@@ -465,7 +529,7 @@ export const syncService = {
         try {
             const [
                 accounts, transactions, budgets, goals, debts,
-                pantry, recipes, shoppingList, weeklyPlans, familyMembers
+                pantry, recipes, shoppingList, weeklyPlans, familyMembers, trips
             ] = await Promise.all([
                 this.fetchAccounts(),
                 this.fetchTransactions(),
@@ -476,12 +540,13 @@ export const syncService = {
                 this.fetchRecipes(),
                 this.fetchShoppingList(),
                 this.fetchWeeklyPlan(),
-                this.fetchFamilyMembers()
+                this.fetchFamilyMembers(),
+                this.fetchTrips()
             ]);
 
             return {
                 finance: { accounts, transactions, budgets, goals, debts },
-                life: { pantry, recipes, shoppingList, weeklyPlans, familyMembers }
+                life: { pantry, recipes, shoppingList, weeklyPlans, familyMembers, trips }
             };
         } catch (error) {
             console.error('Error syncing from cloud:', error);

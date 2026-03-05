@@ -162,12 +162,20 @@ export const useLifeStore = create<LifeState & LifeActions>()(
                 sync(() => syncService.saveWeeklyPlan(get().weeklyPlans), 'deleteWeeklyPlan');
             },
 
-            // ── Trips (no Supabase table yet — localStorage only for now) ──
-            addTrip: (trip) => set((state) => ({ trips: [...state.trips, trip] })),
-            updateTrip: (id, updates) => set((state) => ({
-                trips: state.trips.map(t => t.id === id ? { ...t, ...updates } : t)
-            })),
-            deleteTrip: (id) => set((state) => ({ trips: state.trips.filter(t => t.id !== id) })),
+            // ── Trips (viajes) ──
+            addTrip: (trip) => {
+                set((state) => ({ trips: [...state.trips, trip] }));
+                sync(() => syncService.saveTrip(trip), 'addTrip');
+            },
+            updateTrip: (id, updates) => {
+                set((state) => ({ trips: state.trips.map(t => t.id === id ? { ...t, ...updates } : t) }));
+                const updated = get().trips.find(t => t.id === id);
+                if (updated) sync(() => syncService.saveTrip({ ...updated, ...updates }), 'updateTrip');
+            },
+            deleteTrip: (id) => {
+                set((state) => ({ trips: state.trips.filter(t => t.id !== id) }));
+                sync(() => syncService.deleteTrip(id), 'deleteTrip');
+            },
 
             // ── Family members ──
             addFamilyMember: (member) => {
@@ -187,15 +195,16 @@ export const useLifeStore = create<LifeState & LifeActions>()(
             // ── Cloud load — called by AuthGate on login ──
             loadFromCloud: async () => {
                 try {
-                    const [cloudPantry, cloudRecipes, cloudShopping, cloudWeekly, cloudFamily] = await Promise.all([
+                    const [cloudPantry, cloudRecipes, cloudShopping, cloudWeekly, cloudFamily, cloudTrips] = await Promise.all([
                         syncService.fetchPantry(),
                         syncService.fetchRecipes(),
                         syncService.fetchShoppingList(),
                         syncService.fetchWeeklyPlan(),
                         syncService.fetchFamilyMembers(),
+                        syncService.fetchTrips(),
                     ]);
 
-                    console.log(`[useLifeStore] loadFromCloud: pantry=${cloudPantry.length} recipes=${cloudRecipes.length} shopping=${cloudShopping.length} weekly=${cloudWeekly.length} family=${cloudFamily.length}`);
+                    console.log(`[useLifeStore] loadFromCloud: pantry=${cloudPantry.length} recipes=${cloudRecipes.length} shopping=${cloudShopping.length} weekly=${cloudWeekly.length} family=${cloudFamily.length} trips=${cloudTrips.length}`);
 
                     set((state) => ({
                         pantryItems: cloudPantry.length > 0 ? cloudPantry : state.pantryItems,
@@ -203,6 +212,7 @@ export const useLifeStore = create<LifeState & LifeActions>()(
                         shoppingList: cloudShopping.length > 0 ? cloudShopping : state.shoppingList,
                         weeklyPlans: cloudWeekly.length > 0 ? cloudWeekly : state.weeklyPlans,
                         familyMembers: cloudFamily.length > 0 ? cloudFamily : state.familyMembers,
+                        trips: cloudTrips.length > 0 ? cloudTrips : state.trips,
                     }));
                 } catch (e) {
                     console.error('[useLifeStore] loadFromCloud failed:', e);
