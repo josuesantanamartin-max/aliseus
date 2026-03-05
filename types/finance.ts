@@ -47,9 +47,14 @@ export interface Account {
     id: string;
     name: string;
     bankName?: string;
-    type: 'BANK' | 'INVESTMENT' | 'CASH' | 'CREDIT' | 'DEBIT' | 'WALLET' | 'ASSET';
+    type: 'BANK' | 'SAVINGS' | 'INVESTMENT' | 'CASH' | 'CREDIT' | 'DEBIT' | 'WALLET' | 'ASSET';
     balance: number;
     currency: 'EUR' | 'USD' | 'GBP' | 'MXN' | 'COP' | 'ARS' | 'CLP' | 'CHF' | 'CAD' | 'AUD' | 'INR';
+    color?: string;
+    description?: string;
+    iban?: string;
+    /** For CREDIT / DEBIT cards */
+    cardNetwork?: 'VISA' | 'MASTERCARD' | 'AMEX' | 'OTHER';
     isRemunerated?: boolean;
     tae?: number;
     creditLimit?: number;
