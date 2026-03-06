@@ -67,8 +67,16 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                     };
 
                     setUserProfile(profile);
-                    loadAll();
-                    addSyncLog({ message: "Conectado a Onyx Cloud (Supabase)", timestamp: Date.now(), type: "SYSTEM" });
+
+                    if (session.user.user_metadata?.hasCompletedOnboarding) {
+                        useUserStore.getState().completeOnboarding();
+                    }
+
+                    // Await loadAll so we don't flash the onboarding screen if it's going to be bypassed
+                    loadAll().then(() => {
+                        addSyncLog({ message: "Conectado a Onyx Cloud (Supabase)", timestamp: Date.now(), type: "SYSTEM" });
+                        setIsInitializing(false);
+                    });
                 } else {
                     console.log("[AuthGate] No active session found.");
                     // Only apply demo mode if NO real session exists AND we are not handling a redirect hash
@@ -77,8 +85,8 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                         setMockData();
                         setAuthenticated(true);
                     }
+                    setIsInitializing(false);
                 }
-                setIsInitializing(false);
             });
 
             const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -95,6 +103,11 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                     };
 
                     setUserProfile(profile);
+
+                    if (session.user.user_metadata?.hasCompletedOnboarding) {
+                        useUserStore.getState().completeOnboarding();
+                    }
+
                     if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
                         loadAll();
                     }
@@ -188,11 +201,11 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
         }
     };
 
-    if (isInitializing && !isAuthenticated && window.location.hash.includes('access_token')) {
-        // Prevent flashing the landing page while Supabase processes the OAuth callback
+    if (isInitializing) {
+        // Show spinner while checking session and loading possible initial data
         return (
             <div className="flex items-center justify-center min-h-screen bg-black">
-                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-cyan-500"></div>
             </div>
         );
     }

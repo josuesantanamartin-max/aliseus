@@ -4,6 +4,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import { Transaction, Account, Budget, Goal, Debt, CategoryStructure, DashboardWidget } from '../types';
 import { INITIAL_CATEGORIES } from '../constants';
 import { MOCK_ACCOUNTS, MOCK_TRANSACTIONS, MOCK_BUDGETS, MOCK_GOALS, MOCK_DEBTS, DEFAULT_FINANCE_WIDGETS } from '../data/seeds/financeSeed';
+import { useUserStore } from './useUserStore';
 
 interface FinanceState {
     transactions: Transaction[];
@@ -226,6 +227,12 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                         goals: cloudGoals.length > 0 ? cloudGoals : state.goals,
                         debts: cloudDebts.length > 0 ? cloudDebts : state.debts,
                     }));
+
+                    // If the user has pulled down data from the cloud, they MUST have completed onboarding in the past
+                    if (useUserStore.getState().hasCompletedOnboarding === false) {
+                        useUserStore.getState().completeOnboarding();
+                    }
+
                     console.log('[loadFromCloud] Store updated from cloud successfully.');
                 } catch (e) {
                     console.error("[loadFromCloud] Failed to load from cloud:", e);

@@ -7,10 +7,23 @@ const ImportDataStep: React.FC = () => {
     const { setOnboardingStep, completeOnboarding, setSubscription } = useUserStore();
     // const navigate = useNavigate(); // Assuming we are using react-router
 
-    const handleComplete = () => {
+    const handleComplete = async () => {
         completeOnboarding();
         // Give users Premium Personal status right away after onboarding so they don't see "BASIC"
         setSubscription({ plan: 'PERSONAL', status: 'ACTIVE' });
+
+        // Save onboarding completion to Supabase user_metadata
+        try {
+            const { supabase } = await import('../../../services/supabaseClient');
+            if (supabase) {
+                await supabase.auth.updateUser({
+                    data: { hasCompletedOnboarding: true }
+                });
+            }
+        } catch (error) {
+            console.error("Failed to save onboarding state to Supabase:", error);
+        }
+
         // State update triggers AuthGate re-render automatically
     };
 
