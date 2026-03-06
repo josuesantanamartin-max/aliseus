@@ -22,6 +22,7 @@ export interface Transaction {
     date: string;
     category: string;
     subCategory?: string;
+    projectId?: string;
     accountId: string;
     description: string;
     isRecurring?: boolean;
@@ -79,6 +80,18 @@ export interface Budget {
     percentage?: number;
     startDate?: string;
     endDate?: string;
+}
+
+export interface ProjectBudget {
+    id: string;
+    name: string;
+    limit: number;
+    spent: number;
+    startDate: string;
+    endDate?: string;
+    status: 'ACTIVE' | 'COMPLETED';
+    color?: string;
+    icon?: string;
 }
 
 export interface DebtPayment {

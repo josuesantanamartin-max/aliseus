@@ -69,6 +69,7 @@ const toDbTransaction = (t: Transaction, userId: string) => ({
     description: t.description,
     category: t.category,
     sub_category: t.subCategory ?? null,
+    project_id: t.projectId ?? null,
     type: t.type,
     status: 'COMPLETED',
     notes: t.notes ?? null,
@@ -86,6 +87,7 @@ const fromDbTransaction = (row: any): Transaction => ({
     description: row.description,
     category: row.category,
     subCategory: row.sub_category ?? undefined,
+    projectId: row.project_id ?? undefined,
     type: row.type,
     notes: row.notes ?? undefined,
     isRecurring: row.is_recurring ?? false,
@@ -150,6 +152,33 @@ const fromDbBudget = (row: any): Budget => ({
     name: row.name ?? undefined,
     alertThreshold: row.alert_threshold != null ? Number(row.alert_threshold) : undefined,
 } as any);
+
+const toDbProjectBudget = (b: import('../types').ProjectBudget, userId: string) => ({
+    id: b.id,
+    user_id: userId,
+    household_id: useHouseholdStore.getState().activeHouseholdId,
+    name: b.name,
+    limit_amount: b.limit,
+    spent_amount: b.spent,
+    start_date: b.startDate,
+    end_date: b.endDate ?? null,
+    status: b.status,
+    color: b.color ?? null,
+    icon: b.icon ?? null,
+    updated_at: new Date().toISOString(),
+});
+
+const fromDbProjectBudget = (row: any): import('../types').ProjectBudget => ({
+    id: row.id,
+    name: row.name,
+    limit: Number(row.limit_amount),
+    spent: Number(row.spent_amount),
+    startDate: row.start_date,
+    endDate: row.end_date ?? undefined,
+    status: row.status,
+    color: row.color ?? undefined,
+    icon: row.icon ?? undefined,
+});
 
 const toDbDebt = (d: Debt, userId: string) => ({
     id: d.id,
@@ -282,6 +311,35 @@ export const syncService = {
 
         const { error } = await supabase.from('finance_budgets').upsert(toDbBudget(budget, userId));
         if (error) { console.error('[syncService] saveBudget FAILED:', error.message); throw error; }
+    },
+
+    async fetchProjectBudgets() {
+        if (!supabase) return [];
+        const { data, error } = await supabase.from('finance_project_budgets').select('*');
+        if (error) {
+            // Table might not exist yet if migration pending
+            if (error.code === '42P01') {
+                console.warn('[syncService] finance_project_budgets table missing');
+                return [];
+            }
+            throw error;
+        }
+        return (data ?? []).map(fromDbProjectBudget);
+    },
+
+    async saveProjectBudget(budget: import('../types').ProjectBudget) {
+        if (!supabase) return;
+        const userId = await getCurrentUserId();
+        if (!userId) return;
+
+        const { error } = await supabase.from('finance_project_budgets').upsert(toDbProjectBudget(budget, userId));
+        if (error) { console.error('[syncService] saveProjectBudget FAILED:', error.message); throw error; }
+    },
+
+    async deleteProjectBudget(id: string) {
+        if (!supabase) return;
+        const { error } = await supabase.from('finance_project_budgets').delete().eq('id', id);
+        if (error) { console.error('[syncService] deleteProjectBudget FAILED:', error.message); throw error; }
     },
 
     async fetchGoals() {
@@ -540,12 +598,13 @@ export const syncService = {
 
         try {
             const [
-                accounts, transactions, budgets, goals, debts,
+                accounts, transactions, budgets, projectBudgets, goals, debts,
                 pantry, recipes, shoppingList, weeklyPlans, familyMembers, trips
             ] = await Promise.all([
                 this.fetchAccounts(),
                 this.fetchTransactions(),
                 this.fetchBudgets(),
+                this.fetchProjectBudgets(),
                 this.fetchGoals(),
                 this.fetchDebts(),
                 this.fetchPantry(),
@@ -557,7 +616,7 @@ export const syncService = {
             ]);
 
             return {
-                finance: { accounts, transactions, budgets, goals, debts },
+                finance: { accounts, transactions, budgets, projectBudgets, goals, debts },
                 life: { pantry, recipes, shoppingList, weeklyPlans, familyMembers, trips }
             };
         } catch (error) {

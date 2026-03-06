@@ -27,7 +27,7 @@ const Transactions: React.FC<TransactionsProps> = ({
   initialFilters,
   onClearFilters,
 }) => {
-  const { transactions, accounts, debts, goals, categories } = useFinanceStore();
+  const { transactions, accounts, debts, goals, categories, projectBudgets } = useFinanceStore();
   const { currency, quickAction, setQuickAction } = useUserStore();
   const { addTransaction, transfer, editTransaction, deleteTransaction } = useFinanceControllers();
   const { formatPrice: formatEUR, symbol } = useCurrency();
@@ -70,6 +70,7 @@ const Transactions: React.FC<TransactionsProps> = ({
   const [notes, setNotes] = useState('');
   const [isRecurring, setIsRecurring] = useState(false);
   const [recurrenceFrequency, setRecurrenceFrequency] = useState<'WEEKLY' | 'BIWEEKLY' | 'MONTHLY' | 'YEARLY'>('MONTHLY');
+  const [projectId, setProjectId] = useState('');
 
   // EDIT FORM STATE
   const [editAmount, setEditAmount] = useState('');
@@ -81,6 +82,7 @@ const Transactions: React.FC<TransactionsProps> = ({
   const [editNotes, setEditNotes] = useState('');
   const [editRecurring, setEditRecurring] = useState(false);
   const [editFrequency, setEditFrequency] = useState<'WEEKLY' | 'BIWEEKLY' | 'MONTHLY' | 'YEARLY'>('MONTHLY');
+  const [editProjectId, setEditProjectId] = useState('');
 
   // Error handling
   const { showError, showSuccess } = useErrorHandler();
@@ -174,7 +176,8 @@ const Transactions: React.FC<TransactionsProps> = ({
         description,
         notes,
         isRecurring,
-        frequency: isRecurring ? recurrenceFrequency : undefined
+        frequency: isRecurring ? recurrenceFrequency : undefined,
+        projectId: projectId || undefined
       };
 
       const result = validateTransaction(transactionData);
@@ -203,6 +206,7 @@ const Transactions: React.FC<TransactionsProps> = ({
     setLinkedGoalId('');
     setNotes('');
     setIsRecurring(false);
+    setProjectId('');
     setValidationErrors({});
   };
 
@@ -223,7 +227,8 @@ const Transactions: React.FC<TransactionsProps> = ({
       description: editDescription,
       notes: editNotes,
       isRecurring: editRecurring,
-      frequency: editRecurring ? editFrequency : undefined
+      frequency: editRecurring ? editFrequency : undefined,
+      projectId: editProjectId || undefined
     };
 
     // Validate updated transaction
@@ -253,6 +258,7 @@ const Transactions: React.FC<TransactionsProps> = ({
     setEditNotes(t.notes || '');
     setEditRecurring(t.isRecurring || false);
     if (t.frequency) setEditFrequency(t.frequency);
+    setEditProjectId(t.projectId || '');
     setIsEditModalOpen(true);
   };
 
@@ -511,6 +517,22 @@ const Transactions: React.FC<TransactionsProps> = ({
                         ))}
                       </select>
                     </div>
+                  </div>
+                )}
+
+                {mode === 'EXPENSE' && (
+                  <div className="col-span-1 md:col-span-2">
+                    <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3">Vincular a Proyecto / Evento (Opcional)</label>
+                    <select
+                      value={isEditModalOpen ? editProjectId : projectId}
+                      onChange={e => isEditModalOpen ? setEditProjectId(e.target.value) : setProjectId(e.target.value)}
+                      className="w-full p-5 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner"
+                    >
+                      <option value="">Ninguno</option>
+                      {projectBudgets.map(p => (
+                        <option key={p.id} value={p.id}>{p.name} ({p.status === 'ACTIVE' ? 'Activo' : 'Completado'})</option>
+                      ))}
+                    </select>
                   </div>
                 )}
 

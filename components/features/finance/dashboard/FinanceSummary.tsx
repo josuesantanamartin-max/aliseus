@@ -16,6 +16,7 @@ import BudgetStatusWidget from './widgets/BudgetStatusWidget';
 import CategoryDistributionChart from './widgets/CategoryDistributionChart';
 import ActiveGoalsWidget from './widgets/ActiveGoalsWidget';
 import ActiveDebtsWidget from './widgets/ActiveDebtsWidget';
+import ActiveProjectsWidget from './widgets/ActiveProjectsWidget';
 import TimelineEvolutionWidget from './widgets/TimelineEvolutionWidget';
 
 const WIDGET_NAMES: Record<FinanceWidgetType, string> = {
@@ -34,7 +35,7 @@ interface FinanceSummaryProps {
 
 const FinanceSummary: React.FC<FinanceSummaryProps> = ({ onViewTransactions: onNavigateProp }) => {
     const {
-        transactions, accounts, budgets, goals, debts,
+        transactions, accounts, budgets, goals, debts, projectBudgets,
         widgets, setWidgets
     } = useFinanceStore();
 
@@ -476,6 +477,16 @@ const FinanceSummary: React.FC<FinanceSummaryProps> = ({ onViewTransactions: onN
                         debts={debts}
                         onNavigate={(app, tab) => setFinanceActiveTab(tab as any)}
                     />
+                )}
+
+                {isVisible('BUDGET_GOALS_SUMMARY') && projectBudgets.some(p => p.status === 'ACTIVE') && (
+                    <div className="col-span-1 lg:col-span-2">
+                        <ActiveProjectsWidget
+                            projects={projectBudgets}
+                            transactions={transactions}
+                            onViewProject={(id) => setFinanceActiveTab('projects')}
+                        />
+                    </div>
                 )}
             </div>
 

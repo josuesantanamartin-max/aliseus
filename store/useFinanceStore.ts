@@ -10,6 +10,7 @@ interface FinanceState {
     transactions: Transaction[];
     accounts: Account[];
     budgets: Budget[];
+    projectBudgets: import('../types').ProjectBudget[];
     goals: Goal[];
     debts: Debt[];
     categories: CategoryStructure[];
@@ -21,6 +22,7 @@ interface FinanceActions {
     setTransactions: (updater: Transaction[] | ((prev: Transaction[]) => Transaction[])) => void;
     setAccounts: (updater: Account[] | ((prev: Account[]) => Account[])) => void;
     setBudgets: (updater: Budget[] | ((prev: Budget[]) => Budget[])) => void;
+    setProjectBudgets: (updater: import('../types').ProjectBudget[] | ((prev: import('../types').ProjectBudget[]) => import('../types').ProjectBudget[])) => void;
     setGoals: (updater: Goal[] | ((prev: Goal[]) => Goal[])) => void;
     setDebts: (updater: Debt[] | ((prev: Debt[]) => Debt[])) => void;
     setCategories: (updater: CategoryStructure[] | ((prev: CategoryStructure[]) => CategoryStructure[])) => void;
@@ -37,6 +39,9 @@ interface FinanceActions {
     addBudget: (budget: Budget) => void;
     updateBudget: (id: string, updates: Partial<Budget>) => void;
     deleteBudget: (id: string) => void;
+    addProjectBudget: (budget: import('../types').ProjectBudget) => void;
+    updateProjectBudget: (id: string, updates: Partial<import('../types').ProjectBudget>) => void;
+    deleteProjectBudget: (id: string) => void;
     addGoal: (goal: Goal) => void;
     updateGoal: (id: string, updates: Partial<Goal>) => void;
     deleteGoal: (id: string) => void;
@@ -55,6 +60,7 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
             transactions: [],
             accounts: [],
             budgets: [],
+            projectBudgets: [],
             goals: [],
             debts: [],
             categories: INITIAL_CATEGORIES,
@@ -69,6 +75,9 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
             })),
             setBudgets: (updater) => set((state) => ({
                 budgets: typeof updater === 'function' ? updater(state.budgets) : updater
+            })),
+            setProjectBudgets: (updater) => set((state) => ({
+                projectBudgets: typeof updater === 'function' ? updater(state.projectBudgets) : updater
             })),
             setGoals: (updater) => set((state) => ({
                 goals: typeof updater === 'function' ? updater(state.goals) : updater
@@ -151,6 +160,22 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                 set((state) => ({ budgets: state.budgets.filter(b => b.id !== id) }));
                 syncService.deleteBudget(id).catch(e => console.error('[store] deleteBudget sync failed:', e));
             },
+            addProjectBudget: (budget) => {
+                set((state) => ({ projectBudgets: [...state.projectBudgets, budget] }));
+                syncService.saveProjectBudget(budget).catch(e => console.error('[store] addProjectBudget sync failed:', e));
+            },
+            updateProjectBudget: (id, updates) => {
+                set((state) => ({
+                    projectBudgets: state.projectBudgets.map(b => b.id === id ? { ...b, ...updates } : b)
+                }));
+                const store = useFinanceStore.getState();
+                const updated = store.projectBudgets.find(b => b.id === id);
+                if (updated) syncService.saveProjectBudget({ ...updated, ...updates }).catch(e => console.error('[store] updateProjectBudget sync failed:', e));
+            },
+            deleteProjectBudget: (id) => {
+                set((state) => ({ projectBudgets: state.projectBudgets.filter(b => b.id !== id) }));
+                syncService.deleteProjectBudget(id).catch(e => console.error('[store] deleteProjectBudget sync failed:', e));
+            },
             addGoal: (goal) => {
                 set((state) => ({ goals: [...state.goals, goal] }));
                 syncService.saveGoal(goal).catch(e => console.error('[store] addGoal sync failed:', e));
@@ -197,18 +222,19 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
             },
             loadFromCloud: async () => {
                 try {
-                    const [cloudAccounts, cloudTransactions, cloudBudgets, cloudGoals, cloudDebts] = await Promise.all([
+                    const [cloudAccounts, cloudTransactions, cloudBudgets, cloudProjectBudgets, cloudGoals, cloudDebts] = await Promise.all([
                         syncService.fetchAccounts(),
                         syncService.fetchTransactions(),
                         syncService.fetchBudgets(),
+                        syncService.fetchProjectBudgets(),
                         syncService.fetchGoals(),
                         syncService.fetchDebts(),
                     ]);
 
-                    console.log(`[loadFromCloud] Fetched: ${cloudAccounts.length} accounts, ${cloudTransactions.length} tx, ${cloudBudgets.length} budgets, ${cloudGoals.length} goals, ${cloudDebts.length} debts`);
+                    console.log(`[loadFromCloud] Fetched: ${cloudAccounts.length} accounts, ${cloudTransactions.length} tx, ${cloudBudgets.length} budgets, ${cloudProjectBudgets.length} project budgets, ${cloudGoals.length} goals, ${cloudDebts.length} debts`);
 
                     // If ALL arrays are empty, Supabase may not have data yet — skip entirely
-                    const hasAnyData = cloudAccounts.length > 0 || cloudTransactions.length > 0 || cloudBudgets.length > 0 || cloudGoals.length > 0 || cloudDebts.length > 0;
+                    const hasAnyData = cloudAccounts.length > 0 || cloudTransactions.length > 0 || cloudBudgets.length > 0 || cloudProjectBudgets.length > 0 || cloudGoals.length > 0 || cloudDebts.length > 0;
                     if (!hasAnyData) {
                         console.log('[loadFromCloud] Cloud returned no data — keeping existing local state.');
                         return;
@@ -224,6 +250,7 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                             ? cloudTransactions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
                             : state.transactions,
                         budgets: cloudBudgets.length > 0 ? cloudBudgets : state.budgets,
+                        projectBudgets: cloudProjectBudgets.length > 0 ? cloudProjectBudgets : state.projectBudgets,
                         goals: cloudGoals.length > 0 ? cloudGoals : state.goals,
                         debts: cloudDebts.length > 0 ? cloudDebts : state.debts,
                     }));
@@ -249,6 +276,7 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                 transactions: [],
                 accounts: [],
                 budgets: [],
+                projectBudgets: [],
                 goals: [],
                 debts: [],
             })

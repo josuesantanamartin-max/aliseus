@@ -7,6 +7,7 @@ import Debts from './Debts';
 import Goals from './Goals';
 import Accounts from './Accounts';
 import Budgets from './Budgets';
+import Projects from './Projects';
 import { Wallet, Menu, CreditCard, PieChart, Target, ReceiptEuro, Sparkles, Loader2, X } from 'lucide-react';
 
 import { RetirementSimulator } from './RetirementSimulator';
@@ -56,6 +57,7 @@ const FinanceModule: React.FC<FinanceModuleProps> = ({ onMenuClick }) => {
             <button onClick={() => setActiveTab('transactions')} className={`flex items-center gap-2.5 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 ${activeTab === 'transactions' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-lg shadow-cyan-900/20 scale-105' : 'text-onyx-400 hover:text-onyx-900 hover:bg-onyx-50'}`}>Movimientos</button>
             <button onClick={() => setActiveTab('accounts')} className={`flex items-center gap-2.5 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 ${activeTab === 'accounts' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-lg shadow-cyan-900/20 scale-105' : 'text-onyx-400 hover:text-onyx-900 hover:bg-onyx-50'}`}>Cuentas</button>
             <button onClick={() => setActiveTab('budgets')} className={`flex items-center gap-2.5 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 ${activeTab === 'budgets' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-lg shadow-cyan-900/20 scale-105' : 'text-onyx-400 hover:text-onyx-900 hover:bg-onyx-50'}`}>Presupuestos</button>
+            <button onClick={() => setActiveTab('projects')} className={`flex items-center gap-2.5 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 ${activeTab === 'projects' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-lg shadow-cyan-900/20 scale-105' : 'text-onyx-400 hover:text-onyx-900 hover:bg-onyx-50'}`}>Proyectos</button>
             <button onClick={() => setActiveTab('goals')} className={`flex items-center gap-2.5 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 ${activeTab === 'goals' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-lg shadow-cyan-900/20 scale-105' : 'text-onyx-400 hover:text-onyx-900 hover:bg-onyx-50'}`}>Metas</button>
             <button onClick={() => setActiveTab('debts')} className={`flex items-center gap-2.5 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 ${activeTab === 'debts' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-lg shadow-cyan-900/20 scale-105' : 'text-onyx-400 hover:text-onyx-900 hover:bg-onyx-50'}`}>Deudas</button>
             <button onClick={() => setActiveTab('retirement')} className={`flex items-center gap-2.5 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 ${activeTab === 'retirement' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-lg shadow-cyan-900/20 scale-105' : 'text-onyx-400 hover:text-onyx-900 hover:bg-onyx-50'}`}>Jubilación</button>
@@ -72,6 +74,7 @@ const FinanceModule: React.FC<FinanceModuleProps> = ({ onMenuClick }) => {
             case 'transactions': content = <Transactions />; break;
             case 'accounts': content = <Accounts onViewTransactions={(id) => { setActiveTab('transactions'); }} />; break;
             case 'budgets': content = <Budgets onViewTransactions={(c, s) => { setActiveTab('transactions'); }} />; break;
+            case 'projects': content = <Projects onViewTransactions={() => { setActiveTab('transactions'); }} />; break;
             case 'goals': content = <Goals />; break;
             case 'debts': content = <Debts />; break;
             case 'retirement': content = <RetirementSimulator />; break;
