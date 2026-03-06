@@ -155,9 +155,11 @@ const fromDbBudget = (row: any): Budget => ({
 
 const toDbProjectBudget = (b: import('../types').ProjectBudget, userId: string) => ({
     id: b.id,
+    parent_id: b.parentId ?? null,
     user_id: userId,
     household_id: useHouseholdStore.getState().activeHouseholdId,
     name: b.name,
+    description: b.description ?? null,
     limit_amount: b.limit,
     spent_amount: b.spent,
     start_date: b.startDate,
@@ -170,7 +172,9 @@ const toDbProjectBudget = (b: import('../types').ProjectBudget, userId: string) 
 
 const fromDbProjectBudget = (row: any): import('../types').ProjectBudget => ({
     id: row.id,
+    parentId: row.parent_id ?? undefined,
     name: row.name,
+    description: row.description ?? undefined,
     limit: Number(row.limit_amount),
     spent: Number(row.spent_amount),
     startDate: row.start_date,

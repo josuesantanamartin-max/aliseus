@@ -529,12 +529,25 @@ const Transactions: React.FC<TransactionsProps> = ({
                       className="w-full p-5 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner"
                     >
                       <option value="">Ninguno</option>
-                      {projectBudgets.map(p => (
-                        <option key={p.id} value={p.id}>{p.name} ({p.status === 'ACTIVE' ? 'Activo' : 'Completado'})</option>
-                      ))}
+                      {projectBudgets
+                        .filter(p => !p.parentId && p.status === 'ACTIVE')
+                        .map(parent => {
+                          const subs = projectBudgets.filter(p => p.parentId === parent.id);
+                          return subs.length > 0 ? (
+                            <optgroup key={parent.id} label={`📁 ${parent.name}`}>
+                              {subs.map(sub => (
+                                <option key={sub.id} value={sub.id}>  ↳ {sub.name}</option>
+                              ))}
+                            </optgroup>
+                          ) : (
+                            <option key={parent.id} value={parent.id}>📁 {parent.name}</option>
+                          );
+                        })
+                      }
                     </select>
                   </div>
                 )}
+
 
                 <div className="col-span-1 md:col-span-2">
                   <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3">Descripción / Concepto</label>

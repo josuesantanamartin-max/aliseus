@@ -84,7 +84,9 @@ export interface Budget {
 
 export interface ProjectBudget {
     id: string;
+    parentId?: string; // If set, this is a sub-project
     name: string;
+    description?: string;
     limit: number;
     spent: number;
     startDate: string;
