@@ -520,35 +520,83 @@ const Transactions: React.FC<TransactionsProps> = ({
                   </div>
                 )}
 
-                {mode === 'EXPENSE' && (
-                  <div className="col-span-1 md:col-span-2">
-                    <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3">Vincular a Proyecto / Evento (Opcional)</label>
-                    <select
-                      value={isEditModalOpen ? editProjectId : projectId}
-                      onChange={e => isEditModalOpen ? setEditProjectId(e.target.value) : setProjectId(e.target.value)}
-                      className="w-full p-5 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner"
-                    >
-                      <option value="">Ninguno</option>
-                      {projectBudgets
-                        .filter(p => !p.parentId && p.status === 'ACTIVE')
-                        .map(parent => {
-                          const subs = projectBudgets.filter(p => p.parentId === parent.id);
-                          return subs.length > 0 ? (
-                            <optgroup key={parent.id} label={`📁 ${parent.name}`}>
-                              {subs.map(sub => (
-                                <option key={sub.id} value={sub.id}>  ↳ {sub.name}</option>
-                              ))}
-                            </optgroup>
-                          ) : (
-                            <option key={parent.id} value={parent.id}>📁 {parent.name}</option>
-                          );
-                        })
-                      }
-                    </select>
-                  </div>
-                )}
-
-
+                {/* Project chips — only for expenses with active projects */}
+                {(mode === 'EXPENSE' || (isEditModalOpen && editingTransaction?.type === 'EXPENSE')) &&
+                  projectBudgets.filter(p => p.status === 'ACTIVE').length > 0 && (
+                    <div className="col-span-1 md:col-span-2">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-[9px] font-bold text-onyx-400 uppercase tracking-widest whitespace-nowrap">Proyecto</span>
+                        {/* "None" chip */}
+                        <button
+                          type="button"
+                          onClick={() => isEditModalOpen ? setEditProjectId('') : setProjectId('')}
+                          className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all border ${(isEditModalOpen ? editProjectId : projectId) === ''
+                              ? 'bg-onyx-800 text-white border-onyx-800'
+                              : 'bg-onyx-50 text-onyx-400 border-onyx-200 hover:border-onyx-400'
+                            }`}
+                        >
+                          Ninguno
+                        </button>
+                        {/* Parent project chips */}
+                        {projectBudgets
+                          .filter(p => !p.parentId && p.status === 'ACTIVE')
+                          .map(parent => {
+                            const subs = projectBudgets.filter(s => s.parentId === parent.id && s.status === 'ACTIVE');
+                            const currentVal = isEditModalOpen ? editProjectId : projectId;
+                            const parentSelected = currentVal === parent.id;
+                            const subSelected = subs.some(s => s.id === currentVal);
+                            return (
+                              <div key={parent.id} className="flex items-center gap-1 flex-wrap">
+                                {/* Parent chip (only clickable if no sub-projects, else just a label) */}
+                                {subs.length === 0 ? (
+                                  <button
+                                    type="button"
+                                    onClick={() => isEditModalOpen ? setEditProjectId(parent.id) : setProjectId(parent.id)}
+                                    className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all border ${parentSelected
+                                        ? 'text-white border-transparent shadow-sm'
+                                        : 'bg-white border-onyx-200 hover:border-onyx-300 text-onyx-600'
+                                      }`}
+                                    style={parentSelected ? { backgroundColor: parent.color || '#06b6d4', borderColor: parent.color || '#06b6d4' } : {}}
+                                  >
+                                    {parent.name}
+                                  </button>
+                                ) : (
+                                  <>
+                                    {/* Parent label (non-selectable, acts as group header) */}
+                                    <span
+                                      className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider border ${subSelected ? 'text-white border-transparent' : 'bg-white border-onyx-200 text-onyx-400'
+                                        }`}
+                                      style={subSelected ? { backgroundColor: parent.color || '#06b6d4', borderColor: parent.color || '#06b6d4' } : {}}
+                                    >
+                                      {parent.name}
+                                    </span>
+                                    {/* Sub-project chips */}
+                                    {subs.map(sub => {
+                                      const isSelected = currentVal === sub.id;
+                                      return (
+                                        <button
+                                          key={sub.id}
+                                          type="button"
+                                          onClick={() => isEditModalOpen ? setEditProjectId(sub.id) : setProjectId(sub.id)}
+                                          className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all border ${isSelected
+                                              ? 'text-white border-transparent shadow-sm'
+                                              : 'bg-white border-onyx-200 hover:border-onyx-300 text-onyx-600'
+                                            }`}
+                                          style={isSelected ? { backgroundColor: sub.color || parent.color || '#06b6d4', borderColor: sub.color || parent.color || '#06b6d4' } : {}}
+                                        >
+                                          ↳ {sub.name}
+                                        </button>
+                                      );
+                                    })}
+                                  </>
+                                )}
+                              </div>
+                            );
+                          })
+                        }
+                      </div>
+                    </div>
+                  )}
                 <div className="col-span-1 md:col-span-2">
                   <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3">Descripción / Concepto</label>
                   <div className="relative">
