@@ -52,7 +52,7 @@ export default function AuraFinanceOverview() {
     // ==========================================
     // WIDGET 1: SALDO DISPONIBLE (Suma Cuentas)
     // ==========================================
-    const LIQUID_TYPES = ['BANK', 'SAVINGS', 'CASH', 'WALLET'] as const;
+    const LIQUID_TYPES = ['BANK', 'CASH', 'WALLET'] as const;
     const totalBalance = useMemo(() => {
         return accounts
             .filter(a => LIQUID_TYPES.includes(a.type as any))
