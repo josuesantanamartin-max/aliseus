@@ -188,14 +188,14 @@ const AuraDashboard: React.FC = () => {
                 <IntelligenceHeader
                     selectedDate={activeTheme === 'finances' ? selectedDate : undefined}
                     onDateChange={activeTheme === 'finances' ? setSelectedDate : undefined}
+                    activeTheme={activeTheme}
+                    onThemeChange={setActiveTheme}
                 />
+
 
 
                 {/* --- COMMAND BAR --- */}
                 <AuraCommandBar onNavigate={handleNavigate} />
-
-                {/* --- THEME NAVIGATION --- */}
-                <AuraThemeBar activeTheme={activeTheme} onThemeChange={setActiveTheme} />
 
                 {/* --- DYNAMIC VIEWS --- */}
                 <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
