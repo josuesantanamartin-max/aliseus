@@ -52,8 +52,11 @@ export default function AuraFinanceOverview() {
     // ==========================================
     // WIDGET 1: SALDO DISPONIBLE (Suma Cuentas)
     // ==========================================
+    const LIQUID_TYPES = ['BANK', 'SAVINGS', 'CASH', 'WALLET'] as const;
     const totalBalance = useMemo(() => {
-        return accounts.reduce((acc, a) => acc + a.balance, 0);
+        return accounts
+            .filter(a => LIQUID_TYPES.includes(a.type as any))
+            .reduce((acc, a) => acc + a.balance, 0);
     }, [accounts]);
 
     // ==========================================
@@ -285,12 +288,15 @@ export default function AuraFinanceOverview() {
                     </div>
 
                     <div className="flex flex-col gap-1.5 mt-4 pt-4 border-t border-slate-100 dark:border-onyx-800/80">
-                        {accounts.map(a => (
+                        {accounts.filter(a => LIQUID_TYPES.includes(a.type as any)).map(a => (
                             <div key={a.id} className="flex justify-between items-center text-xs">
                                 <span className="text-slate-500 font-medium truncate mr-2">{a.name}</span>
                                 <span className="font-bold text-slate-700 dark:text-slate-300 tabular-nums">{formatCurrency(a.balance)}</span>
                             </div>
                         ))}
+                        {accounts.some(a => ['CREDIT', 'DEBIT'].includes(a.type)) && (
+                            <p className="text-[10px] text-slate-400 font-medium mt-1">Tarjetas excluidas del disponible</p>
+                        )}
                     </div>
                 </div>
 
