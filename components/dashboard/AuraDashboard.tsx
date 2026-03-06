@@ -4,7 +4,6 @@ import { useUserStore } from '../../store/useUserStore';
 import { useLifeStore } from '../../store/useLifeStore';
 import { Moon, Sunset, Settings, LayoutGrid } from 'lucide-react';
 import { Button } from '../ui/Button';
-import NotificationCenter from '../common/notifications/NotificationCenter';
 
 import { WIDGET_REGISTRY, WIDGET_CONFIG, DashboardDataProps, getColSpanClass } from './WidgetRegistry';
 import { getWidgetCategory } from './widgetCategories';
@@ -50,7 +49,6 @@ const AuraDashboard: React.FC = () => {
 
     const [currentTime, setCurrentTime] = useState(() => new Date());
     const [selectedDate, setSelectedDate] = useState(() => new Date());
-    const [isNotifOpen, setIsNotifOpen] = useState(false);
 
     useEffect(() => {
         const interval = setInterval(() => setCurrentTime(new Date()), 60000);
@@ -190,11 +188,8 @@ const AuraDashboard: React.FC = () => {
                 <IntelligenceHeader
                     selectedDate={activeTheme === 'finances' ? selectedDate : undefined}
                     onDateChange={activeTheme === 'finances' ? setSelectedDate : undefined}
-                    onNotificationsClick={() => setIsNotifOpen(v => !v)}
                 />
 
-                {/* Notification Panel */}
-                <NotificationCenter isOpen={isNotifOpen} onClose={() => setIsNotifOpen(false)} />
 
                 {/* --- COMMAND BAR --- */}
                 <AuraCommandBar onNavigate={handleNavigate} />
