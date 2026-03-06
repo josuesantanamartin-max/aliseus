@@ -184,6 +184,29 @@ const fromDbProjectBudget = (row: any): import('../types').ProjectBudget => ({
     icon: row.icon ?? undefined,
 });
 
+const toDbProjectItem = (item: import('../types').ProjectItem, userId: string) => ({
+    id: item.id,
+    user_id: userId,
+    household_id: useHouseholdStore.getState().activeHouseholdId,
+    project_id: item.projectId,
+    name: item.name,
+    budgeted_amount: item.budgetedAmount,
+    actual_amount: item.actualAmount,
+    notes: item.notes ?? null,
+    status: item.status,
+    updated_at: new Date().toISOString(),
+});
+
+const fromDbProjectItem = (row: any): import('../types').ProjectItem => ({
+    id: row.id,
+    projectId: row.project_id,
+    name: row.name,
+    budgetedAmount: Number(row.budgeted_amount),
+    actualAmount: Number(row.actual_amount),
+    notes: row.notes ?? undefined,
+    status: row.status ?? 'PENDING',
+});
+
 const toDbDebt = (d: Debt, userId: string) => ({
     id: d.id,
     user_id: userId,
@@ -400,6 +423,27 @@ export const syncService = {
         if (!supabase) return;
         const { error } = await supabase.from('finance_debts').delete().eq('id', id);
         if (error) { console.error('[syncService] deleteDebt FAILED:', error.message); throw error; }
+    },
+
+    async fetchProjectItems() {
+        if (!supabase) return [];
+        const { data, error } = await supabase.from('finance_project_items').select('*');
+        if (error) { console.error('[syncService] fetchProjectItems error:', error.message); return []; }
+        return (data ?? []).map(fromDbProjectItem);
+    },
+
+    async saveProjectItem(item: import('../types').ProjectItem) {
+        if (!supabase) return;
+        const userId = await getCurrentUserId();
+        if (!userId) return;
+        const { error } = await supabase.from('finance_project_items').upsert(toDbProjectItem(item, userId));
+        if (error) { console.error('[syncService] saveProjectItem FAILED:', error.message); throw error; }
+    },
+
+    async deleteProjectItem(id: string) {
+        if (!supabase) return;
+        const { error } = await supabase.from('finance_project_items').delete().eq('id', id);
+        if (error) { console.error('[syncService] deleteProjectItem FAILED:', error.message); throw error; }
     },
 
     async fetchPantry() {

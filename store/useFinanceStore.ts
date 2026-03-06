@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { syncService } from '../services/syncService';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { Transaction, Account, Budget, Goal, Debt, CategoryStructure, DashboardWidget } from '../types';
+import { Transaction, Account, Budget, Goal, Debt, CategoryStructure, DashboardWidget, ProjectItem } from '../types';
 import { INITIAL_CATEGORIES } from '../constants';
 import { MOCK_ACCOUNTS, MOCK_TRANSACTIONS, MOCK_BUDGETS, MOCK_GOALS, MOCK_DEBTS, DEFAULT_FINANCE_WIDGETS } from '../data/seeds/financeSeed';
 import { useUserStore } from './useUserStore';
@@ -11,6 +11,7 @@ interface FinanceState {
     accounts: Account[];
     budgets: Budget[];
     projectBudgets: import('../types').ProjectBudget[];
+    projectItems: ProjectItem[];
     goals: Goal[];
     debts: Debt[];
     categories: CategoryStructure[];
@@ -42,6 +43,9 @@ interface FinanceActions {
     addProjectBudget: (budget: import('../types').ProjectBudget) => void;
     updateProjectBudget: (id: string, updates: Partial<import('../types').ProjectBudget>) => void;
     deleteProjectBudget: (id: string) => void;
+    addProjectItem: (item: ProjectItem) => void;
+    updateProjectItem: (id: string, updates: Partial<ProjectItem>) => void;
+    deleteProjectItem: (id: string) => void;
     addGoal: (goal: Goal) => void;
     updateGoal: (id: string, updates: Partial<Goal>) => void;
     deleteGoal: (id: string) => void;
@@ -61,6 +65,7 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
             accounts: [],
             budgets: [],
             projectBudgets: [],
+            projectItems: [],
             goals: [],
             debts: [],
             categories: INITIAL_CATEGORIES,
@@ -176,6 +181,22 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                 set((state) => ({ projectBudgets: state.projectBudgets.filter(b => b.id !== id) }));
                 syncService.deleteProjectBudget(id).catch(e => console.error('[store] deleteProjectBudget sync failed:', e));
             },
+            addProjectItem: (item) => {
+                set((state) => ({ projectItems: [...state.projectItems, item] }));
+                syncService.saveProjectItem(item).catch(e => console.error('[store] addProjectItem sync failed:', e));
+            },
+            updateProjectItem: (id, updates) => {
+                set((state) => ({
+                    projectItems: state.projectItems.map(i => i.id === id ? { ...i, ...updates } : i)
+                }));
+                const store = useFinanceStore.getState();
+                const updated = store.projectItems.find(i => i.id === id);
+                if (updated) syncService.saveProjectItem({ ...updated, ...updates }).catch(e => console.error('[store] updateProjectItem sync failed:', e));
+            },
+            deleteProjectItem: (id) => {
+                set((state) => ({ projectItems: state.projectItems.filter(i => i.id !== id) }));
+                syncService.deleteProjectItem(id).catch(e => console.error('[store] deleteProjectItem sync failed:', e));
+            },
             addGoal: (goal) => {
                 set((state) => ({ goals: [...state.goals, goal] }));
                 syncService.saveGoal(goal).catch(e => console.error('[store] addGoal sync failed:', e));
@@ -222,11 +243,12 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
             },
             loadFromCloud: async () => {
                 try {
-                    const [cloudAccounts, cloudTransactions, cloudBudgets, cloudProjectBudgets, cloudGoals, cloudDebts] = await Promise.all([
+                    const [cloudAccounts, cloudTransactions, cloudBudgets, cloudProjectBudgets, cloudProjectItems, cloudGoals, cloudDebts] = await Promise.all([
                         syncService.fetchAccounts(),
                         syncService.fetchTransactions(),
                         syncService.fetchBudgets(),
                         syncService.fetchProjectBudgets(),
+                        syncService.fetchProjectItems(),
                         syncService.fetchGoals(),
                         syncService.fetchDebts(),
                     ]);
@@ -251,6 +273,7 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                             : state.transactions,
                         budgets: cloudBudgets.length > 0 ? cloudBudgets : state.budgets,
                         projectBudgets: cloudProjectBudgets.length > 0 ? cloudProjectBudgets : state.projectBudgets,
+                        projectItems: cloudProjectItems.length > 0 ? cloudProjectItems : state.projectItems,
                         goals: cloudGoals.length > 0 ? cloudGoals : state.goals,
                         debts: cloudDebts.length > 0 ? cloudDebts : state.debts,
                     }));
@@ -277,6 +300,7 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                 accounts: [],
                 budgets: [],
                 projectBudgets: [],
+                projectItems: [],
                 goals: [],
                 debts: [],
             })

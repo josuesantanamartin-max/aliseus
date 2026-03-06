@@ -96,6 +96,16 @@ export interface ProjectBudget {
     icon?: string;
 }
 
+export interface ProjectItem {
+    id: string;
+    projectId: string; // References ProjectBudget.id
+    name: string;
+    budgetedAmount: number;
+    actualAmount: number;
+    notes?: string;
+    status: 'PENDING' | 'DONE';
+}
+
 export interface DebtPayment {
     id: string;
     date: string;
