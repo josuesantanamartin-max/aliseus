@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useUserStore } from '../../../store/useUserStore';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Calendar } from 'lucide-react';
 import AuraCommandBar from './AuraCommandBar';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface IntelligenceHeaderProps {
     selectedDate?: Date;
@@ -18,19 +19,39 @@ export default function IntelligenceHeader({
     const { userProfile } = useUserStore();
     const firstName = userProfile?.full_name?.split(' ')[0] || 'Usuario';
 
-    const handleMonthChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    // UI state for custom date picker
+    const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+    const datePickerRef = useRef<HTMLDivElement>(null);
+
+    // Close when clicking outside
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (datePickerRef.current && !datePickerRef.current.contains(event.target as Node)) {
+                setIsDatePickerOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    const handleMonthSelect = (m: number) => {
         if (!selectedDate || !onDateChange) return;
         const d = new Date(selectedDate);
-        d.setMonth(parseInt(e.target.value));
+        d.setMonth(m);
+        onDateChange(d);
+        setIsDatePickerOpen(false);
+    };
+
+    const handleYearSelect = (y: number) => {
+        if (!selectedDate || !onDateChange) return;
+        const d = new Date(selectedDate);
+        d.setFullYear(y);
         onDateChange(d);
     };
 
-    const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        if (!selectedDate || !onDateChange) return;
-        const d = new Date(selectedDate);
-        d.setFullYear(parseInt(e.target.value));
-        onDateChange(d);
-    };
+    const currentYear = new Date().getFullYear();
+    const years = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
+    const months = Array.from({ length: 12 }, (_, i) => i);
 
     return (
         <section className="w-full flex items-center justify-between gap-4 pb-4 pt-2">
@@ -46,34 +67,69 @@ export default function IntelligenceHeader({
                 <AuraCommandBar onNavigate={onNavigate} />
             </div>
 
-            {/* Right: Date Selector (only shown in finance view) */}
+            {/* Right: Custom Date Selector (only shown in finance view) */}
             {selectedDate && onDateChange ? (
-                <div className="flex-shrink-0 flex items-center bg-white dark:bg-onyx-900 border border-slate-200 dark:border-onyx-800 rounded-xl px-3 py-1.5 shadow-sm gap-1">
-                    <select
-                        value={selectedDate.getMonth()}
-                        onChange={handleMonthChange}
-                        className="bg-transparent text-sm font-bold text-slate-800 dark:text-slate-200 outline-none cursor-pointer appearance-none capitalize"
+                <div className="flex-shrink-0 relative" ref={datePickerRef}>
+                    <button
+                        onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-2xl border transition-all duration-300 ${isDatePickerOpen
+                            ? 'bg-white dark:bg-onyx-900 border-indigo-200 dark:border-indigo-500/30 shadow-md shadow-indigo-100 dark:shadow-indigo-950/50 text-indigo-600 dark:text-indigo-400'
+                            : 'bg-white/80 dark:bg-onyx-900/80 backdrop-blur-md border-slate-200/50 dark:border-onyx-700/50 hover:bg-white dark:hover:bg-onyx-800 hover:border-slate-300 dark:hover:border-onyx-600 text-slate-700 dark:text-slate-200 shadow-sm hover:shadow'
+                            }`}
                     >
-                        {Array.from({ length: 12 }, (_, i) => {
-                            const d = new Date(2000, i, 1);
-                            return (
-                                <option key={i} value={i} className="capitalize">
-                                    {d.toLocaleString('es-ES', { month: 'long' })}
-                                </option>
-                            );
-                        })}
-                    </select>
-                    <span className="text-slate-300 dark:text-onyx-600 mx-1">/</span>
-                    <select
-                        value={selectedDate.getFullYear()}
-                        onChange={handleYearChange}
-                        className="bg-transparent text-sm font-bold text-slate-800 dark:text-slate-200 outline-none cursor-pointer appearance-none"
-                    >
-                        {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - 2 + i).map(y => (
-                            <option key={y} value={y}>{y}</option>
-                        ))}
-                    </select>
-                    <ChevronDown className="w-3.5 h-3.5 text-slate-400 ml-1 pointer-events-none" />
+                        <Calendar className="w-4 h-4 opacity-70" />
+                        <span className="text-sm font-bold capitalize">
+                            {new Date(2000, selectedDate.getMonth(), 1).toLocaleString('es-ES', { month: 'long' })} {selectedDate.getFullYear()}
+                        </span>
+                        <ChevronDown className={`w-3.5 h-3.5 opacity-50 transition-transform duration-300 ${isDatePickerOpen ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    <AnimatePresence>
+                        {isDatePickerOpen && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                                className="absolute right-0 top-full mt-2 w-64 bg-white dark:bg-onyx-900 rounded-3xl shadow-2xl shadow-indigo-500/10 border border-slate-100 dark:border-onyx-800 p-4 z-50 overflow-hidden"
+                            >
+                                {/* Year Selector Header */}
+                                <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-100 dark:border-onyx-800">
+                                    {years.map(y => (
+                                        <button
+                                            key={y}
+                                            onClick={() => handleYearSelect(y)}
+                                            className={`text-xs font-bold px-2 py-1 rounded-lg transition-colors ${selectedDate.getFullYear() === y
+                                                ? 'bg-slate-100 dark:bg-onyx-800 text-indigo-600 dark:text-indigo-400'
+                                                : 'text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
+                                                }`}
+                                        >
+                                            {y}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {/* Month Grid */}
+                                <div className="grid grid-cols-3 gap-2">
+                                    {months.map(m => {
+                                        const isSelected = selectedDate.getMonth() === m;
+                                        return (
+                                            <button
+                                                key={m}
+                                                onClick={() => handleMonthSelect(m)}
+                                                className={`py-2 px-1 text-xs font-bold capitalize rounded-xl transition-all duration-200 ${isSelected
+                                                    ? 'bg-indigo-500 text-white shadow-md shadow-indigo-500/30'
+                                                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-onyx-800 hover:text-indigo-600 dark:hover:text-indigo-400'
+                                                    }`}
+                                            >
+                                                {new Date(2000, m, 1).toLocaleString('es-ES', { month: 'short' }).replace('.', '')}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
             ) : (
                 // Spacer to keep greeting left-aligned when no date selector
