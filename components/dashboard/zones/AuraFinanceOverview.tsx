@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { FixedPaymentsModal, PendingFixedPayment } from './FixedPaymentsModal';
 
 function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -38,6 +39,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
     // -- STATE: Chart Filters --
     const [chartAccountId, setChartAccountId] = useState<string>('all');
     const [chartTimeframe, setChartTimeframe] = useState<'1m' | '6m' | '1y' | '3y' | '5y'>('6m');
+    const [isFixedPaymentsModalOpen, setFixedPaymentsModalOpen] = useState(false);
 
     // -- UTILS --
     const formatCurrency = (val: number) =>
@@ -184,24 +186,50 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
     // PAGOS FIJOS
     // ==========================================
     const fixedPayments = useMemo(() => {
-        const fixedCategories = ['Vivienda', 'Servicios', 'Seguros', 'Suscripciones', 'Educación'];
+        const fixedCategories = ['Vivienda', 'Servicios', 'Seguros', 'Suscripciones', 'Educación', 'Préstamos'];
 
-        // Find expected fixed payments. Without a specific "Recurring" model, we look at budgets or past months
-        // Let's deduce from current month's fixed categories
+        // Find budgets for these categories
+        const fixedBudgets = budgets.filter(b => fixedCategories.includes(b.category));
+
+        // Find transactions for these categories
         const fixedTxs = currentMonthTxs.filter(t => t.type === 'EXPENSE' && (t.isRecurring || fixedCategories.includes(t.category)));
-
         const paidThisMonth = fixedTxs.reduce((acc, t) => acc + t.amount, 0);
 
-        // Mock expected total for demonstration (in real app, use recurring rules or specific budget constraints)
-        const expectedTotal = paidThisMonth > 0 ? paidThisMonth * 1.3 : 1500; // Add 30% as remaining roughly, or a default
+        let expectedTotal = 0;
+        const pendingItems: PendingFixedPayment[] = [];
+
+        if (fixedBudgets.length > 0) {
+            expectedTotal = fixedBudgets.reduce((acc, b) => acc + b.limit, 0);
+
+            fixedBudgets.forEach(b => {
+                const paidForCat = fixedTxs.filter(t => t.category === b.category).reduce((acc, t) => acc + t.amount, 0);
+                if (paidForCat < b.limit) {
+                    pendingItems.push({
+                        id: b.id,
+                        category: b.category,
+                        expectedAmount: b.limit,
+                        paidAmount: paidForCat,
+                        remainingAmount: b.limit - paidForCat
+                    });
+                }
+            });
+
+            // Adjust expectedTotal if we paid *more* than budgeted for some category
+            expectedTotal = Math.max(expectedTotal, paidThisMonth + pendingItems.reduce((acc, p) => acc + p.remainingAmount, 0));
+
+        } else {
+            // Mock expected total for demonstration if no budgets
+            expectedTotal = paidThisMonth > 0 ? paidThisMonth * 1.3 : 1500;
+        }
 
         return {
             paid: paidThisMonth,
             expected: expectedTotal,
             remaining: Math.max(0, expectedTotal - paidThisMonth),
-            items: fixedTxs
+            items: fixedTxs,
+            pendingItems
         };
-    }, [currentMonthTxs]);
+    }, [currentMonthTxs, budgets]);
 
     // ==========================================
     // PRESUPUESTO DETALLADO (Subcategorías)
@@ -457,10 +485,13 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                     </div>
 
                     {/* Pagos Fijos */}
-                    <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)]">
+                    <div
+                        onClick={() => setFixedPaymentsModalOpen(true)}
+                        className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] cursor-pointer hover:border-slate-200 dark:hover:border-onyx-700 transition-colors group"
+                    >
                         <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                <CalendarCheck className="w-4 h-4 text-slate-400" />
+                            <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                <CalendarCheck className="w-4 h-4 text-slate-400 group-hover:text-blue-500 transition-colors" />
                                 Pagos Fijos del Mes
                             </h3>
                             <div className="flex items-baseline gap-2">
@@ -471,17 +502,17 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
 
                         <div className="w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-2 overflow-hidden mb-4">
                             <div
-                                className="h-full bg-slate-800 dark:bg-slate-400 rounded-full"
+                                className="h-full bg-slate-800 dark:bg-slate-400 rounded-full group-hover:bg-blue-600 dark:group-hover:bg-blue-500 transition-colors"
                                 style={{ width: `${Math.min(100, (fixedPayments.paid / Math.max(1, fixedPayments.expected)) * 100)}% ` }}
                             />
                         </div>
 
                         <div className="flex justify-between items-center text-xs font-bold">
-                            <span className="text-slate-500">
-                                {fixedPayments.items.length} recibos pagados
+                            <span className="text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors">
+                                {fixedPayments.items.length} pagados
                             </span>
                             <span className="text-slate-800 dark:text-slate-300">
-                                Quedan aprox. {formatCurrency(fixedPayments.remaining)}
+                                {fixedPayments.pendingItems ? fixedPayments.pendingItems.length : 0} pendientes
                             </span>
                         </div>
                     </div>
@@ -555,6 +586,14 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
 
             </div>
 
+            {isFixedPaymentsModalOpen && (
+                <FixedPaymentsModal
+                    onClose={() => setFixedPaymentsModalOpen(false)}
+                    paidItems={fixedPayments.items}
+                    pendingItems={fixedPayments.pendingItems || []}
+                    formatCurrency={formatCurrency}
+                />
+            )}
         </div>
     );
 }
