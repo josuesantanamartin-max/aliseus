@@ -80,7 +80,8 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                 } else {
                     console.log("[AuthGate] No active session found.");
                     // Only apply demo mode if NO real session exists AND we are not handling a redirect hash
-                    if (initialDemoMode && !window.location.hash.includes('access_token')) {
+                    const hasOAuthCallback = window.location.hash.includes('access_token') || window.location.search.includes('code=');
+                    if (initialDemoMode && !hasOAuthCallback) {
                         console.log("[AuthGate] Falling back to Demo Mode.");
                         setMockData();
                         setAuthenticated(true);
@@ -148,7 +149,7 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                 const { error } = await supabase.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
-                        redirectTo: window.location.href
+                        redirectTo: `${window.location.origin}/`
                     }
                 });
                 if (error) {

@@ -8,7 +8,12 @@ const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // Creamos el cliente solo si las credenciales existen para evitar errores en modo demo local.
 export const supabase = (supabaseUrl && supabaseKey)
-  ? createClient(supabaseUrl, supabaseKey)
+  ? createClient(supabaseUrl, supabaseKey, {
+    auth: {
+      flowType: 'pkce',
+      detectSessionInUrl: true,
+    }
+  })
   : null;
 
 export const isSupabaseConnected = () => !!supabase;
