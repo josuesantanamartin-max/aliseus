@@ -24,11 +24,16 @@ function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export default function AuraFinanceOverview() {
+export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: { selectedDate?: Date }) {
     const { accounts, transactions, budgets } = useFinanceStore();
 
-    // -- STATE: Selector Mes/Año global --
-    const [selectedDate, setSelectedDate] = useState(() => new Date());
+    // -- STATE: Chart Filters --
+    const [selectedDate, setSelectedDate] = useState(() => selectedDateProp ?? new Date());
+
+    // Sync prop changes into local state
+    useEffect(() => {
+        if (selectedDateProp) setSelectedDate(selectedDateProp);
+    }, [selectedDateProp]);
 
     // -- STATE: Chart Filters --
     const [chartAccountId, setChartAccountId] = useState<string>('all');
@@ -234,41 +239,6 @@ export default function AuraFinanceOverview() {
 
     return (
         <div className="flex flex-col gap-6 w-full max-w-7xl mx-auto px-4 lg:px-0">
-
-            {/* -- HEADER CONTROLS -- */}
-            <div className="flex justify-end items-center gap-2 mb-2">
-                <div className="flex items-center bg-white dark:bg-onyx-900 border border-slate-200 dark:border-onyx-800 rounded-xl px-4 py-2 shadow-sm">
-                    <select
-                        value={selectedDate.getMonth()}
-                        onChange={(e) => {
-                            const d = new Date(selectedDate);
-                            d.setMonth(parseInt(e.target.value));
-                            setSelectedDate(d);
-                        }}
-                        className="bg-transparent text-sm font-bold text-slate-800 dark:text-slate-200 outline-none cursor-pointer appearance-none pr-3"
-                    >
-                        {Array.from({ length: 12 }, (_, i) => {
-                            const d = new Date(2000, i, 1);
-                            return <option key={i} value={i} className="capitalize">{d.toLocaleString('es-ES', { month: 'long' })}</option>;
-                        })}
-                    </select>
-                    <span className="text-slate-300 dark:text-onyx-600 mx-1">/</span>
-                    <select
-                        value={selectedDate.getFullYear()}
-                        onChange={(e) => {
-                            const d = new Date(selectedDate);
-                            d.setFullYear(parseInt(e.target.value));
-                            setSelectedDate(d);
-                        }}
-                        className="bg-transparent text-sm font-bold text-slate-800 dark:text-slate-200 outline-none cursor-pointer appearance-none"
-                    >
-                        {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - 2 + i).map(y => (
-                            <option key={y} value={y}>{y}</option>
-                        ))}
-                    </select>
-                    <ChevronDown className="w-4 h-4 text-slate-400 ml-2" />
-                </div>
-            </div>
 
             {/* ========================================== */}
             {/* ROW 1: THE 4 TOP WIDGETS */}

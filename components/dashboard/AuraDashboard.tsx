@@ -4,6 +4,7 @@ import { useUserStore } from '../../store/useUserStore';
 import { useLifeStore } from '../../store/useLifeStore';
 import { Moon, Sunset, Settings, LayoutGrid } from 'lucide-react';
 import { Button } from '../ui/Button';
+import NotificationCenter from '../common/notifications/NotificationCenter';
 
 import { WIDGET_REGISTRY, WIDGET_CONFIG, DashboardDataProps, getColSpanClass } from './WidgetRegistry';
 import { getWidgetCategory } from './widgetCategories';
@@ -48,6 +49,8 @@ const AuraDashboard: React.FC = () => {
     } = useLifeStore();
 
     const [currentTime, setCurrentTime] = useState(() => new Date());
+    const [selectedDate, setSelectedDate] = useState(() => new Date());
+    const [isNotifOpen, setIsNotifOpen] = useState(false);
 
     useEffect(() => {
         const interval = setInterval(() => setCurrentTime(new Date()), 60000);
@@ -184,7 +187,14 @@ const AuraDashboard: React.FC = () => {
         >
             <div className="p-4 md:p-8 max-w-7xl mx-auto w-full space-y-6 lg:space-y-8">
                 {/* --- HEADER --- */}
-                <IntelligenceHeader />
+                <IntelligenceHeader
+                    selectedDate={activeTheme === 'finances' ? selectedDate : undefined}
+                    onDateChange={activeTheme === 'finances' ? setSelectedDate : undefined}
+                    onNotificationsClick={() => setIsNotifOpen(v => !v)}
+                />
+
+                {/* Notification Panel */}
+                <NotificationCenter isOpen={isNotifOpen} onClose={() => setIsNotifOpen(false)} />
 
                 {/* --- COMMAND BAR --- */}
                 <AuraCommandBar onNavigate={handleNavigate} />
@@ -196,7 +206,7 @@ const AuraDashboard: React.FC = () => {
                 <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
                     {activeTheme === 'finances' && (
                         <div className="mx-auto w-full space-y-8 pb-12">
-                            <AuraFinanceOverview />
+                            <AuraFinanceOverview selectedDate={selectedDate} />
                         </div>
                     )}
 
