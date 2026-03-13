@@ -39,7 +39,7 @@ export const useGlobalSearch = (isOpen: boolean, onClose: () => void) => {
         {
             id: 'nav-dashboard',
             type: 'NAVIGATION',
-            title: 'Onyx Central',
+            title: 'Aliseus Central',
             subtitle: 'Ir al inicio',
             icon: LayoutDashboard,
             action: () => setActiveApp('dashboard'),
@@ -110,7 +110,7 @@ export const useGlobalSearch = (isOpen: boolean, onClose: () => void) => {
                 id: `tx-${t.id}`,
                 type: 'TRANSACTION' as SearchResultType,
                 title: t.description,
-                subtitle: `${t.amount}€ - ${new Date(t.date).toLocaleDateString()}`,
+                subtitle: `${t.amount}â‚¬ - ${new Date(t.date).toLocaleDateString()}`,
                 icon: Receipt,
                 action: () => {
                     setActiveApp('finance');
@@ -170,7 +170,7 @@ export const useGlobalSearch = (isOpen: boolean, onClose: () => void) => {
                 id: `recipe-${r.id}`,
                 type: 'RECIPE' as SearchResultType,
                 title: r.name,
-                subtitle: `Receta • ${r.ingredients.length} ingredientes`,
+                subtitle: `Receta â€¢ ${r.ingredients.length} ingredientes`,
                 icon: Utensils,
                 action: () => {
                     setRecipeToOpen(r);

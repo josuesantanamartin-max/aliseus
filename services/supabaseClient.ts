@@ -26,7 +26,7 @@ export const checkConnection = async () => {
   try {
     const { data, error } = await supabase.from('users').select('count', { count: 'exact', head: true });
     if (error) throw error;
-    return { success: true, message: 'Conectado a Onyx Cloud' };
+    return { success: true, message: 'Conectado a Aliseus Cloud' };
   } catch (e: any) {
     return { success: false, message: e.message };
   }

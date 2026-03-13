@@ -68,7 +68,7 @@ const UpcomingPaymentsWidget: React.FC<DashboardDataProps> = ({
                     Total a Pagar (30 días)
                 </p>
                 <p className="text-2xl font-black text-onyx-900 dark:text-white tracking-tight">
-                    {totalAmount.toFixed(2)}€
+                    {totalAmount.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
                 </p>
             </div>
 
@@ -116,7 +116,7 @@ const UpcomingPaymentsWidget: React.FC<DashboardDataProps> = ({
                                     </div>
                                     <div className="text-right ml-3 shrink-0">
                                         <p className="text-sm font-black text-onyx-900 dark:text-white">
-                                            {payment.amount.toFixed(2)}€
+                                            {payment.amount.toLocaleString('es-ES', { style: 'currency', currency: 'EUR' })}
                                         </p>
                                     </div>
                                 </div>

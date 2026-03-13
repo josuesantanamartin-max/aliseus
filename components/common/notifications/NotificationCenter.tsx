@@ -6,10 +6,11 @@ import {
 } from 'lucide-react';
 import { useNotificationStore } from '../../../store/useNotificationStore';
 import { useUserStore } from '../../../store/useUserStore';
-import { OnyxNotification, NotificationCategory, NotificationType } from '../../../types/notifications';
+import { useFinanceControllers } from '../../../hooks/useFinanceControllers';
+import { AliseusNotification, NotificationCategory, NotificationType } from '../../../types/notifications';
 import { Language } from '../../../types/shared';
 
-// ─── i18n ─────────────────────────────────────────────────────────────────────
+// â”€â”€â”€ i18n â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const TEXTS: Record<string, Record<Language, string>> = {
     title: { ES: 'Notificaciones', EN: 'Notifications', FR: 'Notifications' },
     empty: { ES: 'Todo en orden', EN: 'All clear', FR: 'Tout est bon' },
@@ -18,12 +19,12 @@ const TEXTS: Record<string, Record<Language, string>> = {
     dismiss: { ES: 'Descartar', EN: 'Dismiss', FR: 'Rejeter' },
     finance: { ES: 'Finanzas', EN: 'Finance', FR: 'Finances' },
     life: { ES: 'Vida', EN: 'Life', FR: 'Vie' },
-    system: { ES: 'Sistema', EN: 'System', FR: 'Système' },
+    system: { ES: 'Sistema', EN: 'System', FR: 'SystÃ¨me' },
 };
 
 const tt = (lang: Language, key: string) => TEXTS[key]?.[lang] ?? TEXTS[key]?.['EN'] ?? key;
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// â”€â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const typeStyles: Record<NotificationType, { border: string; icon: string; bg: string }> = {
     danger: { border: 'border-l-red-500', icon: 'text-red-500', bg: 'bg-red-50 dark:bg-red-950/20' },
     warning: { border: 'border-l-amber-500', icon: 'text-amber-500', bg: 'bg-amber-50 dark:bg-amber-950/20' },
@@ -54,12 +55,12 @@ const timeAgo = (iso: string): string => {
     return `${Math.floor(hrs / 24)}d`;
 };
 
-// ─── Single notification row ──────────────────────────────────────────────────
+// â”€â”€â”€ Single notification row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const NotificationItem: React.FC<{
-    n: OnyxNotification;
+    n: AliseusNotification;
     lang: Language;
     onDismiss: (id: string) => void;
-    onAction: (n: OnyxNotification) => void;
+    onAction: (n: AliseusNotification) => void;
 }> = ({ n, lang, onDismiss, onAction }) => {
     const styles = typeStyles[n.type];
 
@@ -95,19 +96,19 @@ const NotificationItem: React.FC<{
             <p className="text-[11px] text-onyx-500 dark:text-onyx-400 leading-relaxed">{n.message}</p>
 
             {/* Action button */}
-            {n.actionLabel && n.actionTarget && (
+            {n.actionLabel && (n.actionTarget || n.actionType) && (
                 <button
                     onClick={() => onAction(n)}
                     className="self-start text-[10px] font-bold text-indigo-600 dark:text-indigo-400 hover:underline underline-offset-2 transition-colors"
                 >
-                    {n.actionLabel} →
+                    {n.actionLabel} â†’
                 </button>
             )}
         </motion.div>
     );
 };
 
-// ─── Main panel ───────────────────────────────────────────────────────────────
+// â”€â”€â”€ Main panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface NotificationCenterProps {
     isOpen: boolean;
     onClose: () => void;
@@ -115,6 +116,7 @@ interface NotificationCenterProps {
 
 const NotificationCenter: React.FC<NotificationCenterProps> = ({ isOpen, onClose }) => {
     const { language, setActiveApp, setFinanceActiveTab, setLifeActiveTab } = useUserStore();
+    const { addTransaction } = useFinanceControllers();
     const {
         activeNotifications,
         unreadCount,
@@ -125,15 +127,23 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ isOpen, onClose
 
     const notifications = activeNotifications();
 
-    const handleAction = useCallback((n: OnyxNotification) => {
+    const handleAction = useCallback(async (n: AliseusNotification) => {
         markAsRead(n.id);
+
+        // Functional Actions
+        if (n.actionType === 'CONFIRM_TRANSACTION' && n.metadata?.transaction) {
+            await addTransaction(n.metadata.transaction);
+            dismiss(n.id); // Also dismiss if confirmed
+        }
+
+        // Navigation Actions
         if (n.actionTarget) {
             setActiveApp(n.actionTarget.app);
             if (n.actionTarget.app === 'finance' && n.actionTarget.tab) setFinanceActiveTab(n.actionTarget.tab);
             if (n.actionTarget.app === 'life' && n.actionTarget.tab) setLifeActiveTab(n.actionTarget.tab);
         }
         onClose();
-    }, [markAsRead, setActiveApp, setFinanceActiveTab, setLifeActiveTab, onClose]);
+    }, [markAsRead, addTransaction, dismiss, setActiveApp, setFinanceActiveTab, setLifeActiveTab, onClose]);
 
     const handleDismiss = useCallback((id: string) => {
         dismiss(id);
@@ -144,7 +154,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ isOpen, onClose
     const lifeNotes = notifications.filter((n) => n.module === 'life');
     const systemNotes = notifications.filter((n) => n.module === 'system');
 
-    const renderGroup = (label: string, items: OnyxNotification[]) => {
+    const renderGroup = (label: string, items: AliseusNotification[]) => {
         if (items.length === 0) return null;
         return (
             <div className="space-y-2">

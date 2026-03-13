@@ -2,7 +2,7 @@
 
 Esta guía explica cómo capturar y agregar screenshots reales de tu aplicación a los artículos del Centro de Ayuda.
 
-## 📸 Paso 1: Capturar Screenshots
+## ðŸ“¸ Paso 1: Capturar Screenshots
 
 ### Herramientas Recomendadas
 - **Windows**: Snipping Tool (Win + Shift + S) o ShareX
@@ -18,26 +18,26 @@ Esta guía explica cómo capturar y agregar screenshots reales de tu aplicación
 
 ---
 
-## 📂 Paso 2: Organizar Screenshots
+## ðŸ“‚ Paso 2: Organizar Screenshots
 
 ### Estructura de Carpetas
 Crea la siguiente estructura en tu proyecto:
 
 ```
 public/
-└── help-screenshots/
-    ├── csv-import-step1.png
-    ├── csv-import-step2.png
-    ├── csv-import-step3.png
-    ├── budget-form.png
-    ├── budget-progress.png
-    ├── weekly-planner.png
-    ├── ai-recipe-generator.png
-    ├── dashboard-edit-mode.png
-    ├── widget-gallery.png
-    ├── privacy-panel.png
-    ├── onboarding-welcome.png
-    └── onyx-central-overview.png
+â””â”€â”€ help-screenshots/
+    â”œâ”€â”€ csv-import-step1.png
+    â”œâ”€â”€ csv-import-step2.png
+    â”œâ”€â”€ csv-import-step3.png
+    â”œâ”€â”€ budget-form.png
+    â”œâ”€â”€ budget-progress.png
+    â”œâ”€â”€ weekly-planner.png
+    â”œâ”€â”€ ai-recipe-generator.png
+    â”œâ”€â”€ dashboard-edit-mode.png
+    â”œâ”€â”€ widget-gallery.png
+    â”œâ”€â”€ privacy-panel.png
+    â”œâ”€â”€ onboarding-welcome.png
+    â””â”€â”€ onyx-central-overview.png
 ```
 
 ### Convención de Nombres
@@ -48,7 +48,7 @@ public/
 
 ---
 
-## 🎯 Paso 3: Screenshots Necesarios
+## ðŸŽ¯ Paso 3: Screenshots Necesarios
 
 ### Artículo: "Importar Transacciones CSV"
 **3 screenshots:**
@@ -57,7 +57,7 @@ public/
 3. `csv-import-step3.png` - Confirmación de importación exitosa
 
 **Cómo capturar:**
-- Ve a Finanzas → Transacciones → Importar CSV
+- Ve a Finanzas â†’ Transacciones â†’ Importar CSV
 - Captura cada paso del proceso
 - Asegúrate de mostrar datos de ejemplo claros
 
@@ -69,7 +69,7 @@ public/
 2. `budget-progress.png` - Vista de progreso con barras
 
 **Cómo capturar:**
-- Ve a Finanzas → Presupuestos → Nuevo Presupuesto
+- Ve a Finanzas â†’ Presupuestos â†’ Nuevo Presupuesto
 - Captura el formulario completo
 - Captura la vista de lista con varios presupuestos mostrando progreso
 
@@ -81,7 +81,7 @@ public/
 2. `ai-recipe-generator.png` - Interfaz de generación con IA
 
 **Cómo capturar:**
-- Ve a Vida → Cocina → Plan Semanal
+- Ve a Vida â†’ Cocina â†’ Plan Semanal
 - Arrastra algunas recetas al calendario antes de capturar
 - Captura el modal de generación de recetas con IA
 
@@ -104,7 +104,7 @@ public/
 1. `privacy-panel.png` - Panel completo de privacidad
 
 **Cómo capturar:**
-- Ve a Configuración → Privacidad
+- Ve a Configuración â†’ Privacidad
 - Captura todo el panel con todas las opciones visibles
 
 ---
@@ -112,7 +112,7 @@ public/
 ### Artículo: "Primeros Pasos"
 **2 screenshots:**
 1. `onboarding-welcome.png` - Primera pantalla del onboarding
-2. `onyx-central-overview.png` - Onyx Central completo
+2. `onyx-central-overview.png` - Aliseus Central completo
 
 **Cómo capturar:**
 - Crea una cuenta nueva para capturar el onboarding
@@ -120,7 +120,7 @@ public/
 
 ---
 
-## 🔧 Paso 4: Optimizar Imágenes
+## ðŸ”§ Paso 4: Optimizar Imágenes
 
 ### Herramientas de Optimización
 - **TinyPNG**: https://tinypng.com/
@@ -134,7 +134,7 @@ public/
 
 ---
 
-## ✅ Paso 5: Verificar Implementación
+## âœ… Paso 5: Verificar Implementación
 
 ### Checklist
 - [ ] Todas las imágenes están en `public/help-screenshots/`
@@ -153,7 +153,7 @@ public/
 
 ---
 
-## 🎨 Consejos de Diseño
+## ðŸŽ¨ Consejos de Diseño
 
 ### Para Mejores Screenshots
 1. **Usa datos realistas**: No uses "Lorem Ipsum" o datos obviamente falsos
@@ -171,7 +171,7 @@ Si quieres mejorar las screenshots:
 
 ---
 
-## 🔄 Actualizar Screenshots
+## ðŸ”„ Actualizar Screenshots
 
 Cuando actualices la UI de la app:
 1. Identifica qué screenshots quedaron obsoletos
@@ -182,7 +182,7 @@ Cuando actualices la UI de la app:
 
 ---
 
-## 📝 Notas Adicionales
+## ðŸ“ Notas Adicionales
 
 ### Fallback Automático
 Si una imagen no se encuentra, el componente `ArticleImageGallery` mostrará automáticamente un placeholder gris con el texto "Screenshot Placeholder".
@@ -199,12 +199,12 @@ Para agregar imágenes a otros artículos:
         alt: {
             ES: 'Descripción en español',
             EN: 'Description in English',
-            FR: 'Description en français'
+            FR: 'Description en franÃ§ais'
         },
         caption: {
             ES: 'Leyenda en español',
             EN: 'Caption in English',
-            FR: 'Légende en français'
+            FR: 'Légende en franÃ§ais'
         }
     }
 ]
@@ -217,7 +217,7 @@ Si necesitas imágenes diferentes por idioma (ej: con texto en la UI), puedes mo
 
 ---
 
-## ✨ Resultado Final
+## âœ¨ Resultado Final
 
 Una vez agregadas todas las screenshots, los usuarios verán:
 - Imágenes claras de cada proceso

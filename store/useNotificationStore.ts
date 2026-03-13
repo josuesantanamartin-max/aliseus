@@ -1,16 +1,16 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { OnyxNotification } from '../types/notifications';
+import { AliseusNotification } from '../types/notifications';
 
 interface NotificationState {
-    notifications: OnyxNotification[];
+    notifications: AliseusNotification[];
 }
 
 interface NotificationActions {
     /** Add a notification. Silently ignores duplicates (same id). */
-    addNotification: (n: OnyxNotification) => void;
+    addNotification: (n: AliseusNotification) => void;
     /** Add many at once, ignoring duplicates. */
-    addNotifications: (ns: OnyxNotification[]) => void;
+    addNotifications: (ns: AliseusNotification[]) => void;
     markAsRead: (id: string) => void;
     markAllAsRead: () => void;
     dismiss: (id: string) => void;
@@ -20,7 +20,7 @@ interface NotificationActions {
 
 interface NotificationComputed {
     unreadCount: () => number;
-    activeNotifications: () => OnyxNotification[];
+    activeNotifications: () => AliseusNotification[];
 }
 
 type NotificationStore = NotificationState & NotificationActions & NotificationComputed;
@@ -85,7 +85,7 @@ export const useNotificationStore = create<NotificationStore>()(
                 }));
             },
 
-            // Computed helpers — called as functions because Zustand doesn't support getters natively
+            // Computed helpers â€” called as functions because Zustand doesn't support getters natively
             unreadCount: () => get().notifications.filter((n) => !n.read && !n.dismissedAt).length,
             activeNotifications: () => get().notifications.filter((n) => !n.dismissedAt),
         }),

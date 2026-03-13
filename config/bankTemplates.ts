@@ -38,8 +38,8 @@ export const BANK_TEMPLATES: { [key: string]: BankTemplate } = {
         delimiter: ';',
         dateFormat: 'DD/MM/YYYY',
         columns: {
-            date: 'Fecha',
-            amount: 'Importe',
+            date: 'Fecha Operación',
+            amount: 'Importe EUR',
             description: 'Concepto',
         },
         amountNegativeIsExpense: true,

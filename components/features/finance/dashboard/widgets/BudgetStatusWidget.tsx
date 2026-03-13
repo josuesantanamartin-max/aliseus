@@ -14,7 +14,7 @@ interface BudgetStatusWidgetProps {
 const BudgetStatusWidget: React.FC<BudgetStatusWidgetProps> = ({ budgets, transactions, currentIncome, currency, selectedDate, timeMode }) => {
 
     const formatMoney = (amount: number) => {
-        return new Intl.NumberFormat('de-DE', { style: 'currency', currency: currency || 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount);
+        return new Intl.NumberFormat('es-ES', { style: 'currency', currency: currency || 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
     };
 
     // Calculate spent amount for a given category and optional subcategory
@@ -136,7 +136,7 @@ const BudgetStatusWidget: React.FC<BudgetStatusWidgetProps> = ({ budgets, transa
                                         <span className={`text-xl font-black shrink-0 ${categoryPercentage > 100 ? 'text-red-500' :
                                             categoryPercentage > 80 ? 'text-amber-500' : 'text-emerald-500'
                                             }`}>
-                                            {categoryPercentage.toFixed(0)}%
+                                            {categoryPercentage.toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}%
                                         </span>
                                     </div>
 
@@ -193,7 +193,7 @@ const BudgetStatusWidget: React.FC<BudgetStatusWidgetProps> = ({ budgets, transa
                                                         <span className={`text-[10px] font-black tracking-widest min-w-[35px] text-right ${sub.percentage > 100 ? 'text-red-500' :
                                                             sub.percentage > 80 ? 'text-amber-500' : 'text-emerald-500'
                                                             }`}>
-                                                            {sub.percentage.toFixed(0)}%
+                                                            {sub.percentage.toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}%
                                                         </span>
                                                     </div>
                                                 </div>

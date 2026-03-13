@@ -1,36 +1,36 @@
-# 🚀 Guía de Deployment - Aliseus
+# ðŸš€ GuÃ­a de Deployment - Aliseus
 
-Esta guía te muestra cómo desplegar Aliseus en diferentes plataformas.
-
----
-
-## 📋 Pre-requisitos
-
-1. ✅ Cuenta de GitHub con el repositorio
-2. ✅ Variables de entorno configuradas
-3. ✅ Build de producción funcional: `npm run build`
+Esta guÃ­a te muestra cÃ³mo desplegar Aliseus en diferentes plataformas.
 
 ---
 
-## 🌟 Opción 1: Vercel (RECOMENDADO)
+## ðŸ“‹ Pre-requisitos
 
-### Por qué Vercel?
-- ✅ Deploy automático desde GitHub
-- ✅ Preview URLs para cada commit
-- ✅ Edge Network global
-- ✅ SSL gratis
-- ✅ Optimizado para React/Vite
-- ✅ **GRATIS** para proyectos personales
+1. âœ… Cuenta de GitHub con el repositorio
+2. âœ… Variables de entorno configuradas
+3. âœ… Build de producciÃ³n funcional: `npm run build`
+
+---
+
+## ðŸŒŸ OpciÃ³n 1: Vercel (RECOMENDADO)
+
+### Por quÃ© Vercel?
+- âœ… Deploy automÃ¡tico desde GitHub
+- âœ… Preview URLs para cada commit
+- âœ… Edge Network global
+- âœ… SSL gratis
+- âœ… Optimizado para React/Vite
+- âœ… **GRATIS** para proyectos personales
 
 ### Pasos:
 
 1. **Crear cuenta en Vercel**
    - Ve a [vercel.com](https://vercel.com)
-   - Regístrate con tu cuenta de GitHub
+   - RegÃ­strate con tu cuenta de GitHub
 
 2. **Importar proyecto**
    ```
-   New Project → Import Git Repository → josuesantanamartin-max/Onyx-Suite
+   New Project â†’ Import Git Repository â†’ josuesantanamartin-max/Aliseus-Suite
    ```
 
 3. **Configurar variables de entorno**
@@ -43,29 +43,29 @@ Esta guía te muestra cómo desplegar Aliseus en diferentes plataformas.
 
 4. **Deploy**
    - Click en "Deploy"
-   - ¡Listo! Tu app estará en `onyx-suite.vercel.app`
+   - Â¡Listo! Tu app estarÃ¡ en `onyx-suite.vercel.app`
 
 5. **Dominio personalizado (Opcional)**
-   - Settings → Domains → Add
+   - Settings â†’ Domains â†’ Add
    - Conecta tu dominio (ej: `onyx-suite.com`)
 
-### Deploy automático:
+### Deploy automÃ¡tico:
 ```bash
 git add .
 git commit -m "feat: nueva funcionalidad"
 git push origin main
-# Vercel detecta el push y hace deploy automáticamente
+# Vercel detecta el push y hace deploy automÃ¡ticamente
 ```
 
 ---
 
-## 🌐 Opción 2: Cloudflare Pages
+## ðŸŒ OpciÃ³n 2: Cloudflare Pages
 
-### Por qué Cloudflare?
-- ✅ **GRATIS ilimitado** (sin límites de ancho de banda)
-- ✅ Más rápido que Vercel
-- ✅ CDN global
-- ✅ Functions serverless
+### Por quÃ© Cloudflare?
+- âœ… **GRATIS ilimitado** (sin lÃ­mites de ancho de banda)
+- âœ… MÃ¡s rÃ¡pido que Vercel
+- âœ… CDN global
+- âœ… Functions serverless
 
 ### Pasos:
 
@@ -74,10 +74,10 @@ git push origin main
 
 2. **Conectar GitHub**
    ```
-   Pages → Create a project → Connect to Git → Onyx-Suite
+   Pages â†’ Create a project â†’ Connect to Git â†’ Aliseus-Suite
    ```
 
-3. **Configuración de build**
+3. **ConfiguraciÃ³n de build**
    ```
    Framework preset: Vite
    Build command: npm run build
@@ -85,19 +85,19 @@ git push origin main
    ```
 
 4. **Variables de entorno**
-   - Añade las mismas variables que en Vercel
+   - AÃ±ade las mismas variables que en Vercel
 
 5. **Deploy**
    - URL: `onyx-suite.pages.dev`
 
 ---
 
-## 🏠 Opción 3: Hostinger (Manual)
+## ðŸ  OpciÃ³n 3: Hostinger (Manual)
 
-### Por qué Hostinger?
-- ✅ Muy económico (€2-4/mes)
-- ✅ Email incluido
-- ✅ cPanel familiar
+### Por quÃ© Hostinger?
+- âœ… Muy econÃ³mico (â‚¬2-4/mes)
+- âœ… Email incluido
+- âœ… cPanel familiar
 
 ### Pasos:
 
@@ -126,12 +126,12 @@ git push origin main
    ```
 
 4. **Variables de entorno en Hostinger**
-   - Como Hostinger es estático, las variables VITE_ deben estar en el build
+   - Como Hostinger es estÃ¡tico, las variables VITE_ deben estar en el build
    - Crea `.env.production` localmente con tus keys
-   - Haz `npm run build` (Vite las incluirá en el bundle)
-   - ⚠️ **CUIDADO**: No expongas keys sensibles en el frontend
+   - Haz `npm run build` (Vite las incluirÃ¡ en el bundle)
+   - âš ï¸ **CUIDADO**: No expongas keys sensibles en el frontend
 
-### Deploy automático con GitHub Actions:
+### Deploy automÃ¡tico con GitHub Actions:
 
 Crea `.github/workflows/deploy-hostinger.yml`:
 
@@ -175,7 +175,7 @@ jobs:
 
 Configura los secrets en GitHub:
 ```
-Settings → Secrets → Actions → New repository secret
+Settings â†’ Secrets â†’ Actions â†’ New repository secret
 - FTP_USERNAME
 - FTP_PASSWORD
 - VITE_GEMINI_API_KEY
@@ -185,7 +185,7 @@ Settings → Secrets → Actions → New repository secret
 
 ---
 
-## 🐳 Opción 4: Docker (Avanzado)
+## ðŸ³ OpciÃ³n 4: Docker (Avanzado)
 
 ### Dockerfile:
 
@@ -244,27 +244,27 @@ docker push your-username/onyx-suite
 
 ---
 
-## 📊 Comparación de Opciones
+## ðŸ“Š ComparaciÃ³n de Opciones
 
-| Característica | Vercel | Cloudflare | Hostinger | Docker |
+| CaracterÃ­stica | Vercel | Cloudflare | Hostinger | Docker |
 |----------------|--------|------------|-----------|--------|
-| **Precio** | Gratis / $20 | Gratis | €2-4/mes | Variable |
-| **Deploy Auto** | ✅ | ✅ | ⚠️ (con Actions) | ❌ |
-| **SSL** | ✅ | ✅ | ✅ | ⚠️ |
-| **CDN Global** | ✅ | ✅ | ❌ | ❌ |
-| **Dificultad** | Fácil | Fácil | Media | Alta |
-| **Serverless** | ✅ | ✅ | ❌ | ⚠️ |
-| **Email** | ❌ | ❌ | ✅ | ❌ |
+| **Precio** | Gratis / $20 | Gratis | â‚¬2-4/mes | Variable |
+| **Deploy Auto** | âœ… | âœ… | âš ï¸ (con Actions) | âŒ |
+| **SSL** | âœ… | âœ… | âœ… | âš ï¸ |
+| **CDN Global** | âœ… | âœ… | âŒ | âŒ |
+| **Dificultad** | FÃ¡cil | FÃ¡cil | Media | Alta |
+| **Serverless** | âœ… | âœ… | âŒ | âš ï¸ |
+| **Email** | âŒ | âŒ | âœ… | âŒ |
 
 ---
 
-## 🎯 Recomendación Final
+## ðŸŽ¯ RecomendaciÃ³n Final
 
 ### Para Desarrollo/Beta:
-- **Vercel** (gratis, fácil, rápido)
+- **Vercel** (gratis, fÃ¡cil, rÃ¡pido)
 
-### Para Producción Económica:
-- **Cloudflare Pages** (gratis, ilimitado, rápido)
+### Para ProducciÃ³n EconÃ³mica:
+- **Cloudflare Pages** (gratis, ilimitado, rÃ¡pido)
 
 ### Para Negocio con Email:
 - **Hostinger** + Cloudflare CDN
@@ -276,10 +276,10 @@ docker push your-username/onyx-suite
 
 ---
 
-## 🔧 Troubleshooting
+## ðŸ”§ Troubleshooting
 
-### Error: "404 al recargar página"
-**Solución**: Configura redirect para SPA
+### Error: "404 al recargar pÃ¡gina"
+**SoluciÃ³n**: Configura redirect para SPA
 
 **Vercel**: Crear `vercel.json`
 ```json
@@ -288,17 +288,17 @@ docker push your-username/onyx-suite
 }
 ```
 
-**Cloudflare**: Automático para Vite
+**Cloudflare**: AutomÃ¡tico para Vite
 
 **Hostinger**: Usar `.htaccess` (ver arriba)
 
 ### Error: "Variables de entorno no funcionan"
-**Solución**: 
+**SoluciÃ³n**: 
 - En Vite, las variables DEBEN empezar con `VITE_`
 - Se compilan en el build (no son secretas en el frontend)
 - Para keys sensibles, usa serverless functions
 
-### Error: "Build falla en producción"
+### Error: "Build falla en producciÃ³n"
 ```bash
 # Testea el build localmente primero
 npm run build
@@ -307,9 +307,9 @@ npm run preview
 
 ---
 
-## 📞 Soporte
+## ðŸ“ž Soporte
 
-¿Necesitas ayuda?
+Â¿Necesitas ayuda?
 1. Revisa los logs de la plataforma
 2. Verifica variables de entorno
 3. Prueba build local: `npm run build && npm run preview`
@@ -317,4 +317,4 @@ npm run preview
 ---
 
 **Fecha**: Diciembre 2025  
-**Versión**: 1.0.0
+**VersiÃ³n**: 1.0.0

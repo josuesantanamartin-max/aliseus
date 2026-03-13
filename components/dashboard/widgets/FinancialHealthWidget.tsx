@@ -88,25 +88,25 @@ const FinancialHealthWidget: React.FC<DashboardDataProps> = ({
                     label="Ahorro"
                     score={breakdown.savingsRatio.score}
                     max={30}
-                    value={`${(breakdown.savingsRatio.value * 100).toFixed(0)}%`}
+                    value={`${Math.round(breakdown.savingsRatio.value * 100)}%`}
                 />
                 <BreakdownItem
                     label="Deuda"
                     score={breakdown.debtRatio.score}
                     max={25}
-                    value={`${(breakdown.debtRatio.value * 100).toFixed(0)}%`}
+                    value={`${Math.round(breakdown.debtRatio.value * 100)}%`}
                 />
                 <BreakdownItem
                     label="Emergencia"
                     score={breakdown.emergencyFund.score}
                     max={20}
-                    value={`${(breakdown.emergencyFund.value * 100).toFixed(0)}%`}
+                    value={`${Math.round(breakdown.emergencyFund.value * 100)}%`}
                 />
                 <BreakdownItem
                     label="Presupuesto"
                     score={breakdown.budgetCompliance.score}
                     max={15}
-                    value={`${(breakdown.budgetCompliance.value * 100).toFixed(0)}%`}
+                    value={`${Math.round(breakdown.budgetCompliance.value * 100)}%`}
                 />
                 <BreakdownItem
                     label="Diversificación"

@@ -42,7 +42,7 @@ export const VaultManager: React.FC = () => {
       <div className="h-full flex flex-col space-y-6 animate-fade-in pb-20 p-8 overflow-y-auto custom-scrollbar">
          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-               <h2 className="text-3xl font-black text-gray-900 tracking-tighter">Onyx Vault</h2>
+               <h2 className="text-3xl font-black text-gray-900 tracking-tighter">Aliseus Vault</h2>
                <p className="text-gray-400 font-bold text-sm uppercase tracking-widest mt-1">Bóveda Documental Encriptada</p>
             </div>
             <div className="flex gap-3">

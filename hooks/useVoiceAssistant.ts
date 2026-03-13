@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { VoiceAction, VoiceState, VoiceActionType } from '../types';
-import { processVoiceCommand } from '../services/geminiService';
+import { processVoiceCommand } from '../services/geminiCore';
 import { useUserStore } from '../store/useUserStore';
 
 // Web Speech API interfaces
@@ -66,7 +66,7 @@ export const useVoiceAssistant = () => {
             recognition.continuous = false; // Process one command at a time
             recognition.interimResults = false;
 
-            // Map Onyx 'ES' to 'es-ES', etc.
+            // Map Aliseus 'ES' to 'es-ES', etc.
             const langMap = { 'ES': 'es-ES', 'EN': 'en-US', 'FR': 'fr-FR' };
             recognition.lang = langMap[language] || 'es-ES';
 

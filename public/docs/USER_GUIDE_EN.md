@@ -5,7 +5,7 @@
 
 ---
 
-## 📚 Table of Contents
+## ðŸ“š Table of Contents
 
 1. [Introduction](#introduction)
 2. [Getting Started](#getting-started)
@@ -23,14 +23,14 @@
 ### What is Aliseus?
 
 Aliseus is your comprehensive personal assistant that combines:
-- 💰 **Financial Management** - Accounts, budgets, goals, retirement
-- 🏠 **Home Organization** - Recipes, pantry, shopping, trips
-- 🤖 **Onyx Insights** - Powered by Gemini
-- 📊 **Onyx Central** - Unified view of your life
+- ðŸ’° **Financial Management** - Accounts, budgets, goals, retirement
+- ðŸ  **Home Organization** - Recipes, pantry, shopping, trips
+- ðŸ¤– **Aliseus Insights** - Powered by Gemini
+- ðŸ“Š **Aliseus Central** - Unified view of your life
 
 ### Key Features
 
-✅ **Complete Financial Management**
+âœ… **Complete Financial Management**
 - Multiple bank accounts
 - CSV transaction import
 - Smart budgets
@@ -38,14 +38,14 @@ Aliseus is your comprehensive personal assistant that combines:
 - Retirement planner
 - Debt and credit card management
 
-✅ **Home Organization**
+âœ… **Home Organization**
 - AI-powered recipes
 - Pantry management
 - Smart shopping lists
 - Meal planning
 - Trip planner
 
-✅ **Privacy & Security**
+âœ… **Privacy & Security**
 - GDPR compliant
 - Encrypted data
 - Full cookie control
@@ -69,7 +69,7 @@ Aliseus is your comprehensive personal assistant that combines:
 ### 2. Initial Setup
 
 **User Profile**
-1. Go to **Settings → Profile**
+1. Go to **Settings â†’ Profile**
 2. Complete basic information:
    - Full name
    - Profile picture (optional)
@@ -86,9 +86,9 @@ Aliseus is your comprehensive personal assistant that combines:
 
 On first login:
 1. **Welcome** - Introduction to Aliseus
-2. **Onyx Central** - Customizable overview
+2. **Aliseus Central** - Customizable overview
 3. **Modules** - Finance, Life, Goals
-4. **Onyx Insights** - How to use the assistant
+4. **Aliseus Insights** - How to use the assistant
 5. **Settings** - Personalization
 
 ---
@@ -98,7 +98,7 @@ On first login:
 ### Bank Accounts
 
 **Create an Account**
-1. Go to **Finance → Accounts**
+1. Go to **Finance â†’ Accounts**
 2. Click **New Account**
 3. Complete:
    - Name (e.g., "Checking Account Santander")
@@ -116,7 +116,7 @@ On first login:
 ### Transactions
 
 **Add Manual Transaction**
-1. **Finance → Transactions**
+1. **Finance â†’ Transactions**
 2. Click **New Transaction**
 3. Complete:
    - Type: Income or Expense
@@ -133,13 +133,13 @@ On first login:
 5. Save
 
 **Import from CSV**
-1. **Finance → Transactions**
+1. **Finance â†’ Transactions**
 2. Click **Import CSV**
 3. Select file
 4. Map columns:
-   - Date → Date column
-   - Concept → Description column
-   - Amount → Amount column
+   - Date â†’ Date column
+   - Concept â†’ Description column
+   - Amount â†’ Amount column
 5. Select destination account
 6. Review preview
 7. Confirm import
@@ -155,11 +155,11 @@ Date,Concept,Amount,Category
 ### Budgets
 
 **Create Budget**
-1. **Finance → Budgets**
+1. **Finance â†’ Budgets**
 2. **New Budget**
 3. Select:
    - Category (Food, Transport, Entertainment, etc.)
-   - Monthly limit (e.g., 400€)
+   - Monthly limit (e.g., 400â‚¬)
    - Period: Monthly or Annual
 4. Save
 
@@ -167,8 +167,8 @@ Date,Concept,Amount,Category
 - **Progress bar:** Current spending vs limit
 - **Percentage:** % used
 - **Alerts:** 
-  - 🟡 80% reached
-  - 🔴 100% reached
+  - ðŸŸ¡ 80% reached
+  - ðŸ”´ 100% reached
 - **History:** Comparison with previous months
 
 **AI Suggestions**
@@ -180,11 +180,11 @@ Date,Concept,Amount,Category
 ### Financial Goals
 
 **Create Goal**
-1. **Finance → Goals**
+1. **Finance â†’ Goals**
 2. **New Goal**
 3. Define:
    - Name (e.g., "Vacation in Japan")
-   - Target amount (e.g., 3000€)
+   - Target amount (e.g., 3000â‚¬)
    - Deadline
    - Suggested monthly contribution
 4. Save
@@ -198,15 +198,15 @@ Date,Concept,Amount,Category
 ### Retirement Planner
 
 **Configure Plan**
-1. **Finance → Retirement**
+1. **Finance â†’ Retirement**
 2. Enter data:
    - **Current age:** 30 years
    - **Retirement age:** 65 years
-   - **Current savings:** 10,000€
-   - **Monthly contribution:** 500€
+   - **Current savings:** 10,000â‚¬
+   - **Monthly contribution:** 500â‚¬
    - **Expected return:** 7% annual
    - **Estimated inflation:** 3% annual
-   - **Desired monthly income:** 2,000€
+   - **Desired monthly income:** 2,000â‚¬
 3. Click **Calculate**
 
 **Results**
@@ -229,7 +229,7 @@ The system suggests:
 ### Recipes
 
 **Add Manual Recipe**
-1. **Life → Kitchen → Recipes**
+1. **Life â†’ Kitchen â†’ Recipes**
 2. **New Recipe**
 3. Complete:
    - Name
@@ -242,7 +242,7 @@ The system suggests:
 4. Save
 
 **Generate Recipe with AI**
-1. **Life → Kitchen → Recipes**
+1. **Life â†’ Kitchen â†’ Recipes**
 2. **Generate with AI**
 3. Describe what you want:
    - "Vegetarian recipe with chickpeas"
@@ -254,7 +254,7 @@ The system suggests:
 ### Pantry
 
 **Manage Inventory**
-1. **Life → Kitchen → Pantry**
+1. **Life â†’ Kitchen â†’ Pantry**
 2. **Add Ingredient**
 3. Complete:
    - Name
@@ -272,7 +272,7 @@ The system suggests:
 ### Shopping List
 
 **Create List**
-1. **Life → Kitchen → Shopping List**
+1. **Life â†’ Kitchen â†’ Shopping List**
 2. **Add Item**
 3. Complete:
    - Name
@@ -300,7 +300,7 @@ The system suggests:
 ### Edit Mode
 
 **Activate Editing**
-1. Go to **Onyx Central**
+1. Go to **Aliseus Central**
 2. Click **Edit Dashboard**
 3. Now you can:
    - Drag widgets to reorder
@@ -315,24 +315,24 @@ The system suggests:
 ### Available Widgets
 
 **Finance**
-- 💰 Account Summary
-- 📊 Financial Health
-- 💳 Upcoming Payments
-- 🎯 Active Goals
-- 📈 Financial Projection
-- 💸 Budgets
-- 📉 Timeline Evolution
+- ðŸ’° Account Summary
+- ðŸ“Š Financial Health
+- ðŸ’³ Upcoming Payments
+- ðŸŽ¯ Active Goals
+- ðŸ“ˆ Financial Projection
+- ðŸ’¸ Budgets
+- ðŸ“‰ Timeline Evolution
 
 **Life**
-- 🍳 Weekly Meal Plan
-- 📝 Shopping List
-- ✈️ Upcoming Trips
-- 🏠 Home Tasks
+- ðŸ³ Weekly Meal Plan
+- ðŸ“ Shopping List
+- âœˆï¸ Upcoming Trips
+- ðŸ  Home Tasks
 
 **General**
-- 🤖 Onyx Insights
-- 📅 Calendar
-- 🔔 Notifications
+- ðŸ¤– Aliseus Insights
+- ðŸ“… Calendar
+- ðŸ”” Notifications
 
 ---
 
@@ -341,18 +341,18 @@ The system suggests:
 ### Cookie Management
 
 **Configure Preferences**
-1. **Settings → Privacy**
+1. **Settings â†’ Privacy**
 2. **Cookie Management**
 3. Adjust:
-   - ✅ **Essential:** Always active (required)
-   - 🟡 **Analytics:** Optional (service improvement)
-   - 🔴 **Marketing:** Optional (advertising)
+   - âœ… **Essential:** Always active (required)
+   - ðŸŸ¡ **Analytics:** Optional (service improvement)
+   - ðŸ”´ **Marketing:** Optional (advertising)
 4. Save preferences
 
 ### Export Data
 
 **Download Your Data**
-1. **Settings → Privacy**
+1. **Settings â†’ Privacy**
 2. **Export Data**
 3. Click **Generate Export**
 4. Download JSON file
@@ -366,7 +366,7 @@ The system suggests:
 ### Delete Account
 
 **Deletion Process**
-1. **Settings → Privacy**
+1. **Settings â†’ Privacy**
 2. **Delete Account**
 3. Confirm with email
 4. **Grace period:** 30 days

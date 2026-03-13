@@ -25,7 +25,7 @@ vi.mock('../../store/useFinanceStore', () => ({
     }))
 }));
 
-vi.mock('../layout/OnyxLanding', () => ({
+vi.mock('../layout/AliseusLanding', () => ({
     default: ({ onLogin }: any) => <div data-testid="onyx-landing">Landing Page</div>
 }));
 

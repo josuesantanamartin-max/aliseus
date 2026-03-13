@@ -9,13 +9,13 @@ import { LandingFinance } from './landing/LandingFinance';
 import { LandingLife } from './landing/LandingLife';
 import { LegalPage } from '../legal/LegalPage';
 
-interface OnyxLandingProps {
+interface AliseusLandingProps {
   onLogin: (method: 'DEMO' | 'GOOGLE' | 'EMAIL' | 'NOTION', data?: { email: string, password: string, isRegister: boolean }) => void | Promise<void>;
   language: Language;
   setLanguage: (lang: Language) => void;
 }
 
-const OnyxLanding: React.FC<OnyxLandingProps> = ({ onLogin, language, setLanguage }) => {
+const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setLanguage }) => {
   const [currentView, setCurrentView] = useState<'HOME' | 'FINANCE' | 'LIFE'>('HOME');
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
@@ -246,4 +246,4 @@ const OnyxLanding: React.FC<OnyxLandingProps> = ({ onLogin, language, setLanguag
   );
 };
 
-export default OnyxLanding;
+export default AliseusLanding;

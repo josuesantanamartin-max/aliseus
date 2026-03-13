@@ -26,6 +26,7 @@ interface UserState {
     theme: 'light' | 'dark' | 'system';
 
     financeActiveTab: string;
+    financeSelectedAccountId: string | null;
     lifeActiveTab: string;
     isSidebarOpen: boolean;
     isFabOpen: boolean;
@@ -101,6 +102,7 @@ interface UserActions {
     setOnboardingStep: (step: number) => void;
 
     setFinanceActiveTab: (tab: string) => void;
+    setFinanceSelectedAccountId: (id: string | null) => void;
     setLifeActiveTab: (tab: string) => void;
     setSidebarOpen: (isOpen: boolean) => void;
     setFabOpen: (isOpen: boolean) => void;
@@ -145,6 +147,7 @@ export const useUserStore = create<UserState & UserActions>()(
             currency: 'EUR',
             theme: 'light',
             financeActiveTab: 'transactions',
+            financeSelectedAccountId: null,
             lifeActiveTab: 'kitchen-dashboard',
             isSidebarOpen: false,
             isFabOpen: false,
@@ -198,6 +201,7 @@ export const useUserStore = create<UserState & UserActions>()(
             completeOnboarding: () => set({ hasCompletedOnboarding: true }),
             setOnboardingStep: (step) => set({ onboardingStep: step }),
             setFinanceActiveTab: (v) => set({ financeActiveTab: v }),
+            setFinanceSelectedAccountId: (v) => set({ financeSelectedAccountId: v }),
             setLifeActiveTab: (v) => set({ lifeActiveTab: v }),
             setSidebarOpen: (v) => set({ isSidebarOpen: v }),
             setFabOpen: (v) => set({ isFabOpen: v }),
@@ -415,6 +419,7 @@ export const useUserStore = create<UserState & UserActions>()(
                 userProfile: state.userProfile,
                 recentSearches: state.recentSearches,
                 savedFilters: state.savedFilters,
+                financeSelectedAccountId: state.financeSelectedAccountId,
                 // Privacy state
                 cookiePreferences: state.cookiePreferences,
                 aiPreferences: state.aiPreferences,

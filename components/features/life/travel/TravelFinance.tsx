@@ -52,7 +52,7 @@ export const TravelFinance: React.FC<TravelFinanceProps> = ({ budget, spent, cur
                     </div>
                     <div>
                         <h4 className="font-black text-gray-900 text-sm">Tarjetas Vinculadas</h4>
-                        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">Onyx Black ••• 4092</p>
+                        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">Aliseus Black â€¢â€¢â€¢ 4092</p>
                     </div>
                 </div>
 
@@ -70,7 +70,7 @@ export const TravelFinance: React.FC<TravelFinanceProps> = ({ budget, spent, cur
             <div className="bg-blue-50/50 rounded-2xl p-4 flex gap-3 border border-blue-100/50">
                 <Info className="w-5 h-5 text-blue-500 shrink-0" />
                 <p className="text-xs font-medium text-blue-700 leading-relaxed">
-                    Tus gastos en este viaje se sincronizan automáticamente con tu módulo de <strong>Finanzas</strong>. Las extracciones en cajeros internacionales tienen 0% de comisión con tu plan Círculo Onyx Pro.
+                    Tus gastos en este viaje se sincronizan automáticamente con tu módulo de <strong>Finanzas</strong>. Las extracciones en cajeros internacionales tienen 0% de comisión con tu plan Círculo Aliseus Pro.
                 </p>
             </div>
         </div>

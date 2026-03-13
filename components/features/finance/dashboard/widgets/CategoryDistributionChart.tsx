@@ -12,7 +12,7 @@ interface CategoryDistributionChartProps {
     onFilter?: (category: string, subCategory?: string) => void;
 }
 
-const formatEUR = (amount: number) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount);
+const formatEUR = (amount: number) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount);
 
 const CategoryDistributionChart: React.FC<CategoryDistributionChartProps> = ({
     transactions,
@@ -158,7 +158,7 @@ const CategoryDistributionChart: React.FC<CategoryDistributionChartProps> = ({
                                                 <div className="w-16 h-1.5 bg-onyx-200 dark:bg-onyx-700 rounded-full overflow-hidden">
                                                     <div className="h-full rounded-full" style={{ width: `${percentage}%`, backgroundColor: color }}></div>
                                                 </div>
-                                                <span className="text-[10px] font-bold text-onyx-400">{percentage.toFixed(0)}%</span>
+                                                <span className="text-[10px] font-bold text-onyx-400">{percentage.toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}%</span>
                                             </div>
                                         </div>
                                     </div>

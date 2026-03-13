@@ -3,8 +3,13 @@ import { useLifeStore } from '../../../store/useLifeStore';
 import { useUserStore } from '../../../store/useUserStore';
 import { Recipe, WeeklyPlanState, MealTime, Language } from '../../../types';
 import { ChevronLeft, ChevronRight, Wand2, Coffee, Sunset, Moon, X, Loader2, BookOpen, GripVertical, Search, ChefHat, MoreHorizontal, Plus, Copy, Trash2, ClipboardPaste, Clipboard, MoreVertical, PlusCircle, Calendar, LayoutGrid, List, ShoppingCart, Flame, Sparkles } from 'lucide-react';
-import { generateMealPlan, generateImage, getRecipeDetails } from '../../../services/geminiService';
+import { generateImage } from '../../../services/geminiCore';
+import { generateMealPlan, getRecipeDetails } from '../../../services/geminiLife';
 import { getIngredientCategory } from '../../../utils/foodUtils';
+import { QuickAddModal } from './meal-planner/QuickAddModal';
+import { RecipeSidebar } from './meal-planner/RecipeSidebar';
+import { AiPlannerModal } from './meal-planner/AiPlannerModal';
+import { MealPlannerHeader } from './meal-planner/MealPlannerHeader';
 
 interface MealPlannerProps {
     onOpenRecipe: (recipe: Recipe) => void;
@@ -12,28 +17,7 @@ interface MealPlannerProps {
 
 const DEFAULT_FOOD_IMG = "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop";
 
-const AI_OPTIONS: Record<string, Record<string, Record<Language, string>>> = {
-    diet: {
-        'Omnivore': { ES: 'Omnívoro', EN: 'Omnivore', FR: 'Omnivore' },
-        'Vegetarian': { ES: 'Vegetariano', EN: 'Vegetarian', FR: 'Végétarien' },
-        'Vegan': { ES: 'Vegano', EN: 'Vegan', FR: 'Végétalien' },
-        'Keto': { ES: 'Keto', EN: 'Keto', FR: 'Céto' },
-        'Paleo': { ES: 'Paleo', EN: 'Paleo', FR: 'Paléo' },
-    },
-    goal: {
-        'Balanced': { ES: 'Balanceado', EN: 'Balanced', FR: 'Équilibré' },
-        'LowCarb': { ES: 'Bajo en Carbohidratos', EN: 'Low Carb', FR: 'Faible en glucides' },
-        'HighProtein': { ES: 'Alto en Proteína', EN: 'High Protein', FR: 'Riche en protéines' },
-        'BudgetFriendly': { ES: 'Económico', EN: 'Budget Friendly', FR: 'Économique' },
-        'QuickEasy': { ES: 'Rápido y Fácil', EN: 'Quick & Easy', FR: 'Rapide & Facile' },
-    },
-    difficulty: {
-        'Any': { ES: 'Cualquiera', EN: 'Any', FR: 'Peu importe' },
-        'Beginner': { ES: 'Principiante (< 30 min)', EN: 'Beginner (< 30 min)', FR: 'Débutant (< 30 min)' },
-        'Intermediate': { ES: 'Intermedio (30-60 min)', EN: 'Intermediate (30-60 min)', FR: 'Intermédiaire (30-60 min)' },
-        'Advanced': { ES: 'Avanzado (> 60 min)', EN: 'Advanced (> 60 min)', FR: 'Avancé (> 60 min)' },
-    }
-};
+
 
 const COURSE_LABELS: Record<string, string> = {
     'STARTER': '1er Plato',
@@ -74,7 +58,7 @@ const generatePlanDates = (startDate: Date, mode: ViewMode): Date[] => {
 
 export const MealPlanner: React.FC<MealPlannerProps> = ({ onOpenRecipe }) => {
 
-    const { weeklyPlans, setWeeklyPlans, recipes, setRecipes, pantryItems, shoppingList, setShoppingList } = useLifeStore();
+    const { weeklyPlans, setWeeklyPlans, recipes, setRecipes, pantryItems, shoppingList, setShoppingList, isSmartPlannerOpen, setIsSmartPlannerOpen } = useLifeStore();
     const { language } = useUserStore();
 
     // Adapter: Convert Array to Map for backward compatibility within this component
@@ -186,6 +170,26 @@ export const MealPlanner: React.FC<MealPlannerProps> = ({ onOpenRecipe }) => {
     const [dragOverSlot, setDragOverSlot] = useState<{ date: string; meal: MealTime } | null>(null);
 
     const days = generatePlanDates(plannerDate, viewMode);
+
+    // --- SMART PLANNER ORCHESTRATION ---
+    React.useEffect(() => {
+        if (isSmartPlannerOpen) {
+            const lowFreshness = pantryItems.filter(i => {
+                if (!i.expiryDate) return false;
+                const days = (new Date(i.expiryDate).getTime() - new Date().getTime()) / (1000 * 3600 * 24);
+                return days < 7; // Configured to 7 days for better zero-waste planning window
+            });
+
+            if (lowFreshness.length > 0) {
+                setIsSmartOptimizing(true);
+            } else {
+                setIsSmartOptimizing(false);
+            }
+            
+            setIsAiMenuOpen(true);
+            setIsSmartPlannerOpen(false); // Reset immediately so it doesn't get stuck
+        }
+    }, [isSmartPlannerOpen, pantryItems, setIsSmartPlannerOpen]);
 
     // --- AUTO-SYNC SHOPPING LIST ---
     React.useEffect(() => {
@@ -537,11 +541,11 @@ export const MealPlanner: React.FC<MealPlannerProps> = ({ onOpenRecipe }) => {
             const lowFreshness = pantryItems.filter(i => {
                 if (!i.expiryDate) return false;
                 const days = (new Date(i.expiryDate).getTime() - new Date().getTime()) / (1000 * 3600 * 24);
-                return days < 3;
+                return days < 7;
             });
 
             const smartGoal = isSmartOptimizing && lowFreshness.length > 0
-                ? `${aiCriteria.goal}. Priorizar y aprovechar los siguientes ingredientes que caducan pronto: ${lowFreshness.map(i => i.name).join(', ')}.`
+                ? `${aiCriteria.goal}. IMPORTANTE: MENÚ ZERO WASTE. DEBES PRIORIZAR Y BASAR ESTRICTAMENTE tus recetas en estos ingredientes que caducan pronto para evitar desperdiciarlos: ${lowFreshness.map(i => i.name).join(', ')}. Evita añadir demasiados ingredientes nuevos si no son necesarios.`
                 : aiCriteria.goal;
 
             const result: any = await generateMealPlan({
@@ -774,7 +778,7 @@ export const MealPlanner: React.FC<MealPlannerProps> = ({ onOpenRecipe }) => {
                             const lowFreshness = pantryItems.filter(i => {
                                 if (!i.expiryDate) return false;
                                 const days = (new Date(i.expiryDate).getTime() - new Date().getTime()) / (1000 * 3600 * 24);
-                                return days < 3;
+                                return days < 7;
                             });
                             if (lowFreshness.length === 0) {
                                 alert("¡Todo está fresco! No hay necesidad de optimizar por caducidad ahora mismo.");
@@ -998,182 +1002,38 @@ export const MealPlanner: React.FC<MealPlannerProps> = ({ onOpenRecipe }) => {
                     </div>
                 </div>
 
-                {isRecipeDrawerOpen && (
-                    <div className="w-80 bg-white border-l border-gray-100 p-6 flex flex-col gap-4 shadow-xl shrink-0 animate-slide-up">
-                        <div className="flex items-center gap-2 mb-2">
-                            <BookOpen className="w-5 h-5 text-emerald-600" />
-                            <h3 className="font-black text-gray-900 text-lg tracking-tight">Recetario</h3>
-                        </div>
-
-                        <div className="relative">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                            <input
-                                type="text"
-                                placeholder="Buscar receta..."
-                                value={recipeSearch}
-                                onChange={(e) => setRecipeSearch(e.target.value)}
-                                className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold outline-none focus:ring-2 focus:ring-emerald-500/20"
-                            />
-                        </div>
-
-                        <div className="flex-1 overflow-y-auto custom-scrollbar space-y-3">
-                            {recipes.filter(r => r.name.toLowerCase().includes(recipeSearch.toLowerCase())).map(recipe => (
-                                <div
-                                    key={recipe.id}
-                                    draggable
-                                    onDragStart={(e) => handleDragStart(e, recipe)}
-                                    className="bg-white p-3 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md cursor-grab active:cursor-grabbing flex items-center gap-3 transition-all hover:-translate-y-1"
-                                >
-                                    <div className="w-10 h-10 rounded-xl bg-gray-100 overflow-hidden shrink-0">
-                                        <img src={recipe.image || DEFAULT_FOOD_IMG} className="w-full h-full object-cover" />
-                                    </div>
-                                    <div className="flex-1">
-                                        <h4 className="text-xs font-bold text-gray-800 line-clamp-1">{recipe.name}</h4>
-                                        <p className="text-[10px] text-gray-400 font-bold uppercase">{recipe.prepTime}m • {recipe.calories}kcal</p>
-                                    </div>
-                                    <GripVertical className="w-4 h-4 text-gray-300" />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
+                <RecipeSidebar
+                    isOpen={isRecipeDrawerOpen}
+                    search={recipeSearch}
+                    setSearch={setRecipeSearch}
+                    recipes={recipes}
+                    onDragStart={handleDragStart}
+                />
             </div>
 
-            {
-                isAiMenuOpen && (
-                    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
-                        <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md overflow-hidden max-h-[90vh] overflow-y-auto custom-scrollbar">
-                            <div className="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-10">
-                                <h3 className="text-xl font-black text-gray-900 flex items-center gap-3 tracking-tight">
-                                    <Wand2 className="w-6 h-6 text-purple-600" /> Planificador IA
-                                </h3>
-                                <button onClick={() => setIsAiMenuOpen(false)} className="text-gray-400 hover:text-gray-900 p-2 hover:bg-gray-50 rounded-full"><X className="w-6 h-6" /></button>
-                            </div>
-                            <div className="p-8 space-y-6">
-                                <p className="text-xs font-medium text-gray-500 leading-relaxed">Crea un plan personalizado basado en tus objetivos y despensa.</p>
+            <AiPlannerModal
+                isOpen={isAiMenuOpen}
+                onClose={() => setIsAiMenuOpen(false)}
+                aiCourses={aiCourses}
+                setAiCourses={setAiCourses}
+                aiCriteria={aiCriteria}
+                setAiCriteria={setAiCriteria}
+                aiMealTypes={aiMealTypes}
+                setAiMealTypes={setAiMealTypes}
+                handleGenerateMenu={handleGenerateMenu}
+                aiGenerating={aiGenerating}
+                aiStatus={aiStatus}
+                language={language as Language}
+            />
 
-                                {/* Course Selection */}
-                                <div className="bg-purple-50 p-4 rounded-2xl border border-purple-100">
-                                    <label className="block text-[10px] font-black text-purple-700 uppercase tracking-[0.2em] mb-3">Estilo de Menú</label>
-                                    <div className="space-y-3">
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-xs font-bold text-gray-700">Platos en Almuerzo</span>
-                                            <div className="flex bg-white rounded-lg border border-purple-200 p-0.5">
-                                                {[1, 2].map(n => (
-                                                    <button key={n} onClick={() => setAiCourses(prev => ({ ...prev, lunch: n }))} className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${aiCourses.lunch === n ? 'bg-purple-600 text-white shadow-sm' : 'text-gray-400 hover:text-purple-600'}`}>
-                                                        {n === 1 ? 'Único' : '1º y 2º'}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-                                        <div className="flex justify-between items-center">
-                                            <span className="text-xs font-bold text-gray-700">Platos en Cena</span>
-                                            <div className="flex bg-white rounded-lg border border-purple-200 p-0.5">
-                                                {[1, 2].map(n => (
-                                                    <button key={n} onClick={() => setAiCourses(prev => ({ ...prev, dinner: n }))} className={`px-3 py-1 rounded-md text-xs font-bold transition-all ${aiCourses.dinner === n ? 'bg-purple-600 text-white shadow-sm' : 'text-gray-400 hover:text-purple-600'}`}>
-                                                        {n === 1 ? 'Único' : '1º y 2º'}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3">Duración</label>
-                                    <div className="flex gap-2">
-                                        {[3, 7, 30].map(days => (
-                                            <button key={days} onClick={() => setAiCriteria({ ...aiCriteria, days })} className={`flex-1 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest border-2 transition-all ${aiCriteria.days === days ? 'bg-purple-600 text-white border-purple-600 shadow-lg' : 'bg-white text-gray-400 border-gray-100 hover:bg-purple-50'}`}>{days} Días</button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3">Comidas a incluir</label>
-                                    <div className="flex gap-2">
-                                        <button onClick={() => setAiMealTypes(prev => ({ ...prev, breakfast: !prev.breakfast }))} className={`flex-1 py-4 rounded-2xl text-[9px] font-black uppercase tracking-widest border-2 flex flex-col items-center justify-center gap-2 transition-all ${aiMealTypes.breakfast ? 'bg-orange-50 border-orange-200 text-orange-700 shadow-sm' : 'bg-white border-gray-100 text-gray-400'}`}><Coffee className="w-5 h-5" /> Desayuno</button>
-                                        <button onClick={() => setAiMealTypes(prev => ({ ...prev, lunch: !prev.lunch }))} className={`flex-1 py-4 rounded-2xl text-[9px] font-black uppercase tracking-widest border-2 flex flex-col items-center justify-center gap-2 transition-all ${aiMealTypes.lunch ? 'bg-emerald-50 border-emerald-200 text-emerald-700 shadow-sm' : 'bg-white border-gray-100 text-gray-400'}`}><Sunset className="w-5 h-5" /> Almuerzo</button>
-                                        <button onClick={() => setAiMealTypes(prev => ({ ...prev, dinner: !prev.dinner }))} className={`flex-1 py-4 rounded-2xl text-[9px] font-black uppercase tracking-widest border-2 flex flex-col items-center justify-center gap-2 transition-all ${aiMealTypes.dinner ? 'bg-indigo-50 border-indigo-200 text-indigo-700 shadow-sm' : 'bg-white border-gray-100 text-gray-400'}`}><Moon className="w-5 h-5" /> Cena</button>
-                                    </div>
-                                </div>
-
-                                {(['diet', 'goal', 'difficulty'] as const).map((optionKey) => {
-                                    const options = AI_OPTIONS[optionKey] || {};
-                                    return (
-                                        <div key={optionKey}>
-                                            <label className="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3">
-                                                {optionKey === 'diet' ? 'Dieta' : optionKey === 'goal' ? 'Objetivo' : 'Dificultad'}
-                                            </label>
-                                            <div className="flex flex-wrap gap-2">
-                                                {Object.keys(options).map(opt => (
-                                                    <button
-                                                        key={opt}
-                                                        onClick={() => setAiCriteria({ ...aiCriteria, [optionKey]: opt })}
-                                                        className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border transition-all ${aiCriteria[optionKey as keyof typeof aiCriteria] === opt ? 'bg-purple-600 text-white border-purple-600 shadow-md' : 'bg-white text-gray-400 border-gray-100 hover:bg-purple-50'}`}
-                                                    >
-                                                        {options[opt][language as Language] || options[opt]['EN']}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-
-                                <button
-                                    type="button"
-                                    onClick={handleGenerateMenu}
-                                    disabled={aiGenerating || (!aiMealTypes.breakfast && !aiMealTypes.lunch && !aiMealTypes.dinner)}
-                                    className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-5 rounded-[2rem] font-black text-xs uppercase tracking-widest shadow-xl flex items-center justify-center gap-3 active:scale-95 transition-all disabled:opacity-50"
-                                >
-                                    {aiGenerating ? <Loader2 className="w-5 h-5 animate-spin" /> : <Wand2 className="w-5 h-5" />}
-                                    {aiGenerating ? aiStatus : 'Generar Plan'}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                )
-            }
-
-            {quickAddTarget && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in" onClick={() => setQuickAddTarget(null)}>
-                    <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[80vh]" onClick={e => e.stopPropagation()}>
-                        <div className="px-8 py-6 border-b border-gray-100 bg-white">
-                            <h3 className="text-lg font-black text-gray-900 tracking-tight flex items-center gap-2">
-                                <PlusCircle className="w-5 h-5 text-emerald-600" /> Añadir a {quickAddTarget.meal === 'breakfast' ? 'Desayuno' : quickAddTarget.meal === 'lunch' ? 'Almuerzo' : 'Cena'}
-                            </h3>
-                            <div className="mt-4 relative">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                                <input
-                                    type="text"
-                                    autoFocus
-                                    placeholder="Buscar en tus recetas..."
-                                    value={quickAddSearch}
-                                    onChange={(e) => setQuickAddSearch(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold outline-none focus:ring-2 focus:ring-emerald-500/20"
-                                />
-                            </div>
-                        </div>
-                        <div className="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-2">
-                            {recipes.filter(r => r.name.toLowerCase().includes(quickAddSearch.toLowerCase())).map(recipe => (
-                                <button
-                                    key={recipe.id}
-                                    onClick={() => handleQuickAddRecipe(recipe)}
-                                    className="w-full text-left bg-white p-3 rounded-2xl border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50/30 flex items-center gap-3 transition-all group"
-                                >
-                                    <div className="w-10 h-10 rounded-xl bg-gray-100 overflow-hidden shrink-0">
-                                        <img src={recipe.image || DEFAULT_FOOD_IMG} className="w-full h-full object-cover group-hover:scale-110 transition-transform" />
-                                    </div>
-                                    <div className="flex-1">
-                                        <h4 className="text-xs font-bold text-gray-900">{recipe.name}</h4>
-                                        <p className="text-[10px] text-gray-400 font-bold uppercase">{recipe.calories} kcal • {recipe.prepTime} min</p>
-                                    </div>
-                                    <Plus className="w-4 h-4 text-gray-300 group-hover:text-emerald-600" />
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            )}
+            <QuickAddModal
+                target={quickAddTarget}
+                onClose={() => setQuickAddTarget(null)}
+                search={quickAddSearch}
+                setSearch={setQuickAddSearch}
+                recipes={recipes}
+                onAddRecipe={handleQuickAddRecipe}
+            />
         </div >
     );
 };

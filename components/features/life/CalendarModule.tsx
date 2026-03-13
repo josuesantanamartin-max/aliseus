@@ -27,7 +27,7 @@ const CAL_TEXTS = {
         finance: 'Próximos Pagos y Facturas',
         kitchen: 'Menú del Día',
         goals: 'Metas de Ahorro',
-        agenda: 'Onyx Agenda',
+        agenda: 'Aliseus Agenda',
         subtitle: 'Línea de tiempo unificada',
         priority: 'Impacto',
         actionFinance: 'Gestionar Pago',
@@ -42,7 +42,7 @@ const CAL_TEXTS = {
         finance: 'Upcoming Payments',
         kitchen: 'Daily Menu',
         goals: 'Savings Goals',
-        agenda: 'Onyx Agenda',
+        agenda: 'Aliseus Agenda',
         subtitle: 'Unified timeline',
         priority: 'Impact',
         actionFinance: 'Manage Payment',
@@ -52,16 +52,16 @@ const CAL_TEXTS = {
     FR: {
         weekdays: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
         today: 'Aujourd\'hui',
-        noEvents: 'Horizon dégagé. Aucun paiement ni tâche pour cette journée.',
+        noEvents: 'Horizon dégagé. Aucun paiement ni tÃ¢che pour cette journée.',
         addEvent: 'Ajouter Rappel',
-        finance: 'Paiements à venir',
+        finance: 'Paiements Ã  venir',
         kitchen: 'Menu du jour',
         goals: 'Objectifs d\'épargne',
-        agenda: 'Onyx Agenda',
+        agenda: 'Aliseus Agenda',
         subtitle: 'Ligne du temps unifiée',
         priority: 'Impact',
         actionFinance: 'Gérer le paiement',
-        actionGoal: 'Voir progrès',
+        actionGoal: 'Voir progrÃ¨s',
         actionKitchen: 'Voir recette'
     }
 };
@@ -153,7 +153,7 @@ const CalendarModule: React.FC<CalendarModuleProps> = ({ language, weeklyPlan, o
                 if (dailyMeals[time] && dailyMeals[time].length > 0) {
                     const items = dailyMeals[time];
                     // Separator used is ';;' to be parsed in display logic
-                    const detailsText = items.map((r, i) => items.length > 1 ? `${i + 1}º ${r.name}` : r.name).join(';;');
+                    const detailsText = items.map((r, i) => items.length > 1 ? `${i + 1}Âº ${r.name}` : r.name).join(';;');
 
                     generatedEvents.push({
                         id: `kitchen-${dateKey}-${time}`,
@@ -210,7 +210,7 @@ const CalendarModule: React.FC<CalendarModuleProps> = ({ language, weeklyPlan, o
                         <div className="flex items-center gap-2 mt-2">
                             <p className="text-[10px] font-black text-orange-600 bg-orange-50 px-2 py-0.5 rounded uppercase tracking-widest">{t.subtitle}</p>
                             <span className="w-1 h-1 rounded-full bg-gray-200"></span>
-                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{events.length} Eventos Onyx</span>
+                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{events.length} Eventos Aliseus</span>
                         </div>
                     </div>
                     <div className="flex items-center gap-4">
@@ -293,7 +293,7 @@ const CalendarModule: React.FC<CalendarModuleProps> = ({ language, weeklyPlan, o
                                                     <div className="p-2 bg-white rounded-xl text-blue-600 shadow-sm"><ev.icon className="w-4 h-4" /></div>
                                                     <span className="font-bold text-sm text-gray-900">{ev.title}</span>
                                                 </div>
-                                                <span className="font-black text-blue-900 text-sm">-{ev.amount?.toFixed(2)}€</span>
+                                                <span className="font-black text-blue-900 text-sm">-{ev.amount?.toFixed(2)}â‚¬</span>
                                             </div>
                                             <p className="text-[10px] font-medium text-blue-400 uppercase tracking-wide pl-12">{ev.details}</p>
                                         </div>

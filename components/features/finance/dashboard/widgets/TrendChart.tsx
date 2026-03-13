@@ -78,7 +78,7 @@ const TrendChart: React.FC<TrendChartProps> = ({ transactions }) => {
                             fontWeight={600}
                             axisLine={false}
                             tickLine={false}
-                            tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
+                            tickFormatter={(value) => value.toLocaleString('es-ES')}
                         />
                         <Tooltip
                             contentStyle={{

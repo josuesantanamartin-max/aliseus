@@ -1,30 +1,30 @@
-# 🚀 Guía Rápida - Aliseus
+# ðŸš€ GuÃ­a RÃ¡pida - Aliseus
 
-## ⚡ Inicio Rápido (3 pasos)
+## âš¡ Inicio RÃ¡pido (3 pasos)
 
-### 1️⃣ Instalar Node.js (si no lo tienes)
+### 1ï¸âƒ£ Instalar Node.js (si no lo tienes)
 
 **Descarga e instala Node.js desde:**
-- 🌐 https://nodejs.org/
-- **Recomendado:** Versión LTS (Long Term Support)
+- ðŸŒ https://nodejs.org/
+- **Recomendado:** VersiÃ³n LTS (Long Term Support)
 
-**⚠️ IMPORTANTE después de instalar:**
+**âš ï¸ IMPORTANTE despuÃ©s de instalar:**
 
-**Opción A - Reiniciar PowerShell (Recomendado):**
+**OpciÃ³n A - Reiniciar PowerShell (Recomendado):**
 1. Cierra todas las ventanas de PowerShell abiertas
 2. Abre una nueva ventana de PowerShell
-3. Navega al directorio del proyecto: `cd "ruta\a\Onyx-Suite-main\Onyx-Suite-main"`
+3. Navega al directorio del proyecto: `cd "ruta\a\Aliseus-Suite-main\Aliseus-Suite-main"`
 
-**Opción B - Recargar PATH sin cerrar:**
+**OpciÃ³n B - Recargar PATH sin cerrar:**
 Ejecuta el script: `.\RECARGAR-PATH.ps1`
 
-**Verificar instalación:**
+**Verificar instalaciÃ³n:**
 ```powershell
 node --version
 npm --version
 ```
 
-### 2️⃣ Instalar Dependencias
+### 2ï¸âƒ£ Instalar Dependencias
 
 Abre PowerShell en el directorio del proyecto y ejecuta:
 
@@ -32,59 +32,59 @@ Abre PowerShell en el directorio del proyecto y ejecuta:
 npm install
 ```
 
-### 3️⃣ Ejecutar la Aplicación
+### 3ï¸âƒ£ Ejecutar la AplicaciÃ³n
 
-**Opción A - Script Automático:**
+**OpciÃ³n A - Script AutomÃ¡tico:**
 ```powershell
 .\EJECUTAR-APP.ps1
 ```
 
-**Opción B - Manual:**
+**OpciÃ³n B - Manual:**
 ```powershell
 npm run dev
 ```
 
-### 4️⃣ Abrir en el Navegador
+### 4ï¸âƒ£ Abrir en el Navegador
 
-La aplicación estará disponible en:
-- 🔗 **http://localhost:3000**
+La aplicaciÃ³n estarÃ¡ disponible en:
+- ðŸ”— **http://localhost:3000**
 
 ---
 
-## 🎯 Funcionalidades de Aliseus
+## ðŸŽ¯ Funcionalidades de Aliseus
 
-### 📊 Dashboard Global
-- Vista 360° de tu vida financiera y personal
+### ðŸ“Š Dashboard Global
+- Vista 360Â° de tu vida financiera y personal
 - Widgets personalizables
-- Sincronización en tiempo real
+- SincronizaciÃ³n en tiempo real
 
-### 💰 Módulo de Finanzas
+### ðŸ’° MÃ³dulo de Finanzas
 - **Transacciones:** Ingresos, gastos, transferencias
-- **Cuentas:** Múltiples cuentas bancarias
-- **Presupuestos:** Control de gastos por categoría
-- **Metas:** Ahorro para objetivos específicos
-- **Deudas:** Seguimiento de préstamos y tarjetas
+- **Cuentas:** MÃºltiples cuentas bancarias
+- **Presupuestos:** Control de gastos por categorÃ­a
+- **Metas:** Ahorro para objetivos especÃ­ficos
+- **Deudas:** Seguimiento de prÃ©stamos y tarjetas
 
-### 🏠 Módulo de Vida
+### ðŸ  MÃ³dulo de Vida
 - **Cocina:** Despensa, recetas, planificador de comidas
-- **Lista de Compras:** Organización inteligente
-- **Viajes:** Planificación y presupuestos de viaje
-- **Familia:** Gestión de miembros y tareas
+- **Lista de Compras:** OrganizaciÃ³n inteligente
+- **Viajes:** PlanificaciÃ³n y presupuestos de viaje
+- **Familia:** GestiÃ³n de miembros y tareas
 
-### ⚙️ Configuración
-- Personalización de categorías
-- Reglas de automatización
+### âš™ï¸ ConfiguraciÃ³n
+- PersonalizaciÃ³n de categorÃ­as
+- Reglas de automatizaciÃ³n
 - Multi-idioma (ES, EN, FR)
 - Multi-moneda (EUR, USD, GBP)
 
 ---
 
-## 🔑 Configuración de API Keys (Opcional)
+## ðŸ”‘ ConfiguraciÃ³n de API Keys (Opcional)
 
 Para funcionalidades avanzadas con IA:
 
-1. Crea un archivo `.env.local` en la raíz del proyecto
-2. Añade tus API keys:
+1. Crea un archivo `.env.local` en la raÃ­z del proyecto
+2. AÃ±ade tus API keys:
 
 ```env
 VITE_GEMINI_API_KEY=tu-api-key-de-gemini
@@ -92,40 +92,40 @@ VITE_SUPABASE_URL=tu-url-de-supabase
 VITE_SUPABASE_ANON_KEY=tu-key-de-supabase
 ```
 
-**Nota:** La aplicación funciona en **modo demo** sin estas keys.
+**Nota:** La aplicaciÃ³n funciona en **modo demo** sin estas keys.
 
 ---
 
-## 🛠️ Comandos Disponibles
+## ðŸ› ï¸ Comandos Disponibles
 
 ```powershell
 npm run dev        # Servidor de desarrollo
-npm run build      # Build de producción
+npm run build      # Build de producciÃ³n
 npm run preview    # Preview del build
-npm run lint       # Verificar código
+npm run lint       # Verificar cÃ³digo
 npm run test       # Ejecutar tests
 ```
 
 ---
 
-## ❓ Solución de Problemas
+## â“ SoluciÃ³n de Problemas
 
 ### Error: "npm no se reconoce"
-**Solución:** Node.js no está instalado o no está en el PATH
+**SoluciÃ³n:** Node.js no estÃ¡ instalado o no estÃ¡ en el PATH
 - Instala Node.js desde nodejs.org
-- Reinicia PowerShell después de instalar
+- Reinicia PowerShell despuÃ©s de instalar
 
 ### Error: "Puerto 3000 en uso"
-**Solución:** Cambia el puerto en `vite.config.ts` o cierra la aplicación que usa el puerto
+**SoluciÃ³n:** Cambia el puerto en `vite.config.ts` o cierra la aplicaciÃ³n que usa el puerto
 
 ### Error: "Dependencias no instaladas"
-**Solución:** Ejecuta `npm install` nuevamente
+**SoluciÃ³n:** Ejecuta `npm install` nuevamente
 
 ---
 
-## 📱 Modo Demo
+## ðŸ“± Modo Demo
 
-Aliseus incluye un **modo demo** que funciona sin configuración:
+Aliseus incluye un **modo demo** que funciona sin configuraciÃ³n:
 - No requiere cuenta
 - Datos almacenados localmente
 - Funcionalidad completa disponible
@@ -134,16 +134,16 @@ Al iniciar la app, selecciona **"Probar Demo (Sin Cuenta)"**
 
 ---
 
-## 🎨 Características Destacadas
+## ðŸŽ¨ CaracterÃ­sticas Destacadas
 
-✨ **Interfaz Moderna:** Diseño limpio y profesional  
-🚀 **Rápido:** Optimizado para rendimiento  
-🔒 **Privado:** Datos locales por defecto  
-🌐 **Multi-idioma:** Español, Inglés, Francés  
-📱 **Responsive:** Funciona en móvil y desktop  
-🤖 **IA Integrada:** Análisis inteligente con Gemini  
+âœ¨ **Interfaz Moderna:** DiseÃ±o limpio y profesional  
+ðŸš€ **RÃ¡pido:** Optimizado para rendimiento  
+ðŸ”’ **Privado:** Datos locales por defecto  
+ðŸŒ **Multi-idioma:** EspaÃ±ol, InglÃ©s, FrancÃ©s  
+ðŸ“± **Responsive:** Funciona en mÃ³vil y desktop  
+ðŸ¤– **IA Integrada:** AnÃ¡lisis inteligente con Gemini  
 
 ---
 
-**¿Necesitas ayuda?** Revisa el archivo `README.md` o `DEPLOYMENT.md` para más información.
+**Â¿Necesitas ayuda?** Revisa el archivo `README.md` o `DEPLOYMENT.md` para mÃ¡s informaciÃ³n.
 

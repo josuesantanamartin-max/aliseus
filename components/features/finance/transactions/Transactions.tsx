@@ -7,7 +7,7 @@ import { useCurrency } from '../../../../hooks/useCurrency';
 import {
   Plus, Database, FileUp, X, Upload, ArrowUpRight, ArrowDownRight, ArrowRightLeft, Repeat, Sparkles, Loader2
 } from 'lucide-react';
-import { suggestCategory } from '../../../../services/geminiService';
+import { suggestCategory } from '../../../../services/geminiCore';
 import TransactionFilters from './components/TransactionFilters';
 import TransactionStats from './components/TransactionStats';
 import TransactionList from './components/TransactionList';
@@ -42,7 +42,7 @@ const Transactions: React.FC<TransactionsProps> = ({
 
   const [viewMode, setViewMode] = useState<'MONTH' | 'YEAR'>('MONTH');
 
-  const [filterDate, setFilterDate] = useState<string>(new Date().toISOString().slice(0, 7));
+  const [filterDate, setFilterDate] = useState<Date>(new Date());
   const [filterCategory, setFilterCategory] = useState<string>('');
   const [filterSubCategory, setFilterSubCategory] = useState<string>('');
   const [filterType, setFilterType] = useState<'' | 'INCOME' | 'EXPENSE'>('');
@@ -50,11 +50,8 @@ const Transactions: React.FC<TransactionsProps> = ({
   const [showRecurringOnly, setShowRecurringOnly] = useState(false);
 
   useEffect(() => {
-    if (viewMode === 'YEAR' && filterDate.length > 4) {
-      setFilterDate(filterDate.substring(0, 4));
-    } else if (viewMode === 'MONTH' && filterDate.length === 4) {
-      setFilterDate(`${filterDate}-01`);
-    }
+    // When viewMode changes, we don't necessarily need to change the Date object,
+    // but we can ensure it's normalized if needed.
   }, [viewMode]);
 
   // ADD FORM STATE
@@ -109,7 +106,10 @@ const Transactions: React.FC<TransactionsProps> = ({
 
   useEffect(() => {
     if (initialFilters) {
-      if (initialFilters.initialDate) setFilterDate(initialFilters.initialDate);
+      if (initialFilters.initialDate) {
+        const d = new Date(initialFilters.initialDate);
+        if (!isNaN(d.getTime())) setFilterDate(d);
+      }
       if (initialFilters.category) setFilterCategory(initialFilters.category);
       if (initialFilters.subCategory) setFilterSubCategory(initialFilters.subCategory);
       if (initialFilters.accountId) setFilterAccountId(initialFilters.accountId);
@@ -118,11 +118,15 @@ const Transactions: React.FC<TransactionsProps> = ({
   }, [initialFilters]);
 
   const filteredTransactions = useMemo(() => {
+    const targetMonth = filterDate.getMonth();
+    const targetYear = filterDate.getFullYear();
+
     return transactions.filter(t => {
+      const tDate = new Date(t.date);
       if (viewMode === 'MONTH') {
-        if (!t.date.startsWith(filterDate)) return false;
+        if (tDate.getMonth() !== targetMonth || tDate.getFullYear() !== targetYear) return false;
       } else {
-        if (!t.date.startsWith(filterDate.substring(0, 4))) return false;
+        if (tDate.getFullYear() !== targetYear) return false;
       }
 
       if (filterCategory && t.category !== filterCategory) return false;
@@ -270,10 +274,8 @@ const Transactions: React.FC<TransactionsProps> = ({
     let newestDate = filterDate;
 
     importedTransactions.forEach(t => {
-      const txDate = t.date || new Date().toISOString().split('T')[0];
-      if (txDate.startsWith(txDate.slice(0, 7)) && txDate > newestDate) {
-        // Simplistic check to move to the month of imported data
-      }
+      const txDateStr = t.date || new Date().toISOString().split('T')[0];
+      const txDate = new Date(txDateStr);
 
       // Better: collect all months and pick the most frequent or highest one
       const transactionData = {
@@ -300,9 +302,9 @@ const Transactions: React.FC<TransactionsProps> = ({
       const dates = importedTransactions.map(t => t.date).filter(Boolean) as string[];
       if (dates.length > 0) {
         const latestImported = dates.sort().reverse()[0];
-        const latestMonth = latestImported.slice(0, 7);
-        if (latestMonth !== filterDate) {
-          setFilterDate(latestMonth);
+        const latestMonthDate = new Date(latestImported);
+        if (latestMonthDate.getMonth() !== filterDate.getMonth() || latestMonthDate.getFullYear() !== filterDate.getFullYear()) {
+          setFilterDate(latestMonthDate);
         }
       }
     }

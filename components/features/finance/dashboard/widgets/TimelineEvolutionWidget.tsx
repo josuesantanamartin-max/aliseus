@@ -13,7 +13,7 @@ interface TimelineEvolutionWidgetProps {
     onNavigate: (app: string, tab?: string) => void;
 }
 
-const formatEUR = (amount: number) => new Intl.NumberFormat('de-DE', {
+const formatEUR = (amount: number) => new Intl.NumberFormat('es-ES', {
     style: 'currency',
     currency: 'EUR',
     minimumFractionDigits: 0,
@@ -551,11 +551,7 @@ const TimelineEvolutionWidget: React.FC<TimelineEvolutionWidgetProps> = ({
                                 fontWeight={600}
                                 axisLine={false}
                                 tickLine={false}
-                                tickFormatter={(value) => {
-                                    if (value === 0) return '0';
-                                    if (value >= 1000) return `${(value / 1000).toFixed(value >= 10000 ? 0 : 1)}k`;
-                                    return value.toFixed(0);
-                                }}
+                                tickFormatter={(value) => value.toLocaleString('es-ES')}
                             />
                             <Tooltip
                                 contentStyle={{
@@ -604,11 +600,7 @@ const TimelineEvolutionWidget: React.FC<TimelineEvolutionWidgetProps> = ({
                                 fontWeight={600}
                                 axisLine={false}
                                 tickLine={false}
-                                tickFormatter={(value) => {
-                                    if (value === 0) return '0';
-                                    if (value >= 1000) return `${(value / 1000).toFixed(value >= 10000 ? 0 : 1)}k`;
-                                    return value.toFixed(0);
-                                }}
+                                tickFormatter={(value) => value.toLocaleString('es-ES')}
                             />
                             <Tooltip
                                 contentStyle={{

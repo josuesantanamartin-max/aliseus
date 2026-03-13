@@ -122,10 +122,10 @@ const AnnualComparisonWidget: React.FC<DashboardDataProps> = ({
                     ? 'text-green-700 dark:text-green-300'
                     : 'text-red-700 dark:text-red-300'
                     }`}>
-                    {current.savings.toFixed(2)}€
+                    {current.savings.toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}€
                 </p>
                 <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                    vs {previous.savings.toFixed(2)}€ en {previousYear}
+                    vs {previous.savings.toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}€ en {previousYear}
                 </p>
             </div>
         </div>
@@ -170,7 +170,7 @@ const ComparisonBar: React.FC<{
                             <div className="flex items-center justify-between text-[10px] mb-1">
                                 <span className="font-bold text-gray-400 dark:text-gray-500">{item.year}</span>
                                 <span className={textClass}>
-                                    {item.value.toFixed(2)}€
+                                    {item.value.toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}€
                                 </span>
                             </div>
                             <div className="h-1.5 bg-gray-100 dark:bg-onyx-800/50 rounded-full overflow-hidden">

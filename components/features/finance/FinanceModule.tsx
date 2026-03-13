@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { useUserStore } from '../../../store/useUserStore';
 import { useFinanceStore } from '../../../store/useFinanceStore';
-import { analyzeFinances } from '../../../services/geminiService';
-import Transactions from './transactions/Transactions';
-import Debts from './Debts';
-import Goals from './Goals';
-import Accounts from './Accounts';
-import Budgets from './Budgets';
-import Projects from './Projects';
+import { analyzeFinances } from '../../../services/geminiFinancial';
 import { Wallet, Menu, CreditCard, PieChart, Target, ReceiptEuro, Sparkles, Loader2, X } from 'lucide-react';
 
-import { RetirementSimulator } from './RetirementSimulator';
 import { AnimatePresence } from 'framer-motion';
 import { PageTransition } from '../../common/animations/PageTransition';
+import ModuleLoader from '../../common/ui/ModuleLoader';
+
+const Transactions = React.lazy(() => import('./transactions/Transactions'));
+const Debts = React.lazy(() => import('./Debts'));
+const Goals = React.lazy(() => import('./Goals'));
+const Accounts = React.lazy(() => import('./Accounts'));
+const Budgets = React.lazy(() => import('./Budgets'));
+const Projects = React.lazy(() => import('./Projects'));
+const RetirementSimulator = React.lazy(() => import('./RetirementSimulator').then(m => ({ default: m.RetirementSimulator })));
 // <button onClick={() => setActiveTab('retirement')} ...>Jubilación</button>
 
 // ... inside renderContent ...
@@ -83,7 +85,9 @@ const FinanceModule: React.FC<FinanceModuleProps> = ({ onMenuClick }) => {
         return (
             <AnimatePresence mode="wait">
                 <PageTransition key={activeTab}>
-                    {content}
+                    <React.Suspense fallback={<ModuleLoader />}>
+                        {content}
+                    </React.Suspense>
                 </PageTransition>
             </AnimatePresence>
         );
@@ -97,7 +101,7 @@ const FinanceModule: React.FC<FinanceModuleProps> = ({ onMenuClick }) => {
                         <Wallet className="text-white w-5 h-5" />
                     </div>
                     <div className="flex flex-col">
-                        <span className="font-bold text-cyan-900 text-base leading-none uppercase tracking-tight">Onyx <span className="text-cyan-600">Finanzas</span></span>
+                        <span className="font-bold text-cyan-900 text-base leading-none uppercase tracking-tight">Aliseus <span className="text-cyan-600">Finanzas</span></span>
                         <span className="text-[8px] font-bold text-onyx-300 uppercase tracking-[0.2em] mt-1">Management Suite</span>
                     </div>
                 </div>

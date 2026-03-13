@@ -90,7 +90,7 @@ export default function FinancialPulse() {
                     </div>
                     <div className="flex justify-end w-full">
                         <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wide">
-                            {percentUsed.toFixed(0)}% Usado
+                            {Math.round(percentUsed)}% Usado
                         </span>
                     </div>
                 </div>

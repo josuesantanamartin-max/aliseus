@@ -92,7 +92,7 @@ export const FamilyDetailPanel: React.FC<FamilyDetailPanelProps> = ({ member, on
                     <div className="p-6 border-b border-gray-50 flex justify-between items-center">
                         <div className="flex items-center gap-2">
                             <History className="w-4 h-4 text-emerald-600" />
-                            <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Últimos Movimientos</h4>
+                            <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Ãšltimos Movimientos</h4>
                         </div>
                         {isChild && (
                             <button className="text-[10px] font-black text-emerald-600 uppercase tracking-widest hover:underline">Gestionar Paga</button>
@@ -140,7 +140,7 @@ export const FamilyDetailPanel: React.FC<FamilyDetailPanelProps> = ({ member, on
                         </div>
                         <div className="p-4 bg-gray-50 rounded-2xl border border-transparent hover:border-blue-100 transition-all cursor-pointer">
                             <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Seguro Médico</p>
-                            <span className="text-xs font-bold text-gray-700">Sanitas Onyx #423...</span>
+                            <span className="text-xs font-bold text-gray-700">Sanitas Aliseus #423...</span>
                         </div>
                     </div>
 

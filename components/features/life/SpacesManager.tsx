@@ -33,7 +33,7 @@ export const SpacesManager: React.FC = () => {
       <div className="h-full flex flex-col space-y-8 animate-fade-in pb-20 p-8 overflow-y-auto custom-scrollbar">
          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-               <h2 className="text-3xl font-black text-gray-900 tracking-tighter">Onyx Spaces</h2>
+               <h2 className="text-3xl font-black text-gray-900 tracking-tighter">Aliseus Spaces</h2>
                <p className="text-gray-400 font-bold text-sm uppercase tracking-widest mt-1">Gestión de Activos y Mantenimiento</p>
             </div>
             <div className="flex bg-white p-1.5 rounded-2xl shadow-sm border border-gray-100">
@@ -71,7 +71,7 @@ export const SpacesManager: React.FC = () => {
                               <button className="text-gray-300 hover:text-gray-900 transition-colors"><MoreHorizontal className="w-5 h-5" /></button>
                            </div>
                            <h4 className="font-black text-gray-900 text-lg leading-tight truncate">{asset.name}</h4>
-                           <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1">{asset.location} • {asset.category}</p>
+                           <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1">{asset.location} â€¢ {asset.category}</p>
                            <div className="mt-6 pt-4 border-t border-gray-200 flex justify-between items-center">
                               {asset.status === 'NEED_MAINTENANCE' ?
                                  <span className="text-[9px] font-black text-red-500 flex items-center gap-1 uppercase tracking-tighter"><AlertCircle className="w-3 h-3" /> Revisión Requerida</span> :
@@ -114,7 +114,7 @@ export const SpacesManager: React.FC = () => {
                      <div className="relative z-10">
                         <h3 className="text-xl font-black mb-4">Smart Home Sync</h3>
                         <div className="space-y-4">
-                           <div className="flex justify-between items-center text-xs font-bold opacity-80"><span>Temperatura</span><span>22.5°C</span></div>
+                           <div className="flex justify-between items-center text-xs font-bold opacity-80"><span>Temperatura</span><span>22.5Â°C</span></div>
                            <div className="w-full h-1 bg-white/20 rounded-full"><div className="w-[60%] h-full bg-cyan-400"></div></div>
                            <div className="flex justify-between items-center text-xs font-bold opacity-80"><span>Humedad</span><span>45%</span></div>
                            <div className="w-full h-1 bg-white/20 rounded-full"><div className="w-[45%] h-full bg-cyan-400"></div></div>

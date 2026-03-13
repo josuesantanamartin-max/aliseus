@@ -208,7 +208,7 @@ export const migrationService = {
 
             return {
                 success: true,
-                message: `Migración completada: ${totalMigrated} elementos migrados a Onyx Cloud`,
+                message: `Migración completada: ${totalMigrated} elementos migrados a Aliseus Cloud`,
                 details: migrationResults
             };
 

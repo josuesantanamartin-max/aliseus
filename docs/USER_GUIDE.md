@@ -1,24 +1,24 @@
-# 📘 Manual de Usuario - Aliseus
+# ðŸ“˜ Manual de Usuario - Aliseus
 
-**Versión 1.0** | Última actualización: Febrero 2026
+**Versión 1.0** | Ãšltima actualización: Febrero 2026
 
 ---
 
-## 🎯 Introducción
+## ðŸŽ¯ Introducción
 
 Bienvenido a **Aliseus**, tu asistente personal todo-en-uno para gestionar finanzas, vida diaria y hogar. Esta guía te ayudará a aprovechar al máximo todas las funcionalidades de la aplicación.
 
-### ¿Qué es Aliseus?
+### Â¿Qué es Aliseus?
 
 Aliseus es una plataforma integral que combina:
-- 💰 **Gestión Financiera**: Transacciones, presupuestos, metas, deudas
-- 🏠 **Gestión del Hogar**: Cocina, recetas, planificación de comidas, viajes
-- 👥 **Colaboración Familiar**: Espacios compartidos, roles, permisos
-- 🤖 **Inteligencia Artificial**: Recomendaciones, categorización automática, generación de recetas
+- ðŸ’° **Gestión Financiera**: Transacciones, presupuestos, metas, deudas
+- ðŸ  **Gestión del Hogar**: Cocina, recetas, planificación de comidas, viajes
+- ðŸ‘¥ **Colaboración Familiar**: Espacios compartidos, roles, permisos
+- ðŸ¤– **Inteligencia Artificial**: Recomendaciones, categorización automática, generación de recetas
 
 ---
 
-## 🚀 Primeros Pasos
+## ðŸš€ Primeros Pasos
 
 ### 1. Crear tu Cuenta
 
@@ -64,13 +64,13 @@ El dashboard es tu centro de control:
 
 ---
 
-## 💰 Módulo de Finanzas
+## ðŸ’° Módulo de Finanzas
 
 ### Transacciones
 
 #### Agregar Transacción Manual
 
-1. Ve a **Finanzas → Transacciones**
+1. Ve a **Finanzas â†’ Transacciones**
 2. Haz clic en **"+ Nueva Transacción"**
 3. Completa los campos:
    - **Tipo**: Ingreso o Gasto
@@ -84,14 +84,14 @@ El dashboard es tu centro de control:
 
 #### Importar desde CSV
 
-1. Ve a **Finanzas → Transacciones**
+1. Ve a **Finanzas â†’ Transacciones**
 2. Haz clic en **"Importar CSV"**
 3. Arrastra tu archivo o haz clic para seleccionar
 4. Mapea las columnas:
-   - Fecha → Columna de fecha en tu CSV
-   - Descripción → Columna de descripción
-   - Monto → Columna de cantidad
-   - Categoría → (Opcional) Columna de categoría
+   - Fecha â†’ Columna de fecha en tu CSV
+   - Descripción â†’ Columna de descripción
+   - Monto â†’ Columna de cantidad
+   - Categoría â†’ (Opcional) Columna de categoría
 5. Revisa la vista previa
 6. Haz clic en **"Importar"**
 
@@ -110,7 +110,7 @@ El dashboard es tu centro de control:
 
 #### Crear Presupuesto
 
-1. Ve a **Finanzas → Presupuestos**
+1. Ve a **Finanzas â†’ Presupuestos**
 2. Haz clic en **"+ Nuevo Presupuesto"**
 3. Configura:
    - **Categoría**: Elige la categoría a presupuestar
@@ -129,7 +129,7 @@ El dashboard es tu centro de control:
 
 #### Agregar Cuenta
 
-1. Ve a **Finanzas → Cuentas**
+1. Ve a **Finanzas â†’ Cuentas**
 2. Haz clic en **"+ Nueva Cuenta"**
 3. Completa:
    - **Nombre**: Ej. "Cuenta Corriente Santander"
@@ -143,7 +143,7 @@ El dashboard es tu centro de control:
 
 #### Crear Meta
 
-1. Ve a **Finanzas → Metas**
+1. Ve a **Finanzas â†’ Metas**
 2. Haz clic en **"+ Nueva Meta"**
 3. Define:
    - **Nombre**: Ej. "Vacaciones 2026"
@@ -163,7 +163,7 @@ El dashboard es tu centro de control:
 
 #### Registrar Deuda
 
-1. Ve a **Finanzas → Deudas**
+1. Ve a **Finanzas â†’ Deudas**
 2. Haz clic en **"+ Nueva Deuda"**
 3. Completa:
    - **Acreedor**: A quién debes
@@ -181,13 +181,13 @@ El dashboard es tu centro de control:
 
 ---
 
-## 🏠 Módulo de Vida y Hogar
+## ðŸ  Módulo de Vida y Hogar
 
 ### Cocina y Recetas
 
 #### Agregar Receta Manual
 
-1. Ve a **Vida → Cocina → Recetas**
+1. Ve a **Vida â†’ Cocina â†’ Recetas**
 2. Haz clic en **"+ Nueva Receta"**
 3. Completa:
    - **Nombre**: Título de la receta
@@ -202,8 +202,8 @@ El dashboard es tu centro de control:
 
 #### Generar Receta con IA
 
-1. Ve a **Vida → Cocina → Recetas**
-2. Haz clic en **"✨ Generar con IA"**
+1. Ve a **Vida â†’ Cocina â†’ Recetas**
+2. Haz clic en **"âœ¨ Generar con IA"**
 3. Describe lo que quieres:
    - "Pasta con pollo y verduras"
    - "Postre sin azúcar para 4 personas"
@@ -220,7 +220,7 @@ El dashboard es tu centro de control:
 
 #### Crear Plan Semanal
 
-1. Ve a **Vida → Cocina → Plan Semanal**
+1. Ve a **Vida â†’ Cocina â†’ Plan Semanal**
 2. Verás un calendario de 7 días
 3. Para cada día:
    - Arrastra recetas desde el panel lateral
@@ -232,7 +232,7 @@ El dashboard es tu centro de control:
 #### Generar Lista de Compras
 
 1. Con tu plan semanal completo
-2. Haz clic en **"📋 Generar Lista de Compras"**
+2. Haz clic en **"ðŸ“‹ Generar Lista de Compras"**
 3. La app consolida todos los ingredientes
 4. Elimina duplicados y suma cantidades
 5. Marca lo que ya tienes en despensa
@@ -242,7 +242,7 @@ El dashboard es tu centro de control:
 
 #### Agregar Productos
 
-1. Ve a **Vida → Cocina → Despensa**
+1. Ve a **Vida â†’ Cocina â†’ Despensa**
 2. Haz clic en **"+ Agregar Producto"**
 3. Completa:
    - **Nombre**: Ej. "Arroz"
@@ -262,7 +262,7 @@ El dashboard es tu centro de control:
 
 #### Planificar Viaje
 
-1. Ve a **Vida → Viajes**
+1. Ve a **Vida â†’ Viajes**
 2. Haz clic en **"+ Nuevo Viaje"**
 3. Configura:
    - **Destino**: Ciudad/País
@@ -278,11 +278,11 @@ El dashboard es tu centro de control:
 
 ---
 
-## ⚙️ Configuración y Ajustes
+## âš™ï¸ Configuración y Ajustes
 
 ### Perfil de Usuario
 
-1. Ve a **Configuración → Mi Perfil**
+1. Ve a **Configuración â†’ Mi Perfil**
 2. Edita:
    - Nombre completo
    - Email
@@ -294,7 +294,7 @@ El dashboard es tu centro de control:
 
 #### Idioma y Región
 
-1. Ve a **Configuración → Preferencias**
+1. Ve a **Configuración â†’ Preferencias**
 2. Selecciona:
    - **Idioma**: ES, EN, FR
    - **Moneda**: EUR, USD, GBP
@@ -303,7 +303,7 @@ El dashboard es tu centro de control:
 
 #### Tema Visual
 
-1. Ve a **Configuración → Personalización**
+1. Ve a **Configuración â†’ Personalización**
 2. Elige:
    - **Claro**: Fondo blanco
    - **Oscuro**: Fondo negro (mejor para la noche)
@@ -313,7 +313,7 @@ El dashboard es tu centro de control:
 
 #### Crear Categoría
 
-1. Ve a **Configuración → Categorías**
+1. Ve a **Configuración â†’ Categorías**
 2. Haz clic en **"+ Nueva Categoría"**
 3. Define:
    - **Nombre**: Ej. "Mascotas"
@@ -326,7 +326,7 @@ El dashboard es tu centro de control:
 
 #### Crear Regla de Automatización
 
-1. Ve a **Configuración → Automatización**
+1. Ve a **Configuración â†’ Automatización**
 2. Haz clic en **"+ Nueva Regla"**
 3. Define:
    - **Nombre**: Ej. "Categorizar Netflix"
@@ -336,7 +336,7 @@ El dashboard es tu centro de control:
 
 **Ejemplos de reglas:**
 - Categorizar automáticamente por comercio
-- Alertas de gastos grandes (>100€)
+- Alertas de gastos grandes (>100â‚¬)
 - Recordatorios de pago de facturas
 - Sugerencias de ahorro
 
@@ -344,7 +344,7 @@ El dashboard es tu centro de control:
 
 #### Configurar Backups Automáticos
 
-1. Ve a **Configuración → Backups**
+1. Ve a **Configuración â†’ Backups**
 2. Activa **"Backups Automáticos"**
 3. Configura:
    - **Frecuencia**: Diaria, Semanal, Mensual
@@ -353,17 +353,17 @@ El dashboard es tu centro de control:
 
 #### Crear Backup Manual
 
-1. Ve a **Configuración → Backups**
+1. Ve a **Configuración â†’ Backups**
 2. Haz clic en **"Crear Backup Ahora"**
 3. Espera a que se complete
 4. Aparecerá en la lista de backups disponibles
 
 #### Restaurar desde Backup
 
-1. Ve a **Configuración → Backups**
+1. Ve a **Configuración â†’ Backups**
 2. Selecciona un backup de la lista
 3. Haz clic en **"Restaurar"**
-4. **⚠️ ADVERTENCIA**: Esto reemplazará todos tus datos actuales
+4. **âš ï¸ ADVERTENCIA**: Esto reemplazará todos tus datos actuales
 5. Confirma la acción
 6. La página se recargará automáticamente
 
@@ -371,7 +371,7 @@ El dashboard es tu centro de control:
 
 #### Gestión de Cookies
 
-1. Ve a **Configuración → Privacidad**
+1. Ve a **Configuración â†’ Privacidad**
 2. Configura preferencias:
    - **Esenciales**: Siempre activas (necesarias)
    - **Analíticas**: Opcional (mejoran la app)
@@ -380,27 +380,27 @@ El dashboard es tu centro de control:
 
 #### Exportar Datos
 
-1. Ve a **Configuración → Privacidad**
+1. Ve a **Configuración â†’ Privacidad**
 2. Haz clic en **"Exportar Mis Datos"**
 3. Se generará un archivo JSON con toda tu información
 4. Descarga el archivo
 
 #### Eliminar Cuenta
 
-1. Ve a **Configuración → Seguridad → Zona de Peligro**
+1. Ve a **Configuración â†’ Seguridad â†’ Zona de Peligro**
 2. Haz clic en **"Eliminar Cuenta"**
-3. **⚠️ ADVERTENCIA**: Esta acción es irreversible
+3. **âš ï¸ ADVERTENCIA**: Esta acción es irreversible
 4. Confirma ingresando tu contraseña
 5. Tu cuenta se programará para eliminación en 30 días
 6. Puedes cancelar la eliminación dentro de ese período
 
 ---
 
-## 👥 Colaboración Familiar
+## ðŸ‘¥ Colaboración Familiar
 
 ### Crear Hogar Familiar
 
-1. Ve a **Configuración → Mi Perfil → Familia**
+1. Ve a **Configuración â†’ Mi Perfil â†’ Familia**
 2. Haz clic en **"Crear Hogar Familiar"**
 3. Define:
    - **Nombre del hogar**: Ej. "Familia García"
@@ -415,24 +415,24 @@ El dashboard es tu centro de control:
 4. Asigna un rol:
    - **Administrador**: Control total
    - **Adulto**: Acceso completo a finanzas y vida
-   - **Menor**: Acceso limitado (Onyx Junior)
+   - **Menor**: Acceso limitado (Aliseus Junior)
 5. Haz clic en **"Enviar Invitación"**
 
 ### Gestionar Permisos
 
 **Roles disponibles:**
 
-- **👑 Administrador**
+- **ðŸ‘‘ Administrador**
   - Gestionar miembros
   - Configurar permisos
   - Acceso a todo
 
-- **👤 Adulto**
+- **ðŸ‘¤ Adulto**
   - Ver y editar finanzas
   - Gestionar cocina y viajes
   - No puede eliminar miembros
 
-- **👶 Menor (Onyx Junior)**
+- **ðŸ‘¶ Menor (Aliseus Junior)**
   - Vista simplificada
   - Solo puede ver (no editar)
   - Interfaz adaptada para niños
@@ -446,7 +446,7 @@ El dashboard es tu centro de control:
 
 ### Chat Familiar
 
-1. Ve a **Familia → Chat**
+1. Ve a **Familia â†’ Chat**
 2. Envía mensajes a todos los miembros
 3. Comparte:
    - Enlaces a transacciones
@@ -456,12 +456,12 @@ El dashboard es tu centro de control:
 
 ---
 
-## 🔍 Búsqueda Global
+## ðŸ” Búsqueda Global
 
 ### Usar la Búsqueda
 
 1. Presiona **Ctrl+K** (Windows) o **Cmd+K** (Mac)
-2. O haz clic en el icono de búsqueda 🔍
+2. O haz clic en el icono de búsqueda ðŸ”
 3. Escribe tu consulta
 4. Busca en:
    - Transacciones
@@ -484,55 +484,55 @@ El dashboard es tu centro de control:
 
 ---
 
-## ❓ Preguntas Frecuentes
+## â“ Preguntas Frecuentes
 
 ### General
 
-**¿Aliseus es gratuito?**
-Sí, ofrecemos un plan básico gratuito. El plan Familia (4.99€/mes) incluye funciones avanzadas.
+**Â¿Aliseus es gratuito?**
+Sí, ofrecemos un plan básico gratuito. El plan Familia (4.99â‚¬/mes) incluye funciones avanzadas.
 
-**¿Mis datos están seguros?**
+**Â¿Mis datos están seguros?**
 Sí, usamos encriptación de extremo a extremo y cumplimos con GDPR.
 
-**¿Funciona offline?**
+**Â¿Funciona offline?**
 Algunas funciones están disponibles offline. Los cambios se sincronizan cuando vuelves online.
 
 ### Finanzas
 
-**¿Puedo conectar mi banco?**
+**Â¿Puedo conectar mi banco?**
 Actualmente solo soportamos importación manual via CSV. La conexión directa llegará pronto.
 
-**¿Cómo categoriza automáticamente?**
+**Â¿Cómo categoriza automáticamente?**
 Usamos IA para analizar la descripción de la transacción y asignar la categoría más probable.
 
-**¿Puedo tener múltiples monedas?**
+**Â¿Puedo tener múltiples monedas?**
 Sí, cada cuenta puede tener su propia moneda. Se convierten automáticamente para reportes.
 
 ### Cocina
 
-**¿Cuántas recetas puedo guardar?**
+**Â¿Cuántas recetas puedo guardar?**
 Ilimitadas en ambos planes.
 
-**¿La IA genera recetas realistas?**
+**Â¿La IA genera recetas realistas?**
 Sí, nuestro modelo está entrenado con miles de recetas reales y considera disponibilidad de ingredientes.
 
-**¿Puedo compartir recetas?**
+**Â¿Puedo compartir recetas?**
 Sí, exporta como PDF o comparte el enlace con familiares.
 
 ### Backups
 
-**¿Dónde se guardan los backups?**
+**Â¿Dónde se guardan los backups?**
 Localmente en tu navegador (localStorage). Próximamente en la nube.
 
-**¿Qué incluye un backup?**
+**Â¿Qué incluye un backup?**
 Todas tus transacciones, presupuestos, recetas, viajes, configuración y layouts.
 
-**¿Puedo programar backups?**
+**Â¿Puedo programar backups?**
 Sí, configura backups automáticos diarios, semanales o mensuales.
 
 ---
 
-## 🛠️ Solución de Problemas
+## ðŸ› ï¸ Solución de Problemas
 
 ### La app no carga
 
@@ -572,7 +572,7 @@ Sí, configura backups automáticos diarios, semanales o mensuales.
 
 ---
 
-## 📞 Soporte y Contacto
+## ðŸ“ž Soporte y Contacto
 
 ### Centro de Ayuda
 
@@ -599,7 +599,7 @@ Accede desde el menú principal o presiona **?**
 
 ---
 
-## 🎓 Recursos Adicionales
+## ðŸŽ“ Recursos Adicionales
 
 ### Tutoriales en Video
 
@@ -626,7 +626,7 @@ Accede desde el menú principal o presiona **?**
 
 ---
 
-## 📋 Glosario
+## ðŸ“‹ Glosario
 
 **Dashboard**: Pantalla principal con widgets personalizables
 **Widget**: Componente visual que muestra información específica
@@ -638,11 +638,11 @@ Accede desde el menú principal o presiona **?**
 **Receta**: Instrucciones para preparar un plato
 **Plan Semanal**: Calendario de comidas para 7 días
 **Backup**: Copia de seguridad de todos tus datos
-**Onyx Junior**: Modo simplificado para menores
+**Aliseus Junior**: Modo simplificado para menores
 
 ---
 
-**¿Necesitas más ayuda?** Visita nuestro [Centro de Ayuda](help) o [contacta soporte](mailto:support@aliseus.com)
+**Â¿Necesitas más ayuda?** Visita nuestro [Centro de Ayuda](help) o [contacta soporte](mailto:support@aliseus.com)
 
 ---
 

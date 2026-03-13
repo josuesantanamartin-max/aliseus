@@ -39,7 +39,7 @@ export const FamilyManager: React.FC = () => {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
                     <h2 className="text-4xl font-black text-gray-900 tracking-tighter flex items-center gap-3">
-                        Círculo Onyx <span className="bg-gray-900 text-white text-[10px] px-3 py-1 rounded-full tracking-widest uppercase">Pro</span>
+                        Círculo Aliseus <span className="bg-gray-900 text-white text-[10px] px-3 py-1 rounded-full tracking-widest uppercase">Pro</span>
                     </h2>
                     <p className="text-gray-400 font-bold text-sm uppercase tracking-widest mt-1">Gestión Inteligente de Hogar y Bienestar</p>
                 </div>
@@ -151,7 +151,7 @@ export const FamilyManager: React.FC = () => {
                                                 <span className="text-lg font-black text-gray-900 tracking-tight">{formatPrice(member.balance)}</span>
                                             </div>
                                             <div className="p-4 bg-gray-50/50 rounded-2xl flex flex-col justify-center">
-                                                <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Última Actividad</p>
+                                                <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Ãšltima Actividad</p>
                                                 <span className="text-xs font-black text-gray-600 tracking-tight">Hace 2h</span>
                                             </div>
                                         </div>

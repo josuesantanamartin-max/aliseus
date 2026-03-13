@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useFinanceStore } from '../../../store/useFinanceStore';
+import { useUserStore } from '../../../store/useUserStore';
 import { Account, CadastralData, Transaction } from '../../../types';
 import {
   Wallet, CreditCard, Banknote, Landmark, Plus, Pencil, Trash2, X,
@@ -58,9 +59,10 @@ const blankForm = () => ({
 
 const Accounts: React.FC<AccountsProps> = ({ onViewTransactions }) => {
   const { accounts, setAccounts, transactions, addAccount, updateAccount, deleteAccount } = useFinanceStore();
+  const { financeSelectedAccountId, setFinanceSelectedAccountId } = useUserStore();
   const { transfer } = useFinanceControllers();
 
-  const [selectedAccountId, setSelectedAccountId] = useState<string | null>(null);
+  const [selectedAccountId, setSelectedAccountId] = useState<string | null>(financeSelectedAccountId);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
@@ -89,9 +91,23 @@ const Accounts: React.FC<AccountsProps> = ({ onViewTransactions }) => {
   useEffect(() => {
     const visible = accounts.filter(a => a.type !== 'CREDIT' && a.type !== 'DEBIT');
     if (visible.length > 0 && (!selectedAccountId || !accounts.find(a => a.id === selectedAccountId))) {
-      setSelectedAccountId(visible[0].id);
+      const newId = visible[0].id;
+      setSelectedAccountId(newId);
+      setFinanceSelectedAccountId(newId);
     }
-  }, [accounts, selectedAccountId]);
+  }, [accounts, selectedAccountId, setFinanceSelectedAccountId]);
+
+  // Sync from store
+  useEffect(() => {
+    if (financeSelectedAccountId && financeSelectedAccountId !== selectedAccountId) {
+      setSelectedAccountId(financeSelectedAccountId);
+    }
+  }, [financeSelectedAccountId]);
+
+  const handleSelectAccount = (id: string) => {
+    setSelectedAccountId(id);
+    setFinanceSelectedAccountId(id);
+  };
 
   const selectedAccount = accounts.find(a => a.id === selectedAccountId);
 
@@ -214,7 +230,10 @@ const Accounts: React.FC<AccountsProps> = ({ onViewTransactions }) => {
   const handleDelete = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
     if (window.confirm('¿Eliminar esta cuenta?')) {
-      if (selectedAccountId === id) setSelectedAccountId(null);
+      if (selectedAccountId === id) {
+        setSelectedAccountId(null);
+        setFinanceSelectedAccountId(null);
+      }
       deleteAccount(id);
     }
   };
@@ -559,7 +578,7 @@ const Accounts: React.FC<AccountsProps> = ({ onViewTransactions }) => {
                 <div key={account.id} draggable
                   onDragStart={e => handleDragStart(e, index)} onDragOver={e => handleDragOver(e, index)}
                   onDrop={e => handleDrop(e, index)} onDragEnd={handleDragEnd}
-                  onClick={() => setSelectedAccountId(account.id)}
+                  onClick={() => handleSelectAccount(account.id)}
                   className={`p-5 rounded-2xl border cursor-pointer transition-all duration-300 group relative overflow-hidden select-none
                     ${isSelected ? 'bg-gradient-to-br from-cyan-600 to-teal-600 text-white border-transparent shadow-xl scale-[1.02]' : 'bg-white text-cyan-900 border-onyx-100 hover:border-cyan-200 hover:bg-slate-50'}
                     ${isDraggedOver ? 'border-cyan-400 border-2 scale-[1.01] shadow-md shadow-cyan-200' : ''}

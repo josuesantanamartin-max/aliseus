@@ -49,7 +49,7 @@ const AliseusInsightsWidget: React.FC<DashboardDataProps> = ({
                         id: `budget_critical_${budget.id}`,
                         type: 'critical',
                         title: 'Presupuesto Crítico',
-                        description: `Has consumido el ${percentage.toFixed(0)}% del presupuesto de ${budget.category}.`,
+                        description: `Has consumido el ${percentage.toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}% del presupuesto de ${budget.category}.`,
                         actionLabel: 'Ver Presupuestos',
                         actionTab: 'budgets'
                     });
@@ -58,7 +58,7 @@ const AliseusInsightsWidget: React.FC<DashboardDataProps> = ({
                         id: `budget_warning_${budget.id}`,
                         type: 'warning',
                         title: 'Presupuesto Elevado',
-                        description: `El presupuesto de ${budget.category} está al ${percentage.toFixed(0)}%.`,
+                        description: `El presupuesto de ${budget.category} está al ${percentage.toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}%.`,
                         actionLabel: 'Ajustar',
                         actionTab: 'budgets'
                     });
@@ -74,7 +74,7 @@ const AliseusInsightsWidget: React.FC<DashboardDataProps> = ({
                     id: 'savings_low',
                     type: 'warning',
                     title: 'Ahorro Bajo',
-                    description: `Tu tasa de ahorro es del ${savingsRate.toFixed(1)}%. Se recomienda al menos un 20%.`,
+                    description: `Tu tasa de ahorro es del ${savingsRate.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%. Se recomienda al menos un 20%.`,
                     actionLabel: 'Ver Gastos',
                     actionTab: 'analytics'
                 });
@@ -92,7 +92,7 @@ const AliseusInsightsWidget: React.FC<DashboardDataProps> = ({
                     id: 'savings_excellent',
                     type: 'success',
                     title: 'Ahorro Óptimo',
-                    description: `¡Excelente ritmo! Tienes una tasa de ahorro del ${savingsRate.toFixed(1)}%.`,
+                    description: `¡Excelente ritmo! Tienes una tasa de ahorro del ${savingsRate.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%.`,
                     actionLabel: 'Ver Resumen',
                     actionTab: 'dashboard'
                 });

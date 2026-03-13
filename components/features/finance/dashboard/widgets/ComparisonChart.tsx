@@ -82,7 +82,7 @@ const ComparisonChart: React.FC<ComparisonChartProps> = ({ transactions }) => {
                                 fontWeight={600}
                                 axisLine={false}
                                 tickLine={false}
-                                tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
+                                tickFormatter={(value) => value.toLocaleString('es-ES')}
                             />
                             <Tooltip
                                 contentStyle={{
@@ -114,7 +114,7 @@ const ComparisonChart: React.FC<ComparisonChartProps> = ({ transactions }) => {
                                 <p className="text-lg font-bold text-cyan-900 tracking-tight mb-2">{formatEUR(item.actual)}</p>
                                 <div className={`flex items-center gap-1.5 text-[10px] font-bold ${isPositiveChange ? 'text-emerald-600' : 'text-red-500'}`}>
                                     {isPositiveChange ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
-                                    {Math.abs(change).toFixed(1)}%
+                                    {Math.abs(change).toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%
                                 </div>
                             </div>
                         );

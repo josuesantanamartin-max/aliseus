@@ -4,7 +4,8 @@ import { useUserStore } from '../../store/useUserStore';
 import { useFinanceStore } from '../../store/useFinanceStore';
 import { useLifeStore } from '../../store/useLifeStore';
 import { useHouseholdStore } from '../../store/useHouseholdStore';
-import OnyxLanding from '../layout/OnyxLanding';
+import { realtimeService } from '../../services/realtimeService';
+import AliseusLanding from '../layout/OnyxLanding';
 import OnboardingWizard from '../onboarding/OnboardingWizard';
 
 interface AuthGateProps {
@@ -62,7 +63,7 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                     const profile = {
                         id: session.user.id,
                         email: session.user.email,
-                        full_name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || 'Usuario Onyx',
+                        full_name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || 'Usuario Aliseus',
                         avatar_url: session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture || '',
                     };
 
@@ -74,7 +75,8 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
 
                     // Await loadAll so we don't flash the onboarding screen if it's going to be bypassed
                     loadAll().then(() => {
-                        addSyncLog({ message: "Conectado a Onyx Cloud (Supabase)", timestamp: Date.now(), type: "SYSTEM" });
+                        addSyncLog({ message: "Conectado a Aliseus Cloud (Supabase)", timestamp: Date.now(), type: "SYSTEM" });
+                        realtimeService.startSync();
                         setIsInitializing(false);
                     });
                 } else {
@@ -99,7 +101,7 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                     const profile = {
                         id: session.user.id,
                         email: session.user.email,
-                        full_name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || 'Usuario Onyx',
+                        full_name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || 'Usuario Aliseus',
                         avatar_url: session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture || '',
                     };
 
@@ -110,12 +112,15 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                     }
 
                     if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-                        loadAll();
+                        loadAll().then(() => {
+                            realtimeService.startSync();
+                        });
                     }
                 } else {
                     // User signed out
                     setAuthenticated(false);
                     setUserProfile(null);
+                    realtimeService.stopSync();
                     if (!isDemoModeRef.current) {
                         clearAllData();
                     }
@@ -133,7 +138,7 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
             setIsInitializing(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []); // Run ONCE on mount — isDemoMode changes must NOT re-trigger auth init
+    }, []); // Run ONCE on mount â€” isDemoMode changes must NOT re-trigger auth init
 
     const handleLogin = async (method: 'DEMO' | 'GOOGLE' | 'EMAIL' | 'NOTION', data?: { email: string, password: string, isRegister: boolean }) => {
         console.log(`[AuthGate] handleLogin called with method: ${method}`);
@@ -212,7 +217,7 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
     }
 
     if (!isAuthenticated) {
-        return <OnyxLanding onLogin={handleLogin} language={language} setLanguage={setLanguage} />;
+        return <AliseusLanding onLogin={handleLogin} language={language} setLanguage={setLanguage} />;
     }
 
     // New: Check for Onboarding Completion check

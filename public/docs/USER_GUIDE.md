@@ -1,11 +1,11 @@
 # Guía de Usuario - Aliseus
 
 **Versión:** 1.0.2  
-**Última Actualización:** 5 de Febrero, 2026
+**Ãšltima Actualización:** 5 de Febrero, 2026
 
 ---
 
-## 📚 Tabla de Contenidos
+## ðŸ“š Tabla de Contenidos
 
 1. [Introducción](#introducción)
 2. [Primeros Pasos](#primeros-pasos)
@@ -20,17 +20,17 @@
 
 ## Introducción
 
-### ¿Qué es Aliseus?
+### Â¿Qué es Aliseus?
 
 Aliseus es tu asistente personal integral que combina:
-- 💰 **Gestión Financiera** - Cuentas, presupuestos, metas, jubilación
-- 🏠 **Organización del Hogar** - Recetas, despensa, compras, viajes
-- 🤖 **Onyx Insights** - Asistente potenciado por Gemini
-- 📊 **Onyx Central** - Vista unificada de tu vida
+- ðŸ’° **Gestión Financiera** - Cuentas, presupuestos, metas, jubilación
+- ðŸ  **Organización del Hogar** - Recetas, despensa, compras, viajes
+- ðŸ¤– **Aliseus Insights** - Asistente potenciado por Gemini
+- ðŸ“Š **Aliseus Central** - Vista unificada de tu vida
 
 ### Características Principales
 
-✅ **Gestión Financiera Completa**
+âœ… **Gestión Financiera Completa**
 - Múltiples cuentas bancarias
 - Importación de transacciones CSV
 - Presupuestos inteligentes
@@ -38,14 +38,14 @@ Aliseus es tu asistente personal integral que combina:
 - Planificador de jubilación
 - Gestión de deudas y tarjetas
 
-✅ **Organización del Hogar**
+âœ… **Organización del Hogar**
 - Recetas con IA
 - Gestión de despensa
 - Listas de compras inteligentes
 - Planificación de comidas
 - Planificador de viajes
 
-✅ **Privacidad y Seguridad**
+âœ… **Privacidad y Seguridad**
 - GDPR compliant
 - Datos encriptados
 - Control total de cookies
@@ -69,7 +69,7 @@ Aliseus es tu asistente personal integral que combina:
 ### 2. Configuración Inicial
 
 **Perfil de Usuario**
-1. Ve a **Configuración → Perfil**
+1. Ve a **Configuración â†’ Perfil**
 2. Completa información básica:
    - Nombre completo
    - Foto de perfil (opcional)
@@ -86,9 +86,9 @@ Aliseus es tu asistente personal integral que combina:
 
 Al iniciar sesión por primera vez:
 1. **Bienvenida** - Introducción a Aliseus
-2. **Onyx Central** - Vista general personalizable
+2. **Aliseus Central** - Vista general personalizable
 3. **Módulos** - Finanzas, Vida, Metas
-4. **Onyx Insights** - Cómo usar el asistente
+4. **Aliseus Insights** - Cómo usar el asistente
 5. **Configuración** - Personalización
 
 ---
@@ -98,7 +98,7 @@ Al iniciar sesión por primera vez:
 ### Cuentas Bancarias
 
 **Crear una Cuenta**
-1. Ve a **Finanzas → Cuentas**
+1. Ve a **Finanzas â†’ Cuentas**
 2. Click en **Nueva Cuenta**
 3. Completa:
    - Nombre (ej: "Cuenta Corriente Santander")
@@ -116,7 +116,7 @@ Al iniciar sesión por primera vez:
 ### Transacciones
 
 **Añadir Transacción Manual**
-1. **Finanzas → Transacciones**
+1. **Finanzas â†’ Transacciones**
 2. Click en **Nueva Transacción**
 3. Completa:
    - Tipo: Ingreso o Gasto
@@ -133,13 +133,13 @@ Al iniciar sesión por primera vez:
 5. Guarda
 
 **Importar desde CSV**
-1. **Finanzas → Transacciones**
+1. **Finanzas â†’ Transacciones**
 2. Click en **Importar CSV**
 3. Selecciona archivo
 4. Mapea columnas:
-   - Fecha → Columna de fecha
-   - Concepto → Columna de descripción
-   - Importe → Columna de cantidad
+   - Fecha â†’ Columna de fecha
+   - Concepto â†’ Columna de descripción
+   - Importe â†’ Columna de cantidad
 5. Selecciona cuenta destino
 6. Revisa vista previa
 7. Confirma importación
@@ -155,11 +155,11 @@ Fecha,Concepto,Importe,Categoría
 ### Presupuestos
 
 **Crear Presupuesto**
-1. **Finanzas → Presupuestos**
+1. **Finanzas â†’ Presupuestos**
 2. **Nuevo Presupuesto**
 3. Selecciona:
    - Categoría (Comida, Transporte, Ocio, etc.)
-   - Límite mensual (ej: 400€)
+   - Límite mensual (ej: 400â‚¬)
    - Período: Mensual o Anual
 4. Guarda
 
@@ -167,8 +167,8 @@ Fecha,Concepto,Importe,Categoría
 - **Barra de progreso:** Gasto actual vs límite
 - **Porcentaje:** % utilizado
 - **Alertas:** 
-  - 🟡 80% alcanzado
-  - 🔴 100% alcanzado
+  - ðŸŸ¡ 80% alcanzado
+  - ðŸ”´ 100% alcanzado
 - **Histórico:** Comparación con meses anteriores
 
 **Sugerencias de IA**
@@ -180,11 +180,11 @@ Fecha,Concepto,Importe,Categoría
 ### Metas Financieras
 
 **Crear Meta**
-1. **Finanzas → Metas**
+1. **Finanzas â†’ Metas**
 2. **Nueva Meta**
 3. Define:
    - Nombre (ej: "Vacaciones en Japón")
-   - Cantidad objetivo (ej: 3000€)
+   - Cantidad objetivo (ej: 3000â‚¬)
    - Fecha límite
    - Aportación mensual sugerida
 4. Guarda
@@ -198,15 +198,15 @@ Fecha,Concepto,Importe,Categoría
 ### Planificador de Jubilación
 
 **Configurar Plan**
-1. **Finanzas → Jubilación**
+1. **Finanzas â†’ Jubilación**
 2. Ingresa datos:
    - **Edad actual:** 30 años
    - **Edad de retiro:** 65 años
-   - **Ahorros actuales:** 10,000€
-   - **Aportación mensual:** 500€
+   - **Ahorros actuales:** 10,000â‚¬
+   - **Aportación mensual:** 500â‚¬
    - **Retorno esperado:** 7% anual
    - **Inflación estimada:** 3% anual
-   - **Ingreso mensual deseado:** 2,000€
+   - **Ingreso mensual deseado:** 2,000â‚¬
 3. Click en **Calcular**
 
 **Resultados**
@@ -225,7 +225,7 @@ El sistema sugiere:
 ### Deudas y Tarjetas
 
 **Registrar Deuda**
-1. **Finanzas → Deudas**
+1. **Finanzas â†’ Deudas**
 2. **Nueva Deuda**
 3. Completa:
    - Nombre (ej: "Préstamo Coche")
@@ -247,7 +247,7 @@ El sistema sugiere:
 ### Recetas
 
 **Añadir Receta Manual**
-1. **Vida → Cocina → Recetas**
+1. **Vida â†’ Cocina â†’ Recetas**
 2. **Nueva Receta**
 3. Completa:
    - Nombre
@@ -260,7 +260,7 @@ El sistema sugiere:
 4. Guarda
 
 **Generar Receta con IA**
-1. **Vida → Cocina → Recetas**
+1. **Vida â†’ Cocina â†’ Recetas**
 2. **Generar con IA**
 3. Describe lo que quieres:
    - "Receta vegetariana con garbanzos"
@@ -272,7 +272,7 @@ El sistema sugiere:
 ### Despensa
 
 **Gestionar Inventario**
-1. **Vida → Cocina → Despensa**
+1. **Vida â†’ Cocina â†’ Despensa**
 2. **Añadir Ingrediente**
 3. Completa:
    - Nombre
@@ -290,7 +290,7 @@ El sistema sugiere:
 ### Lista de Compras
 
 **Crear Lista**
-1. **Vida → Cocina → Lista de Compras**
+1. **Vida â†’ Cocina â†’ Lista de Compras**
 2. **Añadir Item**
 3. Completa:
    - Nombre
@@ -314,7 +314,7 @@ El sistema sugiere:
 ### Planificación de Comidas
 
 **Plan Semanal**
-1. **Vida → Cocina → Plan Semanal**
+1. **Vida â†’ Cocina â†’ Plan Semanal**
 2. Arrastra recetas a cada día:
    - Lunes: Desayuno, Comida, Cena
    - Martes: Desayuno, Comida, Cena
@@ -333,7 +333,7 @@ El sistema sugiere:
 ### Viajes
 
 **Planificar Viaje**
-1. **Vida → Viajes**
+1. **Vida â†’ Viajes**
 2. **Nuevo Viaje**
 3. Completa:
    - Destino
@@ -358,7 +358,7 @@ El sistema sugiere:
 ### Modo Edición
 
 **Activar Edición**
-1. Ve a **Onyx Central**
+1. Ve a **Aliseus Central**
 2. Click en **Editar Dashboard**
 3. Ahora puedes:
    - Arrastrar widgets para reordenar
@@ -373,24 +373,24 @@ El sistema sugiere:
 ### Widgets Disponibles
 
 **Finanzas**
-- 💰 Resumen de Cuentas
-- 📊 Salud Financiera
-- 💳 Próximos Pagos
-- 🎯 Metas Activas
-- 📈 Proyección Financiera
-- 💸 Presupuestos
-- 📉 Evolución Temporal
+- ðŸ’° Resumen de Cuentas
+- ðŸ“Š Salud Financiera
+- ðŸ’³ Próximos Pagos
+- ðŸŽ¯ Metas Activas
+- ðŸ“ˆ Proyección Financiera
+- ðŸ’¸ Presupuestos
+- ðŸ“‰ Evolución Temporal
 
 **Vida**
-- 🍳 Plan Semanal de Comidas
-- 📝 Lista de Compras
-- ✈️ Próximos Viajes
-- 🏠 Tareas del Hogar
+- ðŸ³ Plan Semanal de Comidas
+- ðŸ“ Lista de Compras
+- âœˆï¸ Próximos Viajes
+- ðŸ  Tareas del Hogar
 
 **General**
-- 🤖 Onyx Insights
-- 📅 Calendario
-- 🔔 Notificaciones
+- ðŸ¤– Aliseus Insights
+- ðŸ“… Calendario
+- ðŸ”” Notificaciones
 
 ### Layouts Predefinidos
 
@@ -415,18 +415,18 @@ El sistema sugiere:
 ### Gestión de Cookies
 
 **Configurar Preferencias**
-1. **Configuración → Privacidad**
+1. **Configuración â†’ Privacidad**
 2. **Gestión de Cookies**
 3. Ajusta:
-   - ✅ **Esenciales:** Siempre activas (necesarias)
-   - 🟡 **Analytics:** Opcional (mejora del servicio)
-   - 🔴 **Marketing:** Opcional (publicidad)
+   - âœ… **Esenciales:** Siempre activas (necesarias)
+   - ðŸŸ¡ **Analytics:** Opcional (mejora del servicio)
+   - ðŸ”´ **Marketing:** Opcional (publicidad)
 4. Guarda preferencias
 
 ### Exportar Datos
 
 **Descargar tus Datos**
-1. **Configuración → Privacidad**
+1. **Configuración â†’ Privacidad**
 2. **Exportar Datos**
 3. Click en **Generar Exportación**
 4. Descarga archivo JSON
@@ -440,7 +440,7 @@ El sistema sugiere:
 ### Eliminar Cuenta
 
 **Proceso de Eliminación**
-1. **Configuración → Privacidad**
+1. **Configuración â†’ Privacidad**
 2. **Eliminar Cuenta**
 3. Confirma con email
 4. **Período de gracia:** 30 días
@@ -459,23 +459,23 @@ El sistema sugiere:
 
 ### Tus Derechos GDPR
 
-✅ **Derecho de Acceso**
+âœ… **Derecho de Acceso**
 - Solicita copia de tus datos
 - Exportación en formato JSON
 
-✅ **Derecho de Rectificación**
+âœ… **Derecho de Rectificación**
 - Corrige datos incorrectos
 - Actualiza información
 
-✅ **Derecho de Eliminación**
+âœ… **Derecho de Eliminación**
 - Elimina tu cuenta
 - Borrado de datos
 
-✅ **Derecho de Portabilidad**
+âœ… **Derecho de Portabilidad**
 - Exporta tus datos
 - Formato legible por máquina
 
-✅ **Derecho de Oposición**
+âœ… **Derecho de Oposición**
 - Rechaza procesamiento de datos
 - Desactiva analytics
 
@@ -485,64 +485,64 @@ El sistema sugiere:
 
 ### General
 
-**¿Aliseus es gratis?**
+**Â¿Aliseus es gratis?**
 - Sí, la versión beta es completamente gratuita
 - Planes premium próximamente
 
-**¿Necesito conexión a internet?**
+**Â¿Necesito conexión a internet?**
 - Sí, para sincronización
 - PWA permite uso offline limitado
 
-**¿En qué dispositivos funciona?**
+**Â¿En qué dispositivos funciona?**
 - Navegadores modernos (Chrome, Firefox, Safari, Edge)
 - Móviles y tablets (responsive)
 - Aplicación móvil próximamente
 
 ### Finanzas
 
-**¿Mis datos bancarios están seguros?**
+**Â¿Mis datos bancarios están seguros?**
 - Sí, encriptación end-to-end
 - No almacenamos credenciales bancarias
 - GDPR compliant
 
-**¿Puedo conectar mi banco directamente?**
+**Â¿Puedo conectar mi banco directamente?**
 - No actualmente
 - Importación manual via CSV
 - Sincronización bancaria próximamente
 
-**¿Qué bancos soportan CSV?**
+**Â¿Qué bancos soportan CSV?**
 - Mayoría de bancos españoles
 - Formato estándar: Fecha, Concepto, Importe
 
 ### IA
 
-**¿Cómo funciona Onyx Insights?**
+**Â¿Cómo funciona Aliseus Insights?**
 - Powered by Google Gemini
 - Analiza tus datos localmente
 - Genera sugerencias personalizadas
 
-**¿Onyx Insights ve mis datos?**
+**Â¿Aliseus Insights ve mis datos?**
 - Solo datos necesarios para la función
 - No se comparten con terceros
-- Puedes desactivar Onyx Insights en configuración
+- Puedes desactivar Aliseus Insights en configuración
 
-**¿Hay límite de uso de Onyx Insights?**
+**Â¿Hay límite de uso de Aliseus Insights?**
 - Beta: Uso razonable
 - Producción: Límites por tier
 
 ### Privacidad
 
-**¿Dónde se almacenan mis datos?**
+**Â¿Dónde se almacenan mis datos?**
 - Supabase (Europa)
 - Servidores GDPR compliant
 - Backups encriptados
 
-**¿Puedo eliminar mis datos?**
+**Â¿Puedo eliminar mis datos?**
 - Sí, en cualquier momento
 - Período de gracia de 30 días
 - Eliminación permanente después
 
-**¿Compartís mis datos?**
+**Â¿Compartís mis datos?**
 - No vendemos datos a terceros
 - Solo procesadores necesarios (Supabase, Gemini)
 - Ver Privacy Policy completa
@@ -586,9 +586,9 @@ El sistema sugiere:
 
 ---
 
-**¿Necesitas más ayuda?**
+**Â¿Necesitas más ayuda?**
 
 Visita nuestro [Centro de Ayuda](/help) o contacta a support@aliseus.com
 
-**Última actualización:** 5 de Febrero, 2026  
+**Ãšltima actualización:** 5 de Febrero, 2026  
 **Versión:** 1.0.2

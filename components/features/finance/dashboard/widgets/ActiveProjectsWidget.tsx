@@ -73,7 +73,7 @@ const ActiveProjectsWidget: React.FC<ActiveProjectsWidgetProps> = ({ projects, t
                             {project.limit > 0 && (
                                 <div className="mt-3 space-y-1.5">
                                     <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
-                                        <span className={isExceeded ? 'text-red-500' : 'text-cyan-600'}>{percentage.toFixed(1)}%</span>
+                                        <span className={isExceeded ? 'text-red-500' : 'text-cyan-600'}>{percentage.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%</span>
                                         <span className="text-onyx-400">Restante: {formatEUR(Math.max(0, project.limit - spent))}</span>
                                     </div>
                                     <div className="w-full bg-onyx-100 h-1.5 rounded-full overflow-hidden">

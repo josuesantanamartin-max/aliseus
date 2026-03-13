@@ -48,7 +48,7 @@ const TopSpendersWidget: React.FC<TopSpendersWidgetProps> = ({ transactions, onN
                                     <span className="text-sm font-bold text-onyx-900 dark:text-white truncate pr-4">{c.category}</span>
                                     <div className="text-right shrink-0">
                                         <span className="text-lg font-black text-cyan-900 dark:text-white tracking-tight">{formatEUR(c.amount)}</span>
-                                        <span className="text-[10px] text-onyx-400 font-bold ml-1.5 uppercase tracking-widest w-9 inline-block text-right">{percentage.toFixed(0)}%</span>
+                                        <span className="text-[10px] text-onyx-400 font-bold ml-1.5 uppercase tracking-widest w-9 inline-block text-right">{percentage.toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}%</span>
                                     </div>
                                 </div>
                                 <div className="w-full bg-onyx-50 dark:bg-onyx-800 h-2.5 rounded-full overflow-hidden shadow-inner">
@@ -71,7 +71,7 @@ const TopSpendersWidget: React.FC<TopSpendersWidgetProps> = ({ transactions, onN
             {topCategories.length > 0 && monthlyExpenses > 0 && (
                 <div className="pt-5 mt-auto border-t border-onyx-50 dark:border-onyx-800 relative z-10">
                     <p className="text-[11px] text-onyx-500 dark:text-onyx-400 leading-relaxed font-bold">
-                        El top 3 representa el <span className="font-black text-rose-600 dark:text-rose-400 px-1 py-0.5 bg-rose-50 dark:bg-rose-900/30 rounded">{((topCategories.reduce((sum, c) => sum + c.amount, 0) / monthlyExpenses) * 100).toFixed(0)}%</span> de gastos del periodo.
+                        El top 3 representa el <span className="font-black text-rose-600 dark:text-rose-400 px-1 py-0.5 bg-rose-50 dark:bg-rose-900/30 rounded">{((topCategories.reduce((sum, c) => sum + c.amount, 0) / monthlyExpenses) * 100).toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}%</span> de gastos del periodo.
                     </p>
                 </div>
             )}

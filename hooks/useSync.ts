@@ -5,6 +5,7 @@ import { useFinanceStore } from '../store/useFinanceStore';
 import { useLifeStore } from '../store/useLifeStore';
 import { useUserStore } from '../store/useUserStore';
 import { supabase } from '../services/supabaseClient';
+import { offlineQueueService } from '../services/offlineQueueService';
 
 export type SyncStatus = 'idle' | 'syncing' | 'success' | 'error';
 
@@ -37,6 +38,9 @@ export const useSync = () => {
         setSyncState(prev => ({ ...prev, status: 'syncing', error: null }));
 
         try {
+            // First, process any pending offline mutations
+            await offlineQueueService.processQueue();
+
             const cloudData = await syncService.syncAllFromCloud();
 
             if (cloudData) {

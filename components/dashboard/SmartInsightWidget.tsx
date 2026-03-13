@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useUserStore } from '../../store/useUserStore';
 import { useFinanceStore } from '../../store/useFinanceStore';
 import { useLifeStore } from '../../store/useLifeStore';
-import { generateSmartInsight, analyzePredictive } from '../../services/geminiService';
+import { generateSmartInsight } from '../../services/geminiCore';
+import { analyzePredictive } from '../../services/geminiFinancial';
 import { Lightbulb, ArrowRight, Sparkles, ChefHat, AlertTriangle, TrendingUp, X } from 'lucide-react';
 import { Button } from '../ui/Button';
 

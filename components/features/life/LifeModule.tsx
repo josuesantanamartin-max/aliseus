@@ -3,7 +3,7 @@ import { useLifeStore } from '../../../store/useLifeStore';
 import { useUserStore } from '../../../store/useUserStore';
 import { useFinanceStore } from '../../../store/useFinanceStore';
 import { useFinanceControllers } from '../../../hooks/useFinanceControllers';
-import { analyzeLife } from '../../../services/geminiService';
+import { analyzeLife } from '../../../services/geminiLife';
 
 import {
   Menu, Utensils, Plane, Lock, Baby, Home, Heart, Sparkles, Loader2, X
@@ -11,11 +11,13 @@ import {
 import { AnimatePresence } from 'framer-motion';
 import { PageTransition } from '../../common/animations/PageTransition';
 import { Trip, Goal } from '../../../types';
-import { KitchenManager } from './KitchenManager';
-import TravelModule from './TravelModule';
-import { FamilyManager } from './FamilyManager';
-import { VaultManager } from './VaultManager';
-import { SpacesManager } from './SpacesManager';
+import ModuleLoader from '../../common/ui/ModuleLoader';
+
+const KitchenManager = React.lazy(() => import('./KitchenManager').then(m => ({ default: m.KitchenManager })));
+const TravelModule = React.lazy(() => import('./TravelModule'));
+const FamilyManager = React.lazy(() => import('./FamilyManager').then(m => ({ default: m.FamilyManager })));
+const VaultManager = React.lazy(() => import('./VaultManager').then(m => ({ default: m.VaultManager })));
+const SpacesManager = React.lazy(() => import('./SpacesManager').then(m => ({ default: m.SpacesManager })));
 
 interface LifeModuleProps {
   onMenuClick: () => void;
@@ -186,16 +188,18 @@ const LifeModule: React.FC<LifeModuleProps> = ({ onMenuClick }) => {
       <div className="flex-1 overflow-hidden relative">
         <AnimatePresence mode="wait">
           <PageTransition key={currentMainTab === 'kitchen' ? activeTab : activeTab}>
-            {currentMainTab === 'kitchen' && (
-              <KitchenManager
-                view={activeTab.replace('kitchen-', '').toUpperCase()}
-                onViewChange={(newView) => setActiveTab(`kitchen-${newView.toLowerCase()}`)}
-              />
-            )}
-            {activeTab === 'spaces' && <SpacesManager />}
-            {activeTab === 'travel' && <TravelModule />}
-            {activeTab === 'vault' && <VaultManager />}
-            {activeTab === 'family' && <FamilyManager />}
+            <React.Suspense fallback={<ModuleLoader />}>
+              {currentMainTab === 'kitchen' && (
+                <KitchenManager
+                  view={activeTab.replace('kitchen-', '').toUpperCase()}
+                  onViewChange={(newView) => setActiveTab(`kitchen-${newView.toLowerCase()}`)}
+                />
+              )}
+              {activeTab === 'spaces' && <SpacesManager />}
+              {activeTab === 'travel' && <TravelModule />}
+              {activeTab === 'vault' && <VaultManager />}
+              {activeTab === 'family' && <FamilyManager />}
+            </React.Suspense>
           </PageTransition>
         </AnimatePresence>
       </div>

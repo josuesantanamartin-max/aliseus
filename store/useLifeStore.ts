@@ -1,8 +1,10 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { Ingredient, ShoppingItem, Recipe, Trip, FamilyMember, DashboardWidget } from '../types';
-import { WeeklyPlan, Chore } from '../types/life';
+import { WeeklyPlan, Chore, FamilyEvent } from '../types/life';
 import { syncService } from '../services/syncService';
+import { idbStorage } from '../utils/idbStorage';
+import { offlineQueueService } from '../services/offlineQueueService';
 
 interface LifeState {
     weeklyPlans: WeeklyPlan[];
@@ -11,10 +13,12 @@ interface LifeState {
     recipes: Recipe[];
     trips: Trip[];
     familyMembers: FamilyMember[];
+    familyEvents: FamilyEvent[];
     widgets: DashboardWidget[];
     vaultDocuments: any[];
     homeAssets: any[];
     recipeToOpen: Recipe | null;
+    isSmartPlannerOpen: boolean;
 }
 
 interface LifeActions {
@@ -24,10 +28,12 @@ interface LifeActions {
     setRecipes: (updater: Recipe[] | ((prev: Recipe[]) => Recipe[])) => void;
     setTrips: (updater: Trip[] | ((prev: Trip[]) => Trip[])) => void;
     setFamilyMembers: (updater: FamilyMember[] | ((prev: FamilyMember[]) => FamilyMember[])) => void;
+    setFamilyEvents: (updater: FamilyEvent[] | ((prev: FamilyEvent[]) => FamilyEvent[])) => void;
     setWidgets: (updater: DashboardWidget[] | ((prev: DashboardWidget[]) => DashboardWidget[])) => void;
     setVaultDocuments: (updater: any[] | ((prev: any[]) => any[])) => void;
     setHomeAssets: (updater: any[] | ((prev: any[]) => any[])) => void;
     setRecipeToOpen: (recipe: Recipe | null) => void;
+    setIsSmartPlannerOpen: (isOpen: boolean) => void;
 
     // Granular CRUD — all wired to syncService
     addRecipe: (recipe: Recipe) => void;
@@ -48,6 +54,9 @@ interface LifeActions {
     addFamilyMember: (member: FamilyMember) => void;
     updateFamilyMember: (id: string, updates: Partial<FamilyMember>) => void;
     deleteFamilyMember: (id: string) => void;
+    addFamilyEvent: (event: FamilyEvent) => void;
+    updateFamilyEvent: (id: string, updates: Partial<FamilyEvent>) => void;
+    deleteFamilyEvent: (id: string) => void;
 
     // Cloud sync
     loadFromCloud: () => Promise<void>;
@@ -55,8 +64,13 @@ interface LifeActions {
 
 const sync = <T>(
     fn: () => Promise<void>,
-    label: string
-) => fn().catch(e => console.error(`[useLifeStore] ${label} sync failed:`, e));
+    label: string,
+    syncMethod: keyof typeof syncService,
+    payload: any
+) => fn().catch(e => {
+    console.warn(`[useLifeStore] ${label} sync failed, enqueuing for later:`, e);
+    offlineQueueService.enqueue(syncMethod, payload);
+});
 
 export const useLifeStore = create<LifeState & LifeActions>()(
     persist(
@@ -67,10 +81,12 @@ export const useLifeStore = create<LifeState & LifeActions>()(
             recipes: [],
             trips: [],
             familyMembers: [],
+            familyEvents: [],
             widgets: [],
             vaultDocuments: [],
             homeAssets: [],
             recipeToOpen: null,
+            isSmartPlannerOpen: false,
 
             // ── Bulk setters (used by loadFromCloud and bulk operations) ──
             setWeeklyPlans: (updater) => set((state) => ({
@@ -91,6 +107,9 @@ export const useLifeStore = create<LifeState & LifeActions>()(
             setFamilyMembers: (updater) => set((state) => ({
                 familyMembers: typeof updater === 'function' ? updater(state.familyMembers) : updater
             })),
+            setFamilyEvents: (updater) => set((state) => ({
+                familyEvents: typeof updater === 'function' ? updater(state.familyEvents) : updater
+            })),
             setWidgets: (updater) => set((state) => ({
                 widgets: typeof updater === 'function' ? updater(state.widgets) : updater
             })),
@@ -101,110 +120,127 @@ export const useLifeStore = create<LifeState & LifeActions>()(
                 homeAssets: typeof updater === 'function' ? updater(state.homeAssets) : updater
             })),
             setRecipeToOpen: (recipe) => set({ recipeToOpen: recipe }),
+            setIsSmartPlannerOpen: (isOpen) => set({ isSmartPlannerOpen: isOpen }),
 
             // ── Recipes ──
             addRecipe: (recipe) => {
                 set((state) => ({ recipes: [...state.recipes, recipe] }));
-                sync(() => syncService.saveRecipe(recipe), 'addRecipe');
+                sync(() => syncService.saveRecipe(recipe), 'addRecipe', 'saveRecipe', recipe);
             },
             updateRecipe: (id, updates) => {
                 set((state) => ({ recipes: state.recipes.map(r => r.id === id ? { ...r, ...updates } : r) }));
                 const updated = get().recipes.find(r => r.id === id);
-                if (updated) sync(() => syncService.saveRecipe({ ...updated, ...updates }), 'updateRecipe');
+                if (updated) sync(() => syncService.saveRecipe({ ...updated, ...updates }), 'updateRecipe', 'saveRecipe', { ...updated, ...updates });
             },
             deleteRecipe: (id) => {
                 set((state) => ({ recipes: state.recipes.filter(r => r.id !== id) }));
-                sync(() => syncService.deleteRecipe(id), 'deleteRecipe');
+                sync(() => syncService.deleteRecipe(id), 'deleteRecipe', 'deleteRecipe', id);
             },
 
             // ── Pantry ──
             addPantryItem: (item) => {
                 set((state) => ({ pantryItems: [...state.pantryItems, item] }));
-                sync(() => syncService.savePantryItem(item), 'addPantryItem');
+                sync(() => syncService.savePantryItem(item), 'addPantryItem', 'savePantryItem', item);
             },
             updatePantryItem: (id, updates) => {
                 set((state) => ({ pantryItems: state.pantryItems.map(i => i.id === id ? { ...i, ...updates } : i) }));
                 const updated = get().pantryItems.find(i => i.id === id);
-                if (updated) sync(() => syncService.savePantryItem({ ...updated, ...updates }), 'updatePantryItem');
+                if (updated) sync(() => syncService.savePantryItem({ ...updated, ...updates }), 'updatePantryItem', 'savePantryItem', { ...updated, ...updates });
             },
             deletePantryItem: (id) => {
                 set((state) => ({ pantryItems: state.pantryItems.filter(i => i.id !== id) }));
-                sync(() => syncService.deletePantryItem(id), 'deletePantryItem');
+                sync(() => syncService.deletePantryItem(id), 'deletePantryItem', 'deletePantryItem', id);
             },
 
             // ── Shopping list ──
             addShoppingItem: (item) => {
                 set((state) => ({ shoppingList: [...state.shoppingList, item] }));
-                sync(() => syncService.saveShoppingItem(item), 'addShoppingItem');
+                sync(() => syncService.saveShoppingItem(item), 'addShoppingItem', 'saveShoppingItem', item);
             },
             updateShoppingItem: (id, updates) => {
                 set((state) => ({ shoppingList: state.shoppingList.map(i => i.id === id ? { ...i, ...updates } : i) }));
                 const updated = get().shoppingList.find(i => i.id === id);
-                if (updated) sync(() => syncService.saveShoppingItem({ ...updated, ...updates }), 'updateShoppingItem');
+                if (updated) sync(() => syncService.saveShoppingItem({ ...updated, ...updates }), 'updateShoppingItem', 'saveShoppingItem', { ...updated, ...updates });
             },
             deleteShoppingItem: (id) => {
                 set((state) => ({ shoppingList: state.shoppingList.filter(i => i.id !== id) }));
-                sync(() => syncService.deleteShoppingItem(id), 'deleteShoppingItem');
+                sync(() => syncService.deleteShoppingItem(id), 'deleteShoppingItem', 'deleteShoppingItem', id);
             },
 
             // ── Weekly plan — saved as bulk blob ──
             addWeeklyPlan: (plan) => {
                 set((state) => ({ weeklyPlans: [...state.weeklyPlans, plan] }));
                 const updated = [...get().weeklyPlans];
-                sync(() => syncService.saveWeeklyPlan(updated), 'addWeeklyPlan');
+                sync(() => syncService.saveWeeklyPlan(updated), 'addWeeklyPlan', 'saveWeeklyPlan', updated);
             },
             updateWeeklyPlan: (id, updates) => {
                 set((state) => ({ weeklyPlans: state.weeklyPlans.map(p => p.id === id ? { ...p, ...updates } : p) }));
-                sync(() => syncService.saveWeeklyPlan(get().weeklyPlans), 'updateWeeklyPlan');
+                sync(() => syncService.saveWeeklyPlan(get().weeklyPlans), 'updateWeeklyPlan', 'saveWeeklyPlan', get().weeklyPlans);
             },
             deleteWeeklyPlan: (id) => {
                 set((state) => ({ weeklyPlans: state.weeklyPlans.filter(p => p.id !== id) }));
-                sync(() => syncService.saveWeeklyPlan(get().weeklyPlans), 'deleteWeeklyPlan');
+                sync(() => syncService.saveWeeklyPlan(get().weeklyPlans), 'deleteWeeklyPlan', 'saveWeeklyPlan', get().weeklyPlans);
             },
 
             // ── Trips (viajes) ──
             addTrip: (trip) => {
                 set((state) => ({ trips: [...state.trips, trip] }));
-                sync(() => syncService.saveTrip(trip), 'addTrip');
+                sync(() => syncService.saveTrip(trip), 'addTrip', 'saveTrip', trip);
             },
             updateTrip: (id, updates) => {
                 set((state) => ({ trips: state.trips.map(t => t.id === id ? { ...t, ...updates } : t) }));
                 const updated = get().trips.find(t => t.id === id);
-                if (updated) sync(() => syncService.saveTrip({ ...updated, ...updates }), 'updateTrip');
+                if (updated) sync(() => syncService.saveTrip({ ...updated, ...updates }), 'updateTrip', 'saveTrip', { ...updated, ...updates });
             },
             deleteTrip: (id) => {
                 set((state) => ({ trips: state.trips.filter(t => t.id !== id) }));
-                sync(() => syncService.deleteTrip(id), 'deleteTrip');
+                sync(() => syncService.deleteTrip(id), 'deleteTrip', 'deleteTrip', id);
             },
 
             // ── Family members ──
             addFamilyMember: (member) => {
                 set((state) => ({ familyMembers: [...state.familyMembers, member] }));
-                sync(() => syncService.saveFamilyMember(member), 'addFamilyMember');
+                sync(() => syncService.saveFamilyMember(member), 'addFamilyMember', 'saveFamilyMember', member);
             },
             updateFamilyMember: (id, updates) => {
                 set((state) => ({ familyMembers: state.familyMembers.map(m => m.id === id ? { ...m, ...updates } : m) }));
                 const updated = get().familyMembers.find(m => m.id === id);
-                if (updated) sync(() => syncService.saveFamilyMember({ ...updated, ...updates }), 'updateFamilyMember');
+                if (updated) sync(() => syncService.saveFamilyMember({ ...updated, ...updates }), 'updateFamilyMember', 'saveFamilyMember', { ...updated, ...updates });
             },
             deleteFamilyMember: (id) => {
                 set((state) => ({ familyMembers: state.familyMembers.filter(m => m.id !== id) }));
-                sync(() => syncService.deleteFamilyMember(id), 'deleteFamilyMember');
+                sync(() => syncService.deleteFamilyMember(id), 'deleteFamilyMember', 'deleteFamilyMember', id);
+            },
+
+            // ── Family Events ──
+            addFamilyEvent: (event) => {
+                set((state) => ({ familyEvents: [...state.familyEvents, event] }));
+                sync(() => syncService.saveFamilyEvent(event), 'addFamilyEvent', 'saveFamilyEvent', event);
+            },
+            updateFamilyEvent: (id, updates) => {
+                set((state) => ({ familyEvents: state.familyEvents.map(e => e.id === id ? { ...e, ...updates } : e) }));
+                const updated = get().familyEvents.find(e => e.id === id);
+                if (updated) sync(() => syncService.saveFamilyEvent({ ...updated, ...updates }), 'updateFamilyEvent', 'saveFamilyEvent', { ...updated, ...updates });
+            },
+            deleteFamilyEvent: (id) => {
+                set((state) => ({ familyEvents: state.familyEvents.filter(e => e.id !== id) }));
+                sync(() => syncService.deleteFamilyEvent(id), 'deleteFamilyEvent', 'deleteFamilyEvent', id);
             },
 
             // ── Cloud load — called by AuthGate on login ──
             loadFromCloud: async () => {
                 try {
-                    const [cloudPantry, cloudRecipes, cloudShopping, cloudWeekly, cloudFamily, cloudTrips] = await Promise.all([
+                    const [cloudPantry, cloudRecipes, cloudShopping, cloudWeekly, cloudFamily, cloudTrips, cloudEvents] = await Promise.all([
                         syncService.fetchPantry(),
                         syncService.fetchRecipes(),
                         syncService.fetchShoppingList(),
                         syncService.fetchWeeklyPlan(),
                         syncService.fetchFamilyMembers(),
                         syncService.fetchTrips(),
+                        syncService.fetchFamilyEvents(),
                     ]);
 
-                    console.log(`[useLifeStore] loadFromCloud: pantry=${cloudPantry.length} recipes=${cloudRecipes.length} shopping=${cloudShopping.length} weekly=${cloudWeekly.length} family=${cloudFamily.length} trips=${cloudTrips.length}`);
+                    console.log(`[useLifeStore] loadFromCloud: pantry=${cloudPantry.length} recipes=${cloudRecipes.length} shopping=${cloudShopping.length} weekly=${cloudWeekly.length} family=${cloudFamily.length} trips=${cloudTrips.length} events=${cloudEvents.length}`);
 
                     set((state) => ({
                         pantryItems: cloudPantry.length > 0 ? cloudPantry : state.pantryItems,
@@ -213,6 +249,7 @@ export const useLifeStore = create<LifeState & LifeActions>()(
                         weeklyPlans: cloudWeekly.length > 0 ? cloudWeekly : state.weeklyPlans,
                         familyMembers: cloudFamily.length > 0 ? cloudFamily : state.familyMembers,
                         trips: cloudTrips.length > 0 ? cloudTrips : state.trips,
+                        familyEvents: cloudEvents.length > 0 ? cloudEvents : state.familyEvents,
                     }));
                 } catch (e) {
                     console.error('[useLifeStore] loadFromCloud failed:', e);
@@ -221,7 +258,7 @@ export const useLifeStore = create<LifeState & LifeActions>()(
         }),
         {
             name: 'onyx_life_store',
-            storage: createJSONStorage(() => localStorage),
+            storage: createJSONStorage(() => idbStorage),
             // Don't persist mock-only fields that should come from Supabase
             partialize: (state) => ({
                 weeklyPlans: state.weeklyPlans,
@@ -230,6 +267,7 @@ export const useLifeStore = create<LifeState & LifeActions>()(
                 recipes: state.recipes,
                 trips: state.trips,
                 familyMembers: state.familyMembers,
+                familyEvents: state.familyEvents,
                 widgets: state.widgets,
                 vaultDocuments: state.vaultDocuments,
                 homeAssets: state.homeAssets,

@@ -1,12 +1,12 @@
-# 🔄 Cómo Reiniciar PowerShell - Guía Visual
+# ðŸ”„ CÃ³mo Reiniciar PowerShell - GuÃ­a Visual
 
-## ¿Por qué necesitas reiniciar PowerShell?
+## Â¿Por quÃ© necesitas reiniciar PowerShell?
 
-Cuando instalas Node.js, se añade automáticamente al **PATH** del sistema. Sin embargo, las ventanas de PowerShell que ya estaban abiertas **no detectan estos cambios automáticamente**.
+Cuando instalas Node.js, se aÃ±ade automÃ¡ticamente al **PATH** del sistema. Sin embargo, las ventanas de PowerShell que ya estaban abiertas **no detectan estos cambios automÃ¡ticamente**.
 
 ---
 
-## ✅ Método 1: Cerrar y Abrir (MÁS FÁCIL)
+## âœ… MÃ©todo 1: Cerrar y Abrir (MÃS FÃCIL)
 
 ### Paso a Paso:
 
@@ -17,22 +17,22 @@ Cuando instalas Node.js, se añade automáticamente al **PATH** del sistema. Sin
 
 2. **Abre una nueva ventana de PowerShell**
    
-   **Opción A - Desde el Menú Inicio:**
+   **OpciÃ³n A - Desde el MenÃº Inicio:**
    - Presiona `Windows + S`
    - Escribe "PowerShell"
    - Haz clic en "Windows PowerShell" o "PowerShell"
 
-   **Opción B - Desde el Explorador de Archivos:**
+   **OpciÃ³n B - Desde el Explorador de Archivos:**
    - Navega al directorio del proyecto
-   - Haz clic derecho en el espacio vacío
-   - Selecciona "Abrir en Terminal" o "Abrir PowerShell aquí"
+   - Haz clic derecho en el espacio vacÃ­o
+   - Selecciona "Abrir en Terminal" o "Abrir PowerShell aquÃ­"
 
-   **Opción C - Desde la Barra de Tareas:**
+   **OpciÃ³n C - Desde la Barra de Tareas:**
    - Si tienes PowerShell anclado, haz clic en el icono
 
 3. **Navega al directorio del proyecto:**
    ```powershell
-   cd "D:\Users\Josué\Desktop\Onyx-Suite-main\Onyx-Suite-main"
+   cd "D:\Users\JosuÃ©\Desktop\Aliseus-Suite-main\Aliseus-Suite-main"
    ```
 
 4. **Verifica que Node.js funciona:**
@@ -41,21 +41,21 @@ Cuando instalas Node.js, se añade automáticamente al **PATH** del sistema. Sin
    npm --version
    ```
 
-   Si ves números de versión (ej: `v20.10.0`), ¡está funcionando! ✅
+   Si ves nÃºmeros de versiÃ³n (ej: `v20.10.0`), Â¡estÃ¡ funcionando! âœ…
 
 ---
 
-## 🔄 Método 2: Recargar PATH sin Cerrar
+## ðŸ”„ MÃ©todo 2: Recargar PATH sin Cerrar
 
 Si no quieres cerrar PowerShell, puedes recargar las variables de entorno:
 
-### Opción A - Usar el Script Incluido:
+### OpciÃ³n A - Usar el Script Incluido:
 
 ```powershell
 .\RECARGAR-PATH.ps1
 ```
 
-### Opción B - Comando Manual:
+### OpciÃ³n B - Comando Manual:
 
 ```powershell
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
@@ -66,41 +66,41 @@ Luego verifica:
 node --version
 ```
 
-**Nota:** Este método a veces no funciona si Node.js se instaló mientras PowerShell estaba abierto. En ese caso, usa el Método 1.
+**Nota:** Este mÃ©todo a veces no funciona si Node.js se instalÃ³ mientras PowerShell estaba abierto. En ese caso, usa el MÃ©todo 1.
 
 ---
 
-## 🎯 Verificación Rápida
+## ðŸŽ¯ VerificaciÃ³n RÃ¡pida
 
-Después de reiniciar, ejecuta estos comandos para verificar:
+DespuÃ©s de reiniciar, ejecuta estos comandos para verificar:
 
 ```powershell
 # Verificar Node.js
 node --version
-# Debería mostrar algo como: v20.10.0
+# DeberÃ­a mostrar algo como: v20.10.0
 
 # Verificar npm
 npm --version
-# Debería mostrar algo como: 10.2.3
+# DeberÃ­a mostrar algo como: 10.2.3
 
-# Verificar que estás en el directorio correcto
+# Verificar que estÃ¡s en el directorio correcto
 Get-Location
-# Debería mostrar la ruta a Onyx-Suite-main
+# DeberÃ­a mostrar la ruta a Aliseus-Suite-main
 ```
 
 ---
 
-## ❓ Problemas Comunes
+## â“ Problemas Comunes
 
-### "node no se reconoce" después de reiniciar
+### "node no se reconoce" despuÃ©s de reiniciar
 
 **Posibles causas:**
-1. Node.js no se instaló correctamente
+1. Node.js no se instalÃ³ correctamente
 2. No reiniciaste PowerShell
-3. Node.js no se añadió al PATH
+3. Node.js no se aÃ±adiÃ³ al PATH
 
-**Solución:**
-1. Verifica que Node.js esté instalado:
+**SoluciÃ³n:**
+1. Verifica que Node.js estÃ© instalado:
    - Abre "Agregar o quitar programas" en Windows
    - Busca "Node.js"
    - Si no aparece, reinstala desde nodejs.org
@@ -109,34 +109,34 @@ Get-Location
    ```powershell
    $env:Path -split ';' | Select-String "node"
    ```
-   Debería mostrar una ruta como: `C:\Program Files\nodejs\`
+   DeberÃ­a mostrar una ruta como: `C:\Program Files\nodejs\`
 
-3. Si no aparece, reinstala Node.js y marca la opción "Add to PATH" durante la instalación
+3. Si no aparece, reinstala Node.js y marca la opciÃ³n "Add to PATH" durante la instalaciÃ³n
 
 ### PowerShell se abre en otro directorio
 
-**Solución:**
+**SoluciÃ³n:**
 ```powershell
 # Navega al directorio del proyecto
-cd "D:\Users\Josué\Desktop\Onyx-Suite-main\Onyx-Suite-main"
+cd "D:\Users\JosuÃ©\Desktop\Aliseus-Suite-main\Aliseus-Suite-main"
 
 # O usa la ruta corta si hay problemas con caracteres especiales
-cd D:\Users\Josu*\Desktop\Onyx-Suite-main\Onyx-Suite-main
+cd D:\Users\Josu*\Desktop\Aliseus-Suite-main\Aliseus-Suite-main
 ```
 
 ---
 
-## 💡 Consejos
+## ðŸ’¡ Consejos
 
-- **Siempre reinicia PowerShell** después de instalar programas que modifican el PATH
-- Si tienes múltiples ventanas de PowerShell abiertas, ciérralas todas
-- Usa el script `EJECUTAR-APP.ps1` que verifica automáticamente si Node.js está disponible
+- **Siempre reinicia PowerShell** despuÃ©s de instalar programas que modifican el PATH
+- Si tienes mÃºltiples ventanas de PowerShell abiertas, ciÃ©rralas todas
+- Usa el script `EJECUTAR-APP.ps1` que verifica automÃ¡ticamente si Node.js estÃ¡ disponible
 
 ---
 
-## 🚀 Siguiente Paso
+## ðŸš€ Siguiente Paso
 
-Una vez que Node.js esté funcionando, ejecuta:
+Una vez que Node.js estÃ© funcionando, ejecuta:
 
 ```powershell
 .\EJECUTAR-APP.ps1
@@ -148,6 +148,6 @@ npm install
 npm run dev
 ```
 
-¡Y listo! Aliseus estará corriendo en http://localhost:3000 🎉
+Â¡Y listo! Aliseus estarÃ¡ corriendo en http://localhost:3000 ðŸŽ‰
 
 

@@ -16,8 +16,11 @@ vi.mock('../../store/useLifeStore', () => ({
     useLifeStore: vi.fn()
 }));
 
-vi.mock('../../services/geminiService', () => ({
-    generateSmartInsight: vi.fn(),
+vi.mock('../../services/geminiCore', () => ({
+    generateSmartInsight: vi.fn()
+}));
+
+vi.mock('../../services/geminiFinancial', () => ({
     analyzePredictive: vi.fn()
 }));
 

@@ -170,52 +170,50 @@ export const MOCK_RECIPES: Recipe[] = [
 export const MOCK_TRIPS: Trip[] = [
     {
         id: 'trip-1',
-        destination: 'Costa Amalfitana',
-        country: 'Italia',
-        startDate: '2026-05-15',
-        endDate: '2026-05-22',
-        budget: 2500,
-        spent: 1250,
+        destination: 'Japón',
+        country: 'Japón',
+        startDate: '2026-08-01',
+        endDate: '2026-08-15',
+        budget: 5000,
+        spent: 2200,
         status: 'UPCOMING',
-        image: 'https://images.unsplash.com/photo-1533923055375-38c0ce986427?q=80&w=1200&auto=format&fit=crop',
+        image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1200&auto=format&fit=crop',
         flights: [
             {
                 id: 'f-1',
                 airline: 'Iberia',
                 flightNumber: 'IB3250',
                 origin: 'MAD',
-                destination: 'NAP',
-                departureTime: '2026-05-15T10:00:00Z',
-                arrivalTime: '2026-05-15T12:30:00Z',
-                price: 180,
+                destination: 'NRT',
+                departureTime: '2026-08-01T10:00:00Z',
+                arrivalTime: '2026-08-02T12:30:00Z',
+                price: 1180,
                 bookingUrl: 'https://www.iberia.com'
             }
         ],
         accommodations: [
             {
                 id: 'a-1',
-                name: 'Hotel Poseidon Positano',
-                address: 'Viale Pasitea, 148, 84017 Positano SA',
-                checkIn: '2026-05-15',
-                checkOut: '2026-05-22',
-                price: 1400,
-                bookingUrl: 'https://www.hotelposeidonpositano.it'
+                name: 'Hotel Gracery Shinjuku',
+                address: '1-19-1 Kabukicho, Shinjuku City',
+                checkIn: '2026-08-02',
+                checkOut: '2026-08-08',
+                price: 1020,
+                bookingUrl: 'https://gracery.com/shinjuku'
             }
         ],
         itinerary: [
-            { id: 'i-1', time: '14:00', activity: 'Llegada a Positano y Check-in', location: 'Hotel Poseidon', type: 'TRANSPORT' },
-            { id: 'i-2', time: '17:00', activity: 'Aperitivo en Franco\'s Bar', location: 'Positano', type: 'FOOD' },
-            { id: 'i-3', time: '20:00', activity: 'Cena en Da Vincenzo', location: 'Positano', type: 'FOOD' },
-            { id: 'i-4', time: '09:00', activity: 'Senderismo: Sentiero degli Dei', location: 'Bomerano', type: 'ACTIVITY' },
-            { id: 'i-5', time: '13:00', activity: 'Almuerzo en La Tagliata', location: 'Montepertuso', type: 'FOOD' }
+            { id: 'i-1', time: '14:00', activity: 'Llegada a Tokio y Check-in', location: 'Shinjuku', type: 'TRANSPORT' },
+            { id: 'i-2', time: '17:00', activity: 'Paseo por Shibuya', location: 'Tokio', type: 'ACTIVITY' },
+            { id: 'i-3', time: '20:00', activity: 'Cena Sushi', location: 'Tokio', type: 'FOOD' },
         ],
         checklist: [
             { id: 'c-1', task: 'Pasaportes vigentes', completed: true },
             { id: 'c-2', task: 'Seguro de viaje contratado', completed: true },
-            { id: 'c-3', task: 'Reserva de coche alquilado', completed: false },
+            { id: 'c-3', task: 'Japan Rail Pass', completed: false },
             { id: 'c-4', task: 'Adaptador de enchufes', completed: false }
         ],
-        linkedGoalId: 'goal-travel-1'
+        linkedGoalId: '2' // Links to Goal ID 2 in financeSeed
     }
 ];
 

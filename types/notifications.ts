@@ -1,6 +1,6 @@
-// ─────────────────────────────────────────────────────────────────────────────
-//  Aliseus — Notification Types
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+//  Aliseus â€” Notification Types
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export type NotificationType = 'warning' | 'danger' | 'success' | 'info';
 export type NotificationModule = 'finance' | 'life' | 'system';
@@ -13,7 +13,7 @@ export type NotificationCategory =
     | 'shopping'
     | 'system';
 
-export interface OnyxNotification {
+export interface AliseusNotification {
     /** Deterministic ID based on rule + entity, prevents duplicates */
     id: string;
     type: NotificationType;
@@ -25,6 +25,10 @@ export interface OnyxNotification {
     actionLabel?: string;
     /** Where to navigate when the user clicks the action button */
     actionTarget?: { app: string; tab?: string };
+    /** Functional action type if any */
+    actionType?: 'CONFIRM_TRANSACTION' | 'NAVIGATE';
+    /** Arbitrary metadata for the action, e.g. transaction template */
+    metadata?: any;
     read: boolean;
     createdAt: string; // ISO string
     dismissedAt?: string;

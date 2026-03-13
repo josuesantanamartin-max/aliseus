@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { generateImage } from '../geminiService';
+import { generateImage } from '../geminiCore';
 
 describe('GeminiService', () => {
     beforeEach(() => {
@@ -25,7 +25,7 @@ describe('GeminiService', () => {
         });
 
         it('should include enhanced prompt keywords', async () => {
-            const result = await generateImage('Simple dish');
+            const result = await generateImage('Simple dish', '4:3', 'food');
 
             expect(result.imageUrl).toContain('professional');
             expect(result.imageUrl).toContain('food');

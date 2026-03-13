@@ -18,25 +18,27 @@
 
 ## 🚀 Key Modules
 
-### 🏦 Onyx Finance
+### 🏦 Aura Finance
 Master your economy with elite-level tools:
 - **Timeline Evolution**: Visualize your net worth growth over years.
-- **Smart Budgets**: Granular control over spending with automated category distribution.
-- **Finance Projections**: Advanced algorithms to predict your balance 12+ months ahead.
+- **Smart Budgets & Fixed Payments**: Granular control over spending with automated category distribution and tracking of monthly recurring bills.
+- **Debt & Subscription Tracker**: Keep your liabilities in check and never pay for forgotten subscriptions.
+- **Finance Projections**: Advanced AI algorithms to predict your balance 12+ months ahead.
 - **Accounts Hub**: A unified view of all your physical and digital assets.
 
-### 🏠 Onyx Life
+### 🏠 Life Hub
 Harmonize your household operations:
-- **Intelligent Meal Planner**: Weekly organization with favorite recipe integration.
-- **Pantry Intelligence**: Inventory tracking for essential items.
-- **Family Agenda**: Synchronized schedule for the whole household.
-- **Upcoming Trips**: Planning and countdowns for your next adventures.
+- **Intelligent Meal Planner**: Weekly organization with favorite recipe integration, Drag-and-Drop scheduling, and AI-powered smart menu generation.
+- **Travel Hub**: Interactive maps, countdowns, and detailed planning for your upcoming trips.
+- **Pantry Intelligence**: Inventory tracking for essential items to optimize shopping.
+- **Family Agenda**: Synchronized schedule for the whole household with Realtime updates.
+- **Habits & Tasks**: Build routines and track your daily progress seamlessly.
 
-### 🧠 Onyx Insights (AI)
-Powered by **Google Gemini Pro**, the suite provides proactive analysis:
+### 🧠 Aliseus Insights (AI)
+Powered by **Google Gemini 1.5 Pro**, the suite provides proactive analysis:
 - **Predictive Savings**: Tells you exactly when you'll hit your financial goals.
 - **Spending Alerts**: Identifies anomalies in your monthly flow.
-- **contextual Tips**: Personalized suggestions based on your Life and Finance data.
+- **Contextual Tips**: Personalized suggestions based on your Life and Finance data.
 
 ## 🎨 Premium UX Features
 
@@ -44,15 +46,16 @@ Powered by **Google Gemini Pro**, the suite provides proactive analysis:
 - **Quick-Resize System**: Contextual controls to instantly toggle between KPI, Half, Wide, and Full layouts.
 - **Adaptive Glassmorphism**: A design system that feels alive, featuring sub-pixel blurring and micro-interactions.
 - **Multi-Language Elite**: Native support for **Español**, **English**, and **Français**.
+- **Offline-First Hybrid State**: Robust local persistence powered by Zustand ensures lightning-fast load times and reliability.
 
 ## 🛠 Tech Stack
 
 | Layer | Technology |
 | :--- | :--- |
 | **Frontend** | React 19, TypeScript 5.8, Vite |
-| **State** | Zustand (Global Persistent State) |
+| **State** | Zustand (Hybrid Local-First State Management) |
 | **Animation** | Framer Motion |
-| **Backend** | Supabase (PostgreSQL, Auth, Edge Functions) |
+| **Backend** | Supabase (PostgreSQL, Auth, Edge Functions, Realtime) |
 | **AI Engine** | Google Gemini 1.5 Pro |
 | **Payments** | Stripe Integration (Billing & Subscriptions) |
 | **Monitoring** | Sentry, Vercel Analytics |
@@ -63,6 +66,7 @@ Powered by **Google Gemini Pro**, the suite provides proactive analysis:
 - Node.js 20+
 - A Supabase Project
 - A Google AI (Gemini) API Key
+- A Stripe Account (For Subscriptions/Billing)
 
 ### Installation
 
@@ -78,11 +82,12 @@ Powered by **Google Gemini Pro**, the suite provides proactive analysis:
    ```
 
 3. **Environment Configuration**
-   Create a `.env` file in the root:
+   Create a `.env` file in the root based on `.env.example`:
    ```env
    VITE_SUPABASE_URL=your_url
    VITE_SUPABASE_ANON_KEY=your_key
    VITE_GEMINI_API_KEY=your_gemini_key
+   VITE_STRIPE_PUBLIC_KEY=your_stripe_key
    ```
 
 4. **Launch Development Server**

@@ -225,7 +225,7 @@ const BentoDashboard: React.FC = () => {
                 return { title, value: 'Gastos', subValue: 'Por categoría', icon: CreditCard, color: 'rose' as const };
             case 'SAVINGS_RATE':
                 const rate = monthlyIncome > 0 ? ((monthlyIncome - monthlyExpenses) / monthlyIncome) * 100 : 0;
-                return { title, value: `${rate.toFixed(1)}%`, subValue: 'Tasa de Ahorro', icon: Target, color: 'blue' as const };
+                return { title, value: `${rate.toLocaleString('es-ES', { maximumFractionDigits: 1 })}%`, subValue: 'Tasa de Ahorro', icon: Target, color: 'blue' as const };
             case 'RECENT_TRANSACTIONS':
                 return { title, value: transactions.length, subValue: 'Últimas transacciones', icon: Receipt, color: 'onyx' as const };
             case 'TOP_SPENDERS':

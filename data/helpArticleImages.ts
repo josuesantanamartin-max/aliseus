@@ -37,7 +37,7 @@ export const articleImages: Record<string, ArticleImage[]> = {
             caption: {
                 ES: 'Paso 1: Arrastra tu archivo CSV o haz click para seleccionar',
                 EN: 'Step 1: Drag your CSV file or click to select',
-                FR: 'Étape 1: Glissez votre fichier CSV ou cliquez pour sélectionner'
+                FR: 'Ã‰tape 1: Glissez votre fichier CSV ou cliquez pour sélectionner'
             }
         },
         {
@@ -45,12 +45,12 @@ export const articleImages: Record<string, ArticleImage[]> = {
             alt: {
                 ES: 'Vista previa de datos CSV con mapeo de columnas',
                 EN: 'CSV data preview with column mapping',
-                FR: 'Aperçu des données CSV avec mappage des colonnes'
+                FR: 'AperÃ§u des données CSV avec mappage des colonnes'
             },
             caption: {
                 ES: 'Paso 2: Revisa la vista previa y mapea las columnas correctamente',
                 EN: 'Step 2: Review preview and map columns correctly',
-                FR: 'Étape 2: Examinez l\'aperçu et mappez correctement les colonnes'
+                FR: 'Ã‰tape 2: Examinez l\'aperÃ§u et mappez correctement les colonnes'
             }
         },
         {
@@ -63,7 +63,7 @@ export const articleImages: Record<string, ArticleImage[]> = {
             caption: {
                 ES: 'Paso 3: Confirmación de transacciones importadas',
                 EN: 'Step 3: Confirmation of imported transactions',
-                FR: 'Étape 3: Confirmation des transactions importées'
+                FR: 'Ã‰tape 3: Confirmation des transactions importées'
             }
         }
     ],
@@ -119,7 +119,7 @@ export const articleImages: Record<string, ArticleImage[]> = {
             caption: {
                 ES: 'Describe lo que quieres cocinar y la IA creará una receta completa',
                 EN: 'Describe what you want to cook and AI will create a complete recipe',
-                FR: 'Décrivez ce que vous voulez cuisiner et l\'IA créera une recette complète'
+                FR: 'Décrivez ce que vous voulez cuisiner et l\'IA créera une recette complÃ¨te'
             }
         }
     ],
@@ -157,12 +157,12 @@ export const articleImages: Record<string, ArticleImage[]> = {
             alt: {
                 ES: 'Panel de configuración de privacidad',
                 EN: 'Privacy settings panel',
-                FR: 'Panneau de paramètres de confidentialité'
+                FR: 'Panneau de paramÃ¨tres de confidentialité'
             },
             caption: {
                 ES: 'Gestiona cookies, exporta datos y controla tu privacidad',
                 EN: 'Manage cookies, export data and control your privacy',
-                FR: 'Gérez les cookies, exportez les données et contrôlez votre confidentialité'
+                FR: 'Gérez les cookies, exportez les données et contrÃ´lez votre confidentialité'
             }
         }
     ],
@@ -172,7 +172,7 @@ export const articleImages: Record<string, ArticleImage[]> = {
             alt: {
                 ES: 'Pantalla de bienvenida del onboarding',
                 EN: 'Onboarding welcome screen',
-                FR: 'Écran de bienvenue de l\'intégration'
+                FR: 'Ã‰cran de bienvenue de l\'intégration'
             },
             caption: {
                 ES: 'El proceso de onboarding te guía paso a paso',
@@ -183,14 +183,14 @@ export const articleImages: Record<string, ArticleImage[]> = {
         {
             src: '/help-screenshots/dashboard-overview.png',
             alt: {
-                ES: 'Vista general de Onyx Central',
-                EN: 'Onyx Central overview',
-                FR: 'Vue d\'ensemble d\'Onyx Central'
+                ES: 'Vista general de Aliseus Central',
+                EN: 'Aliseus Central overview',
+                FR: 'Vue d\'ensemble d\'Aliseus Central'
             },
             caption: {
-                ES: 'Onyx Central con widgets personalizables',
-                EN: 'Onyx Central with customizable widgets',
-                FR: 'Onyx Central avec widgets personnalisables'
+                ES: 'Aliseus Central con widgets personalizables',
+                EN: 'Aliseus Central with customizable widgets',
+                FR: 'Aliseus Central avec widgets personnalisables'
             }
         }
     ]

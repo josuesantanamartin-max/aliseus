@@ -6,14 +6,15 @@ const generateId = () => Math.random().toString(36).substr(2, 9);
 
 const generateTransactions = () => {
     const transactions: Transaction[] = [];
-    const startDate = new Date('2024-01-01');
-    const endDate = new Date('2026-01-31');
+    const startDate = new Date();
+    startDate.setFullYear(startDate.getFullYear() - 2); // 2 years of history
+    const endDate = new Date();
 
-    // Ingresos mensuales totales equilibrados: ~3.250€
+    // Ingresos mensuales totales equilibrados: ~3.250â‚¬
     const salaryAmount = 2950;
     const extraIncomeAmount = 300;
 
-    // Gastos Fijos equilibrados: ~1.500€
+    // Gastos Fijos equilibrados: ~1.500â‚¬
     const mortgageAmount = 850;
     const savingTransfer = 400;
 
@@ -26,21 +27,21 @@ const generateTransactions = () => {
         const month = currentDate.getMonth();
         const year = currentDate.getFullYear();
 
-        const isFirstMonth = year === 2024 && month === 0;
+        const isLastMonth = year === endDate.getFullYear() && month === endDate.getMonth();
 
         // 1. INGRESOS
         if (dayNum === 1) {
             transactions.push({
                 id: generateId(), type: 'INCOME', amount: salaryAmount, date: dateStr,
                 category: 'Trabajo', subCategory: 'Salario', accountId: '1',
-                description: 'Nómina Onyx Corp', isRecurring: isFirstMonth
+                description: 'Nómina Aliseus Corp', isRecurring: true
             });
         }
         if (dayNum === 15) {
             transactions.push({
                 id: generateId(), type: 'INCOME', amount: extraIncomeAmount, date: dateStr,
                 category: 'Negocios', subCategory: 'Consultoría', accountId: '1',
-                description: 'Servicios Profesionales Extra', isRecurring: isFirstMonth
+                description: 'Servicios Profesionales Extra', isRecurring: true
             });
         }
 
@@ -49,22 +50,22 @@ const generateTransactions = () => {
             transactions.push({
                 id: generateId(), type: 'EXPENSE', amount: savingTransfer, date: dateStr,
                 category: 'Transferencia', subCategory: 'Ahorro', accountId: '1',
-                description: 'Ahorro Automático', isRecurring: isFirstMonth
+                description: 'Ahorro Automático', isRecurring: true
             });
             transactions.push({
                 id: generateId(), type: 'INCOME', amount: savingTransfer, date: dateStr,
                 category: 'Transferencia', subCategory: 'Desde otra cuenta', accountId: '6',
-                description: 'Ahorro recibido', isRecurring: isFirstMonth
+                description: 'Ahorro recibido', isRecurring: true
             });
             transactions.push({
                 id: generateId(), type: 'EXPENSE', amount: mortgageAmount, date: dateStr,
                 category: 'Transferencia', subCategory: 'Entre Cuentas', accountId: '1',
-                description: 'Fondo para Hipoteca', isRecurring: isFirstMonth
+                description: 'Fondo para Hipoteca', isRecurring: true
             });
             transactions.push({
                 id: generateId(), type: 'INCOME', amount: mortgageAmount, date: dateStr,
                 category: 'Transferencia', subCategory: 'Desde otra cuenta', accountId: '5',
-                description: 'Fondo Hipoteca Recibido', isRecurring: isFirstMonth
+                description: 'Fondo Hipoteca Recibido', isRecurring: true
             });
         }
 
@@ -73,38 +74,38 @@ const generateTransactions = () => {
             transactions.push({
                 id: generateId(), type: 'EXPENSE', amount: mortgageAmount, date: dateStr,
                 category: 'Vivienda', subCategory: 'Hipoteca', accountId: '5',
-                description: 'Pago Hipoteca', isRecurring: isFirstMonth
+                description: 'Pago Hipoteca', isRecurring: true
             });
         }
         if (dayNum === 7) {
             transactions.push({
                 id: generateId(), type: 'EXPENSE', amount: 120 + (Math.random() * 20), date: dateStr,
                 category: 'Servicios', subCategory: 'Luz', accountId: '1',
-                description: 'Factura Luz', isRecurring: isFirstMonth
+                description: 'Factura Luz', isRecurring: true
             });
             transactions.push({
                 id: generateId(), type: 'EXPENSE', amount: 45, date: dateStr,
                 category: 'Servicios', subCategory: 'Internet', accountId: '1',
-                description: 'Fibra', isRecurring: isFirstMonth
+                description: 'Fibra', isRecurring: true
             });
         }
 
         // 4. GASTOS VARIABLES (CALIBRADOS)
-        if (dayOfWeek === 5) { // Supermercado semanal: ~450€ mes
+        if (dayOfWeek === 5) { // Supermercado semanal: ~450â‚¬ mes
             transactions.push({
                 id: generateId(), type: 'EXPENSE', amount: 90 + (Math.random() * 30), date: dateStr,
                 category: 'Alimentación', subCategory: 'Supermercado', accountId: '1',
                 description: 'Compra Semanal'
             });
         }
-        if (dayOfWeek === 6 && Math.random() > 0.4) { // Ocio: ~250€ mes
+        if (dayOfWeek === 6 && Math.random() > 0.4) { // Ocio: ~250â‚¬ mes
             transactions.push({
                 id: generateId(), type: 'EXPENSE', amount: 40 + (Math.random() * 40), date: dateStr,
                 category: 'Alimentación', subCategory: 'Restaurantes', accountId: '4', // Visa Oro
                 description: 'Cena fuera'
             });
         }
-        if (dayNum === 3 || dayNum === 18) { // Gasolina: ~140€ mes
+        if (dayNum === 3 || dayNum === 18) { // Gasolina: ~140â‚¬ mes
             transactions.push({
                 id: generateId(), type: 'EXPENSE', amount: 65 + (Math.random() * 10), date: dateStr,
                 category: 'Transporte', subCategory: 'Gasolina', accountId: '4', // Visa Oro
@@ -120,35 +121,10 @@ const generateTransactions = () => {
 
 const generatedTransactions = generateTransactions();
 
-// Add specific January 2026 transactions (days 1-8)
-const january2026Transactions: Transaction[] = [
-    // Day 1 - Salary
-    { id: generateId(), type: 'INCOME', amount: 2950, date: '2026-01-01', category: 'Trabajo', subCategory: 'Salario', accountId: '1', description: 'Nómina Onyx Corp' },
-
-    // Day 2 - Transfers (Savings + Mortgage)
-    { id: generateId(), type: 'EXPENSE', amount: 400, date: '2026-01-02', category: 'Transferencia', subCategory: 'Ahorro', accountId: '1', description: 'Ahorro Automático' },
-    { id: generateId(), type: 'INCOME', amount: 400, date: '2026-01-02', category: 'Transferencia', subCategory: 'Desde otra cuenta', accountId: '6', description: 'Ahorro recibido' },
-    { id: generateId(), type: 'EXPENSE', amount: 850, date: '2026-01-02', category: 'Transferencia', subCategory: 'Entre Cuentas', accountId: '1', description: 'Fondo para Hipoteca' },
-    { id: generateId(), type: 'INCOME', amount: 850, date: '2026-01-02', category: 'Transferencia', subCategory: 'Desde otra cuenta', accountId: '5', description: 'Fondo Hipoteca Recibido' },
-
-    // Day 3 - Gas
-    { id: generateId(), type: 'EXPENSE', amount: 68.50, date: '2026-01-03', category: 'Transporte', subCategory: 'Gasolina', accountId: '4', description: 'Combustible' },
-    // Day 3 - Groceries (Friday)
-    { id: generateId(), type: 'EXPENSE', amount: 105.30, date: '2026-01-03', category: 'Alimentación', subCategory: 'Supermercado', accountId: '1', description: 'Compra Semanal' },
-
-    // Day 4 - Restaurant (Saturday)
-    { id: generateId(), type: 'EXPENSE', amount: 62.80, date: '2026-01-04', category: 'Alimentación', subCategory: 'Restaurantes', accountId: '4', description: 'Cena fuera' },
-
-    // Day 5 - Mortgage payment
-    { id: generateId(), type: 'EXPENSE', amount: 850, date: '2026-01-05', category: 'Vivienda', subCategory: 'Hipoteca', accountId: '5', description: 'Pago Hipoteca' },
-
-    // Day 7 - Utilities
-    { id: generateId(), type: 'EXPENSE', amount: 132.45, date: '2026-01-07', category: 'Servicios', subCategory: 'Luz', accountId: '1', description: 'Factura Luz' },
-    { id: generateId(), type: 'EXPENSE', amount: 45, date: '2026-01-07', category: 'Servicios', subCategory: 'Internet', accountId: '1', description: 'Fibra' },
-
-    // Day 8 - Coffee & Pharmacy
-    { id: generateId(), type: 'EXPENSE', amount: 3.50, date: '2026-01-08', category: 'Alimentación', subCategory: 'Cafeterías', accountId: '3', description: 'Café con leche' },
-    { id: generateId(), type: 'EXPENSE', amount: 18.90, date: '2026-01-08', category: 'Salud', subCategory: 'Farmacia', accountId: '1', description: 'Medicamentos' },
+// Additional specific transactions for the very last days to ensure "recent" view is populated
+const recentTransactions: Transaction[] = [
+    { id: generateId(), type: 'INCOME', amount: 15.50, date: new Date().toISOString().split('T')[0], category: 'Otros', subCategory: 'Varios', accountId: '1', description: 'Venta Wallapop' },
+    { id: generateId(), type: 'EXPENSE', amount: 3.50, date: new Date().toISOString().split('T')[0], category: 'Alimentación', subCategory: 'Cafeterías', accountId: '3', description: 'Café de hoy' },
 ];
 
 export const DEFAULT_FINANCE_WIDGETS: DashboardWidget[] = [
@@ -173,13 +149,13 @@ export const MOCK_ACCOUNTS: Account[] = [
     { id: '4', name: 'Visa Oro', bankName: 'Banco Santander', type: 'CREDIT', balance: -454.30, currency: 'EUR', creditLimit: 3000, cutoffDay: 20, paymentDay: 5, linkedAccountId: '1' },
 ];
 
-export const MOCK_TRANSACTIONS: Transaction[] = [...january2026Transactions, ...generatedTransactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+export const MOCK_TRANSACTIONS: Transaction[] = [...recentTransactions, ...generatedTransactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
 export const MOCK_BUDGETS: Budget[] = [];
 
 export const MOCK_GOALS: Goal[] = [
     { id: '1', name: 'Entrada Piso', targetAmount: 40000, currentAmount: 18500, deadline: '2026-12-31', accountId: '2' },
-    { id: '2', name: 'Viaje Japón 2025', targetAmount: 5000, currentAmount: 2200, deadline: '2025-09-01', accountId: '6' },
+    { id: '2', name: 'Viaje Japón 2026', targetAmount: 5000, currentAmount: 2200, deadline: '2026-08-01', accountId: '6', linkedTripId: 'trip-1' },
 ];
 
 export const MOCK_DEBTS: Debt[] = [

@@ -234,7 +234,10 @@ export const KitchenDashboard: React.FC<KitchenDashboardProps> = ({ onOpenAiPlan
                   </div>
                </div>
                <button
-                  onClick={() => onViewChange('PLANNER')}
+                  onClick={() => {
+                     useLifeStore.getState().setIsSmartPlannerOpen(true);
+                     onViewChange('PLANNER');
+                  }}
                   className="bg-white text-orange-600 px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-orange-50 transition-all shadow-lg active:scale-95 z-10"
                >
                   Optimizar Menú

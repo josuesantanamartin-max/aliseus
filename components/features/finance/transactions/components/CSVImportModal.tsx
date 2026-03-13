@@ -170,13 +170,24 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
     };
 
     const applyBankTemplate = (template: BankTemplate) => {
+        const findHeader = (templateVal: string | undefined): string => {
+            if (!templateVal) return '';
+            if (headers.includes(templateVal)) return templateVal;
+            
+            const lowerVal = templateVal.toLowerCase();
+            const match = headers.find(h => 
+                h.toLowerCase().includes(lowerVal) || lowerVal.includes(h.toLowerCase())
+            );
+            return match || templateVal;
+        };
+
         const newMapping: ColumnMapping = {
-            date: template.columns.date,
-            amount: template.columns.amount,
-            description: template.columns.description,
-            category: template.columns.category || '',
+            date: findHeader(template.columns.date),
+            amount: findHeader(template.columns.amount),
+            description: findHeader(template.columns.description),
+            category: findHeader(template.columns.category) || '',
             subCategory: '',
-            type: template.columns.type,
+            type: findHeader(template.columns.type),
         };
         setMapping(newMapping);
     };

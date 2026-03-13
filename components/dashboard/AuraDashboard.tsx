@@ -17,6 +17,10 @@ import LifeSnapshot from './zones/LifeSnapshot';
 import AuraThemeBar, { AuraTheme } from './zones/AuraThemeBar';
 import AuraCommandBar from './zones/AuraCommandBar';
 import AuraFinanceOverview from './zones/AuraFinanceOverview';
+import AuraKitchenOverview from './zones/AuraKitchenOverview';
+import AuraTravelOverview from './zones/AuraTravelOverview';
+import AuraFamilyOverview from './zones/AuraFamilyOverview';
+import AuraInvestmentsOverview from './zones/AuraInvestmentsOverview';
 
 // Utility for formatting currency
 const formatCurrency = (val: number) =>
@@ -198,76 +202,37 @@ const AuraDashboard: React.FC = () => {
 
                 {/* --- DYNAMIC VIEWS --- */}
                 <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-                    {activeTheme === 'finances' && (
-                        <div className="mx-auto w-full space-y-8 pb-12">
-                            <AuraFinanceOverview selectedDate={selectedDate} />
-                        </div>
-                    )}
+                    <React.Suspense fallback={<div className="flex items-center justify-center p-12 text-onyx-400 font-bold m-auto">Cargando módulos interactivos...</div>}>
+                        {activeTheme === 'finances' && (
+                            <div className="mx-auto w-full space-y-8 pb-12">
+                                <AuraFinanceOverview selectedDate={selectedDate} />
+                            </div>
+                        )}
 
-                    {activeTheme === 'kitchen' && (
-                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                            <div className="lg:col-span-8 space-y-6">
-                                {React.createElement(WIDGET_REGISTRY['TODAY_MENU'], widgetProps)}
-                                {React.createElement(WIDGET_REGISTRY['RECIPE_FAVORITES'], widgetProps)}
+                        {activeTheme === 'kitchen' && (
+                            <div className="mx-auto w-full space-y-8 pb-12">
+                                <AuraKitchenOverview selectedDate={selectedDate} />
                             </div>
-                            <div className="lg:col-span-4 space-y-6">
-                                {React.createElement(WIDGET_REGISTRY['SHOPPING_LIST'], widgetProps)}
-                                {React.createElement(WIDGET_REGISTRY['CRITICAL_INVENTORY'], widgetProps)}
-                            </div>
-                        </div>
-                    )}
+                        )}
 
-                    {activeTheme === 'travel' && (
-                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                            <div className="lg:col-span-8 space-y-6">
-                                <LifeSnapshot hideActivity />
-                                {React.createElement(WIDGET_REGISTRY['ANNUAL_COMPARISON'], widgetProps)}
+                        {activeTheme === 'travel' && (
+                            <div className="mx-auto w-full space-y-8 pb-12">
+                                <AuraTravelOverview selectedDate={selectedDate} />
                             </div>
-                            <div className="lg:col-span-4 space-y-6">
-                                {React.createElement(WIDGET_REGISTRY['UPCOMING_TRIPS'], widgetProps)}
-                                <div className="p-6 rounded-3xl border border-slate-200 dark:border-onyx-800 bg-white dark:bg-onyx-900 flex flex-col gap-4">
-                                    <h4 className="text-sm font-bold text-slate-900 dark:text-white">Búsqueda Rápida (Duffel)</h4>
-                                    <div className="grid grid-cols-1 gap-3">
-                                        <div className="h-10 bg-slate-50 dark:bg-onyx-800 rounded-xl px-3 flex items-center text-xs text-slate-400">Origen...</div>
-                                        <div className="h-10 bg-slate-50 dark:bg-onyx-800 rounded-xl px-3 flex items-center text-xs text-slate-400">Destino...</div>
-                                        <Button className="w-full">Buscar Vuelos</Button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                        )}
 
-                    {activeTheme === 'family' && (
-                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                            <div className="lg:col-span-4 space-y-6">
-                                {React.createElement(WIDGET_REGISTRY['FAMILY_AGENDA'], widgetProps)}
-                                {React.createElement(WIDGET_REGISTRY['UPCOMING_BIRTHDAYS'], widgetProps)}
+                        {activeTheme === 'family' && (
+                            <div className="mx-auto w-full space-y-8 pb-12">
+                                <AuraFamilyOverview selectedDate={selectedDate} />
                             </div>
-                            <div className="lg:col-span-8 space-y-6">
-                                <LifeSnapshot hideNextTrip />
-                                {React.createElement(WIDGET_REGISTRY['FAMILY_TASKS'], widgetProps)}
-                            </div>
-                        </div>
-                    )}
+                        )}
 
-                    {activeTheme === 'investments' && (
-                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                            <div className="lg:col-span-12">
-                                {React.createElement(WIDGET_REGISTRY['NET_WORTH'], widgetProps)}
+                        {activeTheme === 'investments' && (
+                            <div className="mx-auto w-full space-y-8 pb-12">
+                                <AuraInvestmentsOverview selectedDate={selectedDate} onNavigate={handleNavigate} />
                             </div>
-                            <div className="lg:col-span-7 space-y-6">
-                                {React.createElement(WIDGET_REGISTRY['TIMELINE_EVOLUTION'], widgetProps)}
-                            </div>
-                            <div className="lg:col-span-5 space-y-6">
-                                {React.createElement(WIDGET_REGISTRY['ACCOUNTS_SUMMARY'], widgetProps)}
-                                <div className="p-6 rounded-3xl bg-brand-500 text-white shadow-xl shadow-brand-500/20">
-                                    <h4 className="font-bold mb-2">Proyección Jubilación</h4>
-                                    <p className="text-xs opacity-90 mb-4">A este ritmo, podrías retirarte con una renta mensual de 2.450€ en 22 años.</p>
-                                    <Button variant="outline" className="w-full bg-white/20 border-white/30 text-white hover:bg-white/30">Plan completo</Button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                        )}
+                    </React.Suspense>
                 </div>
             </div>
 

@@ -8,6 +8,14 @@ export interface Chore {
     icon: string;
 }
 
+export interface FamilyEvent {
+    id: string;
+    title: string;
+    time: string;
+    location?: string;
+    type: 'MEDICAL' | 'EDUCATION' | 'SOCIAL' | 'SPORT' | 'OTHER';
+}
+
 export interface MealPlan {
     date: string; // ISO Date
     dayOfWeek: number;

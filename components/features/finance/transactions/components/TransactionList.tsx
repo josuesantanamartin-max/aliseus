@@ -30,25 +30,29 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions, onEdit,
     const sortedDates = Object.keys(groupedTransactions).sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
 
     return (
-        <AnimatedList className="space-y-12" staggerDelay={0.1}>
+        <AnimatedList
+            key={`${sortedDates.length}-${sortedDates.join('-')}`} // Forces re-mount and re-animation when data changes
+            className="space-y-12"
+            staggerDelay={0.1}
+        >
             {sortedDates.map(date => (
                 <AnimatedListItem key={date}>
                     <div className="animate-fade-in group/day">
                         <div className="flex items-center gap-6 mb-8 px-2">
-                            <div className="h-[1px] flex-1 bg-onyx-100/50"></div>
-                            <h4 className="text-[11px] font-bold text-onyx-400 uppercase tracking-[0.3em] whitespace-nowrap bg-white px-6 py-2 rounded-full border border-onyx-100 shadow-sm transition-all group-hover/day:border-cyan-100 group-hover/day:text-cyan-600 group-hover/day:scale-105">
+                            <div className="h-[1px] flex-1 bg-onyx-100/50 dark:bg-white/10"></div>
+                            <h4 className="text-[11px] font-bold text-onyx-400 dark:text-onyx-500 uppercase tracking-[0.3em] whitespace-nowrap bg-white dark:bg-onyx-900 px-6 py-2 rounded-full border border-onyx-100 dark:border-white/10 shadow-sm transition-all group-hover/day:border-cyan-100 group-hover/day:text-cyan-600 group-hover/day:scale-105">
                                 {new Date(date).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
                             </h4>
-                            <div className="h-[1px] flex-1 bg-onyx-100/50"></div>
+                            <div className="h-[1px] flex-1 bg-onyx-100/50 dark:bg-white/10"></div>
                         </div>
 
-                        <div className="bg-white rounded-onyx shadow-sm border border-onyx-100 overflow-hidden divide-y divide-onyx-50 relative">
+                        <div className="bg-white dark:bg-onyx-900 rounded-onyx shadow-sm border border-onyx-100 dark:border-white/5 overflow-hidden divide-y divide-onyx-50 dark:divide-white/5 relative">
                             {groupedTransactions[date].map((t: Transaction) => (
-                                <div key={t.id} onClick={() => onEdit(t)} className="p-8 hover:bg-onyx-50/50 transition-all duration-300 group/item flex flex-col sm:flex-row items-center gap-8 cursor-pointer border-l-4 border-l-transparent hover:border-l-cyan-600">
+                                <div key={t.id} onClick={() => onEdit(t)} className="p-8 hover:bg-onyx-50/50 dark:hover:bg-white/5 transition-all duration-300 group/item flex flex-col sm:flex-row items-center gap-8 cursor-pointer border-l-4 border-l-transparent hover:border-l-cyan-600">
                                     {/* Icon */}
-                                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 transition-all duration-500 group-hover/item:scale-110 shadow-sm border ${t.type === 'INCOME' ? 'bg-emerald-50 text-emerald-600 border-emerald-100/50' :
-                                        t.category === 'Transferencia' ? 'bg-cyan-50 text-cyan-600 border-cyan-100/50' :
-                                            'bg-red-50 text-red-600 border-red-100/50'
+                                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 transition-all duration-500 group-hover/item:scale-110 shadow-sm border ${t.type === 'INCOME' ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border-emerald-100/50 dark:border-emerald-500/20' :
+                                        t.category === 'Transferencia' ? 'bg-cyan-50 dark:bg-cyan-900/20 text-cyan-600 dark:text-cyan-400 border-cyan-100/50 dark:border-cyan-500/20' :
+                                            'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border-red-100/50 dark:border-red-500/20'
                                         }`}>
                                         {t.category === 'Transferencia' ? <ArrowRightLeft className="w-7 h-7" /> : t.type === 'INCOME' ? <ArrowUpRight className="w-7 h-7" /> : <ArrowDownRight className="w-7 h-7" />}
                                     </div>
@@ -56,21 +60,21 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions, onEdit,
                                     {/* Details */}
                                     <div className="flex-1 text-center sm:text-left">
                                         <div className="flex flex-col sm:flex-row sm:items-center justify-center sm:justify-start gap-4 mb-3">
-                                            <span className="font-bold text-cyan-900 text-xl tracking-tight group-hover/item:text-cyan-600 transition-colors">{t.description}</span>
+                                            <span className="font-bold text-cyan-900 dark:text-white text-xl tracking-tight group-hover/item:text-cyan-600 transition-colors">{t.description}</span>
                                             {t.isRecurring && (
-                                                <div className="flex items-center gap-2 px-2.5 py-1 bg-cyan-50 text-cyan-600 rounded-lg border border-cyan-100 self-center sm:self-auto">
+                                                <div className="flex items-center gap-2 px-2.5 py-1 bg-cyan-50 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 rounded-lg border border-cyan-100 dark:border-cyan-500/30 self-center sm:self-auto">
                                                     <Repeat className="w-3 h-3 animate-reverse-spin" />
                                                     <span className="text-[10px] font-bold uppercase tracking-widest">Recurrente</span>
                                                 </div>
                                             )}
                                         </div>
                                         <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4">
-                                            <div className="flex items-center gap-2 px-3 py-1.5 bg-onyx-50 border border-onyx-100 rounded-xl font-bold text-[10px] text-onyx-500 uppercase tracking-widest group-hover/item:bg-white transition-colors">
+                                            <div className="flex items-center gap-2 px-3 py-1.5 bg-onyx-50 dark:bg-white/5 border border-onyx-100 dark:border-white/10 rounded-xl font-bold text-[10px] text-onyx-500 dark:text-onyx-400 uppercase tracking-widest group-hover/item:bg-white dark:group-hover/item:bg-onyx-800 transition-colors">
                                                 {t.category}
                                                 {t.subCategory && <span className="opacity-40">/</span>}
                                                 {t.subCategory && <span>{t.subCategory}</span>}
                                             </div>
-                                            <div className="text-onyx-400 font-bold text-[11px] flex items-center gap-3 bg-white px-3 py-1.5 rounded-xl border border-onyx-100/50 group-hover/item:border-cyan-100 transition-colors">
+                                            <div className="text-onyx-400 dark:text-onyx-500 font-bold text-[11px] flex items-center gap-3 bg-white dark:bg-onyx-800 px-3 py-1.5 rounded-xl border border-onyx-100/50 dark:border-white/10 group-hover/item:border-cyan-100 dark:group-hover/item:border-cyan-500/50 transition-colors">
                                                 <div className="w-2 h-2 rounded-full bg-cyan-500/30 group-hover/item:bg-cyan-500 transition-colors animate-pulse"></div>
                                                 {accounts.find(a => a.id === t.accountId)?.name}
                                             </div>
@@ -80,13 +84,13 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions, onEdit,
                                     {/* Amount & Actions */}
                                     <div className="flex items-center gap-10 pr-2">
                                         <div className="text-right">
-                                            <p className={`text-2xl font-bold tracking-tight ${t.type === 'INCOME' ? 'text-emerald-600' : 'text-cyan-900'}`}>
+                                            <p className={`text-2xl font-bold tracking-tight ${t.type === 'INCOME' ? 'text-emerald-600 dark:text-emerald-400' : 'text-cyan-900 dark:text-white'}`}>
                                                 {t.type === 'INCOME' ? '+' : '-'}{formatPrice(t.amount, 2)}
                                             </p>
-                                            <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mt-1 opacity-0 group-hover/item:opacity-100 transition-opacity">Ver Detalle</p>
+                                            <p className="text-[10px] font-bold text-onyx-400 dark:text-onyx-500 uppercase tracking-widest mt-1 opacity-0 group-hover/item:opacity-100 transition-opacity">Ver Detalle</p>
                                         </div>
                                         <div className="flex gap-3 opacity-0 group-hover/item:opacity-100 translate-x-4 group-hover/item:translate-x-0 transition-all duration-500">
-                                            <button onClick={(e) => { e.stopPropagation(); onDelete(t.id); }} className="p-3.5 bg-white hover:bg-red-50 rounded-xl text-onyx-400 hover:text-red-500 border border-onyx-100 hover:border-red-100 transition-all shadow-sm active:scale-95"><Trash2 className="w-5 h-5" /></button>
+                                            <button onClick={(e) => { e.stopPropagation(); onDelete(t.id); }} className="p-3.5 bg-white dark:bg-onyx-800 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl text-onyx-400 dark:text-onyx-500 hover:text-red-500 dark:hover:text-red-400 border border-onyx-100 dark:border-white/10 hover:border-red-100 dark:hover:border-red-500/30 transition-all shadow-sm active:scale-95"><Trash2 className="w-5 h-5" /></button>
                                         </div>
                                     </div>
                                 </div>

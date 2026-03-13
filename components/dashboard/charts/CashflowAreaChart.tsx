@@ -83,7 +83,7 @@ const CashflowAreaChart: React.FC<CashflowAreaChartProps> = ({ transactions, hei
                     <YAxis
                         axisLine={false}
                         tickLine={false}
-                        tickFormatter={(value) => `€${value >= 1000 ? (value / 1000).toFixed(0) + 'k' : value}`}
+                        tickFormatter={(value) => `€${value.toLocaleString('es-ES')}`}
                         tick={{ fontSize: 10, fill: 'currentColor' }}
                         className="text-onyx-400 dark:text-onyx-500"
                     />

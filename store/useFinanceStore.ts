@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { syncService } from '../services/syncService';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { idbStorage } from '../utils/idbStorage';
+import { offlineQueueService } from '../services/offlineQueueService';
 import { Transaction, Account, Budget, Goal, Debt, CategoryStructure, DashboardWidget, ProjectItem } from '../types';
 import { INITIAL_CATEGORIES } from '../constants';
 import { MOCK_ACCOUNTS, MOCK_TRANSACTIONS, MOCK_BUDGETS, MOCK_GOALS, MOCK_DEBTS, DEFAULT_FINANCE_WIDGETS } from '../data/seeds/financeSeed';
@@ -103,7 +105,8 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                 try {
                     await syncService.saveTransaction(tx);
                 } catch (e) {
-                    console.error("Failed to sync transaction:", e);
+                    console.warn("[useFinanceStore] Failed to sync transaction, enqueuing.", e);
+                    offlineQueueService.enqueue('saveTransaction', tx);
                 }
             },
             addAccount: async (account) => {
@@ -115,7 +118,8 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                 try {
                     await syncService.saveAccount(account);
                 } catch (e) {
-                    console.error("Failed to sync account:", e);
+                    console.warn("[useFinanceStore] Failed to sync account, enqueuing.", e);
+                    offlineQueueService.enqueue('saveAccount', account);
                 }
             },
             updateTransaction: (id, updates) => {
@@ -137,7 +141,10 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                     );
                     const updatedAccount = accounts.find(a => a.id === id);
                     if (updatedAccount) {
-                        syncService.saveAccount(updatedAccount).catch(e => console.error("Failed to sync account:", e));
+                        syncService.saveAccount(updatedAccount).catch(e => {
+                            console.warn("[useFinanceStore] Failed to sync account update, enqueuing.", e);
+                            offlineQueueService.enqueue('saveAccount', updatedAccount);
+                        });
                     }
                     return { accounts };
                 });
@@ -146,11 +153,17 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                 set((state) => ({
                     accounts: state.accounts.filter(acc => acc.id !== id)
                 }));
-                syncService.deleteAccount(id).catch(e => console.error("Failed to sync account deletion:", e));
+                syncService.deleteAccount(id).catch(e => {
+                    console.warn("[useFinanceStore] Failed to sync account deletion, enqueuing.", e);
+                    offlineQueueService.enqueue('deleteAccount', id);
+                });
             },
             addBudget: (budget) => {
                 set((state) => ({ budgets: [...state.budgets, budget] }));
-                syncService.saveBudget(budget).catch(e => console.error('[store] addBudget sync failed:', e));
+                syncService.saveBudget(budget).catch(e => {
+                    console.warn('[store] addBudget sync failed, enqueuing:', e);
+                    offlineQueueService.enqueue('saveBudget', budget);
+                });
             },
             updateBudget: (id, updates) => {
                 set((state) => ({
@@ -159,15 +172,24 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                 // Re-fetch updated item to sync full object
                 const store = useFinanceStore.getState();
                 const updated = store.budgets.find(b => b.id === id);
-                if (updated) syncService.saveBudget({ ...updated, ...updates }).catch(e => console.error('[store] updateBudget sync failed:', e));
+                if (updated) syncService.saveBudget({ ...updated, ...updates }).catch(e => {
+                    console.warn('[store] updateBudget sync failed, enqueuing:', e);
+                    offlineQueueService.enqueue('saveBudget', { ...updated, ...updates });
+                });
             },
             deleteBudget: (id) => {
                 set((state) => ({ budgets: state.budgets.filter(b => b.id !== id) }));
-                syncService.deleteBudget(id).catch(e => console.error('[store] deleteBudget sync failed:', e));
+                syncService.deleteBudget(id).catch(e => {
+                    console.warn('[store] deleteBudget sync failed, enqueuing:', e);
+                    offlineQueueService.enqueue('deleteBudget', id);
+                });
             },
             addProjectBudget: (budget) => {
                 set((state) => ({ projectBudgets: [...state.projectBudgets, budget] }));
-                syncService.saveProjectBudget(budget).catch(e => console.error('[store] addProjectBudget sync failed:', e));
+                syncService.saveProjectBudget(budget).catch(e => {
+                    console.warn('[store] addProjectBudget sync failed, enqueuing:', e);
+                    offlineQueueService.enqueue('saveProjectBudget', budget);
+                });
             },
             updateProjectBudget: (id, updates) => {
                 set((state) => ({
@@ -175,15 +197,24 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                 }));
                 const store = useFinanceStore.getState();
                 const updated = store.projectBudgets.find(b => b.id === id);
-                if (updated) syncService.saveProjectBudget({ ...updated, ...updates }).catch(e => console.error('[store] updateProjectBudget sync failed:', e));
+                if (updated) syncService.saveProjectBudget({ ...updated, ...updates }).catch(e => {
+                    console.warn('[store] updateProjectBudget sync failed, enqueuing:', e);
+                    offlineQueueService.enqueue('saveProjectBudget', { ...updated, ...updates });
+                });
             },
             deleteProjectBudget: (id) => {
                 set((state) => ({ projectBudgets: state.projectBudgets.filter(b => b.id !== id) }));
-                syncService.deleteProjectBudget(id).catch(e => console.error('[store] deleteProjectBudget sync failed:', e));
+                syncService.deleteProjectBudget(id).catch(e => {
+                    console.warn('[store] deleteProjectBudget sync failed, enqueuing:', e);
+                    offlineQueueService.enqueue('deleteProjectBudget', id);
+                });
             },
             addProjectItem: (item) => {
                 set((state) => ({ projectItems: [...state.projectItems, item] }));
-                syncService.saveProjectItem(item).catch(e => console.error('[store] addProjectItem sync failed:', e));
+                syncService.saveProjectItem(item).catch(e => {
+                    console.warn('[store] addProjectItem sync failed, enqueuing:', e);
+                    offlineQueueService.enqueue('saveProjectItem', item);
+                });
             },
             updateProjectItem: (id, updates) => {
                 set((state) => ({
@@ -191,15 +222,24 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                 }));
                 const store = useFinanceStore.getState();
                 const updated = store.projectItems.find(i => i.id === id);
-                if (updated) syncService.saveProjectItem({ ...updated, ...updates }).catch(e => console.error('[store] updateProjectItem sync failed:', e));
+                if (updated) syncService.saveProjectItem({ ...updated, ...updates }).catch(e => {
+                    console.warn('[store] updateProjectItem sync failed, enqueuing:', e);
+                    offlineQueueService.enqueue('saveProjectItem', { ...updated, ...updates });
+                });
             },
             deleteProjectItem: (id) => {
                 set((state) => ({ projectItems: state.projectItems.filter(i => i.id !== id) }));
-                syncService.deleteProjectItem(id).catch(e => console.error('[store] deleteProjectItem sync failed:', e));
+                syncService.deleteProjectItem(id).catch(e => {
+                    console.warn('[store] deleteProjectItem sync failed, enqueuing:', e);
+                    offlineQueueService.enqueue('deleteProjectItem', id);
+                });
             },
             addGoal: (goal) => {
                 set((state) => ({ goals: [...state.goals, goal] }));
-                syncService.saveGoal(goal).catch(e => console.error('[store] addGoal sync failed:', e));
+                syncService.saveGoal(goal).catch(e => {
+                    console.warn('[store] addGoal sync failed, enqueuing:', e);
+                    offlineQueueService.enqueue('saveGoal', goal);
+                });
             },
             updateGoal: (id, updates) => {
                 set((state) => ({
@@ -207,15 +247,24 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                 }));
                 const store = useFinanceStore.getState();
                 const updated = store.goals.find(g => g.id === id);
-                if (updated) syncService.saveGoal({ ...updated, ...updates }).catch(e => console.error('[store] updateGoal sync failed:', e));
+                if (updated) syncService.saveGoal({ ...updated, ...updates }).catch(e => {
+                    console.warn('[store] updateGoal sync failed, enqueuing:', e);
+                    offlineQueueService.enqueue('saveGoal', { ...updated, ...updates });
+                });
             },
             deleteGoal: (id) => {
                 set((state) => ({ goals: state.goals.filter(g => g.id !== id) }));
-                syncService.deleteGoal(id).catch(e => console.error('[store] deleteGoal sync failed:', e));
+                syncService.deleteGoal(id).catch(e => {
+                    console.warn('[store] deleteGoal sync failed, enqueuing:', e);
+                    offlineQueueService.enqueue('deleteGoal', id);
+                });
             },
             addDebt: (debt) => {
                 set((state) => ({ debts: [...state.debts, debt] }));
-                syncService.saveDebt(debt).catch(e => console.error('[store] addDebt sync failed:', e));
+                syncService.saveDebt(debt).catch(e => {
+                    console.warn('[store] addDebt sync failed, enqueuing:', e);
+                    offlineQueueService.enqueue('saveDebt', debt);
+                });
             },
             updateDebt: (id, updates) => {
                 set((state) => ({
@@ -223,11 +272,17 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                 }));
                 const store = useFinanceStore.getState();
                 const updated = store.debts.find(d => d.id === id);
-                if (updated) syncService.saveDebt({ ...updated, ...updates }).catch(e => console.error('[store] updateDebt sync failed:', e));
+                if (updated) syncService.saveDebt({ ...updated, ...updates }).catch(e => {
+                    console.warn('[store] updateDebt sync failed, enqueuing:', e);
+                    offlineQueueService.enqueue('saveDebt', { ...updated, ...updates });
+                });
             },
             deleteDebt: (id) => {
                 set((state) => ({ debts: state.debts.filter(d => d.id !== id) }));
-                syncService.deleteDebt(id).catch(e => console.error('[store] deleteDebt sync failed:', e));
+                syncService.deleteDebt(id).catch(e => {
+                    console.warn('[store] deleteDebt sync failed, enqueuing:', e);
+                    offlineQueueService.enqueue('deleteDebt', id);
+                });
             },
             updateAccountBalance: async (accountId, amount) => {
                 set((state) => {
@@ -236,7 +291,10 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                     );
                     const updatedAccount = updatedAccounts.find(a => a.id === accountId);
                     if (updatedAccount) {
-                        syncService.saveAccount(updatedAccount).catch(e => console.error("Failed to sync account:", e));
+                        syncService.saveAccount(updatedAccount).catch(e => {
+                            console.warn("Failed to sync account balance, enqueuing.", e);
+                            offlineQueueService.enqueue('saveAccount', updatedAccount);
+                        });
                     }
                     return { accounts: updatedAccounts };
                 });
@@ -307,7 +365,7 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
         }),
         {
             name: 'onyx_finance_store',
-            storage: createJSONStorage(() => localStorage), // Explicitly use localStorage
+            storage: createJSONStorage(() => idbStorage), // Explicitly use idbStorage (IndexedDB)
         }
     )
 );

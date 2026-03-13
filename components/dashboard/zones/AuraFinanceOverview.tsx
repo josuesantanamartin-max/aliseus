@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { DetailedBudgetWidget } from './finance/DetailedBudgetWidget';
 
 export interface PendingFixedPayment {
     id: string;
@@ -63,25 +64,40 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
     }, [transactions, startOfMonth, endOfMonth]);
 
     // ==========================================
-    // WIDGET 1: SALDO DISPONIBLE (Suma Cuentas)
+    // ACCOUNT CLASSIFICATION (Strictly Mutually Exclusive)
     // ==========================================
     const LIQUID_TYPES = ['BANK', 'CASH', 'WALLET'] as const;
-    const totalBalance = useMemo(() => {
-        return accounts
-            .filter(a => LIQUID_TYPES.includes(a.type as any))
-            .reduce((acc, a) => acc + a.balance, 0);
-    }, [accounts]);
 
-    // ==========================================
-    // WIDGET 2: TOTAL AHORRO & DESTINADO ESTE MES
-    // ==========================================
-    const { totalSavings, savingsThisMonth, savingsAccounts } = useMemo(() => {
-        // Cuentas consideradas de ahorro (por tipo o nombre)
-        const savingsAccounts = accounts.filter(a =>
+    const { savingsAccounts, liquidAccounts } = useMemo(() => {
+        // Cuentas consideradas de ahorro (por tipo o nombre o si son remuneradas explícitamente)
+        const savings = accounts.filter(a =>
+            a.type === 'SAVINGS' ||
             a.type === 'INVESTMENT' ||
             a.name.toLowerCase().includes('ahorro') ||
             a.name.toLowerCase().includes('hucha')
         );
+
+        // Cuentas de liquidez son aquellas del tipo banco/efectivo/wallet que NO son de ahorro
+        const liquid = accounts.filter(a =>
+            LIQUID_TYPES.includes(a.type as any) &&
+            !savings.some(sa => sa.id === a.id)
+        );
+
+        return { savingsAccounts: savings, liquidAccounts: liquid };
+    }, [accounts]);
+
+
+    // ==========================================
+    // WIDGET 1: SALDO DISPONIBLE (Suma Cuentas)
+    // ==========================================
+    const totalBalance = useMemo(() => {
+        return liquidAccounts.reduce((acc, a) => acc + a.balance, 0);
+    }, [liquidAccounts]);
+
+    // ==========================================
+    // WIDGET 2: TOTAL AHORRO & DESTINADO ESTE MES
+    // ==========================================
+    const { totalSavings, savingsThisMonth } = useMemo(() => {
         const tSavings = savingsAccounts.reduce((acc, a) => acc + a.balance, 0);
 
         // Ahorro transferido o registrado este mes
@@ -91,8 +107,8 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
             savingsAccounts.some(sa => sa.id === t.accountId)
         ).filter(t => t.type === 'INCOME' || (t.type === 'EXPENSE' && t.category === 'Ahorro')).reduce((acc, t) => acc + t.amount, 0);
 
-        return { totalSavings: tSavings, savingsThisMonth: sThisMonth, savingsAccounts };
-    }, [accounts, currentMonthTxs]);
+        return { totalSavings: tSavings, savingsThisMonth: sThisMonth };
+    }, [savingsAccounts, currentMonthTxs]);
 
     // ==========================================
     // WIDGET 3: INGRESOS - GASTOS = BALANCE
@@ -135,58 +151,103 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
     // ==========================================
     // LINE CHART: EVOLUCIÓN HISTÓRICA
     // ==========================================
+    const totalNetWorth = useMemo(() => {
+        return accounts.reduce((acc, a) => acc + a.balance, 0);
+    }, [accounts]);
+
     const chartData = useMemo(() => {
-        // To build a realistic chart, we project backwards from the current balance.
+        const now = new Date();
+        const dataPoints = [];
+        
+        // 1. Determine base balance (today)
         let currentBal = chartAccountId === 'all'
-            ? totalBalance
+            ? totalNetWorth
             : (accounts.find(a => a.id === chartAccountId)?.balance || 0);
 
-        const dataPoints = [];
-        const now = new Date();
+        // 2. Filter transactions for the selected account(s)
+        const relevantTxs = transactions
+            .filter(t => chartAccountId === 'all' || t.accountId === chartAccountId)
+            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-        let monthsBack = 6;
-        if (chartTimeframe === '1m') monthsBack = 1; // 30 days
-        if (chartTimeframe === '1y') monthsBack = 12;
-        if (chartTimeframe === '3y') monthsBack = 36;
-        if (chartTimeframe === '5y') monthsBack = 60;
+        // 3. Determine timeframe
+        let steps = 6;
+        let unit: 'day' | 'month' = 'month';
+        if (chartTimeframe === '1m') { steps = 30; unit = 'day'; }
+        else if (chartTimeframe === '6m') { steps = 6; unit = 'month'; }
+        else if (chartTimeframe === '1y') { steps = 12; unit = 'month'; }
+        else if (chartTimeframe === '3y') { steps = 36; unit = 'month'; }
+        else if (chartTimeframe === '5y') { steps = 60; unit = 'month'; }
 
-        // Simplify approach: If 1m, generate daily points. Otherwise monthly.
-        if (chartTimeframe === '1m') {
-            for (let i = 0; i <= 30; i++) {
-                const d = new Date(now);
-                d.setDate(d.getDate() - i);
+        // 4. Calculate points walking backwards
+        let runningBalance = currentBal;
+        let txPointer = 0;
 
-                // For a real app, calculate exact balance on that day. 
-                // For visual purposes, we mock a slight daily variation.
-                let variation = (Math.random() * 50) - 20;
-                if (i === 0) variation = 0; // Today is exact
+        for (let i = 0; i <= steps; i++) {
+            const d = new Date(now);
+            if (unit === 'day') d.setDate(d.getDate() - i);
+            else d.setMonth(d.getMonth() - i, 1);
 
-                currentBal = currentBal - variation;
+            // Subtract all transactions that occurred AFTER this point in time (relative to the previous step)
+            // But since we are calculating "balance at start of period i", 
+            // and we start from "balance today", we subtract transactions that happened after d.
+            
+            // Wait, simplified: 
+            // Point i = balance at the END of that day/month.
+            // Point 0 (today) = currentBal.
+            // Point 1 (yesterday/last month) = currentBal - transactions between today and yesterday.
+            
+            const periodEnd = i === 0 ? new Date(now.getTime() + 86400000) : new Date(now);
+            if (i > 0) {
+                if (unit === 'day') periodEnd.setDate(periodEnd.getDate() - (i - 1));
+                else periodEnd.setMonth(periodEnd.getMonth() - (i - 1), 0); // Last day of previous month
+            }
+            
+            const periodStart = new Date(now);
+            if (unit === 'day') periodStart.setDate(periodStart.getDate() - i);
+            else periodStart.setMonth(periodStart.getMonth() - i, 1);
+            periodStart.setHours(0, 0, 0, 0);
 
-                dataPoints.unshift({
-                    name: d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }),
-                    balance: Math.max(0, currentBal)
+            // For i > 0, we subtract transactions that happened between now and periodStart
+            // Actually, let's just use the runningBalance.
+            // At i=0, balance is current.
+            // Before moving to i=1, we subtract txs that happened between i=0 and i=1.
+            
+            if (i > 0) {
+                const stepStart = new Date(now);
+                const stepEnd = new Date(now);
+
+                if (unit === 'day') {
+                    stepStart.setDate(now.getDate() - i);
+                    stepEnd.setDate(now.getDate() - (i - 1));
+                } else {
+                    stepStart.setMonth(now.getMonth() - i, 1);
+                    stepEnd.setMonth(now.getMonth() - (i - 1), 1);
+                }
+                stepStart.setHours(0,0,0,0);
+                stepEnd.setHours(0,0,0,0);
+
+                // Transactions to "undo": those between stepStart and stepEnd
+                const txsInStep = relevantTxs.filter(t => {
+                    const txDate = new Date(t.date);
+                    return txDate >= stepStart && txDate < stepEnd;
+                });
+
+                txsInStep.forEach(t => {
+                    if (t.type === 'INCOME') runningBalance -= t.amount;
+                    else runningBalance += t.amount;
                 });
             }
-        } else {
-            for (let i = 0; i <= monthsBack; i++) {
-                const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
 
-                // Mock historical balances for visual presentation of the component
-                let variation = (Math.random() * 500) - 100;
-                if (i === 0) variation = 0;
-
-                currentBal = currentBal - variation;
-
-                dataPoints.unshift({
-                    name: d.toLocaleDateString('es-ES', { month: 'short', year: monthsBack > 12 ? '2-digit' : undefined }),
-                    balance: Math.max(0, currentBal)
-                });
-            }
+            dataPoints.unshift({
+                name: unit === 'day' 
+                    ? d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })
+                    : d.toLocaleDateString('es-ES', { month: 'short', year: steps > 12 ? '2-digit' : undefined }),
+                balance: runningBalance
+            });
         }
 
         return dataPoints;
-    }, [totalBalance, chartAccountId, accounts, chartTimeframe]);
+    }, [totalNetWorth, chartAccountId, accounts, chartTimeframe, transactions]);
 
     // ==========================================
     // PAGOS FIJOS
@@ -245,6 +306,12 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
 
         const catMap = new Map<string, { total: number, limit: number, subcategories: Map<string, number> }>();
 
+        // 1. Initialize with all budgets so we don't miss categories with 0 spend
+        budgets.forEach(b => {
+            catMap.set(b.category, { total: 0, limit: b.limit, subcategories: new Map() });
+        });
+
+        // 2. Add actual expenses
         expenseTxs.forEach(t => {
             if (!catMap.has(t.category)) {
                 // Find limit
@@ -258,13 +325,16 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
             cat.subcategories.set(subName, (cat.subcategories.get(subName) || 0) + t.amount);
         });
 
-        // Convert to array and sort by total descending
+        // Convert to array and sort by limit descending first, then total spending
         return Array.from(catMap.entries()).map(([name, data]) => ({
             name,
             total: data.total,
             limit: data.limit,
             subcategories: Array.from(data.subcategories.entries()).map(([subName, subTotal]) => ({ name: subName, total: subTotal }))
-        })).sort((a, b) => b.total - a.total);
+        })).sort((a, b) => {
+            if (b.limit !== a.limit) return b.limit - a.limit; // Prioritize categories with budget limits
+            return b.total - a.total; // Then by what you've spent
+        });
 
     }, [currentMonthTxs, budgets]);
 
@@ -292,7 +362,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                     </div>
 
                     <div className="flex flex-col gap-1.5 mt-4 pt-4 border-t border-slate-100 dark:border-onyx-800/80">
-                        {accounts.filter(a => LIQUID_TYPES.includes(a.type as any)).map(a => (
+                        {liquidAccounts.map(a => (
                             <div key={a.id} className="flex justify-between items-center text-xs">
                                 <span className="text-slate-500 font-medium truncate mr-2">{a.name}</span>
                                 <span className="font-bold text-slate-700 dark:text-slate-300 tabular-nums">{formatCurrency(a.balance)}</span>
@@ -466,8 +536,8 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                                         axisLine={false}
                                         tickLine={false}
                                         tick={{ fontSize: 11, fill: '#94a3b8' }}
-                                        tickFormatter={(value) => `${value >= 1000 ? (value / 1000).toFixed(1) + 'k' : value} `}
-                                        width={40}
+                                        tickFormatter={(value) => value.toLocaleString('es-ES')}
+                                        width={80}
                                         dx={-10}
                                     />
                                     <RechartsTooltip
@@ -561,64 +631,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                 <div className="lg:col-span-1">
 
                     {/* Presupuesto Detallado Mensual */}
-                    <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] h-full flex flex-col">
-                        <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                <Layers className="w-4 h-4 text-slate-400" />
-                                Presupuesto Detallado
-                            </h3>
-                        </div>
-
-                        <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-6">
-                            {detailedBudget.length > 0 ? detailedBudget.map((cat, idx) => {
-                                const isOverLimit = cat.limit > 0 && cat.total > cat.limit;
-                                const percent = cat.limit > 0 ? Math.min(100, (cat.total / cat.limit) * 100) : 0;
-
-                                return (
-                                    <div key={idx} className="flex flex-col gap-3">
-                                        {/* Category Header */}
-                                        <div className="flex justify-between items-end">
-                                            <span className="text-sm font-bold text-slate-800 dark:text-slate-200">{cat.name}</span>
-                                            <div className="flex items-baseline gap-1">
-                                                <span className={cn("text-sm font-black tabular-nums", isOverLimit ? "text-red-500" : "text-slate-900 dark:text-white")}>
-                                                    {formatCurrency(cat.total)}
-                                                </span>
-                                                {cat.limit > 0 && (
-                                                    <span className="text-xs font-bold text-slate-400">/ {formatCurrency(cat.limit)}</span>
-                                                )}
-                                            </div>
-                                        </div>
-
-                                        {/* Category Progress */}
-                                        {cat.limit > 0 && (
-                                            <div className="w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-1 overflow-hidden">
-                                                <div
-                                                    className={cn("h-full rounded-full", isOverLimit ? "bg-red-500" : "bg-slate-400")}
-                                                    style={{ width: `${percent}% ` }}
-                                                />
-                                            </div>
-                                        )}
-
-                                        {/* Subcategories */}
-                                        {cat.subcategories.length > 0 && (
-                                            <div className="pl-4 border-l-2 border-slate-100 dark:border-onyx-800 flex flex-col gap-2 mt-1">
-                                                {cat.subcategories.map((sub, sIdx) => (
-                                                    <div key={sIdx} className="flex justify-between items-center text-xs">
-                                                        <span className="text-slate-500 font-medium">{sub.name}</span>
-                                                        <span className="font-bold text-slate-600 dark:text-slate-400 tabular-nums">{formatCurrency(sub.total)}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </div>
-                                )
-                            }) : (
-                                <div className="text-xs text-slate-400 text-center py-10">
-                                    No hay gastos registrados este mes.
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                    <DetailedBudgetWidget detailedBudget={detailedBudget} />
 
                 </div>
 

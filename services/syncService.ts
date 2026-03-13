@@ -2,7 +2,7 @@
 import { supabase } from './supabaseClient';
 import { Transaction, Account, Budget, Goal, Debt, Ingredient, Recipe, ShoppingItem, FamilyMember } from '../types';
 import { Trip } from '../types/travel';
-import { WeeklyPlan } from '../types/life';
+import { WeeklyPlan, FamilyEvent } from '../types/life';
 import { useHouseholdStore } from '../store/useHouseholdStore';
 
 // ─── Mappers: camelCase (app) ↔ snake_case (Supabase) ──────────────────────
@@ -575,6 +575,48 @@ export const syncService = {
         if (error) throw error;
     },
 
+    // --- FAMILY EVENTS (AGENDA) ---
+    async fetchFamilyEvents() {
+        if (!supabase) return [];
+        const { data, error } = await supabase.from('life_family_events').select('*');
+        if (error) {
+            // Migration might be pending
+            if (error.code === '42P01') return [];
+            throw error;
+        }
+        return data.map((e: any) => ({
+            id: e.id,
+            title: e.title,
+            time: e.time_str,
+            location: e.location,
+            type: e.event_type
+        })) as FamilyEvent[];
+    },
+
+    async saveFamilyEvent(event: FamilyEvent) {
+        if (!supabase) return;
+        const userId = await getCurrentUserId();
+        if (!userId) return;
+
+        const { error } = await supabase.from('life_family_events').upsert({
+            id: event.id,
+            title: event.title,
+            time_str: event.time,
+            location: event.location,
+            event_type: event.type,
+            user_id: userId,
+            household_id: useHouseholdStore.getState().activeHouseholdId,
+            updated_at: new Date().toISOString()
+        });
+        if (error) throw error;
+    },
+
+    async deleteFamilyEvent(eventId: string) {
+        if (!supabase) return;
+        const { error } = await supabase.from('life_family_events').delete().eq('id', eventId);
+        if (error) throw error;
+    },
+
     // --- TRIPS (TRAVEL) ---
     async fetchTrips() {
         if (!supabase) return [];
@@ -647,7 +689,7 @@ export const syncService = {
         try {
             const [
                 accounts, transactions, budgets, projectBudgets, goals, debts,
-                pantry, recipes, shoppingList, weeklyPlans, familyMembers, trips
+                pantry, recipes, shoppingList, weeklyPlans, familyMembers, trips, familyEvents
             ] = await Promise.all([
                 this.fetchAccounts(),
                 this.fetchTransactions(),
@@ -660,12 +702,13 @@ export const syncService = {
                 this.fetchShoppingList(),
                 this.fetchWeeklyPlan(),
                 this.fetchFamilyMembers(),
-                this.fetchTrips()
+                this.fetchTrips(),
+                this.fetchFamilyEvents()
             ]);
 
             return {
                 finance: { accounts, transactions, budgets, projectBudgets, goals, debts },
-                life: { pantry, recipes, shoppingList, weeklyPlans, familyMembers, trips }
+                life: { pantry, recipes, shoppingList, weeklyPlans, familyMembers, trips, familyEvents }
             };
         } catch (error) {
             console.error('Error syncing from cloud:', error);

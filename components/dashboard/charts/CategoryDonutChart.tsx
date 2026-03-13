@@ -54,7 +54,7 @@ const CategoryDonutChart: React.FC<CategoryDonutChartProps> = ({
     const CustomTooltip = ({ active, payload }: any) => {
         if (active && payload && payload.length) {
             const data = payload[0].payload;
-            const percent = ((data.value / total) * 100).toFixed(1);
+            const percent = ((data.value / total) * 100).toLocaleString('es-ES', { maximumFractionDigits: 1 });
             return (
                 <div className="bg-white/80 dark:bg-onyx-900/80 backdrop-blur-md border border-onyx-100 dark:border-onyx-800 px-3 py-2 rounded-xl shadow-lg flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full shadow-inner" style={{ backgroundColor: payload[0].color }} />

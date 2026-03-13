@@ -96,7 +96,7 @@ const ActiveGoalsWidget: React.FC<ActiveGoalsWidgetProps> = ({ goals, onNavigate
                                             </div>
                                         </div>
                                         <div className="text-right">
-                                            <span className="text-sm font-black text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30 px-3 py-1 rounded-full border border-purple-100 dark:border-purple-800">{progress.toFixed(0)}%</span>
+                                            <span className="text-sm font-black text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30 px-3 py-1 rounded-full border border-purple-100 dark:border-purple-800">{progress.toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}%</span>
                                         </div>
                                     </div>
                                     <div className="w-full bg-onyx-50 dark:bg-onyx-700 h-3 rounded-full overflow-hidden border border-onyx-100/50 dark:border-onyx-600/50 relative">

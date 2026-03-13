@@ -88,14 +88,14 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
     FREE: {
         tier: 'FREE',
         name: {
-            ES: 'Onyx Básico',
-            EN: 'Onyx Basic',
-            FR: 'Onyx Basique'
+            ES: 'Aliseus Básico',
+            EN: 'Aliseus Basic',
+            FR: 'Aliseus Basique'
         },
         description: {
             ES: 'Perfecto para empezar a organizar tus finanzas',
             EN: 'Perfect to start organizing your finances',
-            FR: 'Parfait pour commencer à organiser vos finances'
+            FR: 'Parfait pour commencer Ã  organiser vos finances'
         },
         price: {
             monthly: 0,
@@ -125,28 +125,28 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
             {
                 id: 'transactions',
                 name: { ES: 'Transacciones', EN: 'Transactions', FR: 'Transactions' },
-                description: { ES: 'Hasta 500 transacciones', EN: 'Up to 500 transactions', FR: 'Jusqu\'à 500 transactions' },
+                description: { ES: 'Hasta 500 transacciones', EN: 'Up to 500 transactions', FR: 'Jusqu\'Ã  500 transactions' },
                 included: true,
                 limit: '500'
             },
             {
                 id: 'budgets',
                 name: { ES: 'Presupuestos', EN: 'Budgets', FR: 'Budgets' },
-                description: { ES: 'Hasta 5 presupuestos', EN: 'Up to 5 budgets', FR: 'Jusqu\'à 5 budgets' },
+                description: { ES: 'Hasta 5 presupuestos', EN: 'Up to 5 budgets', FR: 'Jusqu\'Ã  5 budgets' },
                 included: true,
                 limit: '5'
             },
             {
                 id: 'accounts',
                 name: { ES: 'Cuentas bancarias', EN: 'Bank accounts', FR: 'Comptes bancaires' },
-                description: { ES: 'Hasta 3 cuentas', EN: 'Up to 3 accounts', FR: 'Jusqu\'à 3 comptes' },
+                description: { ES: 'Hasta 3 cuentas', EN: 'Up to 3 accounts', FR: 'Jusqu\'Ã  3 comptes' },
                 included: true,
                 limit: '3'
             },
             {
                 id: 'recipes',
                 name: { ES: 'Recetas', EN: 'Recipes', FR: 'Recettes' },
-                description: { ES: 'Hasta 50 recetas', EN: 'Up to 50 recipes', FR: 'Jusqu\'à 50 recettes' },
+                description: { ES: 'Hasta 50 recetas', EN: 'Up to 50 recipes', FR: 'Jusqu\'Ã  50 recettes' },
                 included: true,
                 limit: '50'
             },
@@ -174,14 +174,14 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
     PERSONAL: {
         tier: 'PERSONAL',
         name: {
-            ES: 'Onyx Personal',
-            EN: 'Onyx Personal',
-            FR: 'Onyx Personnel'
+            ES: 'Aliseus Personal',
+            EN: 'Aliseus Personal',
+            FR: 'Aliseus Personnel'
         },
         description: {
-            ES: 'Todo el poder de Onyx para un solo usuario',
-            EN: 'All the power of Onyx for a single user',
-            FR: 'Toute la puissance d\'Onyx pour un seul utilisateur'
+            ES: 'Todo el poder de Aliseus para un solo usuario',
+            EN: 'All the power of Aliseus for a single user',
+            FR: 'Toute la puissance d\'Aliseus pour un seul utilisateur'
         },
         price: {
             monthly: 2.99,
@@ -213,14 +213,14 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
                 name: { ES: 'Todo ilimitado', EN: 'Everything unlimited', FR: 'Tout illimité' },
                 description: { ES: 'Transacciones, presupuestos, cuentas y recetas sin límite', EN: 'Unlimited transactions, budgets, accounts and recipes', FR: 'Transactions, budgets, comptes et recettes illimités' },
                 included: true,
-                limit: '∞'
+                limit: 'âˆž'
             },
             {
                 id: 'ai_unlimited',
                 name: { ES: 'IA ilimitada', EN: 'Unlimited AI', FR: 'IA illimitée' },
                 description: { ES: 'Generaciones ilimitadas con IA', EN: 'Unlimited AI generations', FR: 'Générations IA illimitées' },
                 included: true,
-                limit: '∞'
+                limit: 'âˆž'
             },
             {
                 id: 'offline',
@@ -231,14 +231,14 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
             {
                 id: 'dashboard',
                 name: { ES: 'Dashboard personalizable', EN: 'Customizable dashboard', FR: 'Dashboard personnalisable' },
-                description: { ES: 'Hasta 5 layouts', EN: 'Up to 5 layouts', FR: 'Jusqu\'à 5 layouts' },
+                description: { ES: 'Hasta 5 layouts', EN: 'Up to 5 layouts', FR: 'Jusqu\'Ã  5 layouts' },
                 included: true,
                 limit: '5'
             },
             {
                 id: 'backups',
                 name: { ES: 'Backups', EN: 'Backups', FR: 'Sauvegardes' },
-                description: { ES: 'Hasta 10 backups', EN: 'Up to 10 backups', FR: 'Jusqu\'à 10 sauvegardes' },
+                description: { ES: 'Hasta 10 backups', EN: 'Up to 10 backups', FR: 'Jusqu\'Ã  10 sauvegardes' },
                 included: true,
                 limit: '10'
             },
@@ -254,9 +254,9 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
     FAMILIA: {
         tier: 'FAMILIA',
         name: {
-            ES: 'Onyx Familia',
-            EN: 'Onyx Family',
-            FR: 'Onyx Famille'
+            ES: 'Aliseus Familia',
+            EN: 'Aliseus Family',
+            FR: 'Aliseus Famille'
         },
         description: {
             ES: 'Para familias que quieren gestionar juntos',
@@ -293,12 +293,12 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
                 name: { ES: 'Todo ilimitado', EN: 'Everything unlimited', FR: 'Tout illimité' },
                 description: { ES: 'Transacciones, presupuestos, cuentas y recetas sin límite', EN: 'Unlimited transactions, budgets, accounts and recipes', FR: 'Transactions, budgets, comptes et recettes illimités' },
                 included: true,
-                limit: '∞'
+                limit: 'âˆž'
             },
             {
                 id: 'family',
-                name: { ES: 'Hasta 5 miembros', EN: 'Up to 5 members', FR: 'Jusqu\'à 5 membres' },
-                description: { ES: 'Gestión familiar completa', EN: 'Complete family management', FR: 'Gestion familiale complète' },
+                name: { ES: 'Hasta 5 miembros', EN: 'Up to 5 members', FR: 'Jusqu\'Ã  5 membres' },
+                description: { ES: 'Gestión familiar completa', EN: 'Complete family management', FR: 'Gestion familiale complÃ¨te' },
                 included: true,
                 limit: '5'
             },
@@ -307,7 +307,7 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
                 name: { ES: 'IA ilimitada', EN: 'Unlimited AI', FR: 'IA illimitée' },
                 description: { ES: 'Generaciones ilimitadas con IA', EN: 'Unlimited AI generations', FR: 'Générations IA illimitées' },
                 included: true,
-                limit: '∞'
+                limit: 'âˆž'
             },
             {
                 id: 'collaboration',
@@ -317,7 +317,7 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
             },
             {
                 id: 'junior',
-                name: { ES: 'Onyx Junior', EN: 'Onyx Junior', FR: 'Onyx Junior' },
+                name: { ES: 'Aliseus Junior', EN: 'Aliseus Junior', FR: 'Aliseus Junior' },
                 description: { ES: 'Modo para niños', EN: 'Kids mode', FR: 'Mode enfants' },
                 included: true
             },
@@ -336,7 +336,7 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
             {
                 id: 'backups',
                 name: { ES: 'Backups avanzados', EN: 'Advanced backups', FR: 'Sauvegardes avancées' },
-                description: { ES: 'Hasta 20 backups', EN: 'Up to 20 backups', FR: 'Jusqu\'à 20 sauvegardes' },
+                description: { ES: 'Hasta 20 backups', EN: 'Up to 20 backups', FR: 'Jusqu\'Ã  20 sauvegardes' },
                 included: true,
                 limit: '20'
             }
@@ -405,7 +405,7 @@ export const getUpgradeBenefits = (currentTier: SubscriptionTier): string[] => {
     if (currentTier === 'PERSONAL') return [
         'Hasta 5 miembros de familia',
         'Espacios compartidos y colaboración',
-        'Modo Onyx Junior para niños',
+        'Modo Aliseus Junior para niños',
         'Soporte prioritario (12h)',
         'Hasta 20 backups',
         '10 layouts de dashboard'

@@ -66,7 +66,7 @@ export default function CriticalAlerts() {
                     type: percentage >= 100 ? 'danger' : 'warning',
                     icon: ShieldAlert,
                     message: `Presupuesto al límite: ${budget.category}`,
-                    subMessage: `${percentage.toFixed(0)}% consumido`
+                    subMessage: `${Math.round(percentage)}% consumido`
                 });
             }
         });

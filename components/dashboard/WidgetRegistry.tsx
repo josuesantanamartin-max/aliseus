@@ -1,46 +1,46 @@
 import React from 'react';
 
 // Finance Widgets
-import NetWorthCard from '../features/finance/dashboard/widgets/NetWorthCard';
-import MonthlyFlowWidget from '../features/finance/dashboard/widgets/MonthlyFlowWidget';
-import ActiveGoalsWidget from '../features/finance/dashboard/widgets/ActiveGoalsWidget';
-import ActiveDebtsWidget from '../features/finance/dashboard/widgets/ActiveDebtsWidget';
-import CategoryDistributionChart from '../features/finance/dashboard/widgets/CategoryDistributionChart';
-import BudgetStatusWidget from '../features/finance/dashboard/widgets/BudgetStatusWidget';
-import TransactionExplorer from '../features/finance/dashboard/widgets/TransactionExplorer';
-import SpendingForecast from '../features/finance/dashboard/widgets/SpendingForecast';
-import FinanceProjectionWidget from '../features/finance/FinanceProjectionWidget';
-import TimelineEvolutionWidget from '../features/finance/dashboard/widgets/TimelineEvolutionWidget';
-import AccountsSummaryWidget from '../features/finance/dashboard/widgets/AccountsSummaryWidget';
-import RecentTransactionsWidget from '../features/finance/dashboard/widgets/RecentTransactionsWidget';
-import SavingsRateWidget from '../features/finance/dashboard/widgets/SavingsRateWidget';
-import TopSpendersWidget from '../features/finance/dashboard/widgets/TopSpendersWidget';
+const NetWorthCard = React.lazy(() => import('../features/finance/dashboard/widgets/NetWorthCard'));
+const MonthlyFlowWidget = React.lazy(() => import('../features/finance/dashboard/widgets/MonthlyFlowWidget'));
+const ActiveGoalsWidget = React.lazy(() => import('../features/finance/dashboard/widgets/ActiveGoalsWidget'));
+const ActiveDebtsWidget = React.lazy(() => import('../features/finance/dashboard/widgets/ActiveDebtsWidget'));
+const CategoryDistributionChart = React.lazy(() => import('../features/finance/dashboard/widgets/CategoryDistributionChart'));
+const BudgetStatusWidget = React.lazy(() => import('../features/finance/dashboard/widgets/BudgetStatusWidget'));
+const TransactionExplorer = React.lazy(() => import('../features/finance/dashboard/widgets/TransactionExplorer'));
+const SpendingForecast = React.lazy(() => import('../features/finance/dashboard/widgets/SpendingForecast'));
+const FinanceProjectionWidget = React.lazy(() => import('../features/finance/FinanceProjectionWidget'));
+const TimelineEvolutionWidget = React.lazy(() => import('../features/finance/dashboard/widgets/TimelineEvolutionWidget'));
+const AccountsSummaryWidget = React.lazy(() => import('../features/finance/dashboard/widgets/AccountsSummaryWidget'));
+const RecentTransactionsWidget = React.lazy(() => import('../features/finance/dashboard/widgets/RecentTransactionsWidget'));
+const SavingsRateWidget = React.lazy(() => import('../features/finance/dashboard/widgets/SavingsRateWidget'));
+const TopSpendersWidget = React.lazy(() => import('../features/finance/dashboard/widgets/TopSpendersWidget'));
 
 // New Dashboard Widgets
-import FinancialHealthWidget from './widgets/FinancialHealthWidget';
-import UpcomingPaymentsWidget from './widgets/UpcomingPaymentsWidget';
-import AnnualComparisonWidget from './widgets/AnnualComparisonWidget';
-import MonthlyGoalsWidget from './widgets/MonthlyGoalsWidget';
-import IntelligentTomorrowWidget from './widgets/IntelligentTomorrowWidget';
-import AliseusInsightsWidget from './widgets/AliseusInsightsWidget';
-import AliseusBrainFeed from './widgets/AliseusBrainFeed';
+const FinancialHealthWidget = React.lazy(() => import('./widgets/FinancialHealthWidget'));
+const UpcomingPaymentsWidget = React.lazy(() => import('./widgets/UpcomingPaymentsWidget'));
+const AnnualComparisonWidget = React.lazy(() => import('./widgets/AnnualComparisonWidget'));
+const MonthlyGoalsWidget = React.lazy(() => import('./widgets/MonthlyGoalsWidget'));
+const IntelligentTomorrowWidget = React.lazy(() => import('./widgets/IntelligentTomorrowWidget'));
+const AliseusInsightsWidget = React.lazy(() => import('./widgets/AliseusInsightsWidget'));
+const AliseusBrainFeed = React.lazy(() => import('./widgets/AliseusBrainFeed'));
 
 // Chart Wrappers
-import CashflowWidget from '../features/finance/dashboard/widgets/CashflowWidget';
-import CategoryDonutWidget from '../features/finance/dashboard/widgets/CategoryDonutWidget';
+const CashflowWidget = React.lazy(() => import('../features/finance/dashboard/widgets/CashflowWidget'));
+const CategoryDonutWidget = React.lazy(() => import('../features/finance/dashboard/widgets/CategoryDonutWidget'));
 
 // Life Widgets
-import DailyMenuWidget from '../features/life/dashboard/widgets/DailyMenuWidget';
-import PantryStatusWidget from '../features/life/dashboard/widgets/PantryStatusWidget';
-import FamilyAgendaWidget from '../features/life/dashboard/widgets/FamilyAgendaWidget';
-import RecipeFavoritesWidget from '../features/life/dashboard/widgets/RecipeFavoritesWidget';
-import WeeklyPlanWidget from '../features/life/dashboard/widgets/WeeklyPlanWidget';
-import UpcomingTripsWidget from '../features/life/dashboard/widgets/UpcomingTripsWidget';
-import FamilyTasksWidget from '../features/life/dashboard/widgets/FamilyTasksWidget';
-import CriticalInventoryWidget from '../features/life/dashboard/widgets/CriticalInventoryWidget';
-import ShoppingListWidget from '../features/life/dashboard/widgets/ShoppingListWidget';
-import LowStockPantryWidget from '../features/life/dashboard/widgets/LowStockPantryWidget';
-import UpcomingBirthdaysWidget from '../features/life/dashboard/widgets/UpcomingBirthdaysWidget';
+const DailyMenuWidget = React.lazy(() => import('../features/life/dashboard/widgets/DailyMenuWidget'));
+const PantryStatusWidget = React.lazy(() => import('../features/life/dashboard/widgets/PantryStatusWidget'));
+const FamilyAgendaWidget = React.lazy(() => import('../features/life/dashboard/widgets/FamilyAgendaWidget'));
+const RecipeFavoritesWidget = React.lazy(() => import('../features/life/dashboard/widgets/RecipeFavoritesWidget'));
+const WeeklyPlanWidget = React.lazy(() => import('../features/life/dashboard/widgets/WeeklyPlanWidget'));
+const UpcomingTripsWidget = React.lazy(() => import('../features/life/dashboard/widgets/UpcomingTripsWidget'));
+const FamilyTasksWidget = React.lazy(() => import('../features/life/dashboard/widgets/FamilyTasksWidget'));
+const CriticalInventoryWidget = React.lazy(() => import('../features/life/dashboard/widgets/CriticalInventoryWidget'));
+const ShoppingListWidget = React.lazy(() => import('../features/life/dashboard/widgets/ShoppingListWidget'));
+const LowStockPantryWidget = React.lazy(() => import('../features/life/dashboard/widgets/LowStockPantryWidget'));
+const UpcomingBirthdaysWidget = React.lazy(() => import('../features/life/dashboard/widgets/UpcomingBirthdaysWidget'));
 
 // Types
 import { Transaction, Account, Debt, Goal, CategoryStructure, Budget, WidgetCategory } from '../../types';

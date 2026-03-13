@@ -12,21 +12,16 @@ import {
 import { validateBudget } from '../../../schemas/budget.schema';
 import { formatZodErrors } from '../../../utils/validation';
 import { useErrorHandler } from '../../../hooks/useErrorHandler';
+import { BudgetCategoryList } from './components/BudgetCategoryList';
+import { BudgetSummaryCards } from './components/BudgetSummaryCards';
+import { BudgetListItem } from './components/BudgetListItem';
+import { BudgetAISuggestionModal, SmartSuggestion } from './components/BudgetAISuggestionModal';
+
 
 interface BudgetsProps {
     onViewTransactions: (category: string, subCategory?: string) => void;
 }
 
-interface SmartSuggestion {
-    category: string;
-    subCategory?: string;
-    avgSpend: number;
-    incomeShare: number; // percentage 0-100
-    suggestedLimit: number;
-    suggestedPercentage: number;
-    isSelected: boolean;
-    mode: 'FIXED' | 'PERCENTAGE';
-}
 
 const Budgets: React.FC<BudgetsProps> = ({ onViewTransactions }) => {
     const {
@@ -207,18 +202,6 @@ const Budgets: React.FC<BudgetsProps> = ({ onViewTransactions }) => {
     }, [budgets, selectedCategoryName, transactions]);
 
 
-    const getCategoryIcon = (catName: string) => {
-        switch (catName) {
-            case 'Vivienda': return <Home className="w-5 h-5" />;
-            case 'Alimentación': return <Utensils className="w-5 h-5" />;
-            case 'Transporte': return <Car className="w-5 h-5" />;
-            case 'Servicios': return <Zap className="w-5 h-5" />;
-            case 'Ocio': return <Coffee className="w-5 h-5" />;
-            case 'Salud': return <HeartPulse className="w-5 h-5" />;
-            case 'Compras': return <ShoppingBag className="w-5 h-5" />;
-            default: return <HelpCircle className="w-5 h-5" />;
-        }
-    };
 
     const resetForm = () => {
         setCategory(selectedCategoryName || '');
@@ -454,62 +437,12 @@ const Budgets: React.FC<BudgetsProps> = ({ onViewTransactions }) => {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
                 {/* 1. SIDEBAR CATEGORY LIST */}
-                <div className="lg:col-span-4 space-y-4">
-                    <div className="flex items-center justify-between pb-4 border-b border-onyx-100">
-                        <h3 className="font-bold text-cyan-900 text-lg">Categorías</h3>
-                        <span className="text-xs font-bold bg-onyx-100 px-2 py-1 rounded-lg text-onyx-500">{categoryStats.filter(c => c.hasBudgets).length} Activas</span>
-                    </div>
-
-                    <div className="space-y-3 h-[600px] overflow-y-auto custom-scrollbar pr-2">
-                        {categoryStats.map(stat => {
-                            const isSelected = selectedCategoryName === stat.name;
-                            return (
-                                <div
-                                    key={stat.name}
-                                    onClick={() => setSelectedCategoryName(stat.name)}
-                                    className={`p-5 rounded-2xl border cursor-pointer transition-all duration-300 group relative overflow-hidden ${isSelected ? 'bg-gradient-to-br from-cyan-600 to-teal-600 text-white border-transparent shadow-xl scale-[1.02]' : 'bg-white text-cyan-900 border-onyx-100 hover:border-cyan-200 hover:bg-slate-50'}`}
-                                >
-                                    <div className="flex justify-between items-center mb-3">
-                                        <div className="flex items-center gap-3">
-                                            <div className={`p-2 rounded-xl ${isSelected ? 'bg-white/10' : 'bg-onyx-50 text-onyx-500'}`}>
-                                                {getCategoryIcon(stat.name)}
-                                            </div>
-                                            <div>
-                                                <p className="font-bold text-sm leading-tight">{stat.name}</p>
-                                                <p className={`text-[9px] font-bold uppercase tracking-widest ${isSelected ? 'text-white/50' : 'text-onyx-400'}`}>
-                                                    {stat.budgetCount} {stat.budgetCount === 1 ? 'Límite' : 'Límites'}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        {stat.isExceeded && (
-                                            <div className="p-1.5 bg-red-500/20 rounded-full animate-pulse">
-                                                <AlertCircle className="w-4 h-4 text-red-500" />
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    {/* Mini Progress Bar (Default to Monthly Status) */}
-                                    <div className="space-y-1">
-                                        <div className="flex justify-between items-end text-xs font-bold">
-                                            <span className={isSelected ? 'text-white/80' : 'text-onyx-600'}>{formatEUR(stat.totalSpent)}</span>
-                                            {stat.hasMonthlyLimit ? (
-                                                <span className={isSelected ? 'text-white/40' : 'text-onyx-300'}>/ {formatEUR(stat.totalLimit)}</span>
-                                            ) : (
-                                                <span className={isSelected ? 'text-white/30' : 'text-onyx-300'}>Mes Actual</span>
-                                            )}
-                                        </div>
-                                        <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-                                            <div
-                                                className={`h-full rounded-full transition-all duration-1000 ${stat.isExceeded ? 'bg-red-500' : isSelected ? 'bg-cyan-400' : 'bg-cyan-900'}`}
-                                                style={{ width: `${Math.min(stat.percentage, 100)}%` }}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
+                <BudgetCategoryList
+                    categoryStats={categoryStats as any}
+                    selectedCategoryName={selectedCategoryName}
+                    setSelectedCategoryName={setSelectedCategoryName}
+                    formatEUR={formatEUR}
+                />
 
                 {/* 2. MAIN CONTENT (Detailed View) */}
                 <div className="lg:col-span-8 space-y-8">
@@ -517,74 +450,10 @@ const Budgets: React.FC<BudgetsProps> = ({ onViewTransactions }) => {
                         <div className="animate-fade-in space-y-8">
 
                             {/* --- HEADER: UNIFIED STATS --- */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {/* MONTHLY CARD */}
-                                <div className={`p-6 rounded-3xl border transition-all duration-300 relative overflow-hidden ${selectedDetails.monthly.limit > 0 ? 'bg-white border-onyx-100 shadow-sm' : 'bg-onyx-50/50 border-onyx-50 opacity-80'}`}>
-                                    <div className="flex justify-between items-start mb-4 relative z-10">
-                                        <div>
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <CalendarRange className="w-4 h-4 text-cyan-500" />
-                                                <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest">Este Mes</p>
-                                            </div>
-                                            <h3 className="text-3xl font-black text-cyan-900 tracking-tighter">{formatEUR(selectedDetails.monthly.spent)}</h3>
-                                        </div>
-                                        {selectedDetails.monthly.limit > 0 && (
-                                            <div className={`px-2 py-1 rounded-lg text-[9px] font-bold uppercase tracking-widest ${selectedDetails.monthly.isExceeded ? 'bg-red-100 text-red-600' : 'bg-emerald-100 text-emerald-600'}`}>
-                                                {selectedDetails.monthly.percentage.toFixed(0)}% Uso
-                                            </div>
-                                        )}
-                                    </div>
-                                    {selectedDetails.monthly.limit > 0 ? (
-                                        <div className="relative z-10">
-                                            <div className="w-full h-2 bg-onyx-100 rounded-full overflow-hidden mb-2">
-                                                <div
-                                                    className={`h-full rounded-full transition-all duration-1000 ${selectedDetails.monthly.isExceeded ? 'bg-red-500' : 'bg-cyan-500'}`}
-                                                    style={{ width: `${Math.min(selectedDetails.monthly.percentage, 100)}%` }}
-                                                />
-                                            </div>
-                                            <p className="text-right text-[10px] font-bold text-onyx-400 uppercase tracking-widest">
-                                                Límite: {formatEUR(selectedDetails.monthly.limit)}
-                                            </p>
-                                        </div>
-                                    ) : (
-                                        <p className="text-xs text-onyx-400 mt-2 font-medium">Sin límite mensual definido</p>
-                                    )}
-                                </div>
-
-                                {/* YEARLY CARD */}
-                                <div className={`p-6 rounded-3xl border transition-all duration-300 relative overflow-hidden ${selectedDetails.yearly.limit > 0 ? 'bg-gradient-to-br from-cyan-600 to-teal-600 text-white shadow-xl' : 'bg-onyx-50/50 border-onyx-50 opacity-80'}`}>
-                                    {selectedDetails.yearly.limit > 0 && <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/30 rounded-full blur-2xl -mr-10 -mt-10"></div>}
-                                    <div className="flex justify-between items-start mb-4 relative z-10">
-                                        <div>
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <Scale className={`w-4 h-4 ${selectedDetails.yearly.limit > 0 ? 'text-cyan-400' : 'text-onyx-300'}`} />
-                                                <p className={`text-[10px] font-bold uppercase tracking-widest ${selectedDetails.yearly.limit > 0 ? 'text-onyx-400' : 'text-onyx-400'}`}>Año Actual</p>
-                                            </div>
-                                            <h3 className={`text-3xl font-black tracking-tighter ${selectedDetails.yearly.limit > 0 ? 'text-white' : 'text-cyan-900'}`}>{formatEUR(selectedDetails.yearly.spent)}</h3>
-                                        </div>
-                                        {selectedDetails.yearly.limit > 0 && (
-                                            <div className={`px-2 py-1 rounded-lg text-[9px] font-bold uppercase tracking-widest ${selectedDetails.yearly.isExceeded ? 'bg-red-500/20 text-red-200' : 'bg-emerald-500/20 text-emerald-200'}`}>
-                                                {selectedDetails.yearly.percentage.toFixed(0)}% Uso
-                                            </div>
-                                        )}
-                                    </div>
-                                    {selectedDetails.yearly.limit > 0 ? (
-                                        <div className="relative z-10">
-                                            <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden mb-2">
-                                                <div
-                                                    className={`h-full rounded-full transition-all duration-1000 ${selectedDetails.yearly.isExceeded ? 'bg-red-500' : 'bg-cyan-400'}`}
-                                                    style={{ width: `${Math.min(selectedDetails.yearly.percentage, 100)}%` }}
-                                                />
-                                            </div>
-                                            <p className="text-right text-[10px] font-bold text-white/40 uppercase tracking-widest">
-                                                Límite: {formatEUR(selectedDetails.yearly.limit)}
-                                            </p>
-                                        </div>
-                                    ) : (
-                                        <p className="text-xs text-onyx-400 mt-2 font-medium">Sin límite anual definido</p>
-                                    )}
-                                </div>
-                            </div>
+                            <BudgetSummaryCards
+                                selectedDetails={selectedDetails as any}
+                                formatEUR={formatEUR}
+                            />
 
                             {/* --- LISTS SECTIONS --- */}
 
@@ -640,93 +509,16 @@ const Budgets: React.FC<BudgetsProps> = ({ onViewTransactions }) => {
             </div>
 
             {/* AI SUGGESTION MODAL */}
-            {isAutoModalOpen && (
-                <div className="fixed inset-0 z-[70] flex items-center justify-center bg-cyan-900/60 backdrop-blur-md p-4 animate-fade-in">
-                    <div className="bg-white rounded-onyx shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
-                        <div className="bg-cyan-600 p-8 text-white relative overflow-hidden shrink-0">
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20"></div>
-                            <h3 className="text-2xl font-black tracking-tight relative z-10 flex items-center gap-3">
-                                <Wand2 className="w-6 h-6" /> Asistente de Presupuestos
-                            </h3>
-                            <p className="text-cyan-100 font-medium text-sm mt-3 relative z-10 max-w-md leading-relaxed">
-                                He analizado tus patrones de gasto por subcategoría. Detecto qué gastos son regulares (Mensuales) y cuáles son esporádicos (Anuales).
-                            </p>
-
-                            {/* SENSITIVITY TOGGLE */}
-                            <div className="relative z-10 mt-6 flex items-center justify-between">
-                                <span className="text-xs font-bold uppercase tracking-widest text-cyan-200">Sensibilidad del Límite</span>
-                                <div className="flex bg-cyan-900/30 p-1 rounded-lg backdrop-blur-sm">
-                                    {(['STRICT', 'MODERATE', 'COMFORT'] as const).map((mode) => (
-                                        <button
-                                            key={mode}
-                                            onClick={() => setAiSensitivity(mode)}
-                                            className={`px-3 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-widest transition-all ${aiSensitivity === mode ? 'bg-white text-cyan-600 shadow-sm' : 'text-cyan-200 hover:text-white hover:bg-white/10'}`}
-                                        >
-                                            {mode === 'STRICT' && 'Estricto (0%)'}
-                                            {mode === 'MODERATE' && 'Moderado (+10%)'}
-                                            {mode === 'COMFORT' && 'Holgado (+20%)'}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="flex-1 overflow-y-auto custom-scrollbar p-8 bg-onyx-50/50">
-                            {smartSuggestions.length > 0 ? (
-                                <div className="space-y-4">
-                                    {smartSuggestions.map((suggestion, idx) => {
-                                        const period = (suggestion as any).period || 'MONTHLY';
-                                        return (
-                                            <div key={idx} className={`p-4 rounded-xl border transition-all duration-300 cursor-pointer flex items-center justify-between group ${suggestion.isSelected ? 'bg-white border-cyan-500 shadow-md ring-1 ring-cyan-500' : 'bg-white border-onyx-100 hover:border-cyan-200'}`} onClick={() => {
-                                                const newSugg = [...smartSuggestions];
-                                                newSugg[idx].isSelected = !newSugg[idx].isSelected;
-                                                setSmartSuggestions(newSugg);
-                                            }}>
-                                                <div className="flex items-center gap-4">
-                                                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors shrink-0 ${suggestion.isSelected ? 'bg-cyan-500 border-cyan-500' : 'border-onyx-200 bg-white'}`}>
-                                                        {suggestion.isSelected && <Check className="w-3.5 h-3.5 text-white" />}
-                                                    </div>
-                                                    <div>
-                                                        <div className="flex items-center gap-2">
-                                                            <h4 className="font-bold text-cyan-900">{suggestion.category}</h4>
-                                                            {suggestion.subCategory && (
-                                                                <span className="text-xs font-bold text-cyan-600 bg-cyan-50 px-2 py-0.5 rounded-md">{suggestion.subCategory}</span>
-                                                            )}
-                                                        </div>
-                                                        <div className="flex items-center gap-2 mt-1">
-                                                            <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider ${period === 'MONTHLY' ? 'bg-onyx-100 text-onyx-600' : 'bg-onyx-900 text-white'}`}>
-                                                                {period === 'MONTHLY' ? 'Mensual' : 'Anual'}
-                                                            </span>
-                                                            <p className="text-xs text-onyx-500">
-                                                                Media: <span className="font-bold">{formatEUR(suggestion.avgSpend)}</span>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="text-right">
-                                                    <div className="text-xs font-bold text-onyx-400 uppercase tracking-widest mb-1">Sugerido</div>
-                                                    <div className="text-xl font-black text-cyan-900">{formatEUR(suggestion.suggestedLimit)}</div>
-                                                </div>
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-                            ) : (
-                                <div className="text-center py-10">
-                                    <p className="text-onyx-400 font-bold">No tengo suficientes datos históricos para generar sugerencias.</p>
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="p-6 bg-white border-t border-onyx-100 flex justify-end gap-4 z-20 shrink-0">
-                            <button onClick={() => setIsAutoModalOpen(false)} className="px-6 py-3 text-onyx-400 font-bold text-xs uppercase tracking-widest hover:text-onyx-800 transition-colors">Cancelar</button>
-                            <button onClick={handleApplySuggestions} className="px-8 py-3 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl font-bold text-xs uppercase tracking-widest shadow-lg shadow-cyan-500/20 transition-all active:scale-95">
-                                Aplicar {smartSuggestions.filter(s => s.isSelected).length} Límites
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            <BudgetAISuggestionModal
+                isAutoModalOpen={isAutoModalOpen}
+                setIsAutoModalOpen={setIsAutoModalOpen}
+                aiSensitivity={aiSensitivity}
+                setAiSensitivity={setAiSensitivity}
+                smartSuggestions={smartSuggestions as any}
+                setSmartSuggestions={setSmartSuggestions as any}
+                handleApplySuggestions={handleApplySuggestions}
+                formatEUR={formatEUR}
+            />
 
             {/* MODALS (Kept minimal for this file replacement, ensure full content is preserved in real app) */}
             {isModalOpen && (
@@ -770,47 +562,5 @@ const Budgets: React.FC<BudgetsProps> = ({ onViewTransactions }) => {
         </div>
     );
 };
-
-// Helper Component for List Item
-const BudgetListItem = ({ item, onEdit, onDelete }: { item: any, onEdit: any, onDelete: any }) => (
-    <div className="bg-white p-5 rounded-2xl border border-onyx-100 hover:shadow-md transition-all duration-300 group flex flex-col sm:flex-row items-center gap-6">
-        <div className="flex-1 w-full">
-            <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-3">
-                    {item.subCategory ? (
-                        <span className="font-bold text-base text-cyan-900">{item.subCategory}</span>
-                    ) : (
-                        <span className="font-bold text-base text-cyan-900 italic opacity-50">Presupuesto General</span>
-                    )}
-                </div>
-                <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button onClick={() => onEdit(item)} className="p-2 hover:bg-onyx-50 rounded-lg text-onyx-400 hover:text-cyan-900"><Pencil className="w-3.5 h-3.5" /></button>
-                    <button onClick={() => onDelete(item.id)} className="p-2 hover:bg-red-50 rounded-lg text-onyx-400 hover:text-red-500"><Trash2 className="w-3.5 h-3.5" /></button>
-                </div>
-            </div>
-
-            <div className="flex items-center gap-4">
-                <div className="flex-1 h-2 bg-onyx-100 rounded-full overflow-hidden">
-                    <div
-                        className={`h-full rounded-full transition-all duration-500 ${item.isExceeded ? 'bg-red-500' : 'bg-cyan-500'}`}
-                        style={{ width: `${Math.min(item.percentageUsed, 100)}%` }}
-                    />
-                </div>
-                <span className={`text-xs font-bold w-12 text-right ${item.isExceeded ? 'text-red-600' : 'text-onyx-500'}`}>{item.percentageUsed.toFixed(0)}%</span>
-            </div>
-        </div>
-
-        <div className="flex items-center gap-8 w-full sm:w-auto border-t sm:border-t-0 sm:border-l border-onyx-50 pt-4 sm:pt-0 sm:pl-6 justify-between sm:justify-end">
-            <div>
-                <p className="text-[9px] font-bold text-onyx-400 uppercase tracking-widest text-right">Gastado</p>
-                <p className="text-lg font-bold text-cyan-900">{new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(item.spent)}</p>
-            </div>
-            <div>
-                <p className="text-[9px] font-bold text-onyx-400 uppercase tracking-widest text-right">Límite</p>
-                <p className="text-lg font-bold text-cyan-900">{new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(item.effectiveLimit)}</p>
-            </div>
-        </div>
-    </div>
-);
 
 export default Budgets;

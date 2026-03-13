@@ -136,10 +136,10 @@ const MonthlyGoalsWidget: React.FC<DashboardDataProps> = ({
                                 </div>
                                 <div className="text-right ml-2 shrink-0">
                                     <p className="text-xs font-black text-onyx-900 dark:text-white">
-                                        {goal.currentAmount.toFixed(0)}€
+                                        {goal.currentAmount.toLocaleString('es-ES', { maximumFractionDigits: 0 })}€
                                     </p>
                                     <p className="text-[10px] font-bold text-onyx-500 dark:text-onyx-400">
-                                        / {goal.targetAmount.toFixed(0)}€
+                                        / {goal.targetAmount.toLocaleString('es-ES', { maximumFractionDigits: 0 })}€
                                     </p>
                                 </div>
                             </div>
@@ -181,7 +181,7 @@ const MonthlyGoalsWidget: React.FC<DashboardDataProps> = ({
                                     }
                                 </span>
                                 <span className="text-onyx-500 dark:text-onyx-400 font-bold">
-                                    {goal.progress.toFixed(0)}%
+                                    {Math.round(goal.progress)}%
                                 </span>
                             </div>
 
@@ -189,12 +189,12 @@ const MonthlyGoalsWidget: React.FC<DashboardDataProps> = ({
                             {!goal.isCompleted && (
                                 <div className="mt-2 pt-2 border-t border-onyx-200 dark:border-onyx-700/50">
                                     <p className="text-[10px] font-bold text-onyx-600 dark:text-onyx-400 uppercase tracking-widest flex items-center justify-between">
-                                        <span>Proyección: {goal.projectedAmount.toFixed(0)}€</span>
+                                        <span>Proyección: {goal.projectedAmount.toLocaleString('es-ES', { maximumFractionDigits: 0 })}€</span>
                                         {goal.willComplete ? (
                                             <span className="text-emerald-600 dark:text-emerald-400">✓ Cumplirá</span>
                                         ) : (
                                             <span className="text-amber-600 dark:text-amber-400">
-                                                ⚠ -{(goal.targetAmount - goal.projectedAmount).toFixed(0)}€
+                                                ⚠ -{(goal.targetAmount - goal.projectedAmount).toLocaleString('es-ES', { maximumFractionDigits: 0 })}€
                                             </span>
                                         )}
                                     </p>

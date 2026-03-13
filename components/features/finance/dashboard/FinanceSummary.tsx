@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useFinanceStore } from '../../../../store/useFinanceStore';
 import { useUserStore } from '../../../../store/useUserStore';
-import { analyzeFinances } from '../../../../services/geminiService';
+import { analyzeFinances } from '../../../../services/geminiFinancial';
 import { FinanceWidgetType } from '../../../../types';
 import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, AreaChart, Area, Legend, LineChart, Line
@@ -382,7 +382,7 @@ const FinanceSummary: React.FC<FinanceSummaryProps> = ({ onViewTransactions: onN
                         <div className="flex justify-between items-start mb-4">
                             <div className="p-2 bg-gray-50 dark:bg-onyx-800 rounded-lg group-hover:bg-gray-100 dark:group-hover:bg-onyx-700"><ShieldCheck className="w-5 h-5 text-gray-700 dark:text-gray-300" /></div>
                             <div className="flex flex-col items-end gap-1">
-                                <span className={`text-[10px] font-black px-2 py-0.5 rounded border flex items-center gap-1 ${monthlyGrowth >= 0 ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-red-50 text-red-700 border-red-100'}`}>{monthlyGrowth >= 0 ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />} {Math.abs(monthlyGrowth).toFixed(1)}% vs mes ant.</span>
+                                <span className={`text-[10px] font-black px-2 py-0.5 rounded border flex items-center gap-1 ${monthlyGrowth >= 0 ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-red-50 text-red-700 border-red-100'}`}>{monthlyGrowth >= 0 ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />} {Math.abs(monthlyGrowth).toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}% vs mes ant.</span>
                             </div>
                         </div>
                         <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Patrimonio Neto</p>
@@ -395,7 +395,7 @@ const FinanceSummary: React.FC<FinanceSummaryProps> = ({ onViewTransactions: onN
                         <div onClick={() => onViewTransactions({ type: 'INCOME' })} className="bg-white dark:bg-onyx-900 p-6 rounded-2xl border border-gray-100 dark:border-onyx-800 shadow-sm hover:shadow-md transition-all cursor-pointer group">
                             <div className="flex justify-between items-start mb-4">
                                 <div className="p-2 bg-green-50 dark:bg-green-900/20 rounded-lg"><TrendingUp className="w-5 h-5 text-green-600 dark:text-green-400" /></div>
-                                <div className={`flex items-center text-xs font-bold ${incomeTrend >= 0 ? 'text-green-600' : 'text-red-500'}`}>{incomeTrend >= 0 ? <ArrowUpRight className="w-3 h-3 mr-1" /> : <ArrowDownRight className="w-3 h-3 mr-1" />} {Math.abs(incomeTrend).toFixed(0)}%</div>
+                                <div className={`flex items-center text-xs font-bold ${incomeTrend >= 0 ? 'text-green-600' : 'text-red-500'}`}>{incomeTrend >= 0 ? <ArrowUpRight className="w-3 h-3 mr-1" /> : <ArrowDownRight className="w-3 h-3 mr-1" />} {Math.abs(incomeTrend).toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}%</div>
                             </div>
                             <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Ingresos ({timeMode === 'MONTH' ? 'Mes' : 'Año'})</p>
                             <h3 className="text-3xl font-black text-gray-900 dark:text-white mt-2 tracking-tight">{formatMoney(currentFlow.income)}</h3>
@@ -403,7 +403,7 @@ const FinanceSummary: React.FC<FinanceSummaryProps> = ({ onViewTransactions: onN
                         <div onClick={() => onViewTransactions({ type: 'EXPENSE' })} className="bg-white dark:bg-onyx-900 p-6 rounded-2xl border border-gray-100 dark:border-onyx-800 shadow-sm hover:shadow-md transition-all cursor-pointer group">
                             <div className="flex justify-between items-start mb-4">
                                 <div className="p-2 bg-red-50 dark:bg-red-900/20 rounded-lg"><TrendingDown className="w-5 h-5 text-red-600 dark:text-red-400" /></div>
-                                <div className={`flex items-center text-xs font-bold ${expenseTrend <= 0 ? 'text-green-600' : 'text-red-500'}`}>{expenseTrend > 0 ? <ArrowUpRight className="w-3 h-3 mr-1" /> : <ArrowDownRight className="w-3 h-3 mr-1" />} {Math.abs(expenseTrend).toFixed(0)}%</div>
+                                <div className={`flex items-center text-xs font-bold ${expenseTrend <= 0 ? 'text-green-600' : 'text-red-500'}`}>{expenseTrend > 0 ? <ArrowUpRight className="w-3 h-3 mr-1" /> : <ArrowDownRight className="w-3 h-3 mr-1" />} {Math.abs(expenseTrend).toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}%</div>
                             </div>
                             <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Gastos ({timeMode === 'MONTH' ? 'Mes' : 'Año'})</p>
                             <h3 className="text-3xl font-black text-gray-900 dark:text-white mt-2 tracking-tight">{formatMoney(currentFlow.expense)}</h3>
@@ -413,7 +413,7 @@ const FinanceSummary: React.FC<FinanceSummaryProps> = ({ onViewTransactions: onN
                             <div className="flex justify-between items-start mb-4">
                                 <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg"><Wallet className="w-5 h-5 text-blue-600 dark:text-blue-400" /></div>
                                 <div className={`flex items-center text-xs font-bold ${budgetMetrics.budgetHealth <= 100 ? 'text-green-600' : 'text-red-500'}`}>
-                                    {budgetMetrics.budgetHealth.toFixed(1)}% Usado
+                                    {budgetMetrics.budgetHealth.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}% Usado
                                 </div>
                             </div>
                             <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Presupuesto ({timeMode === 'MONTH' ? 'Mes' : 'Año'})</p>
@@ -499,7 +499,7 @@ const FinanceSummary: React.FC<FinanceSummaryProps> = ({ onViewTransactions: onN
                                 <LineChart data={accountEvolutionData.data}>
                                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#374151" className="opacity-20" />
                                     <XAxis dataKey="name" stroke="#9ca3af" fontSize={10} tickLine={false} axisLine={false} />
-                                    <YAxis stroke="#9ca3af" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(val) => `${val / 1000}k`} />
+                                    <YAxis stroke="#9ca3af" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(val) => val.toLocaleString('es-ES')} />
                                     <Tooltip
                                         formatter={(value: number) => formatMoney(value)}
                                         contentStyle={{ backgroundColor: 'rgb(255, 255, 255)', borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}

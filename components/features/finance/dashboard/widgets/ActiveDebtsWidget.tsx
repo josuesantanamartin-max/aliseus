@@ -77,7 +77,7 @@ const ActiveDebtsWidget: React.FC<ActiveDebtsWidgetProps> = ({ debts, onNavigate
                                             </div>
                                         </div>
                                         <div className="text-right shrink-0">
-                                            <span className="text-[11px] font-black text-onyx-600 dark:text-onyx-300 bg-onyx-50 dark:bg-onyx-800 px-2.5 py-0.5 rounded-full border border-onyx-100 dark:border-onyx-700">{progress.toFixed(0)}%</span>
+                                            <span className="text-[11px] font-black text-onyx-600 dark:text-onyx-300 bg-onyx-50 dark:bg-onyx-800 px-2.5 py-0.5 rounded-full border border-onyx-100 dark:border-onyx-700">{progress.toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}%</span>
                                         </div>
                                     </div>
 
