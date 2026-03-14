@@ -65,7 +65,7 @@ export const MealPlanner: React.FC<MealPlannerProps> = ({ onOpenRecipe }) => {
     const weeklyPlan = React.useMemo(() => {
         const map: WeeklyPlanState = {};
         weeklyPlans.forEach((plan: { meals: any[] }) => {
-            plan.meals.forEach((meal: { date: string; recipeId: string; recipeName: string; servings: number; calories: number; image: string; ingredients: any[]; instructions: any[]; type: MealTime; courseType: string; }) => {
+            plan.meals.forEach((meal: { date: string; recipeId: string; recipeName: string; servings: number; calories: number; image: string; ingredients: any[]; instructions: any[]; type: MealTime; courseType: 'STARTER' | 'MAIN' | 'DESSERT' | 'SIDE' | 'DRINK'; }) => {
                 const date = meal.date;
                 if (!map[date]) map[date] = { breakfast: [], lunch: [], dinner: [] };
 

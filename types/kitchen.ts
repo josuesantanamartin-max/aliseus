@@ -34,6 +34,10 @@ export interface Recipe {
         carbs: number;
         fat: number;
     };
+    _missingInfo?: {
+        hasAll: boolean;
+        missingCount: number;
+    };
 }
 
 export interface ShoppingItem {
