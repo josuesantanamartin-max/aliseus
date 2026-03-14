@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { LayoutDashboard, Wallet, Heart, Settings, LogOut, HelpCircle } from 'lucide-react';
-import { useUserStore } from '../../store/useUserStore';
+import { useUserStore } from '@/store/useUserStore';
 import { Logo } from './Logo';
 import NotificationBadge from '../common/notifications/NotificationBadge';
 import NotificationCenter from '../common/notifications/NotificationCenter';

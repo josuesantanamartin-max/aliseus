@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUserStore } from '../../../store/useUserStore';
+import { useUserStore } from '@/store/useUserStore';
 import { Coins, Banknote, PoundSterling, Check } from 'lucide-react';
 
 const CurrencyOption = ({

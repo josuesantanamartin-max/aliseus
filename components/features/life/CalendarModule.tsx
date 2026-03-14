@@ -5,9 +5,9 @@ import {
     CheckCircle2, Clock, Target, Bell, Plus, Info, ArrowUpRight, Flame, Zap,
     Star, MapPin, Coffee, Moon, Sun, TrendingUp, AlertCircle, ArrowRight
 } from 'lucide-react';
-import { MOCK_TRANSACTIONS, MOCK_DEBTS, MOCK_GOALS } from '../../../data/seeds/financeSeed';
-import { Language, Task, Reminder, CalendarEvent, WeeklyPlanState, MealTime, Recipe, Goal } from '../../../types';
-import { useCurrency } from '../../../hooks/useCurrency';
+import { MOCK_TRANSACTIONS, MOCK_DEBTS, MOCK_GOALS } from '@/data/seeds/financeSeed';
+import { Language, Task, Reminder, CalendarEvent, WeeklyPlanState, MealTime, Recipe, Goal, Transaction, Debt } from '@/types';
+import { useCurrency } from '@/hooks/useCurrency';
 
 interface CalendarModuleProps {
     onMenuClick?: () => void;
@@ -70,7 +70,7 @@ const CalendarModule: React.FC<CalendarModuleProps> = ({ language, weeklyPlan, o
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
-    const t = CAL_TEXTS[language];
+    const t = CAL_TEXTS[language as keyof typeof CAL_TEXTS];
     const { formatPrice } = useCurrency();
 
     const events = useMemo(() => {
@@ -103,7 +103,7 @@ const CalendarModule: React.FC<CalendarModuleProps> = ({ language, weeklyPlan, o
             });
         });
 
-        MOCK_DEBTS.forEach(debt => {
+        MOCK_DEBTS.forEach((debt: Debt) => {
             const day = parseInt(debt.dueDate);
             if (day) {
                 generatedEvents.push({
@@ -123,7 +123,7 @@ const CalendarModule: React.FC<CalendarModuleProps> = ({ language, weeklyPlan, o
         });
 
         // 2. GOALS
-        MOCK_GOALS.forEach(goal => {
+        MOCK_GOALS.forEach((goal: Goal) => {
             if (goal.deadline) {
                 generatedEvents.push({
                     id: `goal-${goal.id}`,
@@ -142,18 +142,18 @@ const CalendarModule: React.FC<CalendarModuleProps> = ({ language, weeklyPlan, o
 
         // 3. KITCHEN
         Object.entries(weeklyPlan).forEach(([dateKey, meals]) => {
-            const dailyMeals = meals as Record<MealTime, Recipe[]>;
+            const dailyMeals = meals as { breakfast: Recipe[]; lunch: Recipe[]; dinner: Recipe[]; };
             const config = {
                 breakfast: { label: 'Desayuno', icon: Coffee },
                 lunch: { label: 'Almuerzo', icon: Sun },
                 dinner: { label: 'Cena', icon: Moon }
             };
 
-            (Object.keys(config) as MealTime[]).forEach(time => {
+            (Object.keys(config) as (keyof typeof dailyMeals)[]).forEach(time => {
                 if (dailyMeals[time] && dailyMeals[time].length > 0) {
                     const items = dailyMeals[time];
                     // Separator used is ';;' to be parsed in display logic
-                    const detailsText = items.map((r, i) => items.length > 1 ? `${i + 1}Âº ${r.name}` : r.name).join(';;');
+                    const detailsText = items.map((r: Recipe, i: number) => items.length > 1 ? `${i + 1}º ${r.name}` : r.name).join(';;');
 
                     generatedEvents.push({
                         id: `kitchen-${dateKey}-${time}`,
@@ -189,7 +189,7 @@ const CalendarModule: React.FC<CalendarModuleProps> = ({ language, weeklyPlan, o
     const isSameDay = (d1: Date, d2: Date) =>
         d1.getDate() === d2.getDate() && d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear();
 
-    const selectedDateEvents = events.filter(e => e.date && isSameDay(new Date(e.date), selectedDate));
+    const selectedDateEvents = events.filter((e: CalendarEvent) => e.date && isSameDay(new Date(e.date), selectedDate));
     const selectedDateStr = selectedDate.toLocaleDateString(language === 'ES' ? 'es-ES' : language === 'FR' ? 'fr-FR' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' });
 
     const handleCardClick = (ev: CalendarEvent) => {
@@ -224,7 +224,7 @@ const CalendarModule: React.FC<CalendarModuleProps> = ({ language, weeklyPlan, o
                 </div>
 
                 <div className="grid grid-cols-7 mb-6 border-b border-gray-50 pb-4">
-                    {t.weekdays.map(day => (
+                    {t.weekdays.map((day: string) => (
                         <div key={day} className="text-center text-[10px] font-black text-gray-400 uppercase tracking-[0.4em] mb-2">{day}</div>
                     ))}
                 </div>
@@ -237,7 +237,7 @@ const CalendarModule: React.FC<CalendarModuleProps> = ({ language, weeklyPlan, o
                     {Array.from({ length: days }).map((_, i) => {
                         const dayNum = i + 1;
                         const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
-                        const dayEvents = events.filter(e => e.date === dateStr);
+                        const dayEvents = events.filter((e: CalendarEvent) => e.date === dateStr);
                         const isToday = isSameDay(new Date(currentDate.getFullYear(), currentDate.getMonth(), dayNum), new Date());
                         const isSelected = isSameDay(new Date(currentDate.getFullYear(), currentDate.getMonth(), dayNum), selectedDate);
 
@@ -254,7 +254,7 @@ const CalendarModule: React.FC<CalendarModuleProps> = ({ language, weeklyPlan, o
                                 </div>
 
                                 <div className="flex-1 flex flex-col gap-1 items-center justify-start overflow-hidden px-1">
-                                    {dayEvents.slice(0, 3).map((ev, idx) => (
+                                    {dayEvents.slice(0, 3).map((ev: CalendarEvent, idx: number) => (
                                         <div key={idx} className={`w-full h-1.5 rounded-full ${ev.type === 'FINANCE' ? 'bg-blue-500' : ev.type === 'KITCHEN' ? 'bg-emerald-500' : ev.type === 'GOAL' ? 'bg-amber-500' : 'bg-gray-400'}`}></div>
                                     ))}
                                     {dayEvents.length > 3 && (
@@ -283,10 +283,10 @@ const CalendarModule: React.FC<CalendarModuleProps> = ({ language, weeklyPlan, o
                     ) : (
                         <div className="space-y-8">
                             {/* FINANZAS: Pagos */}
-                            {selectedDateEvents.some(e => e.type === 'FINANCE') && (
+                            {selectedDateEvents.some((e: CalendarEvent) => e.type === 'FINANCE') && (
                                 <div className="space-y-4 animate-slide-up">
                                     <h4 className="text-[10px] font-black text-blue-900 uppercase tracking-[0.2em] border-b border-blue-100 pb-2">{t.finance}</h4>
-                                    {selectedDateEvents.filter(e => e.type === 'FINANCE').map(ev => (
+                                    {selectedDateEvents.filter((e: CalendarEvent) => e.type === 'FINANCE').map((ev: CalendarEvent) => (
                                         <div key={ev.id} onClick={() => handleCardClick(ev)} className="bg-blue-50 p-5 rounded-[1.5rem] border border-blue-100 cursor-pointer hover:shadow-md transition-all group">
                                             <div className="flex justify-between items-center mb-2">
                                                 <div className="flex items-center gap-3">
@@ -302,18 +302,18 @@ const CalendarModule: React.FC<CalendarModuleProps> = ({ language, weeklyPlan, o
                             )}
 
                             {/* KITCHEN: Nutrición */}
-                            {selectedDateEvents.some(e => e.type === 'KITCHEN') && (
+                            {selectedDateEvents.some((e: CalendarEvent) => e.type === 'KITCHEN') && (
                                 <div className="space-y-4 animate-slide-up" style={{ animationDelay: '0.1s' }}>
                                     <h4 className="text-[10px] font-black text-emerald-900 uppercase tracking-[0.2em] border-b border-emerald-100 pb-2">{t.kitchen}</h4>
-                                    {selectedDateEvents.filter(e => e.type === 'KITCHEN').map(ev => (
+                                    {selectedDateEvents.filter((e: CalendarEvent) => e.type === 'KITCHEN').map((ev: CalendarEvent) => (
                                         <div key={ev.id} onClick={() => handleCardClick(ev)} className="bg-emerald-50 p-5 rounded-[1.5rem] border border-emerald-100 cursor-pointer hover:shadow-md transition-all group">
                                             <div className="flex items-center gap-3 mb-3">
                                                 <div className="p-2 bg-white rounded-xl text-emerald-600 shadow-sm"><ev.icon className="w-4 h-4" /></div>
                                                 <span className="font-bold text-sm text-gray-900">{ev.title}</span>
                                             </div>
                                             <div className="pl-11 space-y-1">
-                                                {ev.details?.split(';;').map((line, i) => (
-                                                    <p key={i} className="text-[11px] font-bold text-emerald-700 leading-tight truncate">{line}</p>
+                                                {ev.details.split(';;').map((line: string, i: number) => (
+                                                    <p key={i} className="flex gap-2 items-start mt-2 border-l-4 border-gray-900/10 pl-4 py-1.5 hover:border-gray-900 transition-all">{line}</p>
                                                 ))}
                                             </div>
                                         </div>
@@ -322,10 +322,10 @@ const CalendarModule: React.FC<CalendarModuleProps> = ({ language, weeklyPlan, o
                             )}
 
                             {/* GOALS & OTHERS */}
-                            {selectedDateEvents.some(e => e.type === 'GOAL') && (
+                            {selectedDateEvents.some((e: CalendarEvent) => e.type === 'GOAL') && (
                                 <div className="space-y-4 animate-slide-up" style={{ animationDelay: '0.2s' }}>
                                     <h4 className="text-[10px] font-black text-amber-900 uppercase tracking-[0.2em] border-b border-amber-100 pb-2">{t.goals}</h4>
-                                    {selectedDateEvents.filter(e => e.type === 'GOAL').map(ev => (
+                                    {selectedDateEvents.filter((e: CalendarEvent) => e.type === 'GOAL').map((ev: CalendarEvent) => (
                                         <div key={ev.id} onClick={() => handleCardClick(ev)} className="bg-amber-50 p-5 rounded-[1.5rem] border border-amber-100 cursor-pointer hover:shadow-md transition-all">
                                             <div className="flex items-center gap-3">
                                                 <div className="p-2 bg-white rounded-xl text-amber-600 shadow-sm"><Target className="w-4 h-4" /></div>

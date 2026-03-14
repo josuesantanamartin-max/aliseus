@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useUserStore } from '../../../store/useUserStore';
-import { useFinanceStore } from '../../../store/useFinanceStore';
-import { analyzeFinances } from '../../../services/geminiFinancial';
+import { useUserStore } from '@/store/useUserStore';
+import { useFinanceStore } from '@/store/useFinanceStore';
+import { analyzeFinances } from '@/services/geminiFinancial';
 import { Wallet, Menu, CreditCard, PieChart, Target, ReceiptEuro, Sparkles, Loader2, X } from 'lucide-react';
 
 import { AnimatePresence } from 'framer-motion';

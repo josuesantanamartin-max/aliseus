@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useFinanceStore } from '../../../store/useFinanceStore';
-import { Budget } from '../../../types';
+import { useFinanceStore } from '@/store/useFinanceStore';
+import { Budget } from '@/types';
 import {
     PieChart, Pie, Cell, ResponsiveContainer
 } from 'recharts';
@@ -104,12 +104,12 @@ const Budgets: React.FC<BudgetsProps> = ({ onViewTransactions }) => {
                 return tDate >= startOfYear && tDate.getFullYear() === now.getFullYear();
             }
             return tDate >= startOfMonth && tDate.getMonth() === now.getMonth() && tDate.getFullYear() === now.getFullYear();
-        }).reduce((sum, t) => sum + t.amount, 0);
+        }).reduce((sum: number, t: any) => sum + t.amount, 0);
     };
 
     const getEffectiveLimit = (budget: Budget) => {
         if (budget.budgetType === 'PERCENTAGE' && budget.percentage) {
-            const income = transactions.filter(t => t.type === 'INCOME' && isDateInRange(t.date, budget)).reduce((sum, t) => sum + t.amount, 0);
+            const income = transactions.filter((t: any) => t.type === 'INCOME' && isDateInRange(t.date, budget)).reduce((sum: number, t: any) => sum + t.amount, 0);
             return (income * budget.percentage) / 100;
         }
         return budget.limit;
@@ -117,12 +117,11 @@ const Budgets: React.FC<BudgetsProps> = ({ onViewTransactions }) => {
 
     // Prepare Sidebar Data - PRIORITIZE MONTHLY STATS (Standard Pulse)
     const categoryStats = useMemo(() => {
-        return expenseCategories.map(cat => {
+        return expenseCategories.map((cat: any) => {
             // We focus on MONTHLY stats for the sidebar "pulse"
             const monthlyBudgets = budgets.filter(b => b.category === cat.name && b.period === 'MONTHLY');
-
             // Total Monthly Limit
-            const totalMonthlyLimit = monthlyBudgets.reduce((sum, b) => sum + getEffectiveLimit(b), 0);
+            const totalMonthlyLimit = monthlyBudgets.reduce((sum: number, b: Budget) => sum + getEffectiveLimit(b), 0);
 
             // Monthly Spend
             const monthlySpent = getSpentAmount(cat.name, undefined, undefined, 'MONTHLY');
@@ -158,12 +157,12 @@ const Budgets: React.FC<BudgetsProps> = ({ onViewTransactions }) => {
 
         // Monthly Group
         const monthlyBudgets = catBudgets.filter(b => b.period === 'MONTHLY');
-        const monthlyLimit = monthlyBudgets.reduce((sum, b) => sum + getEffectiveLimit(b), 0);
+        const monthlyLimit = monthlyBudgets.reduce((sum: number, b: Budget) => sum + getEffectiveLimit(b), 0);
         const monthlySpent = getSpentAmount(selectedCategoryName, undefined, undefined, 'MONTHLY');
 
         // Yearly Group
         const yearlyBudgets = catBudgets.filter(b => b.period === 'YEARLY');
-        const yearlyLimit = yearlyBudgets.reduce((sum, b) => sum + getEffectiveLimit(b), 0);
+        const yearlyLimit = yearlyBudgets.reduce((sum: number, b: Budget) => sum + getEffectiveLimit(b), 0);
         const yearlySpent = getSpentAmount(selectedCategoryName, undefined, undefined, 'YEARLY');
 
         const monthlyItems = monthlyBudgets.map(b => ({

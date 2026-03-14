@@ -1,6 +1,6 @@
 import React from 'react';
 import { Map, Plus, Luggage, Globe, Sparkles, MapPin, Calendar, Wallet, ArrowRight } from 'lucide-react';
-import { Trip } from '../../../../../types';
+import { Trip } from '@/types';
 
 interface TravelHubProps {
     trips: Trip[];

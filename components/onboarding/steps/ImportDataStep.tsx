@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUserStore } from '../../../store/useUserStore';
+import { useUserStore } from '@/store/useUserStore';
 import { UploadCloud, CheckCircle, ArrowRight } from 'lucide-react';
 // import { useNavigate } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ const ImportDataStep: React.FC = () => {
 
         // Save onboarding completion to Supabase user_metadata
         try {
-            const { supabase } = await import('../../../services/supabaseClient');
+            const { supabase } = await import('@/services/supabaseClient');
             if (supabase) {
                 await supabase.auth.updateUser({
                     data: { hasCompletedOnboarding: true }

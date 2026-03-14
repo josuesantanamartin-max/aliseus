@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useUserStore } from '../../../store/useUserStore';
-import { useFinanceStore } from '../../../store/useFinanceStore';
+import { useUserStore } from '@/store/useUserStore';
+import { useFinanceStore } from '@/store/useFinanceStore';
 import { useCurrency } from '../../../hooks/useCurrency';
 import {
     Wallet, Landmark, Plus, Trash2, CreditCard, ArrowRight, PiggyBank,
     TrendingUp, Layers, Banknote, X, ChevronLeft, ShieldCheck
 } from 'lucide-react';
-import { Account } from '../../../types';
+import { Account } from '@/types';
 
 const ACCOUNT_TYPES = [
     { value: 'BANK', label: 'Corriente', sub: 'Cuenta bancaria estándar', icon: Landmark, color: 'bg-cyan-50 text-cyan-600 border-cyan-200' },

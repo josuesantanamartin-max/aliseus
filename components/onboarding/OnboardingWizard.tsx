@@ -1,5 +1,5 @@
 import React from 'react';
-import { useUserStore } from '../../store/useUserStore';
+import { useUserStore } from '@/store/useUserStore';
 import OnboardingLayout from './OnboardingLayout';
 import WelcomeStep from './steps/WelcomeStep';
 import { MagicDemoStep } from './steps/MagicDemoStep';

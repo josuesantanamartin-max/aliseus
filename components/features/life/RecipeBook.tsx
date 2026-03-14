@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useLifeStore } from '../../../store/useLifeStore';
-import { useUserStore } from '../../../store/useUserStore';
-import { Recipe, RecipeIngredient, WeeklyPlanState } from '../../../types';
+import { useLifeStore } from '@/store/useLifeStore';
+import { useUserStore } from '@/store/useUserStore';
+import { Recipe, Ingredient, RecipeIngredient, WeeklyPlanState } from '@/types';
 import { Search, Loader2, ScanLine, Plus, Clock, Flame, Pencil, Save, X, Trash2, ChefHat, Users, Sparkles, LayoutDashboard, Calendar, CalendarPlus } from 'lucide-react';
-import { generateImage } from '../../../services/geminiCore';
-import { generateRecipesFromIngredients, generateRecipesFromImage } from '../../../services/geminiLife';
+import { generateImage } from '@/services/geminiCore';
+import { generateRecipesFromIngredients, generateRecipesFromImage } from '@/services/geminiLife';
 import { PlanRecipeModal } from './PlanRecipeModal';
 import { CookingModeView } from './CookingModeView';
-import { calculateMissingIngredients } from '../../../utils/foodUtils';
+import { calculateMissingIngredients } from '@/utils/foodUtils';
 
 interface RecipeBookProps {
     onNavigateToMealPlan?: () => void;
@@ -383,7 +383,7 @@ export const RecipeBook: React.FC<RecipeBookProps> = ({ onNavigateToMealPlan, in
 
             <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    {filteredRecipes.map((recipe: any) => (<div
+                    {filteredRecipes.map((recipe: Recipe) => (<div
                         key={recipe.id}
                         className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] transition-all duration-500 group overflow-hidden cursor-pointer flex flex-col h-full"
                         onClick={() => setViewRecipe(recipe)}

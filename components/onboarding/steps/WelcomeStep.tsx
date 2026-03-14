@@ -1,6 +1,6 @@
 import React from 'react';
 import { Sparkles, User, ShieldCheck } from 'lucide-react';
-import { useUserStore } from '../../../store/useUserStore';
+import { useUserStore } from '@/store/useUserStore';
 
 const WelcomeStep: React.FC = () => {
     const { setOnboardingStep } = useUserStore();

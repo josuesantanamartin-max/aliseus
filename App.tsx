@@ -10,12 +10,12 @@ import CookieConsent from './components/common/CookieConsent';
 import PerformanceMonitor from './components/common/PerformanceMonitor';
 import { VoiceAssistantFab } from './components/features/voice/VoiceAssistantFab';
 import { monitoringService } from './services/monitoringService';
-import { useUserStore } from './store/useUserStore';
+import { useUserStore } from '@/store/useUserStore';
 import { useRealtimeSync } from './hooks/useRealtimeSync';
 
 const App: React.FC = () => {
-    const userProfile = useUserStore((state) => state.userProfile);
-    const cookiePreferences = useUserStore((state) => state.cookiePreferences);
+    const userProfile = useUserStore((state: any) => state.userProfile);
+    const cookiePreferences = useUserStore((state: any) => state.cookiePreferences);
 
     // Initialize Realtime Sync
     useRealtimeSync();

@@ -5,7 +5,7 @@ import {
     TrendingUp, Clock, Globe, ChevronDown, ChevronUp, X, Minus, CheckCircle2,
     Utensils, Calendar, Archive, Target, CreditCard, ShoppingCart
 } from 'lucide-react';
-import { Language } from '../../../types';
+import { Language } from '@/types';
 import { PRODUCT_DETAILS_BY_LANG } from './landingData';
 
 interface LandingHomeProps {
@@ -118,18 +118,12 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <button
                             onClick={() => setShowLoginModal(true)}
-                            className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-cyan-500 to-teal-600 text-white rounded-2xl font-bold text-lg flex items-center justify-center gap-2 hover:from-cyan-400 hover:to-teal-500 transition-all shadow-xl shadow-cyan-500/30 hover:-translate-y-1"
+                            className="w-full sm:w-auto px-10 py-5 bg-gradient-to-r from-cyan-500 to-teal-600 text-white rounded-2xl font-bold text-xl flex items-center justify-center gap-3 hover:from-cyan-400 hover:to-teal-500 transition-all shadow-xl shadow-cyan-500/30 hover:-translate-y-1"
                         >
-                            {t.ctaStart} <ArrowRight className="w-5 h-5" />
-                        </button>
-                        <button
-                            onClick={() => handleScrollToSection('how-it-works')}
-                            className="w-full sm:w-auto px-8 py-4 bg-white/10 backdrop-blur border border-white/20 text-white rounded-2xl font-bold text-lg hover:bg-white/20 transition-all"
-                        >
-                            Ver Cómo Funciona
+                            {t.ctaStart} <ArrowRight className="w-6 h-6" />
                         </button>
                     </div>
-                    <p className="text-sm text-white/40 mt-6">14 días de prueba gratis • Sin compromiso • Después desde 2,99€/mes</p>
+                    <p className="text-sm text-white/40 mt-6">Sin tarjeta de crédito requerida • Configuración en 2 minutos</p>
 
                     {/* Dashboard Preview */}
                     <div className="mt-16 relative w-full max-w-5xl mx-auto rounded-t-xl shadow-2xl overflow-hidden border-t border-x border-white/10 ring-1 ring-white/5 bg-[#0A0A0A]">
@@ -667,9 +661,9 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                     </p>
                     <button
                         onClick={() => setShowLoginModal(true)}
-                        className="bg-gradient-to-r from-cyan-500 to-teal-600 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:from-cyan-400 hover:to-teal-500 transition-all shadow-xl shadow-cyan-500/30 hover:-translate-y-1 inline-flex items-center gap-3"
+                        className="bg-gradient-to-r from-cyan-500 to-teal-600 text-white px-10 py-5 rounded-2xl font-bold text-xl hover:from-cyan-400 hover:to-teal-500 transition-all shadow-xl shadow-cyan-500/30 hover:-translate-y-1 inline-flex items-center gap-3"
                     >
-                        Comenzar Gratis <ArrowRight className="w-5 h-5" />
+                        {t.ctaStart} <ArrowRight className="w-6 h-6" />
                     </button>
                     <p className="text-sm text-white/40 mt-6">Sin tarjeta de crédito requerida • Configuración en 2 minutos</p>
                 </div>

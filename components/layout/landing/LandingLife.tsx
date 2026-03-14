@@ -4,7 +4,7 @@ import {
     Calendar, Clock, Leaf, DollarSign, Users, BookOpen, AlertTriangle,
     CheckCircle2, Zap, Sparkles, Package, Apple, Coffee
 } from 'lucide-react';
-import { Language } from '../../../types';
+import { Language } from '@/types';
 
 interface LandingLifeProps {
     t: any;

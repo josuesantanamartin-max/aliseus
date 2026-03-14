@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useLifeStore } from '../../../store/useLifeStore';
-import { useUserStore } from '../../../store/useUserStore';
-import { useFinanceStore } from '../../../store/useFinanceStore';
-import { useFinanceControllers } from '../../../hooks/useFinanceControllers';
-import { ShoppingItem, Ingredient, Recipe } from '../../../types';
+import { useLifeStore } from '@/store/useLifeStore';
+import { useUserStore } from '@/store/useUserStore';
+import { useFinanceStore } from '@/store/useFinanceStore';
+import { useFinanceControllers } from '@/hooks/useFinanceControllers';
+import { ShoppingItem, Ingredient, Recipe } from '@/types';
 import { ShoppingCart, Copy, Plus, Check, ChefHat, Minus, X, ChevronDown, ChevronUp } from 'lucide-react';
 import { PurchaseConfirmationModal } from './PurchaseConfirmationModal';
 
@@ -22,7 +22,7 @@ const CATEGORY_COLORS: Record<string, string> = {
    'Other': 'bg-gray-100 text-gray-700 border-gray-200'
 };
 
-const CATEGORY_DISPLAY_NAMES: any = {
+const CATEGORY_DISPLAY_NAMES: Record<string, Record<string, string>> = {
    ES: {
       'Vegetables': 'Verduras',
       'Fruits': 'Frutas',
@@ -55,7 +55,7 @@ const CATEGORY_DISPLAY_NAMES: any = {
    }
 };
 
-import { getIngredientCategory } from '../../../utils/foodUtils';
+import { getIngredientCategory } from '@/utils/foodUtils';
 
 export const ShoppingListComponent: React.FC<ShoppingListProps> = () => {
    const { shoppingList, setShoppingList, setPantryItems } = useLifeStore();
@@ -85,7 +85,7 @@ export const ShoppingListComponent: React.FC<ShoppingListProps> = () => {
       const activeGroups: Record<string, ShoppingItem[]> = {};
       const purchasedItems: ShoppingItem[] = [];
 
-      shoppingList.forEach(item => {
+      shoppingList.forEach((item: ShoppingItem) => {
          if (item.checked) {
             // Purchased items go to a separate array
             purchasedItems.push(item);
@@ -139,7 +139,7 @@ export const ShoppingListComponent: React.FC<ShoppingListProps> = () => {
             });
          }
 
-         return prev.map(i => i.id === id ? { ...i, checked: isChecking } : i);
+         return prev.map((i: ShoppingItem) => i.id === id ? { ...i, checked: isChecking } : i);
       });
    };
 

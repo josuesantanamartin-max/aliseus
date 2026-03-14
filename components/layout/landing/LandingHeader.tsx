@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Logo } from '../Logo';
 import { Globe, ChevronDown } from 'lucide-react';
-import { Language } from '../../../types';
+import { Language } from '@/types';
 
 interface LandingHeaderProps {
     language: Language;

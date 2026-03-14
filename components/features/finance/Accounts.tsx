@@ -1,16 +1,16 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useFinanceStore } from '../../../store/useFinanceStore';
-import { useUserStore } from '../../../store/useUserStore';
-import { Account, CadastralData, Transaction } from '../../../types';
+import { useFinanceStore } from '@/store/useFinanceStore';
+import { useUserStore } from '@/store/useUserStore';
+import { Account, CadastralData, Transaction } from '@/types';
 import {
   Wallet, CreditCard, Banknote, Landmark, Plus, Pencil, Trash2, X,
   TrendingUp, ArrowRightLeft, Layers, ArrowUpRight, ArrowDownRight,
   ArrowRight, GripVertical, PiggyBank, Building2, Wifi, CheckCircle2,
   ChevronLeft, ShieldCheck
 } from 'lucide-react';
-import { useFinanceControllers } from '../../../hooks/useFinanceControllers';
-import { fetchCadastralData, isValidCadastralReference } from '../../../services/catastroService';
-import { syncService } from '../../../services/syncService';
+import { useFinanceControllers } from '@/hooks/useFinanceControllers';
+import { fetchCadastralData, isValidCadastralReference } from '@/services/catastroService';
+import { syncService } from '@/services/syncService';
 
 interface AccountsProps {
   onViewTransactions: (accountId: string) => void;
@@ -74,7 +74,7 @@ const Accounts: React.FC<AccountsProps> = ({ onViewTransactions }) => {
 
   // ── Form fields ──
   const [form, setForm] = useState(blankForm());
-  const setF = (k: keyof ReturnType<typeof blankForm>, v: any) => setForm(prev => ({ ...prev, [k]: v }));
+  const setF = (k: keyof ReturnType<typeof blankForm>, v: any) => setForm((prev: any) => ({ ...prev, [k]: v }));
 
   // ── Cadastral ──
   const [cadastralData, setCadastralData] = useState<CadastralData | null>(null);
@@ -115,8 +115,8 @@ const Accounts: React.FC<AccountsProps> = ({ onViewTransactions }) => {
   const formatEUR = (n: number) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2 }).format(n);
 
   // ── Stats ──
-  const totalAssets = accounts.filter(a => a.type !== 'CREDIT').reduce((s, a) => s + (a.balance > 0 ? a.balance : 0), 0);
-  const totalLiabilities = accounts.filter(a => a.type === 'CREDIT').reduce((s, a) => s + (a.balance < 0 ? Math.abs(a.balance) : 0), 0);
+  const totalAssets = accounts.filter(a => a.type !== 'CREDIT').reduce((s: number, a: Account) => s + (a.balance > 0 ? a.balance : 0), 0);
+  const totalLiabilities = accounts.filter(a => a.type === 'CREDIT').reduce((s: number, a: Account) => s + (a.balance < 0 ? Math.abs(a.balance) : 0), 0);
   const netWorth = totalAssets - totalLiabilities;
 
   // ── Modal helpers ──
@@ -260,7 +260,7 @@ const Accounts: React.FC<AccountsProps> = ({ onViewTransactions }) => {
     reordered.splice(dropIndex, 0, moved);
     const hidden = accounts.filter(a => a.type === 'CREDIT' || a.type === 'DEBIT');
     setAccounts(() => [...reordered, ...hidden]);
-    syncService.saveAccountsOrder(reordered).catch(err => console.error('[Accounts] order save failed:', err));
+    syncService.saveAccountsOrder(reordered).catch((err: any) => console.error('[Accounts] order save failed:', err));
     setDragIndex(null); setDragOverIndex(null);
   };
 

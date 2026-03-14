@@ -1,21 +1,21 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useFinanceStore } from '../../../../store/useFinanceStore';
-import { useUserStore } from '../../../../store/useUserStore';
-import { useFinanceControllers } from '../../../../hooks/useFinanceControllers';
-import { Transaction, QuickAction } from '../../../../types';
-import { useCurrency } from '../../../../hooks/useCurrency';
+import { useFinanceStore } from '@/store/useFinanceStore';
+import { useUserStore } from '@/store/useUserStore';
+import { useFinanceControllers } from '@/hooks/useFinanceControllers';
+import { Transaction, QuickAction } from '@/types';
+import { useCurrency } from '@/hooks/useCurrency';
 import {
   Plus, Database, FileUp, X, Upload, ArrowUpRight, ArrowDownRight, ArrowRightLeft, Repeat, Sparkles, Loader2
 } from 'lucide-react';
-import { suggestCategory } from '../../../../services/geminiCore';
+import { suggestCategory } from '@/services/geminiCore';
 import TransactionFilters from './components/TransactionFilters';
 import TransactionStats from './components/TransactionStats';
 import TransactionList from './components/TransactionList';
 import CSVImportModal from './components/CSVImportModal';
-import { validateTransaction } from '../../../../schemas/transaction.schema';
-import { formatZodErrors } from '../../../../utils/validation';
-import { useErrorHandler } from '../../../../hooks/useErrorHandler';
-import { Button } from '../../../ui/Button';
+import { validateTransaction } from '@/schemas/transaction.schema';
+import { formatZodErrors } from '@/utils/validation';
+import { useErrorHandler } from '@/hooks/useErrorHandler';
+import { Button } from '@/components/ui/Button';
 
 
 interface TransactionsProps {
@@ -140,8 +140,8 @@ const Transactions: React.FC<TransactionsProps> = ({
     });
   }, [transactions, filterDate, filterCategory, filterSubCategory, filterType, filterAccountId, showRecurringOnly, searchTerm, viewMode]);
 
-  const filteredIncome = filteredTransactions.filter(t => t.type === 'INCOME').reduce((acc, curr) => acc + curr.amount, 0);
-  const filteredExpenses = filteredTransactions.filter(t => t.type === 'EXPENSE').reduce((acc, curr) => acc + curr.amount, 0);
+  const filteredIncome = filteredTransactions.filter((t: Transaction) => t.type === 'INCOME').reduce((acc: number, curr: Transaction) => acc + curr.amount, 0);
+  const filteredExpenses = filteredTransactions.filter((t: Transaction) => t.type === 'EXPENSE').reduce((acc: number, curr: Transaction) => acc + curr.amount, 0);
 
   const activeFiltersCount = [filterCategory, filterSubCategory, filterType, filterAccountId, showRecurringOnly].filter(Boolean).length;
 
@@ -273,8 +273,8 @@ const Transactions: React.FC<TransactionsProps> = ({
     // Find the newest transaction date to adjust the view
     let newestDate = filterDate;
 
-    importedTransactions.forEach(t => {
-      const txDateStr = t.date || new Date().toISOString().split('T')[0];
+    importedTransactions.forEach((t: Partial<Transaction>) => {
+      const txDateStr = (t.date as unknown as string) || new Date().toISOString().split('T')[0];
       const txDate = new Date(txDateStr);
 
       // Better: collect all months and pick the most frequent or highest one
@@ -282,7 +282,7 @@ const Transactions: React.FC<TransactionsProps> = ({
         id: crypto.randomUUID(),
         type: t.type as 'INCOME' | 'EXPENSE',
         amount: t.amount || 0,
-        date: txDate,
+        date: txDate.toISOString(),
         category: t.category || 'Otros',
         subCategory: t.subCategory || '',
         accountId: targetAccountId,

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useLifeStore } from '../../../store/useLifeStore';
-import { useUserStore } from '../../../store/useUserStore';
-import { Recipe, WeeklyPlanState, MealTime, Language } from '../../../types';
+import { useLifeStore } from '@/store/useLifeStore';
+import { useUserStore } from '@/store/useUserStore';
+import { WeeklyPlanState, MealTime, Recipe, Ingredient, RecipeIngredient, Language } from '@/types';
 import { ChevronLeft, ChevronRight, Wand2, Coffee, Sunset, Moon, X, Loader2, BookOpen, GripVertical, Search, ChefHat, MoreHorizontal, Plus, Copy, Trash2, ClipboardPaste, Clipboard, MoreVertical, PlusCircle, Calendar, LayoutGrid, List, ShoppingCart, Flame, Sparkles } from 'lucide-react';
-import { generateImage } from '../../../services/geminiCore';
-import { generateMealPlan, getRecipeDetails } from '../../../services/geminiLife';
-import { getIngredientCategory } from '../../../utils/foodUtils';
+import { generateImage } from '@/services/geminiCore';
+import { generateMealPlan, getRecipeDetails } from '@/services/geminiLife';
+import { getIngredientCategory } from '@/utils/foodUtils';
 import { QuickAddModal } from './meal-planner/QuickAddModal';
 import { RecipeSidebar } from './meal-planner/RecipeSidebar';
 import { AiPlannerModal } from './meal-planner/AiPlannerModal';
@@ -64,8 +64,8 @@ export const MealPlanner: React.FC<MealPlannerProps> = ({ onOpenRecipe }) => {
     // Adapter: Convert Array to Map for backward compatibility within this component
     const weeklyPlan = React.useMemo(() => {
         const map: WeeklyPlanState = {};
-        weeklyPlans.forEach(plan => {
-            plan.meals.forEach(meal => {
+        weeklyPlans.forEach((plan: { meals: any[] }) => {
+            plan.meals.forEach((meal: { date: string; recipeId: string; recipeName: string; servings: number; calories: number; image: string; ingredients: any[]; instructions: any[]; type: MealTime; courseType: string; }) => {
                 const date = meal.date;
                 if (!map[date]) map[date] = { breakfast: [], lunch: [], dinner: [] };
 
@@ -89,7 +89,7 @@ export const MealPlanner: React.FC<MealPlannerProps> = ({ onOpenRecipe }) => {
     }, [weeklyPlans]);
 
     // Adapter for setWeeklyPlan to maintain backward compatibility with component logic
-    const setWeeklyPlan = (updater: any) => {
+    const setWeeklyPlan = (updater: WeeklyPlanState | ((prev: WeeklyPlanState) => WeeklyPlanState)) => {
         const currentMap = weeklyPlan;
         const newMap = typeof updater === 'function' ? updater(currentMap) : updater;
 
@@ -110,17 +110,17 @@ export const MealPlanner: React.FC<MealPlannerProps> = ({ onOpenRecipe }) => {
             return idx;
         };
 
-        Object.entries(newMap).forEach(([date, dayPlan]: [string, any]) => {
+        (Object.entries(newMap) as [string, { breakfast: Recipe[], lunch: Recipe[], dinner: Recipe[] }][]).forEach(([date, dayPlan]) => {
             const idx = getPlanIndex(date);
             const plan = newPlans[idx];
 
             // Remove old meals for this date from the plan
-            plan.meals = plan.meals.filter(m => m.date !== date);
+            plan.meals = plan.meals.filter((m: { date: string }) => m.date !== date);
 
             // Add new meals
             (['breakfast', 'lunch', 'dinner'] as const).forEach(type => {
                 if (dayPlan[type]) {
-                    dayPlan[type].forEach((recipe: any) => {
+                    dayPlan[type].forEach((recipe: Recipe, i: number) => {
                         const dayOfWeek = new Date(date).getDay();
                         plan.meals.push({
                             date,
@@ -129,7 +129,7 @@ export const MealPlanner: React.FC<MealPlannerProps> = ({ onOpenRecipe }) => {
                             recipeId: recipe.id,
                             recipeName: recipe.name,
                             servings: recipe.baseServings || 2,
-                            completed: recipe.completed || false,
+                            completed: (recipe as any).completed || false, // Assuming completed might be on Recipe type
                             courseType: recipe.courseType || 'MAIN',
                             calories: recipe.calories,
                             image: recipe.image,
@@ -174,7 +174,7 @@ export const MealPlanner: React.FC<MealPlannerProps> = ({ onOpenRecipe }) => {
     // --- SMART PLANNER ORCHESTRATION ---
     React.useEffect(() => {
         if (isSmartPlannerOpen) {
-            const lowFreshness = pantryItems.filter(i => {
+            const lowFreshness = pantryItems.filter((i: Ingredient) => {
                 if (!i.expiryDate) return false;
                 const days = (new Date(i.expiryDate).getTime() - new Date().getTime()) / (1000 * 3600 * 24);
                 return days < 7; // Configured to 7 days for better zero-waste planning window
@@ -202,7 +202,7 @@ export const MealPlanner: React.FC<MealPlannerProps> = ({ onOpenRecipe }) => {
         // Let's use the visible days to stay focused.
 
         const visiblePlan: WeeklyPlanState = {};
-        days.forEach(date => {
+        days.forEach((date: Date) => {
             const dateKey = date.toISOString().split('T')[0];
             if (weeklyPlan[dateKey]) {
                 visiblePlan[dateKey] = weeklyPlan[dateKey];
@@ -258,10 +258,10 @@ export const MealPlanner: React.FC<MealPlannerProps> = ({ onOpenRecipe }) => {
         };
 
         // Aggregate all ingredients from the plan
-        Object.values(currentPlan).forEach(day => {
-            (['breakfast', 'lunch', 'dinner'] as MealTime[]).forEach(meal => {
-                day[meal]?.forEach(r => {
-                    r.ingredients?.forEach(ing => {
+        (Object.values(currentPlan) as { breakfast: Recipe[], lunch: Recipe[], dinner: Recipe[] }[]).forEach((day) => {
+            (['breakfast', 'lunch', 'dinner'] as MealTime[]).forEach((meal: MealTime) => {
+                day[meal]?.forEach((r: Recipe) => {
+                    r.ingredients?.forEach((ing: RecipeIngredient) => {
                         const normName = ing.name.toLowerCase().trim();
                         const normUnit = getNormalizedUnit(ing.unit);
                         const normQty = getNormalizedQuantity(ing.quantity, ing.unit);
@@ -287,7 +287,7 @@ export const MealPlanner: React.FC<MealPlannerProps> = ({ onOpenRecipe }) => {
 
         Object.entries(planTotals).forEach(([name, data]) => {
             // Check Pantry
-            const pantryItem = pantryItems.find(p => p.name.toLowerCase().trim() === name);
+            const pantryItem = pantryItems.find((p: Ingredient) => p.name.toLowerCase().trim() === name);
             let stock = 0;
             if (pantryItem && getNormalizedUnit(pantryItem.unit) === data.unit) {
                 stock = getNormalizedQuantity(pantryItem.quantity, pantryItem.unit);
@@ -353,7 +353,7 @@ export const MealPlanner: React.FC<MealPlannerProps> = ({ onOpenRecipe }) => {
 
         setWeeklyPlan((prev: WeeklyPlanState) => {
             const nextPlan = { ...prev };
-            days.forEach(date => {
+            days.forEach((date: Date) => {
                 const dateKey = date.toISOString().split('T')[0];
                 nextPlan[dateKey] = { breakfast: [], lunch: [], dinner: [] };
             });
@@ -538,7 +538,7 @@ export const MealPlanner: React.FC<MealPlannerProps> = ({ onOpenRecipe }) => {
 
         const startDate = new Date().toISOString().split('T')[0];
         try {
-            const lowFreshness = pantryItems.filter(i => {
+            const lowFreshness = pantryItems.filter((i: Ingredient) => {
                 if (!i.expiryDate) return false;
                 const days = (new Date(i.expiryDate).getTime() - new Date().getTime()) / (1000 * 3600 * 24);
                 return days < 7;
@@ -577,7 +577,7 @@ export const MealPlanner: React.FC<MealPlannerProps> = ({ onOpenRecipe }) => {
                         if (!dayPlan) continue;
 
                         const createSkeletonList = (list: any[]) => {
-                            return (Array.isArray(list) ? list : []).map((r: any) => {
+                            return (Array.isArray(list) ? list : []).map((r: Recipe) => {
                                 const recipe: Recipe = {
                                     id: Math.random().toString(36).substr(2, 9),
                                     name: r.name,
@@ -828,7 +828,7 @@ export const MealPlanner: React.FC<MealPlannerProps> = ({ onOpenRecipe }) => {
             <div className="flex-1 flex overflow-hidden gap-4">
                 <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
                     <div className={`gap-3 transition-all duration-500 ${viewMode === 'week' || viewMode === 'biweek' ? 'grid grid-cols-7 min-w-[1200px]' : 'grid grid-cols-7 gap-2'}`}>
-                        {days.map(date => {
+                        {days.map((date: Date) => {
                             const dateKey = date.toISOString().split('T')[0];
                             const dayPlan = weeklyPlan[dateKey] || { breakfast: [], lunch: [], dinner: [] };
                             const isToday = new Date().toDateString() === date.toDateString();

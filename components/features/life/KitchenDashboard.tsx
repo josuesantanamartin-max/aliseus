@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useLifeStore } from '../../../store/useLifeStore';
-import { useUserStore } from '../../../store/useUserStore';
-import { useFinanceStore } from '../../../store/useFinanceStore';
-import { KitchenWidgetType, MealTime, Recipe } from '../../../types';
+import { useLifeStore } from '@/store/useLifeStore';
+import { useUserStore } from '@/store/useUserStore';
+import { useFinanceStore } from '@/store/useFinanceStore';
+import { KitchenWidgetType, MealTime, Recipe, Transaction, Ingredient, DashboardWidget } from '@/types';
 import { Edit, Eye, EyeOff, Flame, AlertTriangle, ShoppingCart, Activity, Clock, ArrowRight, Sparkles, ChefHat, Sunset, Moon, Coffee, ListChecks, Zap, CreditCard, Leaf } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { MacroChart } from './dashboard/MacroChart';
@@ -37,28 +37,28 @@ export const KitchenDashboard: React.FC<KitchenDashboardProps> = ({ onOpenAiPlan
 
 
    const toggleWidget = (id: KitchenWidgetType) => {
-      setWidgets((prev) => prev.map(w => w.id === id ? { ...w, visible: !w.visible } : w));
+      setWidgets((prev: DashboardWidget[]) => prev.map(w => w.id === id ? { ...w, visible: !w.visible } : w));
    };
 
-   const isVisible = (id: KitchenWidgetType) => widgets?.find(w => w.id === id)?.visible ?? true;
+   const isVisible = (id: KitchenWidgetType) => widgets?.find((w: DashboardWidget) => w.id === id)?.visible ?? true;
 
-   const lowStockItems = pantryItems.filter(item => item.lowStockThreshold && item.quantity <= item.lowStockThreshold);
+   const lowStockItems = pantryItems.filter((item: Ingredient) => item.lowStockThreshold && item.quantity <= item.lowStockThreshold);
 
    // --- NEW CALCULATIONS ---
    // 1. Food Spending
    const currentMonthISO = new Date().toISOString().slice(0, 7);
    const foodSpending = transactions
-      .filter(t => t.type === 'EXPENSE' && (t.category === 'Alimentación' || t.category === 'Food') && t.date.startsWith(currentMonthISO))
-      .reduce((acc, curr) => acc + curr.amount, 0);
+      .filter((t: Transaction) => t.type === 'EXPENSE' && (t.category === 'Alimentación' || t.category === 'Food') && t.date.startsWith(currentMonthISO))
+      .reduce((acc: number, curr: Transaction) => acc + curr.amount, 0);
 
    // 2. Stock Health %
    const totalPantryItems = pantryItems.length;
-   const goodStockItems = pantryItems.filter(item => !item.lowStockThreshold || item.quantity > item.lowStockThreshold).length;
+   const goodStockItems = pantryItems.filter((item: Ingredient) => !item.lowStockThreshold || item.quantity > item.lowStockThreshold).length;
    const stockHealth = totalPantryItems > 0 ? Math.round((goodStockItems / totalPantryItems) * 100) : 0;
 
    // 3. Freshness Score
-   const expiredCount = pantryItems.filter(item => item.expiryDate && new Date(item.expiryDate) < new Date()).length;
-   const expiringSoonCount = pantryItems.filter(item => {
+   const expiredCount = pantryItems.filter((item: Ingredient) => item.expiryDate && new Date(item.expiryDate) < new Date()).length;
+   const expiringSoonCount = pantryItems.filter((item: Ingredient) => {
       if (!item.expiryDate) return false;
       const exp = new Date(item.expiryDate);
       const nextWeek = new Date();
@@ -76,21 +76,21 @@ export const KitchenDashboard: React.FC<KitchenDashboardProps> = ({ onOpenAiPlan
    // Missing variable needed for the Meal Planner card
    const todayStr = new Date().toISOString().split('T')[0];
    const todayMealsObj = weeklyPlans
-      .flatMap(p => p.meals)
-      .filter(m => m.date === todayStr)
-      .reduce((acc, meal) => {
+      .flatMap((p: any) => p.meals) // TODO: Define WeeklyPlan type if needed, but currently it's a bit complex in store
+      .filter((m: any) => m.date === todayStr)
+      .reduce((acc: Record<string, any[]>, meal: any) => {
          if (!acc[meal.type]) acc[meal.type] = [];
          acc[meal.type].push({ ...meal, id: meal.recipeId, name: meal.recipeName }); // Adapt structure
          return acc;
       }, {} as Record<string, any[]>);
 
    const todayMeals = {
-      breakfast: todayMealsObj.breakfast || [],
-      lunch: todayMealsObj.lunch || [],
-      dinner: todayMealsObj.dinner || []
+      breakfast: (todayMealsObj as any).breakfast || [],
+      lunch: (todayMealsObj as any).lunch || [],
+      dinner: (todayMealsObj as any).dinner || []
    };
 
-   const todayMacros = Object.values(todayMeals).flat().reduce((acc, recipe) => {
+   const todayMacros = Object.values(todayMeals).flat().reduce((acc: any, recipe: any) => {
       if (recipe.macros) {
          acc.protein += recipe.protein || recipe.macros.protein || 0;
          acc.carbs += recipe.carbs || recipe.macros.carbs || 0;
@@ -137,7 +137,7 @@ export const KitchenDashboard: React.FC<KitchenDashboardProps> = ({ onOpenAiPlan
                   <button onClick={() => setIsEditingLayout(false)} className="bg-white text-black px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-gray-200">Terminar</button>
                </div>
                <div className="flex flex-wrap gap-2">
-                  {(widgets || []).map(w => (
+                  {(widgets || []).map((w: any) => (
                      <button
                         key={w.id}
                         onClick={() => toggleWidget(w.id as KitchenWidgetType)}
@@ -282,7 +282,7 @@ export const KitchenDashboard: React.FC<KitchenDashboardProps> = ({ onOpenAiPlan
                            { key: 'lunch', icon: Sunset, title: 'Almuerzo', time: '14:00', color: 'text-emerald-600', bg: 'bg-emerald-50/50', border: 'border-emerald-100/50', accent: 'bg-emerald-600' },
                            { key: 'dinner', icon: Moon, title: 'Cena', time: '21:00', color: 'text-indigo-600', bg: 'bg-indigo-50/50', border: 'border-indigo-100/50', accent: 'bg-indigo-600' }
                         ].map((meal) => {
-                           const dishes = todayMeals[meal.key as MealTime] || [];
+                           const dishes = (todayMeals as any)[meal.key] || [];
                            return (
                               <div
                                  key={meal.key}
@@ -304,7 +304,7 @@ export const KitchenDashboard: React.FC<KitchenDashboardProps> = ({ onOpenAiPlan
                                  <div className="flex-1 min-h-[60px]">
                                     {dishes.length > 0 ? (
                                        <div className="space-y-3">
-                                          {dishes.map((d, idx) => (
+                                          {dishes.map((d: any, idx: number) => (
                                              <div
                                                 key={idx}
                                                 className="w-full text-left font-black text-base text-gray-900 leading-tight flex items-start gap-2 group/dish group-hover/item:text-emerald-800 transition-colors"
@@ -325,7 +325,7 @@ export const KitchenDashboard: React.FC<KitchenDashboardProps> = ({ onOpenAiPlan
                                  {dishes.length > 0 && (
                                     <div className="pt-4 border-t border-gray-100 mt-auto flex justify-between items-center">
                                        <span className="text-[10px] font-black text-gray-500 flex items-center gap-1 group-hover/item:text-emerald-700 transition-colors">
-                                          <Flame className="w-3.5 h-3.5" /> {dishes.reduce((a, b) => a + (b.calories || 0), 0)} KCAL
+                                          <Flame className="w-3.5 h-3.5" /> {dishes.reduce((a: number, b: any) => a + (b.calories || 0), 0)} KCAL
                                        </span>
                                        <div className="bg-gray-50 p-1.5 rounded-lg border border-gray-100 group-hover/item:bg-emerald-600 group-hover/item:text-white transition-all">
                                           <ArrowRight className="w-3 h-3" />
@@ -358,13 +358,13 @@ export const KitchenDashboard: React.FC<KitchenDashboardProps> = ({ onOpenAiPlan
                               <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Todo Listo</p>
                            </div>
                         ) : (
-                           shoppingList.slice(0, 5).map(item => (
+                           shoppingList.slice(0, 5).map((item: any) => (
                               <button
                                  key={item.id}
                                  onClick={() => {
                                     // Remove item locally and from store
-                                    widgets.find(w => w.id === 'SHOPPING_LIST_CARD'); // dummy read
-                                    useLifeStore.getState().setShoppingList(prev => prev.filter(i => i.id !== item.id));
+                                    widgets.find((w: any) => w.id === 'SHOPPING_LIST_CARD'); // dummy read
+                                    useLifeStore.getState().setShoppingList((prev: any[]) => prev.filter(i => i.id !== item.id));
                                  }}
                                  className="w-full flex items-center justify-between p-3 bg-gray-50 rounded-2xl hover:bg-emerald-50 transition-colors border border-transparent hover:border-emerald-100 group cursor-pointer text-left"
                               >

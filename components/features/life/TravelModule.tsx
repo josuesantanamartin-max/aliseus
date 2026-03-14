@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useLifeStore } from '../../../store/useLifeStore';
-import { useUserStore } from '../../../store/useUserStore';
-import { useFinanceStore } from '../../../store/useFinanceStore';
-import { Trip } from '../../../types';
+import { useLifeStore } from '@/store/useLifeStore';
+import { useUserStore } from '@/store/useUserStore';
+import { useFinanceStore } from '@/store/useFinanceStore';
+import { Trip } from '@/types';
 import { GlobalMapModal } from './travel/GlobalMapModal';
 import { TravelHub } from './travel/TravelHub';
 import { TripDetails } from './travel/TripDetails';

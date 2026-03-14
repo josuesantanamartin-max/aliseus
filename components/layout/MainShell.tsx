@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import Sidebar from './Sidebar';
 import ModuleLoader from '../common/ui/ModuleLoader';
 import FloatingActionButton from '../common/ui/FloatingActionButton';
-import { useUserStore } from '../../store/useUserStore';
+import { useUserStore } from '@/store/useUserStore';
 import { supabase } from '../../services/supabaseClient';
 import { PageTransition } from '../common/animations/PageTransition';
 import { useNotificationEngine } from '../../hooks/useNotificationEngine';

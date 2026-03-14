@@ -1,8 +1,7 @@
 
-
 import React, { useState } from 'react';
 import { Home, Menu, Wrench, Box, Lock, Baby, ShieldCheck, Star, Trophy, FileText, CheckCircle } from 'lucide-react';
-import { Language } from '../../../types';
+import { Language } from '@/types';
 
 interface HomeModuleProps {
   onMenuClick?: () => void;

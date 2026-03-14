@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { UserPersona } from '../../../types';
-import { useUserStore } from '../../../store/useUserStore';
+import { UserPersona } from '@/types';
+import { useUserStore } from '@/store/useUserStore';
 import { GraduationCap, Briefcase, Users2, Rocket, Laptop, CheckCircle2, Heart, Coffee } from 'lucide-react';
 
 const PROFILES: { id: UserPersona; title: string; desc: string; icon: any; color: string }[] = [

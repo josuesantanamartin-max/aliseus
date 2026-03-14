@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useLifeStore } from '../../../store/useLifeStore';
-import { useUserStore } from '../../../store/useUserStore';
-import { Ingredient } from '../../../types';
+import { useLifeStore } from '@/store/useLifeStore';
+import { useUserStore } from '@/store/useUserStore';
+import { Ingredient } from '@/types';
 import { Search, Clock, Plus, Minus, X, ChevronLeft, ChevronRight, Wand2, Coffee, Sunset, Moon, Loader2, BookOpen, GripVertical, ChefHat, MoreHorizontal, Package, AlertTriangle, ScanLine } from 'lucide-react';
 import { ReceiptScannerModal } from './ReceiptScannerModal';
 

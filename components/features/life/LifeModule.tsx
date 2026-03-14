@@ -1,16 +1,16 @@
 import React from 'react';
-import { useLifeStore } from '../../../store/useLifeStore';
-import { useUserStore } from '../../../store/useUserStore';
-import { useFinanceStore } from '../../../store/useFinanceStore';
-import { useFinanceControllers } from '../../../hooks/useFinanceControllers';
-import { analyzeLife } from '../../../services/geminiLife';
+import { useLifeStore } from '@/store/useLifeStore';
+import { useUserStore } from '@/store/useUserStore';
+import { useFinanceStore } from '@/store/useFinanceStore';
+import { useFinanceControllers } from '@/hooks/useFinanceControllers';
+import { analyzeLife } from '@/services/geminiLife';
 
 import {
   Menu, Utensils, Plane, Lock, Baby, Home, Heart, Sparkles, Loader2, X
 } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import { PageTransition } from '../../common/animations/PageTransition';
-import { Trip, Goal } from '../../../types';
+import { Trip, Goal } from '@/types';
 import ModuleLoader from '../../common/ui/ModuleLoader';
 
 const KitchenManager = React.lazy(() => import('./KitchenManager').then(m => ({ default: m.KitchenManager })));
@@ -23,7 +23,7 @@ interface LifeModuleProps {
   onMenuClick: () => void;
 }
 
-const LIFE_TEXTS: any = {
+const LIFE_TEXTS: Record<string, any> = {
   ES: { nav: { overview: 'Resumen', kitchen: 'Cocina', travel: 'Viajes', vault: 'Bóveda', family: 'Familia', spaces: 'Espacios' } },
   EN: { nav: { overview: 'Overview', kitchen: 'Kitchen', travel: 'Travel', vault: 'Vault', family: 'Family', spaces: 'Spaces' } },
   FR: { nav: { overview: 'Aperçu', kitchen: 'Cuisine', travel: 'Voyages', vault: 'Coffre-fort', family: 'Famille', spaces: 'Espaces' } }
@@ -47,11 +47,11 @@ const LifeModule: React.FC<LifeModuleProps> = ({ onMenuClick }) => {
     const tripToSave = { ...newTripData };
 
     // Automation: Create Category if rule active
-    const rule = automationRules.find(r => r.trigger === 'TRIP_CREATED' && r.isActive);
+    const rule = automationRules.find((r: any) => r.trigger === 'TRIP_CREATED' && r.isActive);
     if (rule && rule.action === 'CREATE_CATEGORY_FOR_TRIP') {
       const newCatName = `Viaje: ${tripToSave.destination}`;
-      if (!categories.find(c => c.name === newCatName)) {
-        setCategories((prev) => [...prev, {
+      if (!categories.find((c: any) => c.name === newCatName)) {
+        setCategories((prev: any[]) => [...prev, {
           id: Math.random().toString(36).substr(2, 9),
           name: newCatName,
           type: 'EXPENSE',
@@ -72,12 +72,12 @@ const LifeModule: React.FC<LifeModuleProps> = ({ onMenuClick }) => {
         accountId: accounts[0]?.id || '1',
         linkedTripId: newTripData.id
       };
-      setGoals((prev) => [newGoal, ...prev]);
+      setGoals((prev: any[]) => [newGoal, ...prev]);
       tripToSave.linkedGoalId = newGoal.id;
       addSyncLog({ message: `Meta financiera creada: ${newGoal.name}`, timestamp: Date.now(), type: "FINANCE" });
     }
 
-    setTrips((prev) => [tripToSave, ...prev]);
+    setTrips((prev: any[]) => [tripToSave, ...prev]);
     addSyncLog({ message: `Nuevo viaje creado: ${newTripData.destination}`, timestamp: Date.now(), type: "LIFE" });
   };
 
@@ -91,7 +91,7 @@ const LifeModule: React.FC<LifeModuleProps> = ({ onMenuClick }) => {
     setAnalysis(null);
     try {
       // Convert ShoppingItem[] to Ingredient[] format
-      const shoppingAsIngredients = shoppingList.map(item => ({
+      const shoppingAsIngredients = shoppingList.map((item: any) => ({
         ...item,
         category: 'Other' as const
       }));
@@ -105,7 +105,7 @@ const LifeModule: React.FC<LifeModuleProps> = ({ onMenuClick }) => {
       );
       setAnalysis(result);
       setIsAnalysisVisible(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Life Analysis Error:', error);
       setAnalysis('<strong>Error</strong><br>No se pudo generar el análisis. Por favor, intenta de nuevo.');
       setIsAnalysisVisible(true);
@@ -113,20 +113,26 @@ const LifeModule: React.FC<LifeModuleProps> = ({ onMenuClick }) => {
       setIsAnalyzing(false);
     }
   };
-
-  const NAV_ITEMS = [
+ 
+  interface NavItem {
+    id: string;
+    label: string;
+    icon: any;
+  }
+ 
+  const NAV_ITEMS: NavItem[] = [
     { id: 'kitchen', label: t.nav.kitchen, icon: Utensils },
     { id: 'spaces', label: t.nav.spaces, icon: Home },
     { id: 'travel', label: t.nav.travel, icon: Plane },
     { id: 'vault', label: t.nav.vault, icon: Lock },
     { id: 'family', label: t.nav.family, icon: Baby },
   ];
-
+ 
   const renderNav = () => (
     <>
       {/* DESKTOP NAV */}
       <div className="hidden md:flex bg-white mx-6 mt-6 p-1.5 rounded-[1.5rem] shadow-sm border border-gray-100 items-center justify-between w-fit gap-1 sticky top-6 z-30">
-        {NAV_ITEMS.map(item => {
+        {NAV_ITEMS.map((item) => {
           const isActive = item.id === 'life-overview' ? activeTab === 'life-overview' : currentMainTab === item.id;
           return (
             <button
@@ -149,7 +155,7 @@ const LifeModule: React.FC<LifeModuleProps> = ({ onMenuClick }) => {
           {isAnalyzing ? 'Analizando...' : 'Análisis IA'}
         </button>
       </div>
-
+ 
       {/* Mobile Header */}
       <header className="md:hidden bg-white/80 backdrop-blur-md border-b border-gray-100 p-4 flex justify-between items-center z-10 sticky top-0 shrink-0">
         <div className="flex items-center gap-2">
@@ -162,10 +168,10 @@ const LifeModule: React.FC<LifeModuleProps> = ({ onMenuClick }) => {
           <Menu className="w-6 h-6" />
         </button>
       </header>
-
+ 
       {/* Mobile Segmented Control */}
       <div className="md:hidden px-4 py-4 overflow-x-auto no-scrollbar flex gap-2 snap-x">
-        {NAV_ITEMS.map(item => {
+        {NAV_ITEMS.map((item) => {
           const isActive = item.id === 'life-overview' ? activeTab === 'life-overview' : currentMainTab === item.id;
           return (
             <button
@@ -180,7 +186,7 @@ const LifeModule: React.FC<LifeModuleProps> = ({ onMenuClick }) => {
       </div>
     </>
   );
-
+ 
   return (
     <div className="flex h-full flex-col relative bg-[#FAFAFA]">
       {renderNav()}
@@ -192,7 +198,7 @@ const LifeModule: React.FC<LifeModuleProps> = ({ onMenuClick }) => {
               {currentMainTab === 'kitchen' && (
                 <KitchenManager
                   view={activeTab.replace('kitchen-', '').toUpperCase()}
-                  onViewChange={(newView) => setActiveTab(`kitchen-${newView.toLowerCase()}`)}
+                  onViewChange={(newView: string) => setActiveTab(`kitchen-${newView.toLowerCase()}`)}
                 />
               )}
               {activeTab === 'spaces' && <SpacesManager />}
@@ -207,7 +213,7 @@ const LifeModule: React.FC<LifeModuleProps> = ({ onMenuClick }) => {
       {/* AI ANALYSIS MODAL */}
       {isAnalysisVisible && analysis && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in" onClick={() => setIsAnalysisVisible(false)}>
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden max-h-[85vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden max-h-[85vh] flex flex-col" onClick={(e: React.MouseEvent) => e.stopPropagation()}>
             <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-white">
               <h3 className="text-lg font-black text-gray-900 flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-yellow-500" />

@@ -1,7 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useFinanceStore } from '../../store/useFinanceStore';
-import { useUserStore } from '../../store/useUserStore';
-import { useLifeStore } from '../../store/useLifeStore';
+import { useFinanceStore } from '@/store/useFinanceStore';
+import { useUserStore } from '@/store/useUserStore';
+import { useLifeStore } from '@/store/useLifeStore';
+import { Transaction, Budget, Account, Goal, CategoryStructure, Debt } from '@/types';
 import { Moon, Sunset, Settings, LayoutGrid } from 'lucide-react';
 import { Button } from '../ui/Button';
 
@@ -36,15 +37,15 @@ const AuraDashboard: React.FC = () => {
     const monthlyIncome = useMemo(() => {
         const now = new Date();
         return transactions
-            .filter(t => new Date(t.date).getMonth() === now.getMonth() && t.type === 'INCOME' && t.category !== 'Transferencia')
-            .reduce((sum, t) => sum + t.amount, 0);
+            .filter((t: Transaction) => new Date(t.date).getMonth() === now.getMonth() && t.type === 'INCOME' && t.category !== 'Transferencia')
+            .reduce((sum: number, t: Transaction) => sum + t.amount, 0);
     }, [transactions]);
 
     const monthlyExpenses = useMemo(() => {
         const now = new Date();
         return transactions
-            .filter(t => new Date(t.date).getMonth() === now.getMonth() && t.type === 'EXPENSE' && t.category !== 'Transferencia')
-            .reduce((sum, t) => sum + t.amount, 0);
+            .filter((t: Transaction) => new Date(t.date).getMonth() === now.getMonth() && t.type === 'EXPENSE' && t.category !== 'Transferencia')
+            .reduce((sum: number, t: Transaction) => sum + t.amount, 0);
     }, [transactions]);
 
     const {
@@ -81,7 +82,7 @@ const AuraDashboard: React.FC = () => {
     }, [activeTheme]);
 
     const activeLayout = useMemo(
-        () => dashboardLayouts.find(l => l.id === activeLayoutId),
+        () => dashboardLayouts.find((l: any) => l.id === activeLayoutId),
         [dashboardLayouts, activeLayoutId]
     );
 
@@ -108,7 +109,7 @@ const AuraDashboard: React.FC = () => {
 
     const activeWidgetIds = useMemo(() => {
         if (!activeLayout) return [];
-        return activeLayout.widgets.filter(w => isEditMode ? true : (w.visible !== false)).map(w => w.i);
+        return activeLayout.widgets.filter((w: any) => isEditMode ? true : (w.visible !== false)).map((w: any) => w.i);
     }, [activeLayout, isEditMode]);
 
     const handleSaveLayout = () => {
@@ -125,14 +126,14 @@ const AuraDashboard: React.FC = () => {
 
     const handleRemoveWidget = (widgetId: string) => {
         if (!activeLayout) return;
-        const updatedWidgets = activeLayout.widgets.filter(w => w.i !== widgetId);
+        const updatedWidgets = activeLayout.widgets.filter((w: any) => w.i !== widgetId);
         saveLayout({ ...activeLayout, widgets: updatedWidgets });
     };
 
     const handleReorderDrop = (sourceId: string, targetId: string) => {
         if (!activeLayout) return;
-        const sourceIndex = activeLayout.widgets.findIndex(w => w.i === sourceId);
-        const targetIndex = activeLayout.widgets.findIndex(w => w.i === targetId);
+        const sourceIndex = activeLayout.widgets.findIndex((w: any) => w.i === sourceId);
+        const targetIndex = activeLayout.widgets.findIndex((w: any) => w.i === targetId);
         if (sourceIndex === -1 || targetIndex === -1 || sourceIndex === targetIndex) return;
         const newWidgets = [...activeLayout.widgets];
         const [movedWidget] = newWidgets.splice(sourceIndex, 1);
@@ -142,7 +143,7 @@ const AuraDashboard: React.FC = () => {
 
     const handleChangeWidgetSize = (widgetId: string, newSize: string) => {
         if (!activeLayout) return;
-        const updatedWidgets = activeLayout.widgets.map(w => {
+        const updatedWidgets = activeLayout.widgets.map((w: any) => {
             if (w.i === widgetId) {
                 return { ...w, sizeOverride: newSize as any };
             }

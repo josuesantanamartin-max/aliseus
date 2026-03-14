@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Language } from '../../types';
+import { Language } from '@/types';
 import { Logo } from './Logo';
 import { LANDING_TEXTS } from './landing/landingData';
 import { LandingHeader } from './landing/LandingHeader';

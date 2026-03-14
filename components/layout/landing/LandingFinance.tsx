@@ -4,7 +4,7 @@ import {
     BarChart3, Wallet, Calculator, TrendingDown, Lock, Sparkles,
     PieChart, Receipt, Calendar, AlertCircle, CheckCircle2, Zap
 } from 'lucide-react';
-import { Language } from '../../../types';
+import { Language } from '@/types';
 
 interface LandingFinanceProps {
     t: any;

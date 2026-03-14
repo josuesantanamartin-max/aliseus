@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Globe, X, MapPin } from 'lucide-react';
 import createGlobe from 'cobe';
-import { Trip } from '../../../../../types';
+import { Trip } from '@/types';
 
 const CobeInteractiveGlobe = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);

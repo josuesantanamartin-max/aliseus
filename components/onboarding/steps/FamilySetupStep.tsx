@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useUserStore } from '../../../store/useUserStore';
-import { FamilyMember } from '../../../types';
+import { useUserStore } from '@/store/useUserStore';
+import { FamilyMember } from '@/types';
 import { Plus, Trash2, User, UserPlus, ArrowRight } from 'lucide-react';
 
 // Simple ID generator if uuid is not available or to avoid dependency if not installed

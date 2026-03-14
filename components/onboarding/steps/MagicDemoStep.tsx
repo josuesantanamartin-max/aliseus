@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ArrowRight, ChefHat, ShoppingCart, TrendingDown } from 'lucide-react';
-import { useUserStore } from '../../../store/useUserStore';
-import { useCurrency } from '../../../hooks/useCurrency';
+import { useUserStore } from '@/store/useUserStore';
+import { useCurrency } from '@/hooks/useCurrency';
 
 export const MagicDemoStep: React.FC = () => {
     const { setOnboardingStep } = useUserStore();

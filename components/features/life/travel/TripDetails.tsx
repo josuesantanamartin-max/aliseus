@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronLeft, Globe, Sparkles, Map, Wallet, ShieldCheck, Ticket, Calendar, PieChart, MapPin, ArrowRight, Plane, Hotel, Bed, ExternalLink } from 'lucide-react';
-import { Trip } from '../../../../../types';
+import { Trip, Flight, Accommodation } from '@/types';
 import { TravelItinerary } from './TravelItinerary';
 import { TravelFinance } from './TravelFinance';
 import { TravelDocuments } from './TravelDocuments';
@@ -137,7 +137,7 @@ export const TripDetails: React.FC<TripDetailsProps> = ({ trip, currency, onBack
                                         <span className="text-[9px] font-black uppercase tracking-widest text-orange-600 bg-orange-50 px-2 py-1 rounded group-hover:bg-orange-100 transition-colors">Bóveda</span>
                                     </div>
                                     <div>
-                                        <p className="font-black text-gray-900 text-xl tracking-tight">{trip.checklist?.filter(c => c.completed).length || 0} / {trip.checklist?.length || 0}</p>
+                                        <p className="font-black text-gray-900 text-xl tracking-tight">{trip.checklist?.filter((c: any) => c.completed).length || 0} / {trip.checklist?.length || 0}</p>
                                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Completado</p>
                                     </div>
                                 </div>
@@ -184,7 +184,7 @@ export const TripDetails: React.FC<TripDetailsProps> = ({ trip, currency, onBack
                             </div>
                             {(trip.flights?.length ?? 0) > 0 ? (
                                 <div className="space-y-4">
-                                    {trip.flights?.map(flight => (
+                                    {trip.flights?.map((flight: Flight) => (
                                         <div key={flight.id} className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all relative overflow-hidden">
                                             <div className="absolute top-0 right-0 bg-gray-50 px-4 py-2 rounded-bl-2xl text-[10px] font-black uppercase tracking-widest text-gray-400">{flight.airline} • {flight.flightNumber}</div>
                                             <div className="flex items-center justify-between mt-4">
@@ -235,7 +235,7 @@ export const TripDetails: React.FC<TripDetailsProps> = ({ trip, currency, onBack
                             </div>
                             {(trip.accommodations?.length ?? 0) > 0 ? (
                                 <div className="grid grid-cols-1 gap-4">
-                                    {trip.accommodations?.map(acc => (
+                                    {trip.accommodations?.map((acc: Accommodation) => (
                                         <div key={acc.id} className="flex flex-col gap-4 p-4 bg-white border border-gray-100 rounded-3xl hover:shadow-md transition-all">
                                             <div className="flex gap-4">
                                                 <div className="w-20 h-20 bg-gray-100 rounded-2xl flex items-center justify-center shrink-0">

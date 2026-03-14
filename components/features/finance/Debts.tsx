@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
-import { useFinanceStore } from '../../../store/financeStore';
-import { Debt } from '../../../types';
+import { useFinanceStore } from '@/store/useFinanceStore';
+import { Debt } from '@/types';
 
 import { DebtOverviewCards } from './components/DebtOverviewCards';
 import { DebtListSidebar } from './components/DebtListSidebar';
