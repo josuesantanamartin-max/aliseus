@@ -11,7 +11,7 @@ export const accountSchema = z
             .min(1, 'Account name cannot be empty')
             .max(100, 'Account name must be less than 100 characters'),
         bankName: z.string().max(100, 'Bank name must be less than 100 characters').optional(),
-        type: z.enum(['BANK', 'INVESTMENT', 'CASH', 'CREDIT', 'DEBIT', 'WALLET', 'ASSET']),
+        type: z.enum(['BANK', 'INVESTMENT', 'CASH', 'CREDIT', 'DEBIT', 'WALLET', 'ASSET', 'SAVINGS']),
         balance: z
             .number()
             .finite('Balance must be a valid number'),

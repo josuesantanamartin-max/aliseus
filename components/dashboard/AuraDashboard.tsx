@@ -218,7 +218,7 @@ const AuraDashboard: React.FC = () => {
 
                         {activeTheme === 'travel' && (
                             <div className="mx-auto w-full space-y-8 pb-12">
-                                <AuraTravelOverview selectedDate={selectedDate} />
+                                <AuraTravelOverview selectedDate={selectedDate} onNavigate={handleNavigate} />
                             </div>
                         )}
 

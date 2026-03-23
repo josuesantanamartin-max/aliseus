@@ -42,6 +42,19 @@ const ShoppingListWidget = React.lazy(() => import('../features/life/dashboard/w
 const LowStockPantryWidget = React.lazy(() => import('../features/life/dashboard/widgets/LowStockPantryWidget'));
 const UpcomingBirthdaysWidget = React.lazy(() => import('../features/life/dashboard/widgets/UpcomingBirthdaysWidget'));
 
+// New Aura Cocina Widgets
+const ExpiringThisWeekWidget = React.lazy(() => import('../features/life/dashboard/widgets/ExpiringThisWeekWidget'));
+const SuggestedRecipeWidget = React.lazy(() => import('../features/life/dashboard/widgets/SuggestedRecipeWidget'));
+const LowStockProductsWidget = React.lazy(() => import('../features/life/dashboard/widgets/LowStockProductsWidget'));
+const VisualWeeklyMenuWidget = React.lazy(() => import('../features/life/dashboard/widgets/VisualWeeklyMenuWidget'));
+const MissingIngredientsWidget = React.lazy(() => import('../features/life/dashboard/widgets/MissingIngredientsWidget'));
+const UnplannedDaysWidget = React.lazy(() => import('../features/life/dashboard/widgets/UnplannedDaysWidget'));
+const CostPerMealWidget = React.lazy(() => import('../features/life/dashboard/widgets/CostPerMealWidget'));
+const NutritionalVarietyWidget = React.lazy(() => import('../features/life/dashboard/widgets/NutritionalVarietyWidget'));
+const GroceryHistoryWidget = React.lazy(() => import('../features/life/dashboard/widgets/GroceryHistoryWidget'));
+const AverageRecipeTimeWidget = React.lazy(() => import('../features/life/dashboard/widgets/AverageRecipeTimeWidget'));
+const AvoidedWasteWidget = React.lazy(() => import('../features/life/dashboard/widgets/AvoidedWasteWidget'));
+
 // Types
 import { Transaction, Account, Debt, Goal, CategoryStructure, Budget, WidgetCategory } from '../../types';
 
@@ -80,6 +93,17 @@ export const WIDGET_REGISTRY: Record<string, React.ComponentType<any>> = {
     'TOP_SPENDERS': TopSpendersWidget,
     'LOW_STOCK_PANTRY': LowStockPantryWidget,
     'UPCOMING_BIRTHDAYS': UpcomingBirthdaysWidget,
+    'KITCHEN_EXPIRING': ExpiringThisWeekWidget,
+    'KITCHEN_SUGGESTED': SuggestedRecipeWidget,
+    'KITCHEN_LOW_STOCK': LowStockProductsWidget,
+    'KITCHEN_VISUAL_MENU': VisualWeeklyMenuWidget,
+    'KITCHEN_MISSING_INGS': MissingIngredientsWidget,
+    'KITCHEN_UNPLANNED': UnplannedDaysWidget,
+    'KITCHEN_COST_MEAL': CostPerMealWidget,
+    'KITCHEN_NUTRI_VARIETY': NutritionalVarietyWidget,
+    'KITCHEN_GROCERY_HISTORY': GroceryHistoryWidget,
+    'KITCHEN_RECIPE_TIME': AverageRecipeTimeWidget,
+    'KITCHEN_AVOIDED_WASTE': AvoidedWasteWidget,
 };
 
 /**
@@ -142,6 +166,19 @@ export const WIDGET_CONFIG: Record<string, { size: WidgetSize; label: string; ca
     'FAMILY_TASKS': { size: 'half', label: 'Tareas Familiares', category: 'LIFE' },
     'UPCOMING_BIRTHDAYS': { size: 'kpi', label: 'Próximos Cumpleaños', category: 'LIFE' },
     'INTELLIGENT_TOMORROW': { size: 'wide', label: 'Mañana Inteligente', category: 'LIFE' },
+
+    // Aura Cocina New Config
+    'KITCHEN_EXPIRING': { size: 'half', label: 'Caduca esta Semana', category: 'KITCHEN' },
+    'KITCHEN_SUGGESTED': { size: 'half', label: 'Receta Sugerida', category: 'KITCHEN' },
+    'KITCHEN_LOW_STOCK': { size: 'half', label: 'Productos Bajo Mínimos', category: 'KITCHEN' },
+    'KITCHEN_VISUAL_MENU': { size: 'wide', label: 'Menú Semanal Visual', category: 'KITCHEN' },
+    'KITCHEN_MISSING_INGS': { size: 'half', label: 'Ingredientes que Faltan', category: 'KITCHEN' },
+    'KITCHEN_UNPLANNED': { size: 'half', label: 'Días sin Planificar', category: 'KITCHEN' },
+    'KITCHEN_COST_MEAL': { size: 'half', label: 'Coste por Comida', category: 'KITCHEN' },
+    'KITCHEN_NUTRI_VARIETY': { size: 'half', label: 'Variedad Nutricional', category: 'KITCHEN' },
+    'KITCHEN_GROCERY_HISTORY': { size: 'half', label: 'Supermercados esta Semana', category: 'KITCHEN' },
+    'KITCHEN_RECIPE_TIME': { size: 'half', label: 'Tiempo Medio de Recetas', category: 'KITCHEN' },
+    'KITCHEN_AVOIDED_WASTE': { size: 'wide', label: 'Desperdicio Evitado este Mes', category: 'KITCHEN' },
 };
 
 // Helper type for props passed to dynamic widgets

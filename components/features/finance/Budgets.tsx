@@ -219,51 +219,55 @@ const Budgets: React.FC<BudgetsProps> = ({ onViewTransactions }) => {
         setEditingId(budget.id); setIsModalOpen(true);
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         // Clear previous errors
         setValidationErrors({});
 
-        let finalStart = startDate;
-        let finalEnd = endDate;
+        try {
+            let finalStart = startDate;
+            let finalEnd = endDate;
 
-        if (period === 'YEARLY') {
-            finalStart = `${selectedYear}-01-01`;
-            finalEnd = `${selectedYear}-12-31`;
+            if (period === 'YEARLY') {
+                finalStart = `${selectedYear}-01-01`;
+                finalEnd = `${selectedYear}-12-31`;
+            }
+
+            const budgetData: any = {
+                category,
+                subCategory: subCategory || undefined,
+                limit: parseFloat(limit) || 0,
+                period,
+                budgetType,
+                percentage: parseFloat(percentage) || undefined,
+                startDate: finalStart || undefined,
+                endDate: finalEnd || undefined
+            };
+
+            // Validate budget data
+            const result = validateBudget(budgetData);
+
+            if (!result.success) {
+                const errors = formatZodErrors(result.error);
+                setValidationErrors(errors);
+                showError(new Error('Por favor corrige los errores de validación'));
+                return;
+            }
+
+            if (editingId) {
+                setBudgets((prev: Budget[]) => prev.map(b => b.id === editingId ? { ...result.data, id: editingId } as Budget : b));
+                showSuccess('Presupuesto actualizado exitosamente');
+            } else {
+                const newBudget = { ...result.data, id: Math.random().toString(36).substr(2, 9) } as Budget;
+                setBudgets((prev: Budget[]) => [...prev, newBudget]);
+                showSuccess('Presupuesto creado exitosamente');
+            }
+
+            resetForm();
+        } catch (error) {
+            showError(error);
         }
-
-        const budgetData: any = {
-            category,
-            subCategory: subCategory || undefined,
-            limit: parseFloat(limit) || 0,
-            period,
-            budgetType,
-            percentage: parseFloat(percentage) || undefined,
-            startDate: finalStart || undefined,
-            endDate: finalEnd || undefined
-        };
-
-        // Validate budget data
-        const result = validateBudget(budgetData);
-
-        if (!result.success) {
-            const errors = formatZodErrors(result.error);
-            setValidationErrors(errors);
-            showError(new Error('Por favor corrige los errores de validación'));
-            return;
-        }
-
-        if (editingId) {
-            setBudgets((prev: Budget[]) => prev.map(b => b.id === editingId ? { ...result.data, id: editingId } as Budget : b));
-            showSuccess('Presupuesto actualizado exitosamente');
-        } else {
-            const newBudget = { ...result.data, id: Math.random().toString(36).substr(2, 9) } as Budget;
-            setBudgets((prev: Budget[]) => [...prev, newBudget]);
-            showSuccess('Presupuesto creado exitosamente');
-        }
-
-        resetForm();
     };
 
     const onDeleteBudget = (id: string) => {
@@ -539,19 +543,23 @@ const Budgets: React.FC<BudgetsProps> = ({ onViewTransactions }) => {
                             {/* Form fields same as before... re-implementing briefly for completeness */}
                             <div>
                                 <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-2">Categoría</label>
-                                <select required value={category} onChange={e => setCategory(e.target.value)} className="w-full p-4 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-sm outline-none"><option value="">Seleccionar...</option>{expenseCategories.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}</select>
+                                <select required value={category} onChange={e => setCategory(e.target.value)} className={`w-full p-4 bg-onyx-50 border ${validationErrors.category ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-2xl font-bold text-sm outline-none`}><option value="">Seleccionar...</option>{expenseCategories.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}</select>
+                                {validationErrors.category && <p className="text-red-500 text-[10px] mt-2 font-bold px-2">{validationErrors.category}</p>}
                             </div>
                             <div>
                                 <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-2">Subcategoría</label>
-                                <select value={subCategory} onChange={e => setSubCategory(e.target.value)} disabled={!category} className="w-full p-4 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-sm outline-none"><option value="">Global</option>{expenseCategories.find(c => c.name === category)?.subCategories.map(s => <option key={s} value={s}>{s}</option>)}</select>
+                                <select value={subCategory} onChange={e => setSubCategory(e.target.value)} disabled={!category} className={`w-full p-4 bg-onyx-50 border ${validationErrors.subCategory ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-2xl font-bold text-sm outline-none`}><option value="">Global</option>{expenseCategories.find(c => c.name === category)?.subCategories.map(s => <option key={s} value={s}>{s}</option>)}</select>
+                                {validationErrors.subCategory && <p className="text-red-500 text-[10px] mt-2 font-bold px-2">{validationErrors.subCategory}</p>}
                             </div>
                             <div>
                                 <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-2">Periodo</label>
-                                <select value={period} onChange={e => setPeriod(e.target.value as any)} className="w-full p-4 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-sm outline-none"><option value="MONTHLY">Mensual</option><option value="YEARLY">Anual</option><option value="CUSTOM">Personalizado</option></select>
+                                <select value={period} onChange={e => setPeriod(e.target.value as any)} className={`w-full p-4 bg-onyx-50 border ${validationErrors.period ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-2xl font-bold text-sm outline-none`}><option value="MONTHLY">Mensual</option><option value="YEARLY">Anual</option><option value="CUSTOM">Personalizado</option></select>
+                                {validationErrors.period && <p className="text-red-500 text-[10px] mt-2 font-bold px-2">{validationErrors.period}</p>}
                             </div>
                             <div>
                                 <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-2">Límite (€)</label>
-                                <input type="number" required value={limit} onChange={e => setLimit(e.target.value)} className="w-full p-4 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-xl outline-none" />
+                                <input type="number" required value={limit} onChange={e => setLimit(e.target.value)} className={`w-full p-4 bg-onyx-50 border ${validationErrors.limit ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-2xl font-bold text-xl outline-none`} />
+                                {validationErrors.limit && <p className="text-red-500 text-[10px] mt-2 font-bold px-2">{validationErrors.limit}</p>}
                             </div>
                             <button type="submit" className="w-full bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">Guardar</button>
                         </form>

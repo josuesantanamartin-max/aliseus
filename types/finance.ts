@@ -94,6 +94,16 @@ export interface ProjectBudget {
     status: 'ACTIVE' | 'COMPLETED';
     color?: string;
     icon?: string;
+    
+    // New fields for Family Brain integration
+    projectType?: 'REFORMA' | 'VIAJE' | 'EVENTO_FAMILIAR' | 'OTROS';
+    keyDate?: string; // Target date (event day, delivery, etc)
+    primaryResponsibleId?: string; // Reference to FamilyMember id
+    
+    // Specific for EVENTO_FAMILIAR
+    location?: string;
+    estimatedGuests?: string;
+    importance?: 'BAJA' | 'MEDIA' | 'ALTA';
 }
 
 export interface ProjectItem {

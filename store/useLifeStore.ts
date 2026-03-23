@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { Ingredient, ShoppingItem, Recipe, Trip, FamilyMember, DashboardWidget } from '../types';
+import { Ingredient, ShoppingItem, Recipe, Trip, FamilyMember, DashboardWidget, WishlistDestination, PriceAlert, TravelDocument } from '../types';
 import { WeeklyPlan, Chore, FamilyEvent } from '../types/life';
 import { syncService } from '../services/syncService';
 import { idbStorage } from '../utils/idbStorage';
@@ -12,6 +12,9 @@ interface LifeState {
     shoppingList: ShoppingItem[];
     recipes: Recipe[];
     trips: Trip[];
+    travelWishlist: WishlistDestination[];
+    priceAlerts: PriceAlert[];
+    travelDocuments: TravelDocument[];
     familyMembers: FamilyMember[];
     familyEvents: FamilyEvent[];
     widgets: DashboardWidget[];
@@ -27,6 +30,9 @@ interface LifeActions {
     setShoppingList: (updater: ShoppingItem[] | ((prev: ShoppingItem[]) => ShoppingItem[])) => void;
     setRecipes: (updater: Recipe[] | ((prev: Recipe[]) => Recipe[])) => void;
     setTrips: (updater: Trip[] | ((prev: Trip[]) => Trip[])) => void;
+    setTravelWishlist: (updater: WishlistDestination[] | ((prev: WishlistDestination[]) => WishlistDestination[])) => void;
+    setPriceAlerts: (updater: PriceAlert[] | ((prev: PriceAlert[]) => PriceAlert[])) => void;
+    setTravelDocuments: (updater: TravelDocument[] | ((prev: TravelDocument[]) => TravelDocument[])) => void;
     setFamilyMembers: (updater: FamilyMember[] | ((prev: FamilyMember[]) => FamilyMember[])) => void;
     setFamilyEvents: (updater: FamilyEvent[] | ((prev: FamilyEvent[]) => FamilyEvent[])) => void;
     setWidgets: (updater: DashboardWidget[] | ((prev: DashboardWidget[]) => DashboardWidget[])) => void;
@@ -51,6 +57,18 @@ interface LifeActions {
     addTrip: (trip: Trip) => void;
     updateTrip: (id: string, updates: Partial<Trip>) => void;
     deleteTrip: (id: string) => void;
+    
+    // travel extensions
+    addWishlistItem: (item: WishlistDestination) => void;
+    updateWishlistItem: (id: string, updates: Partial<WishlistDestination>) => void;
+    deleteWishlistItem: (id: string) => void;
+    addPriceAlert: (alert: PriceAlert) => void;
+    updatePriceAlert: (id: string, updates: Partial<PriceAlert>) => void;
+    deletePriceAlert: (id: string) => void;
+    addTravelDocument: (doc: TravelDocument) => void;
+    updateTravelDocument: (id: string, updates: Partial<TravelDocument>) => void;
+    deleteTravelDocument: (id: string) => void;
+
     addFamilyMember: (member: FamilyMember) => void;
     updateFamilyMember: (id: string, updates: Partial<FamilyMember>) => void;
     deleteFamilyMember: (id: string) => void;
@@ -80,6 +98,9 @@ export const useLifeStore = create<LifeState & LifeActions>()(
             shoppingList: [],
             recipes: [],
             trips: [],
+            travelWishlist: [],
+            priceAlerts: [],
+            travelDocuments: [],
             familyMembers: [],
             familyEvents: [],
             widgets: [],
@@ -103,6 +124,15 @@ export const useLifeStore = create<LifeState & LifeActions>()(
             })),
             setTrips: (updater) => set((state) => ({
                 trips: typeof updater === 'function' ? updater(state.trips) : updater
+            })),
+            setTravelWishlist: (updater) => set((state) => ({
+                travelWishlist: typeof updater === 'function' ? updater(state.travelWishlist) : updater
+            })),
+            setPriceAlerts: (updater) => set((state) => ({
+                priceAlerts: typeof updater === 'function' ? updater(state.priceAlerts) : updater
+            })),
+            setTravelDocuments: (updater) => set((state) => ({
+                travelDocuments: typeof updater === 'function' ? updater(state.travelDocuments) : updater
             })),
             setFamilyMembers: (updater) => set((state) => ({
                 familyMembers: typeof updater === 'function' ? updater(state.familyMembers) : updater
@@ -197,6 +227,40 @@ export const useLifeStore = create<LifeState & LifeActions>()(
                 sync(() => syncService.deleteTrip(id), 'deleteTrip', 'deleteTrip', id);
             },
 
+            // ── Travel Wishlist ──
+            addWishlistItem: (item) => {
+                set((state) => ({ travelWishlist: [...state.travelWishlist, item] }));
+                // sync implementation can be added to syncService later
+            },
+            updateWishlistItem: (id, updates) => {
+                set((state) => ({ travelWishlist: state.travelWishlist.map(i => i.id === id ? { ...i, ...updates } : i) }));
+            },
+            deleteWishlistItem: (id) => {
+                set((state) => ({ travelWishlist: state.travelWishlist.filter(i => i.id !== id) }));
+            },
+
+            // ── Price Alerts ──
+            addPriceAlert: (alert) => {
+                set((state) => ({ priceAlerts: [...state.priceAlerts, alert] }));
+            },
+            updatePriceAlert: (id, updates) => {
+                set((state) => ({ priceAlerts: state.priceAlerts.map(a => a.id === id ? { ...a, ...updates } : a) }));
+            },
+            deletePriceAlert: (id) => {
+                set((state) => ({ priceAlerts: state.priceAlerts.filter(a => a.id !== id) }));
+            },
+
+            // ── Travel Documents ──
+            addTravelDocument: (doc) => {
+                set((state) => ({ travelDocuments: [...state.travelDocuments, doc] }));
+            },
+            updateTravelDocument: (id, updates) => {
+                set((state) => ({ travelDocuments: state.travelDocuments.map(d => d.id === id ? { ...d, ...updates } : d) }));
+            },
+            deleteTravelDocument: (id) => {
+                set((state) => ({ travelDocuments: state.travelDocuments.filter(d => d.id !== id) }));
+            },
+
             // ── Family members ──
             addFamilyMember: (member) => {
                 set((state) => ({ familyMembers: [...state.familyMembers, member] }));
@@ -266,6 +330,9 @@ export const useLifeStore = create<LifeState & LifeActions>()(
                 shoppingList: state.shoppingList,
                 recipes: state.recipes,
                 trips: state.trips,
+                travelWishlist: state.travelWishlist,
+                priceAlerts: state.priceAlerts,
+                travelDocuments: state.travelDocuments,
                 familyMembers: state.familyMembers,
                 familyEvents: state.familyEvents,
                 widgets: state.widgets,

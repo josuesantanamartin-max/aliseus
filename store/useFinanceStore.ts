@@ -3,7 +3,7 @@ import { syncService } from '../services/syncService';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { idbStorage } from '../utils/idbStorage';
 import { offlineQueueService } from '../services/offlineQueueService';
-import { Transaction, Account, Budget, Goal, Debt, CategoryStructure, DashboardWidget, ProjectItem } from '../types';
+import { Transaction, Account, Budget, Goal, Debt, CategoryStructure, DashboardWidget, ProjectItem, ProjectBudget } from '../types';
 import { INITIAL_CATEGORIES } from '../constants';
 import { MOCK_ACCOUNTS, MOCK_TRANSACTIONS, MOCK_BUDGETS, MOCK_GOALS, MOCK_DEBTS, DEFAULT_FINANCE_WIDGETS } from '../data/seeds/financeSeed';
 import { useUserStore } from './useUserStore';
@@ -12,7 +12,7 @@ interface FinanceState {
     transactions: Transaction[];
     accounts: Account[];
     budgets: Budget[];
-    projectBudgets: import('../types').ProjectBudget[];
+    projectBudgets: ProjectBudget[];
     projectItems: ProjectItem[];
     goals: Goal[];
     debts: Debt[];
@@ -25,7 +25,7 @@ interface FinanceActions {
     setTransactions: (updater: Transaction[] | ((prev: Transaction[]) => Transaction[])) => void;
     setAccounts: (updater: Account[] | ((prev: Account[]) => Account[])) => void;
     setBudgets: (updater: Budget[] | ((prev: Budget[]) => Budget[])) => void;
-    setProjectBudgets: (updater: import('../types').ProjectBudget[] | ((prev: import('../types').ProjectBudget[]) => import('../types').ProjectBudget[])) => void;
+    setProjectBudgets: (updater: ProjectBudget[] | ((prev: ProjectBudget[]) => ProjectBudget[])) => void;
     setGoals: (updater: Goal[] | ((prev: Goal[]) => Goal[])) => void;
     setDebts: (updater: Debt[] | ((prev: Debt[]) => Debt[])) => void;
     setCategories: (updater: CategoryStructure[] | ((prev: CategoryStructure[]) => CategoryStructure[])) => void;
@@ -42,8 +42,8 @@ interface FinanceActions {
     addBudget: (budget: Budget) => void;
     updateBudget: (id: string, updates: Partial<Budget>) => void;
     deleteBudget: (id: string) => void;
-    addProjectBudget: (budget: import('../types').ProjectBudget) => void;
-    updateProjectBudget: (id: string, updates: Partial<import('../types').ProjectBudget>) => void;
+    addProjectBudget: (budget: ProjectBudget) => void;
+    updateProjectBudget: (id: string, updates: Partial<ProjectBudget>) => void;
     deleteProjectBudget: (id: string) => void;
     addProjectItem: (item: ProjectItem) => void;
     updateProjectItem: (id: string, updates: Partial<ProjectItem>) => void;

@@ -64,4 +64,15 @@ export type WeeklyPlanState = Record<string, {
 }>;
 
 // Kitchen Dashboard Widgets
-export type KitchenWidgetType = 'STATS_ROW' | 'TODAY_MENU_CARD' | 'SHOPPING_LIST_CARD' | 'FRESHNESS_ALERTS';
+export type KitchenWidgetType = 
+    | 'KITCHEN_EXPIRING' 
+    | 'KITCHEN_SUGGESTED' 
+    | 'KITCHEN_LOW_STOCK' 
+    | 'KITCHEN_VISUAL_MENU' 
+    | 'KITCHEN_MISSING_INGS' 
+    | 'KITCHEN_UNPLANNED' 
+    | 'KITCHEN_COST_MEAL' 
+    | 'KITCHEN_NUTRI_VARIETY' 
+    | 'KITCHEN_GROCERY_HISTORY' 
+    | 'KITCHEN_RECIPE_TIME' 
+    | 'KITCHEN_AVOIDED_WASTE';

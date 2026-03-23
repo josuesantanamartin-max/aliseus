@@ -74,12 +74,8 @@ const ProfileSelectionStep: React.FC = () => {
                 persona_type: selected
             });
 
-            // If 'FAMILY' or 'COUPLE' is selected, go to Family Setup (Step 2), otherwise skip to Currency (Step 3)
-            if (selected.includes('FAMILY') || selected.includes('COUPLE')) {
-                setOnboardingStep(3);
-            } else {
-                setOnboardingStep(4);
-            }
+            // Go to Focus Picker (Step 7) — it handles the Family/Currency branching
+            setOnboardingStep(7);
         }
     };
 

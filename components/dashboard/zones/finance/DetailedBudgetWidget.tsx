@@ -92,13 +92,14 @@ export const DetailedBudgetWidget: React.FC<DetailedBudgetWidgetProps> = ({ deta
             <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-6">
                 {activeBudgets.length > 0 ? activeBudgets.map((cat, idx) => {
                     const hasBudget = cat.limit > 0;
-                    const isOverLimit = cat.total > cat.limit; // This is true if limit is 0 and total > 0
+                    const isOverLimit = hasBudget && cat.total > cat.limit;
+                    const isNoBudgetDefined = !hasBudget && cat.total > 0;
                     const percent = hasBudget ? Math.min(100, (cat.total / cat.limit) * 100) : (cat.total > 0 ? 100 : 0);
 
-                    let colorClass = "bg-slate-400";
+                    let colorClass = "bg-slate-300 dark:bg-onyx-700"; // Default for no budget
                     if (isOverLimit) colorClass = "bg-red-500";
-                    else if (percent > 85) colorClass = "bg-amber-500";
-                    else colorClass = "bg-emerald-500";
+                    else if (hasBudget && percent > 85) colorClass = "bg-amber-500";
+                    else if (hasBudget) colorClass = "bg-emerald-500";
 
                     return (
                         <div key={idx} className="flex flex-col gap-3">
@@ -111,7 +112,7 @@ export const DetailedBudgetWidget: React.FC<DetailedBudgetWidgetProps> = ({ deta
                                     )}>
                                         {formatCurrency(cat.total)}
                                     </span>
-                                    <span className="text-[10px] font-bold text-slate-400">/ {formatCurrency(cat.limit)}</span>
+                                    <span className="text-[10px] font-bold text-slate-400">/ {hasBudget ? formatCurrency(cat.limit) : '∞'}</span>
                                 </div>
                             </div>
 
@@ -125,10 +126,12 @@ export const DetailedBudgetWidget: React.FC<DetailedBudgetWidgetProps> = ({ deta
                                 </div>
                                 <div className="flex justify-between items-center text-[10px] font-bold mt-0.5">
                                     <span className={cn(isOverLimit ? "text-red-500" : "text-slate-400")}>
-                                        {hasBudget ? Math.round(percent) + '% consumido' : 'Sin presupuesto'}
+                                        {hasBudget ? Math.round(percent) + '% consumido' : 'Sin presupuesto definido'}
                                     </span>
                                     {isOverLimit ? (
                                         <span className="text-red-500">+{formatCurrency(cat.total - cat.limit)} extra</span>
+                                    ) : isNoBudgetDefined ? (
+                                        <span className="text-slate-500 dark:text-slate-400">Sin límite</span>
                                     ) : (
                                         <span className="text-slate-500 dark:text-slate-400">{formatCurrency(cat.limit - cat.total)} margen</span>
                                     )}

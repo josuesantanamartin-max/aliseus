@@ -8,6 +8,7 @@ import FamilySetupStep from './steps/FamilySetupStep';
 import CurrencyStep from './steps/CurrencyStep';
 import AccountsStep from './steps/AccountsStep';
 import ImportDataStep from './steps/ImportDataStep';
+import FocusPickerStep from './steps/FocusPickerStep';
 
 const OnboardingWizard: React.FC = () => {
     const { onboardingStep, userProfile, subscription } = useUserStore();
@@ -17,8 +18,8 @@ const OnboardingWizard: React.FC = () => {
     const isFamily = isFamilyPlan || hasFamilyPersona;
 
     // Calculate active steps to ensure consecutive numbering (Paso 1, 2, 3...)
-    // Steps: 1: Demo, 2: Profile, 3: Family (Conditional), 4: Currency, 5: Accounts, 6: Import
-    const activeSteps = [1, 2, isFamily ? 3 : null, 4, 5, 6].filter(Boolean) as number[];
+    // Steps: 1: Demo, 2: Profile, 7: FocusPicker, 3: Family (Conditional), 4: Currency, 5: Accounts, 6: Import
+    const activeSteps = [1, 2, 7, isFamily ? 3 : null, 4, 5, 6].filter(Boolean) as number[];
     const displayStep = activeSteps.indexOf(onboardingStep) + 1;
     const totalStepsDisplay = activeSteps.length;
 
@@ -31,6 +32,7 @@ const OnboardingWizard: React.FC = () => {
             case 4: return <CurrencyStep />;
             case 5: return <AccountsStep />;
             case 6: return <ImportDataStep />;
+            case 7: return <FocusPickerStep />;
             default: return <WelcomeStep />;
         }
     };

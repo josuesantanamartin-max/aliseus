@@ -20,6 +20,7 @@ import {
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { DetailedBudgetWidget } from './finance/DetailedBudgetWidget';
+import { AiInsightsWidget } from '../widgets/AiInsightsWidget';
 
 export interface PendingFixedPayment {
     id: string;
@@ -343,6 +344,11 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
 
     return (
         <div className="flex flex-col gap-6 w-full max-w-7xl mx-auto px-4 lg:px-0">
+
+            {/* ========================================== */}
+            {/* AI INSIGHTS WIDGET                         */}
+            {/* ========================================== */}
+            <AiInsightsWidget />
 
             {/* ========================================== */}
             {/* ROW 1: THE 4 TOP WIDGETS */}

@@ -29,99 +29,119 @@ export const SecurityPanel = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="max-w-4xl space-y-8 pb-12 w-full"
+            className="max-w-4xl space-y-12 pb-12 w-full"
         >
-            <div className="mb-8">
-                <h3 className="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">
-                    {isSpanish ? 'Seguridad' : 'Security'}
-                </h3>
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mt-2">
-                    {isSpanish ? 'Gestión de autenticación, dispositivos y zona de peligro.' : 'Authentication, device management, and danger zone.'}
-                </p>
-            </div>
+            {/* Authentication Section */}
+            <section className="bg-white dark:bg-onyx-900/50 p-10 md:p-14 rounded-[50px] border border-slate-200 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-2xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 dark:bg-indigo-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+                
+                <div className="relative z-10 space-y-10">
+                    <div className="flex items-center gap-4">
+                        <div className="p-3.5 bg-blue-500/10 text-blue-600 dark:text-indigo-400 rounded-2xl border border-blue-500/20 shadow-inner">
+                            <Key className="w-7 h-7" />
+                        </div>
+                        <div>
+                            <h4 className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">
+                                {isSpanish ? 'Bóveda de Seguridad' : 'Security Vault'}
+                            </h4>
+                            <p className="text-[10px] font-black text-blue-600/40 dark:text-indigo-300/40 uppercase tracking-widest mt-1">Blindaje de Acceso Aliseus</p>
+                        </div>
+                    </div>
 
-            <div className="space-y-6">
-                <h4 className="text-base font-black text-gray-900 dark:text-white uppercase tracking-widest border-b border-gray-200 dark:border-onyx-800 pb-4 flex items-center gap-3">
-                    <Key className="w-6 h-6 text-indigo-500" /> {isSpanish ? 'Autenticación' : 'Authentication'}
-                </h4>
-                <div className="bg-white dark:bg-onyx-900 p-8 rounded-[2.5rem] border border-gray-100 dark:border-onyx-800 shadow-xl shadow-gray-200/40 dark:shadow-none space-y-8">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between pb-8 border-b border-gray-100 dark:border-onyx-800 gap-4 group">
-                        <div className="flex items-center gap-5">
-                            <div className="w-14 h-14 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-2xl flex items-center justify-center border border-purple-100 dark:border-purple-800/50 shadow-inner group-hover:border-purple-200 transition-colors">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between p-8 rounded-3xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 backdrop-blur-md group/factor shadow-sm">
+                        <div className="flex items-center gap-6">
+                            <div className="p-4 bg-purple-500/10 text-purple-600 dark:text-purple-400 rounded-2xl border border-purple-500/20 group-hover/factor:scale-110 transition-transform shadow-inner">
                                 <Smartphone className="w-6 h-6" />
                             </div>
                             <div>
-                                <h5 className="text-xl font-black text-gray-900 dark:text-white tracking-tight flex items-center gap-3">
-                                    {isSpanish ? 'Autenticación 2FA' : '2FA Authentication'}
-                                    <span className="px-3 py-1 bg-gray-100 dark:bg-onyx-800 text-gray-500 dark:text-gray-400 text-[9px] uppercase tracking-widest rounded-lg border border-gray-200 dark:border-onyx-700 shadow-sm">
-                                        {isSpanish ? 'Inactiva' : 'Inactive'}
+                                <h5 className="text-lg font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
+                                    {isSpanish ? 'Doble Factor (2FA)' : 'Two-Factor (2FA)'}
+                                    <span className="px-2 py-0.5 bg-slate-200/50 dark:bg-white/5 text-slate-400 dark:text-white/30 text-[8px] uppercase tracking-[0.2em] rounded-md border border-slate-200 dark:border-white/10">
+                                        {isSpanish ? 'Nivel 1' : 'Level 1'}
                                     </span>
                                 </h5>
-                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-2 max-w-sm leading-relaxed">
-                                    {isSpanish ? 'Protege tu cuenta con verificación móvil de dos pasos.' : 'Protect your account with two-step mobile verification.'}
-                                </p>
+                                <p className="text-[10px] font-black text-slate-400 dark:text-indigo-200/40 uppercase tracking-widest mt-1">Protección avanzada via App</p>
                             </div>
                         </div>
-                        <div className="w-14 h-8 bg-gray-200 dark:bg-onyx-800 rounded-full p-1 cursor-pointer hover:bg-gray-300 dark:hover:bg-onyx-700 transition-colors shadow-inner flex shrink-0">
-                            <div className="w-6 h-6 bg-white rounded-full shadow-md"></div>
+                        <button className="relative w-14 h-7 bg-slate-200 dark:bg-white/10 rounded-full transition-all group-hover/factor:bg-slate-300 dark:group-hover/factor:bg-white/15">
+                            <div className="absolute top-1 left-1 w-5 h-5 bg-white dark:bg-white/20 rounded-full transition-transform shadow-sm" />
+                        </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <button className="group/btn px-8 py-6 bg-slate-50 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 rounded-3xl text-[10px] font-black uppercase tracking-[0.2em] text-slate-600 dark:text-indigo-200 flex items-center justify-between transition-all shadow-sm hover:shadow-md">
+                            <span className="flex items-center gap-3">
+                                <Shield className="w-4 h-4 text-blue-500 opacity-50 dark:text-indigo-400 dark:opacity-50 group-hover/btn:opacity-100" />
+                                {isSpanish ? 'Cambiar Contraseña' : 'Rotate Password'}
+                            </span>
+                            <ExternalLink className="w-3.5 h-3.5 opacity-30 group-hover/btn:opacity-100 group-hover/btn:translate-x-1 transition-all" />
+                        </button>
+                        <button className="group/btn px-8 py-6 bg-rose-50 dark:bg-rose-500/5 hover:bg-white dark:hover:bg-rose-500/10 border border-rose-100 dark:border-rose-500/20 rounded-3xl text-[10px] font-black uppercase tracking-[0.2em] text-rose-600 dark:text-rose-300 flex items-center justify-between transition-all shadow-sm hover:shadow-md">
+                            <span className="flex items-center gap-3">
+                                <LogOut className="w-4 h-4 text-rose-500 opacity-50 dark:text-rose-400 dark:opacity-50 group-hover/btn:opacity-100" />
+                                {isSpanish ? 'Forzar Cierre Global' : 'Global Sign Out'}
+                            </span>
+                            <LogOut className="w-3.5 h-3.5 opacity-30 group-hover/btn:opacity-100 group-hover/btn:translate-x-1 transition-all" />
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            {/* Legal Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {[
+                    { id: 'PRIVACY' as const, icon: Globe, label: isSpanish ? 'Privacidad' : 'Privacy', desc: 'Data control' },
+                    { id: 'TERMS' as const, icon: FileText, label: isSpanish ? 'Condiciones' : 'Terms', desc: 'Legals' }
+                ].map((item) => (
+                    <button 
+                        key={item.id}
+                        onClick={() => setActiveLegalPage(item.id)}
+                        className="p-10 bg-white dark:bg-onyx-900/50 rounded-[40px] border border-slate-200 dark:border-white/5 flex items-center gap-6 hover:bg-slate-50 dark:hover:bg-white/5 hover:border-blue-200 dark:hover:border-white/10 transition-all text-left group shadow-xl shadow-slate-200/40 dark:shadow-none"
+                    >
+                        <div className="p-4 bg-blue-500/10 dark:bg-indigo-500/10 text-blue-600 dark:text-indigo-400 rounded-2xl group-hover:scale-110 transition-transform border border-blue-500/20 shadow-inner">
+                            <item.icon className="w-7 h-7" />
                         </div>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 pt-2">
-                        <button className="flex-1 px-6 py-4 bg-gray-50 dark:bg-onyx-950 text-indigo-600 dark:text-indigo-400 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-50 dark:hover:bg-indigo-900/40 transition-colors border border-gray-200 dark:border-onyx-800 hover:border-indigo-200 dark:hover:border-indigo-800 shadow-inner hover:shadow-md text-left flex justify-between items-center group">
-                            {isSpanish ? 'Actualizar Contraseña' : 'Update Password'}
-                            <ExternalLink className="w-4 h-4 opacity-50 group-hover:opacity-100" />
-                        </button>
-                        <button className="flex-1 px-6 py-4 bg-gray-50 dark:bg-onyx-950 text-rose-600 dark:text-rose-400 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-rose-50 dark:hover:bg-rose-900/40 transition-colors border border-gray-200 dark:border-onyx-800 hover:border-rose-200 dark:hover:border-rose-800 shadow-inner hover:shadow-md text-left flex justify-between items-center group">
-                            {isSpanish ? 'Cerrar todas las sesiones' : 'Sign out of all sessions'}
-                            <LogOut className="w-4 h-4 opacity-50 group-hover:opacity-100" />
-                        </button>
-                    </div>
-                </div>
+                        <div>
+                            <span className="text-xl font-black text-slate-900 dark:text-white tracking-tight block">{item.label}</span>
+                            <span className="text-[9px] font-black text-blue-600/30 dark:text-indigo-300/30 uppercase tracking-[0.2em]">{item.desc}</span>
+                        </div>
+                    </button>
+                ))}
             </div>
 
-            <div className="space-y-6 pt-4">
-                <h4 className="text-base font-black text-gray-900 dark:text-white uppercase tracking-widest border-b border-gray-200 dark:border-onyx-800 pb-4 flex items-center gap-3">
-                    <Shield className="w-6 h-6 text-indigo-500" /> {isSpanish ? 'Legal y Cumplimiento' : 'Legal & Compliance'}
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <button onClick={() => setActiveLegalPage('PRIVACY')} className="p-8 bg-white dark:bg-onyx-900 rounded-[2rem] border border-gray-100 dark:border-onyx-800 text-left hover:border-indigo-200 dark:hover:border-indigo-800 transition-all shadow-xl shadow-gray-200/40 dark:shadow-none hover:-translate-y-1 group relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-[40px] -translate-y-1/2 translate-x-1/2 group-hover:bg-indigo-500/10 transition-colors"></div>
-                        <Globe className="w-8 h-8 text-indigo-500 mb-4" />
-                        <span className="text-xl font-black text-gray-900 dark:text-white tracking-tight block mb-2">{isSpanish ? 'Política de Privacidad' : 'Privacy Policy'}</span>
-                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Data usage & rights</span>
-                    </button>
-                    <button onClick={() => setActiveLegalPage('TERMS')} className="p-8 bg-white dark:bg-onyx-900 rounded-[2rem] border border-gray-100 dark:border-onyx-800 text-left hover:border-indigo-200 dark:hover:border-indigo-800 transition-all shadow-xl shadow-gray-200/40 dark:shadow-none hover:-translate-y-1 group relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-[40px] -translate-y-1/2 translate-x-1/2 group-hover:bg-indigo-500/10 transition-colors"></div>
-                        <FileText className="w-8 h-8 text-indigo-500 mb-4" />
-                        <span className="text-xl font-black text-gray-900 dark:text-white tracking-tight block mb-2">{isSpanish ? 'Términos de Servicio' : 'Terms of Service'}</span>
-                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Licensing & agreement</span>
-                    </button>
-                </div>
-            </div>
+            {/* Danger Zone */}
+            <section className="relative overflow-hidden p-1 bg-gradient-to-br from-rose-500/20 to-transparent rounded-[50px]">
+                <div className="bg-white dark:bg-onyx-950 p-10 md:p-14 rounded-[48px] space-y-8 relative overflow-hidden border border-rose-100 dark:border-white/5 shadow-2xl shadow-rose-500/5">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-rose-500/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
+                    
+                    <div className="relative z-10">
+                        <h4 className="text-2xl font-black text-rose-600 dark:text-rose-500 tracking-tighter mb-4">
+                            {isSpanish ? 'Zona Crítica' : 'Critical Zone'}
+                        </h4>
+                        <p className="text-sm font-black text-slate-400 dark:text-rose-200/40 leading-relaxed max-w-2xl">
+                            {isSpanish
+                                ? 'Las acciones aquí son irreversibles. Restablecer el sistema borrará cada transacción, miembro y dato almacenado. Procede con extrema cautela.'
+                                : 'Actions here are irreversible. Resetting the system will wipe every transaction, member, and data point. Proceed with extreme caution.'}
+                        </p>
+                    </div>
 
-            <div className="mt-12 pt-8 border-t border-rose-100 dark:border-rose-900/30">
-                <div className="bg-rose-50 dark:bg-rose-900/10 p-8 md:p-10 rounded-[2.5rem] border border-rose-200 dark:border-rose-900/30 relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-rose-500/10 rounded-full blur-[60px] -translate-y-1/2 translate-x-1/2 transition-colors"></div>
-                    <h4 className="text-2xl font-black text-rose-950 dark:text-rose-400 tracking-tighter mb-3 relative z-10">
-                        {isSpanish ? 'Zona de Peligro' : 'Danger Zone'}
-                    </h4>
-                    <p className="text-sm font-medium text-rose-800 dark:text-rose-300 mb-8 max-w-2xl leading-relaxed relative z-10">
-                        {isSpanish
-                            ? 'Eliminar tu cuenta borrará permanentemente todos tus datos de nuestros servidores y de este dispositivo. No podrás recuperar esta información, ten cuidado.'
-                            : 'Deleting your account will permanently wipe all your data from our servers and this device. You will not be able to recover this information.'}
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 relative z-10">
-                        <button onClick={handleResetSystem} className="px-8 py-4 bg-white dark:bg-onyx-950 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-rose-100 dark:hover:bg-rose-900/30 transition-colors shadow-sm text-center">
-                            {isSpanish ? 'Restablecer Sistema' : 'Reset System'}
+                    <div className="relative z-10 flex flex-col sm:flex-row gap-4">
+                        <button 
+                            onClick={handleResetSystem}
+                            className="px-10 py-5 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all shadow-sm"
+                        >
+                            {isSpanish ? 'Reiniciar Aliseus' : 'Reset Aliseus'}
                         </button>
-                        <button onClick={handleDeleteAccount} className="px-8 py-4 bg-rose-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-rose-700 shadow-xl shadow-rose-200 dark:shadow-none transition-all active:scale-95 text-center flex items-center justify-center gap-2">
+                        <button 
+                            onClick={handleDeleteAccount}
+                            className="px-10 py-5 bg-rose-600 hover:bg-rose-500 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-rose-600/20 transition-all active:scale-95 flex items-center justify-center gap-3"
+                        >
                             <Trash2 className="w-4 h-4" />
-                            {isSpanish ? 'ELIMINAR CUENTA' : 'DELETE ACCOUNT'}
+                            {isSpanish ? 'Eliminar cuenta permanentemente' : 'Permanent Deletion'}
                         </button>
                     </div>
                 </div>
-            </div>
+            </section>
         </motion.div>
     );
 };

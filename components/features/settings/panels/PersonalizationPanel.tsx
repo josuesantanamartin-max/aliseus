@@ -21,85 +21,115 @@ export const PersonalizationPanel = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="max-w-4xl space-y-8 pb-12"
+            className="max-w-4xl space-y-12 pb-12"
         >
-            <div className="mb-8">
-                <h3 className="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">
-                    {isSpanish ? 'Personalización' : 'Personalization'}
-                </h3>
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mt-2">
-                    {isSpanish ? 'Temas, apariencia y organización del dashboard.' : 'Themes, appearance, and dashboard layout.'}
-                </p>
-            </div>
-
             {/* Theme Section */}
-            <div className="bg-white dark:bg-onyx-900 p-8 rounded-[2.5rem] shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-onyx-800 transition-all hover:shadow-2xl group">
-                <div className="flex items-center gap-4 mb-6">
-                    <div className="p-3 bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 rounded-2xl group-hover:scale-110 transition-transform duration-300">
-                        <Palette className="w-6 h-6" />
-                    </div>
-                    <div>
-                        <h4 className="text-xl font-black text-gray-900 dark:text-white tracking-tight">
-                            {isSpanish ? 'Tema de la Interfaz' : 'App Theme'}
-                        </h4>
-                        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">
-                            {isSpanish ? 'Elige cómo se ve Aliseus' : 'Choose how Aliseus looks'}
-                        </p>
-                    </div>
+            <section className="space-y-6">
+                <div className="flex items-center gap-4 mb-2">
+                    <div className="w-1.5 h-8 bg-amber-500 rounded-full" />
+                    <h3 className="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">
+                        {isSpanish ? 'Tema de la Interfaz' : 'App Theme'}
+                    </h3>
                 </div>
-
+                
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     {[
-                        { id: 'light', label: 'Light Mode', icon: '☀️', color: 'from-amber-100 to-orange-50 text-amber-600 border-amber-200', bg: 'bg-gray-50' },
-                        { id: 'dark', label: 'Dark Mode', icon: '🌙', color: 'from-indigo-950 to-gray-900 text-indigo-300 border-indigo-900', bg: 'bg-onyx-950' },
-                        { id: 'system', label: 'System', icon: '💻', color: 'from-gray-100 to-gray-50 dark:from-onyx-800 dark:to-onyx-900 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-onyx-700', bg: 'bg-white dark:bg-onyx-900' }
+                        { 
+                            id: 'light', 
+                            label: isSpanish ? 'Modo Claro' : 'Light Mode', 
+                            icon: '☀️', 
+                            preview: 'from-amber-100 via-orange-50 to-white',
+                            accent: 'text-amber-600',
+                            border: 'border-amber-200/50'
+                        },
+                        { 
+                            id: 'dark', 
+                            label: isSpanish ? 'Modo Oscuro' : 'Dark Mode', 
+                            icon: '🌙', 
+                            preview: 'from-[#0c0c1e] via-indigo-950 to-onyx-950',
+                            accent: 'text-indigo-400',
+                            border: 'border-indigo-500/30'
+                        },
+                        { 
+                            id: 'system', 
+                            label: isSpanish ? 'Sistema' : 'System', 
+                            icon: '💻', 
+                            preview: 'from-gray-100 via-white to-gray-200 dark:from-[#0c0c1e] dark:via-onyx-900 dark:to-onyx-950',
+                            accent: 'text-emerald-500',
+                            border: 'border-gray-200 dark:border-onyx-700'
+                        }
                     ].map((mode) => (
-                        <button
+                        <motion.button
                             key={mode.id}
+                            whileHover={{ y: -5 }}
+                            whileTap={{ scale: 0.98 }}
                             onClick={() => setTheme(mode.id as any)}
-                            className={`p-6 rounded-3xl border flex flex-col items-center justify-center gap-4 transition-all duration-300 active:scale-95 overflow-hidden relative ${theme === mode.id || (theme === 'system' && mode.id === 'system')
-                                    ? 'border-indigo-500 ring-4 ring-indigo-500/20 shadow-lg shadow-indigo-200/50 dark:shadow-none'
-                                    : `${mode.bg} border-transparent hover:shadow-xl hover:border-gray-200 dark:hover:border-onyx-700`
-                                }`}
+                            className={`group relative h-64 rounded-[40px] overflow-hidden border-2 transition-all duration-500 ${
+                                theme === mode.id || (theme === 'system' && mode.id === 'system')
+                                    ? 'border-indigo-500 ring-4 ring-indigo-500/10 shadow-2xl'
+                                    : 'border-transparent hover:border-gray-200 dark:hover:border-white/10 bg-white dark:bg-onyx-900'
+                            }`}
                         >
-                            <div className={`absolute inset-0 bg-gradient-to-br opacity-40 ${mode.color}`}></div>
-                            <div className={`relative z-10 w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-inner bg-white/50 dark:bg-black/20 backdrop-blur-sm group-hover:scale-110 transition-transform duration-500`}>
-                                {mode.icon}
-                            </div>
-                            <span className={`relative z-10 text-[10px] font-black uppercase tracking-widest ${theme === mode.id ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400'
+                            {/* Visual Preview */}
+                            <div className={`absolute inset-0 bg-gradient-to-br transition-transform duration-700 group-hover:scale-110 ${mode.preview}`} />
+                            
+                            {/* Glass Overlay for content */}
+                            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/20 to-transparent backdrop-blur-[2px]" />
+                            
+                            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-10">
+                                <span className="text-5xl mb-4 drop-shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                                    {mode.icon}
+                                </span>
+                                <span className={`text-xs font-black uppercase tracking-[0.2em] ${
+                                    theme === mode.id ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-600 dark:text-gray-400'
                                 }`}>
-                                {mode.label}
-                            </span>
-                        </button>
+                                    {mode.label}
+                                </span>
+                                
+                                {theme === mode.id && (
+                                    <motion.div 
+                                        layoutId="active-theme-indicator"
+                                        className="mt-4 px-3 py-1 bg-indigo-500 text-white rounded-full text-[8px] font-black uppercase tracking-widest shadow-lg"
+                                    >
+                                        Active
+                                    </motion.div>
+                                )}
+                            </div>
+                        </motion.button>
                     ))}
                 </div>
-            </div>
+            </section>
 
             {/* Dashboard Layout Section */}
-            <div className="bg-white dark:bg-onyx-900 p-8 rounded-[2.5rem] shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-onyx-800 transition-all hover:shadow-2xl">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-                    <div className="flex items-center gap-4">
-                        <div className="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-2xl">
-                            <Layout className="w-6 h-6" />
-                        </div>
-                        <div>
-                            <h4 className="text-xl font-black text-gray-900 dark:text-white tracking-tight">
-                                {isSpanish ? 'Diseño del Dashboard' : 'Dashboard Layout'}
+            <section className="bg-white/40 dark:bg-onyx-900/50 p-10 md:p-14 rounded-[50px] border border-slate-200/50 dark:border-onyx-800 shadow-xl shadow-slate-200/40 dark:shadow-none relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+                
+                <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
+                    <div className="flex-1 text-center lg:text-left">
+                        <div className="flex items-center justify-center lg:justify-start gap-4 mb-6">
+                            <div className="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-2xl border border-blue-100 dark:border-blue-800/50 shadow-inner">
+                                <Layout className="w-6 h-6" />
+                            </div>
+                            <h4 className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">
+                                {isSpanish ? 'Arquitectura del Dashboard' : 'Dashboard Architecture'}
                             </h4>
-                            <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mt-2">
-                                {isSpanish ? 'Gestiona los widgets de tu pantalla principal.' : 'Manage the widgets on your home screen.'}
-                            </p>
                         </div>
+                        <p className="text-lg text-slate-500 dark:text-gray-400 font-medium max-w-xl leading-relaxed">
+                            {isSpanish 
+                                ? 'Restablece la configuración original de tus widgets si deseas volver a empezar con el diseño maestro de Aura.' 
+                                : 'Reset your widget configuration to start fresh with the Aura master design.'}
+                        </p>
                     </div>
+                    
                     <button
                         onClick={handleResetLayout}
-                        className="shrink-0 px-6 py-4 bg-gray-100 dark:bg-onyx-800 hover:bg-gray-200 dark:hover:bg-onyx-700 text-gray-900 dark:text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all active:scale-95 shadow-sm flex items-center gap-2"
+                        className="shrink-0 px-10 py-6 bg-white dark:bg-onyx-800 hover:bg-slate-50 dark:hover:bg-onyx-700 text-slate-900 dark:text-white rounded-[24px] font-black text-xs uppercase tracking-[0.2em] transition-all active:scale-95 shadow-lg border border-slate-200 dark:border-onyx-600 flex items-center gap-4"
                     >
-                        <Zap className="w-4 h-4 text-amber-500" />
-                        {isSpanish ? 'Restaurar por Defecto' : 'Reset to Default'}
+                        <Zap className="w-5 h-5 text-amber-500" />
+                        {isSpanish ? 'Restaurar Diseño' : 'Reset Architecture'}
                     </button>
                 </div>
-            </div>
+            </section>
         </motion.div>
     );
 };

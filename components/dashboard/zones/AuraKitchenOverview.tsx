@@ -21,8 +21,10 @@ import {
     Coffee,
     Sunset,
     Moon,
-    ArrowRight
+    ArrowRight,
+    HelpCircle
 } from 'lucide-react';
+import Tooltip from '../../ui/Tooltip';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -129,7 +131,7 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
     // ==========================================
     // TOP WIDGET 3: GASTO EN ALIMENTACIÓN
     // ==========================================
-    const { foodSpendingThisMonth, avgFoodSpending } = useMemo(() => {
+    const { foodSpendingThisMonth, avgFoodSpending, diffPercent } = useMemo(() => {
         const startOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1).toISOString();
         const endOfMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0, 23, 59, 59).toISOString();
         
@@ -141,13 +143,24 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
         // Mock average for UI display
         const avg = spent > 0 ? spent * 0.9 : 350;
 
-        return { foodSpendingThisMonth: spent, avgFoodSpending: avg };
+        // Calculate actual last 3 months average for comparison
+        const last3Months = [];
+        for (let i = 1; i <= 3; i++) {
+            const d = new Date(selectedDate.getFullYear(), selectedDate.getMonth() - i, 1);
+            const monthStr = d.toISOString().slice(0, 7);
+            const monthTxs = foodTxs.filter(t => t.date.startsWith(monthStr));
+            last3Months.push(monthTxs.reduce((acc, curr) => acc + curr.amount, 0) || (300 + Math.random() * 100)); // Fallback to mock if no data
+        }
+        const last3MonthsAvg = last3Months.reduce((a, b) => a + b, 0) / 3;
+        const diffPercent = last3MonthsAvg > 0 ? Math.round(((spent - last3MonthsAvg) / last3MonthsAvg) * 100) : 0;
+
+        return { foodSpendingThisMonth: spent, avgFoodSpending: avg, last3MonthsAvg, diffPercent };
     }, [transactions, selectedDate]);
 
     // ==========================================
     // TOP WIDGET 4: COMIDAS DE HOY
     // ==========================================
-    const { todayMeals, plannedMealsCount, totalMealsCount } = useMemo(() => {
+    const { todayMeals, plannedMealsCount, totalMealsCount, missing } = useMemo(() => {
         const str = selectedDate.toISOString().split('T')[0];
         const mealsObj = weeklyPlans
             .flatMap(p => p.meals)
@@ -169,7 +182,12 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
         if (meals.lunch.length > 0) plannedCount++;
         if (meals.dinner.length > 0) plannedCount++;
         
-        return { todayMeals: meals, plannedMealsCount: plannedCount, totalMealsCount: 3 };
+        const missing = [];
+        if (meals.breakfast.length === 0) missing.push('Desayuno');
+        if (meals.lunch.length === 0) missing.push('Comida');
+        if (meals.dinner.length === 0) missing.push('Cena');
+
+        return { todayMeals: meals, plannedMealsCount: plannedCount, totalMealsCount: 3, missing };
     }, [weeklyPlans, selectedDate]);
 
     // ==========================================
@@ -278,6 +296,9 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
                         <div className="flex items-center gap-2 mb-2">
                             <Activity className="w-4 h-4 text-slate-400" />
                             <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Salud de Stock</h3>
+                            <Tooltip content="Muestra el porcentaje de productos que están por encima de su stock mínimo de seguridad.">
+                                <HelpCircle className="w-3.5 h-3.5 text-slate-300 hover:text-slate-400 cursor-help" />
+                            </Tooltip>
                         </div>
                         <div className="text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
                             {stockHealth}%
@@ -302,6 +323,9 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
                         <div className="flex items-center gap-2 mb-2">
                             <Leaf className="w-4 h-4 text-emerald-500" />
                             <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Frescura</h3>
+                            <Tooltip content="Puntuación basada en la fecha de caducidad. Penaliza productos caducados o próximos a vencer.">
+                                <HelpCircle className="w-3.5 h-3.5 text-slate-300 hover:text-slate-400 cursor-help" />
+                            </Tooltip>
                         </div>
                         <div className="text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
                             {freshnessScore} <span className="text-xl text-slate-400">/ 100</span>
@@ -358,9 +382,16 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
                         <div className="text-xs font-bold text-slate-500 dark:text-slate-400 flex justify-between">
                             <span>Planificadas</span>
                             <span className={cn(plannedMealsCount === totalMealsCount ? "text-emerald-500" : "text-blue-600 dark:text-blue-400")}>
-                                {plannedMealsCount === totalMealsCount ? "¡Día cubierto!" : "Faltan comidas"}
+                                {plannedMealsCount === totalMealsCount ? "¡Día cubierto!" : `Falta: ${missing.join(', ')}`}
                             </span>
                         </div>
+
+                        {plannedMealsCount < totalMealsCount && (
+                            <button className="mt-4 w-full py-2 px-4 rounded-xl bg-blue-50 hover:bg-blue-100 dark:bg-blue-500/10 dark:hover:bg-blue-500/20 text-blue-600 dark:text-blue-400 text-xs font-bold flex items-center justify-center gap-2 transition-colors border border-blue-100/50 dark:border-blue-500/20">
+                                Planificar comidas de hoy
+                                <ChevronDown className="w-3.5 h-3.5 rotate-[-90deg]" />
+                            </button>
+                        )}
                     </div>
                 </div>
 
@@ -377,10 +408,18 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
                     {/* Evolución Chart */}
                     <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                            <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                <Activity className="w-4 h-4 text-slate-400" />
-                                Histórico de Compra
-                            </h3>
+                            <div>
+                                <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                    <Activity className="w-4 h-4 text-slate-400" />
+                                    Histórico de Compra
+                                </h3>
+                                <p className="text-[10px] font-medium text-emerald-600 dark:text-emerald-400 mt-1">
+                                    {diffPercent <= 0 
+                                        ? `Has gastado un ${Math.abs(diffPercent)}% menos que el promedio de los últimos 3 meses.`
+                                        : `Has gastado un ${diffPercent}% más que el promedio de los últimos 3 meses.`
+                                    }
+                                </p>
+                            </div>
 
                             {/* Filters */}
                             <div className="flex flex-wrap items-center gap-2">
@@ -426,7 +465,7 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
                                         axisLine={false}
                                         tickLine={false}
                                         tick={{ fontSize: 11, fill: '#94a3b8' }}
-                                        tickFormatter={(value) => value.toLocaleString('es-ES')}
+                                        tickFormatter={(value) => `${value.toLocaleString('es-ES')} €`}
                                         width={80}
                                         dx={-10}
                                     />

@@ -16,6 +16,7 @@ import { validateTransaction } from '@/schemas/transaction.schema';
 import { formatZodErrors } from '@/utils/validation';
 import { useErrorHandler } from '@/hooks/useErrorHandler';
 import { Button } from '@/components/ui/Button';
+import { ProgressiveTooltip } from '@/components/common/ProgressiveTooltip';
 
 
 interface TransactionsProps {
@@ -155,50 +156,54 @@ const Transactions: React.FC<TransactionsProps> = ({
     if (onClearFilters) onClearFilters();
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Clear previous errors
     setValidationErrors({});
 
-    if (mode === 'TRANSFER') {
-      if (!accountId || !toAccountId || !amount) {
-        showError(new Error('Por favor completa todos los campos requeridos'));
-        return;
+    try {
+      if (mode === 'TRANSFER') {
+        if (!accountId || !toAccountId || !amount) {
+          showError(new Error('Por favor completa todos los campos requeridos'));
+          return;
+        }
+        await transfer(accountId, toAccountId, parseFloat(amount), date, linkedGoalId || undefined, description);
+        showSuccess('Transferencia realizada exitosamente');
+      } else {
+        // Validate transaction data
+        const transactionData = {
+          type: mode as 'INCOME' | 'EXPENSE',
+          amount: parseFloat(amount),
+          date,
+          category,
+          subCategory,
+          accountId,
+          description,
+          notes,
+          isRecurring,
+          frequency: isRecurring ? recurrenceFrequency : undefined,
+          projectId: projectId || undefined
+        };
+
+        const result = validateTransaction(transactionData);
+
+        if (!result.success) {
+          const errors = formatZodErrors(result.error);
+          setValidationErrors(errors);
+          showError(new Error('Por favor corrige los errores de validación'));
+          return;
+        }
+
+        await addTransaction(result.data as Omit<Transaction, 'id'>);
+        showSuccess(`${mode === 'INCOME' ? 'Ingreso' : 'Gasto'} registrado exitosamente`);
       }
-      transfer(accountId, toAccountId, parseFloat(amount), date, linkedGoalId || undefined, description);
-      showSuccess('Transferencia realizada exitosamente');
-    } else {
-      // Validate transaction data
-      const transactionData = {
-        type: mode as 'INCOME' | 'EXPENSE',
-        amount: parseFloat(amount),
-        date,
-        category,
-        subCategory,
-        accountId,
-        description,
-        notes,
-        isRecurring,
-        frequency: isRecurring ? recurrenceFrequency : undefined,
-        projectId: projectId || undefined
-      };
 
-      const result = validateTransaction(transactionData);
-
-      if (!result.success) {
-        const errors = formatZodErrors(result.error);
-        setValidationErrors(errors);
-        showError(new Error('Por favor corrige los errores de validación'));
-        return;
-      }
-
-      addTransaction(result.data as Omit<Transaction, 'id'>);
-      showSuccess(`${mode === 'INCOME' ? 'Ingreso' : 'Gasto'} registrado exitosamente`);
+      setIsFormOpen(false);
+      resetAddForm();
+    } catch (error) {
+      showError(error);
     }
-
-    setIsFormOpen(false);
-    resetAddForm();
   };
 
   const resetAddForm = () => {
@@ -214,41 +219,45 @@ const Transactions: React.FC<TransactionsProps> = ({
     setValidationErrors({});
   };
 
-  const handleUpdateTransaction = (e: React.FormEvent) => {
+  const handleUpdateTransaction = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingTransaction) return;
 
     // Clear previous errors
     setValidationErrors({});
 
-    const updatedTransaction = {
-      ...editingTransaction,
-      amount: parseFloat(editAmount),
-      date: editDate,
-      category: editCategory,
-      subCategory: editSubCategory,
-      accountId: editAccountId,
-      description: editDescription,
-      notes: editNotes,
-      isRecurring: editRecurring,
-      frequency: editRecurring ? editFrequency : undefined,
-      projectId: editProjectId || undefined
-    };
+    try {
+      const updatedTransaction = {
+        ...editingTransaction,
+        amount: parseFloat(editAmount),
+        date: editDate,
+        category: editCategory,
+        subCategory: editSubCategory,
+        accountId: editAccountId,
+        description: editDescription,
+        notes: editNotes,
+        isRecurring: editRecurring,
+        frequency: editRecurring ? editFrequency : undefined,
+        projectId: editProjectId || undefined
+      };
 
-    // Validate updated transaction
-    const result = validateTransaction(updatedTransaction);
+      // Validate updated transaction
+      const result = validateTransaction(updatedTransaction);
 
-    if (!result.success) {
-      const errors = formatZodErrors(result.error);
-      setValidationErrors(errors);
-      showError(new Error('Por favor corrige los errores de validación'));
-      return;
+      if (!result.success) {
+        const errors = formatZodErrors(result.error);
+        setValidationErrors(errors);
+        showError(new Error('Por favor corrige los errores de validación'));
+        return;
+      }
+
+      await editTransaction(result.data as Transaction);
+      showSuccess('Transacción actualizada exitosamente');
+      setIsEditModalOpen(false);
+      setEditingTransaction(null);
+    } catch (error) {
+      showError(error);
     }
-
-    editTransaction(result.data as Transaction);
-    showSuccess('Transacción actualizada exitosamente');
-    setIsEditModalOpen(false);
-    setEditingTransaction(null);
   };
 
   const openEditModal = (t: Transaction) => {
@@ -352,14 +361,22 @@ const Transactions: React.FC<TransactionsProps> = ({
             <Upload className="w-6 h-6" />
             <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-cyan-900 text-white text-[10px] uppercase font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all translate-x-3 group-hover:translate-x-0 whitespace-nowrap pointer-events-none shadow-2xl border border-onyx-800">Importar CSV</span>
           </Button>
-          <Button
-            variant="primary"
-            onClick={() => setIsFormOpen(true)}
-            className="px-10 py-5 rounded-2xl group font-bold text-[11px] uppercase tracking-[0.2em] flex items-center gap-4"
+          <ProgressiveTooltip
+              id="tooltip-new-transaction"
+              title="Añade tu primer movimiento"
+              description="Registra ingresos, gastos o traspasos. Selecciona una categoría y te ayudaremos con el resto."
+              position="left"
+              delay={1500}
           >
-            <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" />
-            Nueva Transacción
-          </Button>
+              <Button
+                variant="primary"
+                onClick={() => setIsFormOpen(true)}
+                className="px-10 py-5 rounded-2xl group font-bold text-[11px] uppercase tracking-[0.2em] flex items-center gap-4"
+              >
+                <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" />
+                Nueva Transacción
+              </Button>
+          </ProgressiveTooltip>
         </div>
       </header>
 
@@ -440,10 +457,11 @@ const Transactions: React.FC<TransactionsProps> = ({
                       step="0.01"
                       value={isEditModalOpen ? editAmount : amount}
                       onChange={e => isEditModalOpen ? setEditAmount(e.target.value) : setAmount(e.target.value)}
-                      className="w-full p-6 pl-14 bg-onyx-50 border border-onyx-100 rounded-3xl font-bold text-4xl text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 focus:border-cyan-500/20 transition-all outline-none text-center shadow-inner"
+                      className={`w-full p-6 pl-14 bg-onyx-50 border ${validationErrors.amount ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-3xl font-bold text-4xl text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 focus:border-cyan-500/20 transition-all outline-none text-center shadow-inner`}
                       placeholder="0.00"
                     />
                   </div>
+                  {validationErrors.amount && <p className="text-red-500 text-[10px] mt-2 font-bold px-4">{validationErrors.amount}</p>}
                 </div>
 
                 <div className="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -454,8 +472,9 @@ const Transactions: React.FC<TransactionsProps> = ({
                       type="date"
                       value={isEditModalOpen ? editDate : date}
                       onChange={e => isEditModalOpen ? setEditDate(e.target.value) : setDate(e.target.value)}
-                      className="w-full p-5 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner uppercase tracking-widest text-[11px]"
+                      className={`w-full p-5 bg-onyx-50 border ${validationErrors.date ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner uppercase tracking-widest text-[11px]`}
                     />
+                    {validationErrors.date && <p className="text-red-500 text-[10px] mt-2 font-bold px-2">{validationErrors.date}</p>}
                   </div>
                   <div>
                     <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3">{mode === 'TRANSFER' ? 'Cuenta de Origen' : 'Cuenta'}</label>
@@ -463,13 +482,14 @@ const Transactions: React.FC<TransactionsProps> = ({
                       required
                       value={isEditModalOpen ? editAccountId : accountId}
                       onChange={e => isEditModalOpen ? setEditAccountId(e.target.value) : setAccountId(e.target.value)}
-                      className="w-full p-5 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner cursor-pointer"
+                      className={`w-full p-5 bg-onyx-50 border ${validationErrors.accountId ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner cursor-pointer`}
                     >
                       <option value="">Seleccionar cuenta...</option>
                       {accounts.map(acc => (
                         <option key={acc.id} value={acc.id}>{acc.name} ({formatEUR(acc.balance)})</option>
                       ))}
                     </select>
+                    {validationErrors.accountId && <p className="text-red-500 text-[10px] mt-2 font-bold px-2">{validationErrors.accountId}</p>}
                   </div>
                 </div>
 
@@ -480,13 +500,14 @@ const Transactions: React.FC<TransactionsProps> = ({
                       required
                       value={toAccountId}
                       onChange={e => setToAccountId(e.target.value)}
-                      className="w-full p-5 bg-cyan-50 border border-cyan-100 rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner cursor-pointer"
+                      className={`w-full p-5 bg-cyan-50 border ${validationErrors.toAccountId ? 'border-red-300 ring-2 ring-red-500/20' : 'border-cyan-100'} rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner cursor-pointer`}
                     >
                       <option value="">Seleccionar cuenta destino...</option>
                       {accounts.filter(a => a.id !== accountId).map(acc => (
                         <option key={acc.id} value={acc.id}>{acc.name} ({formatEUR(acc.balance)})</option>
                       ))}
                     </select>
+                    {validationErrors.toAccountId && <p className="text-red-500 text-[10px] mt-2 font-bold px-2">{validationErrors.toAccountId}</p>}
                   </div>
                 )}
 
@@ -498,26 +519,28 @@ const Transactions: React.FC<TransactionsProps> = ({
                         required
                         value={isEditModalOpen ? editCategory : category}
                         onChange={e => isEditModalOpen ? setEditCategory(e.target.value) : setCategory(e.target.value)}
-                        className="w-full p-5 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner"
+                        className={`w-full p-5 bg-onyx-50 border ${validationErrors.category ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner`}
                       >
                         <option value="">Seleccionar...</option>
                         {categories.filter(c => c.type === (isEditModalOpen ? editingTransaction?.type : mode)).map(c => (
                           <option key={c.name} value={c.name}>{c.name}</option>
                         ))}
                       </select>
+                      {validationErrors.category && <p className="text-red-500 text-[10px] mt-2 font-bold px-2">{validationErrors.category}</p>}
                     </div>
                     <div>
                       <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3">Subcategoría</label>
                       <select
                         value={isEditModalOpen ? editSubCategory : subCategory}
                         onChange={e => isEditModalOpen ? setEditSubCategory(e.target.value) : setSubCategory(e.target.value)}
-                        className="w-full p-5 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner"
+                        className={`w-full p-5 bg-onyx-50 border ${validationErrors.subCategory ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner`}
                       >
                         <option value="">Opcional...</option>
                         {categories.find(c => c.name === (isEditModalOpen ? editCategory : category))?.subCategories.map(sc => (
                           <option key={sc} value={sc}>{sc}</option>
                         ))}
                       </select>
+                      {validationErrors.subCategory && <p className="text-red-500 text-[10px] mt-2 font-bold px-2">{validationErrors.subCategory}</p>}
                     </div>
                   </div>
                 )}
@@ -531,7 +554,7 @@ const Transactions: React.FC<TransactionsProps> = ({
                       type="text"
                       value={isEditModalOpen ? editDescription : description}
                       onChange={e => isEditModalOpen ? setEditDescription(e.target.value) : setDescription(e.target.value)}
-                      className="w-full p-5 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner placeholder:text-onyx-200 pr-12"
+                      className={`w-full p-5 bg-onyx-50 border ${validationErrors.description ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner placeholder:text-onyx-200 pr-12`}
                       placeholder="Ej: Compra mensual en Mercadona"
                     />
                     <Button
@@ -545,6 +568,7 @@ const Transactions: React.FC<TransactionsProps> = ({
                       {isSuggesting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
                     </Button>
                   </div>
+                  {validationErrors.description && <p className="text-red-500 text-[10px] mt-2 font-bold px-2">{validationErrors.description}</p>}
                 </div>
               </div>
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plane, DollarSign, X, Sparkles, Loader2, Wand2 } from 'lucide-react';
+import { Plane, DollarSign, X, Sparkles, Loader2, Wand2, CalendarDays } from 'lucide-react';
 import { Trip, Flight, Accommodation, ItineraryItem, Language } from '../../../../types';
 import { generateImage } from '../../../../services/geminiCore';
 import { planTripWithAI, extractTravelParams } from '../../../../services/geminiLife';
@@ -215,11 +215,28 @@ export const NewTripModal: React.FC<NewTripModalProps> = ({ isOpen, onClose, onS
                             </div>
                             <div>
                                 <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Inicio</label>
-                                <input type="date" value={newStartDate} onChange={(e) => setNewStartDate(e.target.value)} className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl font-bold" required />
+                                <div className="relative group">
+                                    <input 
+                                        type="date" 
+                                        value={newStartDate} 
+                                        onChange={(e) => setNewStartDate(e.target.value)} 
+                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl font-bold focus:bg-white focus:ring-4 focus:ring-gray-900/5 outline-none transition-all appearance-none relative z-10 [&::-webkit-calendar-picker-indicator]:opacity-0 cursor-pointer" 
+                                        required 
+                                    />
+                                    <CalendarDays className="w-4 h-4 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2 z-0 group-hover:text-gray-900 transition-colors" />
+                                </div>
                             </div>
                             <div>
                                 <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Fin</label>
-                                <input type="date" value={newEndDate} onChange={(e) => setNewEndDate(e.target.value)} className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl font-bold" />
+                                <div className="relative group">
+                                    <input 
+                                        type="date" 
+                                        value={newEndDate} 
+                                        onChange={(e) => setNewEndDate(e.target.value)} 
+                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl font-bold focus:bg-white focus:ring-4 focus:ring-gray-900/5 outline-none transition-all appearance-none relative z-10 [&::-webkit-calendar-picker-indicator]:opacity-0 cursor-pointer" 
+                                    />
+                                    <CalendarDays className="w-4 h-4 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2 z-0 group-hover:text-gray-900 transition-colors" />
+                                </div>
                             </div>
                         </div>
                         <div>

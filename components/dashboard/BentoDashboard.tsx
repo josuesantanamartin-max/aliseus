@@ -21,6 +21,7 @@ import BentoSection from './BentoSection';
 import BentoTile from './BentoTile';
 import GlobalSearch from '../ui/GlobalSearch';
 import SampleDataBanner from '../common/SampleDataBanner';
+import SampleDataExplainer from '../common/SampleDataExplainer';
 import { AnimatedList, AnimatedListItem } from '../common/animations/AnimatedList';
 import { Button } from '../ui/Button';
 import LayoutSelector from './LayoutSelector';
@@ -341,6 +342,9 @@ const BentoDashboard: React.FC = () => {
             onDrop={handleDashboardDrop}
         >
             <SampleDataBanner />
+            <div className="mb-2 px-6 md:px-10 mt-4 max-w-[1800px] mx-auto">
+                <SampleDataExplainer section={activeDashboardView} />
+            </div>
 
             {/* ── Dynamic Hero Header ─────────────────────────────────── */}
             <div className="px-6 md:px-10 pt-10 pb-6 relative overflow-hidden group/header">

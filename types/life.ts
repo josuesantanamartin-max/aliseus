@@ -13,7 +13,16 @@ export interface FamilyEvent {
     title: string;
     time: string;
     location?: string;
-    type: 'MEDICAL' | 'EDUCATION' | 'SOCIAL' | 'SPORT' | 'OTHER';
+    type: 'MEDICAL' | 'EDUCATION' | 'SOCIAL' | 'SPORT' | 'THERAPY' | 'LEGAL' | 'RENEWAL' | 'OTHER';
+}
+
+export interface FamilyDocument {
+    id: string;
+    title: string;
+    memberId: string;
+    category: 'HEALTH' | 'LEGAL' | 'EDUCATION' | 'INSURANCE' | 'OTHER';
+    expiryDate?: string;
+    status: 'VALID' | 'EXPIRED' | 'RENEWING';
 }
 
 export interface MealPlan {

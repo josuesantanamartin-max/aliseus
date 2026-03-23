@@ -19,4 +19,7 @@ export interface FamilyMember {
     phone?: string;
     isEmergencyContact?: boolean;
     growthHistory: GrowthRecord[];
+    tags?: string[];
+    activeAlerts?: number;
+    healthStatus?: 'NORMAL' | 'SPECIAL_FOLLOWUP' | 'PENDING_REVIEW';
 }

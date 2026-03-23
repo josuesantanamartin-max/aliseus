@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient';
+import { generateContent } from './geminiApiClient';
 
 export const GEMINI_MODEL = 'gemini-2.5-flash';
 
@@ -153,11 +153,8 @@ export const generateImage = async (
 
 export const askAI = async (prompt: string): Promise<string> => {
     try {
-        const { data, error } = await supabase.functions.invoke('ai-orchestrator', {
-            body: { action: 'askAI', params: { prompt } }
-        });
-        if (error) throw error;
-        return data.result || "";
+        const result = await generateContent(prompt);
+        return result || "";
     } catch (e) {
         console.error("Gemini Chat Error:", e);
         return "Error connecting to AI.";
@@ -169,13 +166,12 @@ export const suggestCategory = async (
     categories: string[]
 ): Promise<string | null> => {
     try {
-        const { data, error } = await supabase.functions.invoke('ai-orchestrator', {
-            body: { action: 'suggestCategory', params: { description, categories } }
-        });
-        if (error) throw error;
-        const text = data.result?.trim() || '';
-        if (categories.includes(text)) return text;
-        return null;
+        const prompt = `Classify this description: "${description}" into exactly one of these categories: ${categories.join(', ')}. Return ONLY the category name and nothing else.`;
+        const result = await generateContent(prompt);
+        const text = result?.trim() || '';
+        
+        const match = categories.find(c => text.includes(c));
+        return match || null;
     } catch (e) {
         console.error("Smart Categorization Error:", e);
         return null;
@@ -187,11 +183,27 @@ export const processVoiceCommand = async (
     language: 'ES' | 'EN' | 'FR' = 'ES'
 ): Promise<any> => {
     try {
-        const { data, error } = await supabase.functions.invoke('ai-orchestrator', {
-            body: { action: 'processVoiceCommand', params: { transcript, language } }
-        });
-        if (error) throw error;
-        return data.result;
+        const prompt = `
+Analyze the following voice command transcript from a finance tracking app.
+Determine the intent. It can be creating a transaction, checking balance, or asking a question.
+Return ONLY a valid JSON object with:
+{
+  "type": "TRANSACTION" | "BALANCE" | "QUESTION" | "UNKNOWN",
+  "confidence": number between 0 and 1,
+  "rawText": "${transcript}",
+  "extractedData": { // if TRANSACTION
+     "amount": number,
+     "description": string,
+     "type": "INCOME" | "EXPENSE"
+  }
+}
+
+Transcript: "${transcript}"
+Language: ${language}
+Return ONLY valid JSON without markdown wrapping.`;
+
+        const result = await generateContent(prompt);
+        return JSON.parse(cleanJSON(result));
     } catch (e) {
         console.error("Voice Processing Error:", e);
         return { type: 'UNKNOWN', confidence: 0, rawText: transcript };
@@ -213,11 +225,23 @@ export const generateSmartInsight = async (
     actionableRecipe?: { name: string; matchReason: string };
 } | null> => {
     try {
-        const { data, error } = await supabase.functions.invoke('ai-orchestrator', {
-            body: { action: 'generateSmartInsight', params: { financialContext, pantryItems, language } }
-        });
-        if (error) throw error;
-        return data.result;
+        const prompt = `
+Generate a single financial & lifestyle insight based on this data:
+Finance: Top categories: ${financialContext.topCategories.join(', ')}, Spending: ${financialContext.monthlySpending} ${financialContext.currency}.
+Pantry: ${pantryItems.join(', ')}
+
+Provide a creative tip combining finance and food to save money over the next weeks.
+Return ONLY valid JSON without markdown wrapping:
+{
+  "title": "string",
+  "insight": "string",
+  "savingsEstimate": "string with amount and currency",
+  "actionableRecipe": { "name": "string", "matchReason": "string" } // optional
+}
+Language: ${language}`;
+
+        const result = await generateContent(prompt);
+        return JSON.parse(cleanJSON(result));
     } catch (e) {
         console.error("Smart Insight Error:", e);
         return null;

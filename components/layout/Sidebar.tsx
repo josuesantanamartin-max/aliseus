@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, Wallet, Heart, Settings, LogOut, HelpCircle } from 'lucide-react';
+import { LayoutDashboard, Wallet, Heart, Settings, LogOut, HelpCircle, Mic, MicOff } from 'lucide-react';
 import { useUserStore } from '@/store/useUserStore';
+import { useVoiceAssistant } from '@/hooks/useVoiceAssistant';
 import { Logo } from './Logo';
 import NotificationBadge from '../common/notifications/NotificationBadge';
 import NotificationCenter from '../common/notifications/NotificationCenter';
+import { ProgressiveTooltip } from '@/components/common/ProgressiveTooltip';
 
 interface SidebarProps {
   onLogout?: () => void;
@@ -50,6 +52,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout }) => {
     userProfile,
     subscription
   } = useUserStore();
+  const { isListening, listen, stop } = useVoiceAssistant();
 
   const t = SIDEBAR_TEXTS[language];
 
@@ -91,7 +94,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout }) => {
             {menuItems.map((item, index) => {
               const Icon = item.icon;
               const isActive = activeApp === item.id;
-              return (
+              
+              const buttonContent = (
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.96 }}
@@ -110,6 +114,21 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout }) => {
                   <span className="text-[13px] tracking-tight">{item.label}</span>
                 </motion.button>
               );
+
+              if (index === 1) { // Put it on Finance (index 1) to make it obvious
+                  return (
+                      <ProgressiveTooltip
+                          key={item.id}
+                          id="tooltip-sidebar-nav"
+                          title="Navegación Principal"
+                          description="Cambia entre tu Dashboard, Finanzas y Vida desde aquí. Cada módulo tiene herramientas específicas."
+                          position="right"
+                      >
+                          {buttonContent}
+                      </ProgressiveTooltip>
+                  );
+              }
+              return buttonContent;
             })}
           </nav>
 
@@ -118,6 +137,25 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout }) => {
               onClick={() => setIsNotifOpen((prev) => !prev)}
               isActive={isNotifOpen}
             />
+            {/* Voice Assistant Button */}
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.96 }}
+              onClick={() => isListening ? stop() : listen()}
+              className={`w-full flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-300 group ${isListening ? 'text-indigo-600 font-bold bg-indigo-50/50 dark:bg-indigo-900/20' : 'text-onyx-500 hover:text-cyan-600 bg-transparent'}`}
+            >
+              <div className="relative">
+                {isListening ? (
+                  <MicOff className="w-5 h-5 text-indigo-600 animate-pulse" />
+                ) : (
+                  <Mic className="w-5 h-5 transition-transform duration-500 group-hover:scale-110 text-onyx-400 group-hover:text-cyan-600" />
+                )}
+                {isListening && (
+                   <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-ping" />
+                )}
+              </div>
+              <span className="text-[13px] tracking-tight">{isListening ? 'Escuchando...' : 'Asistente IA'}</span>
+            </motion.button>
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.96 }}

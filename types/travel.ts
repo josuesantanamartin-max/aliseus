@@ -44,3 +44,32 @@ export interface Trip {
     checklist?: { id: string; task: string; completed: boolean }[];
     linkedGoalId?: string;
 }
+
+export interface WishlistDestination {
+    id: string;
+    name: string;
+    country: string;
+    estimatedPrice: number;
+    image?: string;
+    addedDate: string;
+}
+
+export interface PriceAlert {
+    id: string;
+    destination: string;
+    currentPrice: number;
+    targetPrice: number;
+    status: 'ACTIVE' | 'TRIGGERED';
+    lastUpdate: string;
+    isDrop?: boolean;
+}
+
+export interface TravelDocument {
+    id: string;
+    type: 'PASSPORT' | 'VISA' | 'ID' | 'INSURANCE' | 'OTHER';
+    label: string;
+    number: string;
+    expiryDate: string;
+    owner: string;
+    country?: string;
+}

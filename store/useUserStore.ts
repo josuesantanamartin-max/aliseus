@@ -57,6 +57,9 @@ interface UserState {
     // Onboarding State
     hasCompletedOnboarding: boolean;
     onboardingStep: number;
+    onboardingFocus: string[];
+    seenTooltips: string[];
+    sampleDataContext: boolean;
 
     subscription: {
         plan: 'FREE' | 'PERSONAL' | 'FAMILIA';
@@ -100,6 +103,9 @@ interface UserActions {
     // Onboarding Actions
     completeOnboarding: () => void;
     setOnboardingStep: (step: number) => void;
+    setOnboardingFocus: (focus: string[]) => void;
+    markTooltipSeen: (id: string) => void;
+    setSampleDataContext: (v: boolean) => void;
 
     setFinanceActiveTab: (tab: string) => void;
     setFinanceSelectedAccountId: (id: string | null) => void;
@@ -168,6 +174,9 @@ export const useUserStore = create<UserState & UserActions>()(
             // Onboarding defaults
             hasCompletedOnboarding: false,
             onboardingStep: 0,
+            onboardingFocus: [],
+            seenTooltips: [],
+            sampleDataContext: false,
 
             subscription: { plan: 'FREE', status: 'NONE' },
             lastSyncTime: null,
@@ -200,6 +209,11 @@ export const useUserStore = create<UserState & UserActions>()(
 
             completeOnboarding: () => set({ hasCompletedOnboarding: true }),
             setOnboardingStep: (step) => set({ onboardingStep: step }),
+            setOnboardingFocus: (focus) => set({ onboardingFocus: focus }),
+            markTooltipSeen: (id) => set((state) => ({
+                seenTooltips: state.seenTooltips.includes(id) ? state.seenTooltips : [...state.seenTooltips, id]
+            })),
+            setSampleDataContext: (v) => set({ sampleDataContext: v }),
             setFinanceActiveTab: (v) => set({ financeActiveTab: v }),
             setFinanceSelectedAccountId: (v) => set({ financeSelectedAccountId: v }),
             setLifeActiveTab: (v) => set({ lifeActiveTab: v }),
@@ -415,6 +429,9 @@ export const useUserStore = create<UserState & UserActions>()(
                 activeDashboardView: state.activeDashboardView,
                 hasCompletedOnboarding: state.hasCompletedOnboarding,
                 onboardingStep: state.onboardingStep,
+                onboardingFocus: state.onboardingFocus,
+                seenTooltips: state.seenTooltips,
+                sampleDataContext: state.sampleDataContext,
                 defaultShoppingAccount: state.defaultShoppingAccount,
                 userProfile: state.userProfile,
                 recentSearches: state.recentSearches,

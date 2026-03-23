@@ -3,7 +3,7 @@ import {
     PiggyBank, Heart, ArrowRight, Check, Sparkles, LayoutDashboard,
     Smartphone, BarChart3, Fingerprint, Cloud, Zap, Shield, Users,
     TrendingUp, Clock, Globe, ChevronDown, ChevronUp, X, Minus, CheckCircle2,
-    Utensils, Calendar, Archive, Target, CreditCard, ShoppingCart
+    TrendingDown, Utensils, Calendar, Archive, Target, CreditCard, ShoppingCart
 } from 'lucide-react';
 import { Language } from '@/types';
 import { PRODUCT_DETAILS_BY_LANG } from './landingData';
@@ -98,8 +98,23 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                 <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-teal-600/20 rounded-full blur-[100px] pointer-events-none" />
 
                 <div className="max-w-5xl mx-auto text-center relative z-10">
+                    {/* Star Benefit Badge */}
+                    <div className="inline-flex items-center gap-3 bg-gradient-to-r from-amber-500/20 to-orange-500/20 backdrop-blur-md border border-amber-500/30 rounded-2xl px-5 py-2.5 mb-8 animate-bounce-slow group hover:scale-105 transition-all cursor-default">
+                        <div className="bg-amber-500 p-1.5 rounded-lg shadow-[0_0_15px_rgba(245,158,11,0.5)] group-hover:shadow-[0_0_25px_rgba(245,158,11,0.8)] transition-all">
+                            <Sparkles className="w-5 h-5 text-white animate-pulse" />
+                        </div>
+                        <div className="text-left">
+                            <span className="block text-[10px] font-black text-amber-400 tracking-[0.2em] uppercase mb-0.5">
+                                {t.heroStarBadge}
+                            </span>
+                            <span className="block text-sm font-bold text-white/90">
+                                {t.heroStarBenefit}
+                            </span>
+                        </div>
+                    </div>
+
                     {/* Live badge */}
-                    <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 rounded-full px-4 py-1.5 mb-8">
+                    <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 rounded-full px-4 py-1.5 mb-8 ml-4">
                         <span className="relative flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
@@ -227,6 +242,55 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                 </div>
             </section>
 
+            {/* ── Para quién es Aliseus (Segmentación) ── */}
+            <section className="py-24 bg-white border-t border-gray-100">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-16">
+                        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">{t.audienceTitle}</h2>
+                        <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+                            {t.audienceSubtitle}
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                        {t.audienceProfiles.map((profile: any) => (
+                            <div key={profile.id} className="group p-8 rounded-3xl bg-gray-50 border border-gray-100 hover:bg-white hover:shadow-2xl hover:border-cyan-200 transition-all duration-300">
+                                <div className="mb-6 flex items-center justify-between">
+                                    {profile.id === 'pareja' || profile.id === 'couple' ? (
+                                        <div className="w-12 h-12 bg-cyan-100 rounded-2xl flex items-center justify-center">
+                                            <Heart className="w-6 h-6 text-cyan-600" />
+                                        </div>
+                                    ) : profile.id === 'familia' || profile.id === 'family' ? (
+                                        <div className="w-12 h-12 bg-teal-100 rounded-2xl flex items-center justify-center">
+                                            <Users className="w-6 h-6 text-teal-600" />
+                                        </div>
+                                    ) : (
+                                        <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center">
+                                            <Zap className="w-6 h-6 text-slate-600" />
+                                        </div>
+                                    )}
+                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest group-hover:text-cyan-500 transition-colors">
+                                        {profile.tagline}
+                                    </span>
+                                </div>
+                                <h3 className="text-2xl font-bold text-gray-900 mb-3">{profile.title}</h3>
+                                <p className="text-gray-600 mb-8 leading-relaxed text-sm">
+                                    {profile.desc}
+                                </p>
+                                <ul className="space-y-3">
+                                    {profile.features.map((feat: string, i: number) => (
+                                        <li key={i} className="flex items-start gap-3 text-xs text-gray-500">
+                                            <Check className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                                            <span>{feat}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* ── AI Magic Connection (The Moat) ── */}
             <section className="py-24 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-t border-slate-800 relative overflow-hidden">
                 <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-cyan-600/10 rounded-full blur-[100px] pointer-events-none" />
@@ -267,6 +331,27 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                                     </li>
                                 ))}
                             </ul>
+
+                            {/* Savings Widget */}
+                            <div className="mt-12 p-6 rounded-3xl bg-gradient-to-br from-cyan-500/10 to-teal-500/10 border border-cyan-500/20 backdrop-blur-xl relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-cyan-500/20 transition-all duration-700"></div>
+                                <div className="relative z-10 flex items-center gap-6">
+                                    <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0 border border-white/20">
+                                        <TrendingDown className="w-8 h-8 text-cyan-400" />
+                                    </div>
+                                    <div>
+                                        <p className="text-cyan-300 font-black uppercase tracking-[0.2em] text-[10px] mb-1">
+                                            {t.magicSavingsTitle}
+                                        </p>
+                                        <div className="flex items-baseline gap-2">
+                                            <span className="text-3xl font-black text-white">{t.magicSavingsValue}</span>
+                                        </div>
+                                        <p className="text-slate-400 text-xs mt-1 font-medium italic">
+                                            {t.magicSavingsDetail}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         {/* Visual Mockup */}
@@ -426,6 +511,23 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                                     <h3 className="text-5xl font-bold text-white mb-2 tracking-tight">{PRODUCT_DETAILS_BY_LANG[language].dashboard.title}</h3>
                                     <p className="text-cyan-300 font-medium mb-6 text-lg italic">{PRODUCT_DETAILS_BY_LANG[language].dashboard.subtitle}</p>
                                     <p className="text-slate-300 text-lg leading-relaxed">{PRODUCT_DETAILS_BY_LANG[language].dashboard.description}</p>
+                                    
+                                    <div className="mt-8 relative rounded-2xl overflow-hidden shadow-2xl border border-white/20 group max-w-sm">
+                                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-teal-500 z-20"></div>
+                                        <img 
+                                            src="/kitchen-preview.png" 
+                                            alt="Aura Kitchen Preview" 
+                                            className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500" 
+                                        />
+                                        <div className="absolute bottom-4 left-4 right-4 bg-slate-950/80 backdrop-blur-md p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                            <div>
+                                                <p className="text-white font-bold text-xs">Módulo Cocina</p>
+                                                <p className="text-cyan-400 text-[10px]">Menú Inteligente</p>
+                                            </div>
+                                            <Utensils className="w-4 h-4 text-teal-400" />
+                                        </div>
+                                    </div>
+
                                     <div className="mt-8 flex flex-wrap gap-3">
                                         {PRODUCT_DETAILS_BY_LANG[language].dashboard.integrations.map((tag: string, i: number) => (
                                             <span key={i} className="bg-white/10 border border-white/20 text-white/70 text-xs font-bold px-3 py-1.5 rounded-full">{tag}</span>
