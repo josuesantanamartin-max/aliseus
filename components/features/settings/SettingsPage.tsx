@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, User, Users, Globe, Layers, Zap, Star, CreditCard, Shield, Lock, Layout, Ticket } from 'lucide-react';
 import { useUserStore } from '../../../store/useUserStore';
+
+const ADMIN_EMAILS = (import.meta.env.VITE_ADMIN_EMAILS || '').split(',').map((e: string) => e.trim().toLowerCase()).filter(Boolean);
 import { SettingsSidebar } from './components/SettingsSidebar';
 import { ProfilePanel } from './panels/ProfilePanel';
 import { FamilyPanel } from './panels/FamilyPanel';
@@ -47,7 +49,10 @@ const MOBILE_MENU_ITEMS = [
 
 export const SettingsPage: React.FC<{ onMenuClick?: () => void }> = ({ onMenuClick }) => {
     const [activeSection, setActiveSection] = useState('profile');
-    const { language } = useUserStore();
+    const { language, userProfile } = useUserStore();
+
+    const isAdmin = userProfile?.email && ADMIN_EMAILS.includes(userProfile.email.toLowerCase());
+    const visibleMenuItems = isAdmin ? MOBILE_MENU_ITEMS : MOBILE_MENU_ITEMS.filter(item => item.id !== 'invitations');
 
     const activeItem = MOBILE_MENU_ITEMS.find(item => item.id === activeSection);
     const activeLabel = activeItem ? (language === 'ES' ? activeItem.labelES : activeItem.labelEN) : '';
@@ -97,12 +102,13 @@ export const SettingsPage: React.FC<{ onMenuClick?: () => void }> = ({ onMenuCli
                     activeSection={activeSection}
                     onSelectSection={setActiveSection}
                     language={language}
+                    isAdmin={!!isAdmin}
                 />
             </aside>
 
             {/* Mobile Horizontal Scroll Menu */}
             <nav className="md:hidden flex overflow-x-auto px-4 py-3 bg-white/40 dark:bg-onyx-950/40 backdrop-blur-md border-b border-gray-100/50 dark:border-onyx-800/50 gap-2.5 shrink-0 no-scrollbar z-20 sticky top-[73px]">
-                {MOBILE_MENU_ITEMS.map((item) => {
+                {visibleMenuItems.map((item) => {
                     const isActive = activeSection === item.id;
                     const label = language === 'ES' ? item.labelES : item.labelEN;
                     return (

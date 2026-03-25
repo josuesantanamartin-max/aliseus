@@ -11,6 +11,7 @@ interface SettingsSidebarProps {
     activeSection: string;
     onSelectSection: (section: string) => void;
     language: string;
+    isAdmin?: boolean;
 }
 
 const MENU_ITEMS = [
@@ -30,9 +31,11 @@ const MENU_ITEMS = [
 export const SettingsSidebar: React.FC<SettingsSidebarProps> = ({
     activeSection,
     onSelectSection,
-    language
+    language,
+    isAdmin = false
 }) => {
     const { userProfile, subscription } = useUserStore();
+    const visibleItems = isAdmin ? MENU_ITEMS : MENU_ITEMS.filter(item => item.id !== 'invitations');
 
     return (
         <div className="w-full md:w-[340px] h-full bg-white/40 dark:bg-onyx-950/70 backdrop-blur-2xl border-r border-slate-200/50 dark:border-onyx-800/80 flex flex-col shrink-0 overflow-y-auto no-scrollbar relative">
@@ -78,7 +81,7 @@ export const SettingsSidebar: React.FC<SettingsSidebarProps> = ({
 
             {/* Navigation Menu */}
             <nav className="flex-1 px-5 space-y-1.5 pb-10">
-                {MENU_ITEMS.map((item) => {
+                {visibleItems.map((item) => {
                     const isActive = activeSection === item.id;
                     const label = language === 'ES' ? item.labelES : item.labelEN;
 
