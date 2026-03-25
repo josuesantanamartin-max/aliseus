@@ -9,7 +9,8 @@ export default {
         "./services/**/*.{js,ts,jsx,tsx}",
         "./utils/**/*.{js,ts,jsx,tsx}",
         "./hooks/**/*.{js,ts,jsx,tsx}",
-        "./**/*.{js,ts,jsx,tsx}"
+        "./store/**/*.{js,ts,jsx,tsx}",
+        "./config/**/*.{js,ts,jsx,tsx}",
     ],
     darkMode: ['class', '[data-theme="dark"]'],
     theme: {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, User, Users, Globe, Layers, Zap, Star, CreditCard, Shield, Lock, Layout } from 'lucide-react';
+import { Menu, User, Users, Globe, Layers, Zap, Star, CreditCard, Shield, Lock, Layout, Ticket } from 'lucide-react';
 import { useUserStore } from '../../../store/useUserStore';
 import { SettingsSidebar } from './components/SettingsSidebar';
 import { ProfilePanel } from './panels/ProfilePanel';
@@ -13,6 +13,7 @@ import { SubscriptionPanel } from './panels/SubscriptionPanel';
 import { BillingPanel } from './panels/BillingPanel';
 import { SecurityPanel } from './panels/SecurityPanel';
 import { PrivacyPanel } from './panels/PrivacyPanel';
+import InvitationManager from './InvitationManager';
 
 // Placeholder panels to be replaced incrementally
 const PanelPlaceholder: React.FC<{ title: string }> = ({ title }) => (
@@ -41,6 +42,7 @@ const MOBILE_MENU_ITEMS = [
     { id: 'billing', icon: CreditCard, labelES: 'Pagos', labelEN: 'Billing' },
     { id: 'security', icon: Lock, labelES: 'Seguridad', labelEN: 'Security' },
     { id: 'privacy', icon: Shield, labelES: 'Privacidad', labelEN: 'Privacy' },
+    { id: 'invitations', icon: Ticket, labelES: 'Invitaciones', labelEN: 'Invitations' },
 ];
 
 export const SettingsPage: React.FC<{ onMenuClick?: () => void }> = ({ onMenuClick }) => {
@@ -62,6 +64,7 @@ export const SettingsPage: React.FC<{ onMenuClick?: () => void }> = ({ onMenuCli
             case 'billing': return <BillingPanel key="billing" />;
             case 'security': return <SecurityPanel key="security" />;
             case 'privacy': return <PrivacyPanel key="privacy" />;
+            case 'invitations': return <InvitationManager key="invitations" />;
             default: return <PanelPlaceholder title={activeSection} key={activeSection} />;
         }
     };

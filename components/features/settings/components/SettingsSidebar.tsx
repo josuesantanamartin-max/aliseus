@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import {
     User, Globe, Layers, Zap, Star, CreditCard, Shield, Lock,
-    ChevronRight, Sparkles, Layout, Users
+    ChevronRight, Sparkles, Layout, Users, Ticket
 } from 'lucide-react';
 import { useUserStore } from '../../../../store/useUserStore';
 
@@ -24,6 +24,7 @@ const MENU_ITEMS = [
     { id: 'billing', icon: CreditCard, labelES: 'Facturación', labelEN: 'Billing' },
     { id: 'security', icon: Lock, labelES: 'Seguridad', labelEN: 'Security' },
     { id: 'privacy', icon: Shield, labelES: 'Privacidad', labelEN: 'Privacy' },
+    { id: 'invitations', icon: Ticket, labelES: 'Invitaciones', labelEN: 'Invitations' },
 ];
 
 export const SettingsSidebar: React.FC<SettingsSidebarProps> = ({

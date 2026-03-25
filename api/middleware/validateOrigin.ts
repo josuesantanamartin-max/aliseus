@@ -6,7 +6,9 @@ const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:3000',
     'https://onyx-suite.vercel.app',
-    'https://aliseus.vercel.app', // Production domain
+    'https://aliseus.vercel.app',
+    'https://aliseus.app',
+    'https://www.aliseus.app',
 ];
 
 /**
