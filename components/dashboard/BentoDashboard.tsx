@@ -77,16 +77,7 @@ const BentoDashboard: React.FC = () => {
         return () => clearInterval(interval);
     }, []);
 
-    // Tour - wait for cookies to be accepted first
-    React.useEffect(() => {
-        const hasSeenTour = localStorage.getItem('onyx_has_seen_tour');
-        if (hasCompletedOnboarding && !hasSeenTour && cookiePreferences) {
-            setTimeout(() => {
-                import('./DashboardTour').then(mod => mod.startDashboardTour());
-                localStorage.setItem('onyx_has_seen_tour', 'true');
-            }, 500);
-        }
-    }, [hasCompletedOnboarding, cookiePreferences]);
+
 
     const activeLayout = useMemo(
         () => dashboardLayouts.find(l => l.id === activeLayoutId),
