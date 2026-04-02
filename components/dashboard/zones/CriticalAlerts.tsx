@@ -15,7 +15,14 @@ export default function CriticalAlerts() {
     const { debts, budgets, transactions } = useFinanceStore();
     const { pantryItems } = useLifeStore();
     const { setActiveApp, setLifeActiveTab } = useUserStore();
-    const [dismissedAlerts, setDismissedAlerts] = React.useState<string[]>([]);
+    const [dismissedAlerts, setDismissedAlerts] = React.useState<string[]>(() => {
+        try {
+            const saved = localStorage.getItem('aliseus_dismissed_alerts');
+            return saved ? JSON.parse(saved) : [];
+        } catch (e) {
+            return [];
+        }
+    });
 
     const alerts = useMemo(() => {
         const activeAlerts: {
@@ -98,7 +105,11 @@ export default function CriticalAlerts() {
     }, [debts, budgets, transactions, pantryItems, dismissedAlerts, setActiveApp, setLifeActiveTab]);
 
     const handleDismiss = (id: string) => {
-        setDismissedAlerts(prev => [...prev, id]);
+        setDismissedAlerts(prev => {
+            const next = [...prev, id];
+            localStorage.setItem('aliseus_dismissed_alerts', JSON.stringify(next));
+            return next;
+        });
     };
 
     if (alerts.length === 0) return null;

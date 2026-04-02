@@ -45,9 +45,10 @@ const CurrencyStep: React.FC = () => {
     const { currency, setCurrency, setOnboardingStep, userProfile } = useUserStore();
 
     const handleBack = () => {
-        // If profile includes FAMILY, go back to FamilySetup (Step 2), else Profile (Step 1)
-        const isFamily = userProfile?.persona_type?.includes('FAMILY');
-        setOnboardingStep(isFamily ? 3 : 2);
+        // Sequence: FocusPicker(7) → [FamilySetup(3)?] → Currency(4)
+        // Always go back to FamilySetup if isFamily, otherwise to FocusPicker(7)
+        const isFamily = userProfile?.persona_type?.some(p => p === 'FAMILY' || p === 'COUPLE');
+        setOnboardingStep(isFamily ? 3 : 7);
     };
 
     return (

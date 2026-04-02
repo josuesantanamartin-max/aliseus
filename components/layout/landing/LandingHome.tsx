@@ -69,23 +69,45 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
         }
     ];
 
+    const COMPARISON_FEATURES: Record<string, { ES: string; EN: string; FR: string }[]> = {
+        features: [
+            { ES: 'Gestión de Transacciones',              EN: 'Transaction Management',              FR: 'Gestion des Transactions' },
+            { ES: 'Presupuestos Inteligentes con IA',       EN: 'Smart AI Budgets',                    FR: 'Budgets Intelligents IA' },
+            { ES: 'Análisis Predictivo con IA',             EN: 'Predictive AI Analysis',               FR: 'Analyse Prédictive IA' },
+            { ES: 'Importación CSV / Extractos',            EN: 'CSV / Statement Import',               FR: 'Import CSV / Relevés' },
+            { ES: 'Planificador de Menús con IA',           EN: 'AI Meal Planner',                      FR: 'Planificateur de Repas IA' },
+            { ES: 'Gestión de Despensa e Inventario',       EN: 'Pantry & Inventory Management',        FR: 'Gestion du Garde-Manger' },
+            { ES: 'Conexión Finanzas ↔ Vida Real',          EN: 'Finance ↔ Real Life Integration',      FR: 'Intégration Finances ↔ Vie' },
+            { ES: 'Calculadora de Deudas (Avalancha/Bola)', EN: 'Debt Calculator (Avalanche/Snowball)',  FR: 'Calculateur de Dettes' },
+            { ES: 'Dashboard Personalizable (Drag & Drop)', EN: 'Customizable Dashboard (Drag & Drop)', FR: 'Tableau de Bord Personnalisable' },
+            { ES: 'Modo Colaborativo Familiar',             EN: 'Family Collaborative Mode',            FR: 'Mode Collaboratif Familial' },
+            { ES: 'Simulador de Jubilación',                EN: 'Retirement Simulator',                 FR: 'Simulateur de Retraite' },
+            { ES: 'Bóveda Digital de Documentos',           EN: 'Digital Document Vault',               FR: 'Coffre-fort Numérique' },
+            { ES: 'Planificador de Viajes con IA',          EN: 'AI Travel Planner',                    FR: 'Planificateur de Voyages IA' },
+            { ES: 'Centro de Ayuda Multilingüe',            EN: 'Multilingual Help Center',             FR: 'Centre d\'Aide Multilingue' },
+            { ES: 'Privacidad GDPR Completa',               EN: 'Full GDPR Privacy',                    FR: 'Confidentialité RGPD Complète' },
+            { ES: 'Soporte Familiar (5 usuarios)',          EN: 'Family Support (5 users)',             FR: 'Support Familial (5 utilisateurs)' },
+        ]
+    };
+
+    const lang = language as 'ES' | 'EN' | 'FR';
     const comparisonFeatures = [
-        { feature: 'Gestión de Transacciones', manual: true, other: true, onyx: true },
-        { feature: 'Presupuestos Inteligentes con IA', manual: false, other: true, onyx: true },
-        { feature: 'Análisis Predictivo con IA', manual: false, other: false, onyx: true },
-        { feature: 'Importación CSV / Extractos', manual: false, other: true, onyx: true },
-        { feature: 'Planificador de Menús con IA', manual: false, other: false, onyx: true },
-        { feature: 'Gestión de Despensa e Inventario', manual: false, other: false, onyx: true },
-        { feature: 'Conexión Finanzas ↔ Vida Real', manual: false, other: false, onyx: true },
-        { feature: 'Calculadora de Deudas (Avalancha/Bola)', manual: false, other: true, onyx: true },
-        { feature: 'Dashboard Personalizable (Drag & Drop)', manual: false, other: false, onyx: true },
-        { feature: 'Modo Colaborativo Familiar', manual: false, other: false, onyx: true },
-        { feature: 'Simulador de Jubilación', manual: false, other: false, onyx: true },
-        { feature: 'Bóveda Digital de Documentos', manual: false, other: false, onyx: true },
-        { feature: 'Planificador de Viajes con IA', manual: false, other: false, onyx: true },
-        { feature: 'Centro de Ayuda Multilingüe', manual: false, other: true, onyx: true },
-        { feature: 'Privacidad GDPR Completa', manual: false, other: false, onyx: true },
-        { feature: 'Soporte Familiar (5 usuarios)', manual: false, other: false, onyx: true }
+        { feature: COMPARISON_FEATURES.features[0][lang],  manual: true,  other: true,  aliseus: true },
+        { feature: COMPARISON_FEATURES.features[1][lang],  manual: false, other: true,  aliseus: true },
+        { feature: COMPARISON_FEATURES.features[2][lang],  manual: false, other: false, aliseus: true },
+        { feature: COMPARISON_FEATURES.features[3][lang],  manual: false, other: true,  aliseus: true },
+        { feature: COMPARISON_FEATURES.features[4][lang],  manual: false, other: false, aliseus: true },
+        { feature: COMPARISON_FEATURES.features[5][lang],  manual: false, other: false, aliseus: true },
+        { feature: COMPARISON_FEATURES.features[6][lang],  manual: false, other: false, aliseus: true },
+        { feature: COMPARISON_FEATURES.features[7][lang],  manual: false, other: true,  aliseus: true },
+        { feature: COMPARISON_FEATURES.features[8][lang],  manual: false, other: false, aliseus: true },
+        { feature: COMPARISON_FEATURES.features[9][lang],  manual: false, other: false, aliseus: true },
+        { feature: COMPARISON_FEATURES.features[10][lang], manual: false, other: false, aliseus: true },
+        { feature: COMPARISON_FEATURES.features[11][lang], manual: false, other: false, aliseus: true },
+        { feature: COMPARISON_FEATURES.features[12][lang], manual: false, other: false, aliseus: true },
+        { feature: COMPARISON_FEATURES.features[13][lang], manual: false, other: true,  aliseus: true },
+        { feature: COMPARISON_FEATURES.features[14][lang], manual: false, other: false, aliseus: true },
+        { feature: COMPARISON_FEATURES.features[15][lang], manual: false, other: false, aliseus: true },
     ];
 
     return (
@@ -98,20 +120,6 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                 <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-teal-600/20 rounded-full blur-[100px] pointer-events-none" />
 
                 <div className="max-w-5xl mx-auto text-center relative z-10">
-                    {/* Star Benefit Badge */}
-                    <div className="inline-flex items-center gap-3 bg-gradient-to-r from-amber-500/20 to-orange-500/20 backdrop-blur-md border border-amber-500/30 rounded-2xl px-5 py-2.5 mb-8 animate-bounce-slow group hover:scale-105 transition-all cursor-default">
-                        <div className="bg-amber-500 p-1.5 rounded-lg shadow-[0_0_15px_rgba(245,158,11,0.5)] group-hover:shadow-[0_0_25px_rgba(245,158,11,0.8)] transition-all">
-                            <Sparkles className="w-5 h-5 text-white animate-pulse" />
-                        </div>
-                        <div className="text-left">
-                            <span className="block text-[10px] font-black text-amber-400 tracking-[0.2em] uppercase mb-0.5">
-                                {t.heroStarBadge}
-                            </span>
-                            <span className="block text-sm font-bold text-white/90">
-                                {t.heroStarBenefit}
-                            </span>
-                        </div>
-                    </div>
 
                     {/* Live badge */}
                     <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 rounded-full px-4 py-1.5 mb-8 ml-4">
@@ -438,7 +446,7 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
                         {/* Finance Card */}
-                        <button onClick={() => onNavigate('FINANCE')} className="bg-white p-10 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-cyan-200 transition-all group relative overflow-hidden flex flex-col justify-between text-left h-[450px]">
+                        <button onClick={() => onNavigate('FINANCE')} className="bg-white p-10 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-cyan-200 transition-all group relative overflow-hidden flex flex-col justify-between text-left h-[560px]">
                             <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
                             <div className="relative z-10">
                                 <div className="w-16 h-16 bg-gradient-to-br from-cyan-600 to-cyan-900 rounded-2xl flex items-center justify-center mb-8 text-white shadow-xl shadow-cyan-500/30 group-hover:scale-110 transition-transform">
@@ -446,7 +454,7 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                                 </div>
                                 <h3 className="text-3xl font-bold text-gray-900 mb-4">Módulo Finanzas</h3>
                                 <p className="text-gray-500 text-lg leading-relaxed mb-6">{PRODUCT_DETAILS_BY_LANG[language].finance.description}</p>
-                                <ul className="space-y-2">
+                                <ul className="space-y-2 mb-6">
                                     {[
                                         { icon: Target, text: 'Metas de ahorro con progreso visual' },
                                         { icon: CreditCard, text: 'Eliminación de deudas estratégica' },
@@ -460,12 +468,22 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                                         </li>
                                     ))}
                                 </ul>
+                                {/* Star Benefit callout */}
+                                <div className="flex items-start gap-3 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl px-4 py-3">
+                                    <div className="flex-shrink-0 mt-0.5 w-7 h-7 bg-amber-400 rounded-lg flex items-center justify-center shadow-sm">
+                                        <Sparkles className="w-4 h-4 text-white" />
+                                    </div>
+                                    <div>
+                                        <span className="block text-[9px] font-black text-amber-500 tracking-[0.2em] uppercase mb-0.5">{t.heroStarBadge}</span>
+                                        <span className="text-xs font-semibold text-amber-900 leading-snug">{t.heroStarBenefit}</span>
+                                    </div>
+                                </div>
                             </div>
                             <div className="relative z-10 font-bold text-cyan-600 flex items-center gap-2">Explorar Detalles <ArrowRight className="w-4 h-4" /></div>
                         </button>
 
                         {/* Life Card */}
-                        <button onClick={() => onNavigate('LIFE')} className="bg-white p-10 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-teal-200 transition-all group relative overflow-hidden flex flex-col justify-between text-left h-[450px]">
+                        <button onClick={() => onNavigate('LIFE')} className="bg-white p-10 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-teal-200 transition-all group relative overflow-hidden flex flex-col justify-between text-left h-[560px]">
                             <div className="absolute top-0 right-0 w-64 h-64 bg-teal-50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
                             <div className="relative z-10">
                                 <div className="w-16 h-16 bg-gradient-to-br from-teal-600 to-teal-800 rounded-2xl flex items-center justify-center mb-8 text-white shadow-xl shadow-teal-500/30 group-hover:scale-110 transition-transform">
@@ -587,7 +605,7 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                                                 )}
                                             </td>
                                             <td className="px-6 py-4 text-center bg-cyan-50/50">
-                                                {item.onyx && (
+                                                {item.aliseus && (
                                                     <><CheckCircle2 className="w-5 h-5 text-cyan-600 mx-auto" /><span className="sr-only">Sí</span></>
                                                 )}
                                             </td>

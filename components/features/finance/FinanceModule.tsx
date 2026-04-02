@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import DOMPurify from 'dompurify';
 import { useUserStore } from '@/store/useUserStore';
 import { useFinanceStore } from '@/store/useFinanceStore';
 import { analyzeFinances } from '@/services/geminiFinancial';
@@ -15,10 +16,7 @@ const Accounts = React.lazy(() => import('./Accounts'));
 const Budgets = React.lazy(() => import('./Budgets'));
 const Projects = React.lazy(() => import('./Projects'));
 const RetirementSimulator = React.lazy(() => import('./RetirementSimulator').then(m => ({ default: m.RetirementSimulator })));
-// <button onClick={() => setActiveTab('retirement')} ...>Jubilación</button>
 
-// ... inside renderContent ...
-// case 'retirement': return <RetirementSimulator />;
 
 interface FinanceModuleProps {
     onMenuClick: () => void;
@@ -63,8 +61,15 @@ const FinanceModule: React.FC<FinanceModuleProps> = ({ onMenuClick }) => {
             <button onClick={() => setActiveTab('goals')} className={`flex items-center gap-2.5 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 ${activeTab === 'goals' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-lg shadow-cyan-900/20 scale-105' : 'text-onyx-400 hover:text-onyx-900 hover:bg-onyx-50'}`}>Metas</button>
             <button onClick={() => setActiveTab('debts')} className={`flex items-center gap-2.5 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 ${activeTab === 'debts' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-lg shadow-cyan-900/20 scale-105' : 'text-onyx-400 hover:text-onyx-900 hover:bg-onyx-50'}`}>Deudas</button>
             <button onClick={() => setActiveTab('retirement')} className={`flex items-center gap-2.5 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 ${activeTab === 'retirement' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-lg shadow-cyan-900/20 scale-105' : 'text-onyx-400 hover:text-onyx-900 hover:bg-onyx-50'}`}>Jubilación</button>
-            <button onClick={handleGeminiAnalysis} disabled={isAnalyzing} className="flex items-center gap-2.5 px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 bg-gradient-to-r from-cyan-600 to-teal-600 text-white hover:from-cyan-700 hover:to-teal-700 shadow-lg shadow-cyan-900/20 ml-auto">
-                {isAnalyzing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4 text-cyan-100" />}
+        {/* Vertical divider to separate action from navigation */}
+            <div className="w-px h-6 bg-onyx-100 mx-2 shrink-0" />
+            <button
+                onClick={handleGeminiAnalysis}
+                disabled={isAnalyzing}
+                title="Análisis inteligente de tus finanzas con IA"
+                className="flex items-center gap-2 px-5 py-2 rounded-lg text-xs font-bold tracking-wide transition-all duration-300 bg-gradient-to-r from-violet-600 to-purple-600 text-white hover:from-violet-500 hover:to-purple-500 shadow-md shadow-violet-900/25 hover:shadow-lg hover:shadow-violet-900/30 hover:-translate-y-px shrink-0 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+                {isAnalyzing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
                 {isAnalyzing ? 'Analizando...' : 'Aliseus Insights'}
             </button>
         </div>
@@ -131,7 +136,7 @@ const FinanceModule: React.FC<FinanceModuleProps> = ({ onMenuClick }) => {
                         <div className="p-6 overflow-y-auto custom-scrollbar bg-gray-50/50 dark:bg-cyan-900/50">
                             <div
                                 className="prose prose-sm prose-blue dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 bg-white dark:bg-onyx-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-onyx-800"
-                                dangerouslySetInnerHTML={{ __html: analysis }}
+                                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(analysis) }}
                             />
                         </div>
                         <div className="p-4 bg-gray-50 dark:bg-onyx-800 border-t border-gray-100 dark:border-onyx-700 flex justify-end">

@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import DOMPurify from 'dompurify';
 import { useFinanceStore } from '../../../../store/useFinanceStore';
 import { useUserStore } from '../../../../store/useUserStore';
 import { analyzeFinances } from '../../../../services/geminiFinancial';
@@ -542,7 +543,7 @@ const FinanceSummary: React.FC<FinanceSummaryProps> = ({ onViewTransactions: onN
                         <div className="p-6 overflow-y-auto custom-scrollbar bg-gray-50/50">
                             <div
                                 className="prose prose-sm prose-blue max-w-none text-gray-600 bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
-                                dangerouslySetInnerHTML={{ __html: analysis }}
+                                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(analysis) }}
                             />
                         </div>
                         <div className="p-4 bg-gray-50 border-t border-gray-100 flex justify-end">

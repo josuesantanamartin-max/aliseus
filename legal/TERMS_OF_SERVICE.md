@@ -262,7 +262,7 @@ Upon termination:
 Before filing a claim, you agree to contact us at legal@aliseus.com to attempt informal resolution. We will attempt to resolve disputes within 60 days.
 
 ### 13.2 Governing Law
-These Terms are governed by the laws of [Your Jurisdiction], without regard to conflict of law principles.
+These Terms are governed by the laws of Spain, without regard to conflict of law principles.
 
 ### 13.3 Arbitration
 Any disputes that cannot be resolved informally shall be resolved through binding arbitration, except:
@@ -274,7 +274,7 @@ Any disputes that cannot be resolved informally shall be resolved through bindin
 You agree to resolve disputes individually and waive the right to participate in class actions, class arbitrations, or representative actions.
 
 ### 13.5 Jurisdiction
-For disputes not subject to arbitration, you agree to the exclusive jurisdiction of courts in [Your Jurisdiction].
+For disputes not subject to arbitration, you agree to the exclusive jurisdiction of courts in Madrid, Spain.
 
 ## 14. Third-Party Services and Links
 
@@ -350,9 +350,9 @@ You may provide notices to:
 
 **Mailing Address:**  
 Aliseus  
-[Your Business Address]  
-[City, Postal Code]  
-[Country]
+Avenida de la Innovación 1  
+Madrid, 28020  
+Spain
 
 ## 22. Accessibility
 
@@ -386,9 +386,9 @@ Email: privacy@aliseus.com
 
 **Mailing Address:**  
 Aliseus  
-[Your Business Address]  
-[City, Postal Code]  
-[Country]
+Avenida de la Innovación 1  
+Madrid, 28020  
+Spain
 
 ---
 

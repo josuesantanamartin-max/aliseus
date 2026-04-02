@@ -23,7 +23,9 @@ const App: React.FC = () => {
     // Initialize monitoring service on app startup
     useEffect(() => {
         monitoringService.init();
-        console.log('[App] Monitoring service initialized');
+        if (import.meta.env.DEV) {
+            console.log('[App] Monitoring service initialized');
+        }
     }, []);
 
     const isInviteRoute = window.location.pathname.startsWith('/invite/');
@@ -55,7 +57,6 @@ const App: React.FC = () => {
                 ) : (
                     <MainShell />
                 )}
-                <br />
                 <Toast />
                 <CookieConsent />
                 <VoiceAssistantFab />

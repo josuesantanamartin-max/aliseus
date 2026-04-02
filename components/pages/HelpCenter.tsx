@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import DOMPurify from 'dompurify';
 import { Search, Book, HelpCircle, FileText, MessageCircle, ChevronRight, BookOpen } from 'lucide-react';
 import { useUserStore } from '../../store/useUserStore';
 import { helpArticlesData, HelpArticle } from '../../data/helpArticlesData';
@@ -422,7 +423,7 @@ export const HelpCenter: React.FC = () => {
                                 )}
 
                                 <div className="prose dark:prose-invert max-w-none">
-                                    <div dangerouslySetInnerHTML={{ __html: selectedArticle.content[lang].replace(/\n/g, '<br/>') }} />
+                                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(selectedArticle.content[lang].replace(/\n/g, '<br/>')) }} />
                                 </div>
                                 <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                                     <p className="text-sm text-gray-500 dark:text-gray-400">

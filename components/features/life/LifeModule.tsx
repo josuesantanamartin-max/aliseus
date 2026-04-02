@@ -1,4 +1,5 @@
 import React from 'react';
+import DOMPurify from 'dompurify';
 import { useLifeStore } from '@/store/useLifeStore';
 import { useUserStore } from '@/store/useUserStore';
 import { useFinanceStore } from '@/store/useFinanceStore';
@@ -162,7 +163,7 @@ const LifeModule: React.FC<LifeModuleProps> = ({ onMenuClick }) => {
           <div className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center shadow-md">
             <Heart className="text-white w-4 h-4" />
           </div>
-          <span className="font-black text-gray-900 text-lg tracking-tight">ONYX Vida</span>
+          <span className="font-black text-gray-900 text-lg tracking-tight">Aliseus Vida</span>
         </div>
         <button onClick={onMenuClick} className="text-gray-500 hover:text-gray-900">
           <Menu className="w-6 h-6" />
@@ -226,7 +227,7 @@ const LifeModule: React.FC<LifeModuleProps> = ({ onMenuClick }) => {
             <div className="p-6 overflow-y-auto custom-scrollbar bg-gray-50/50">
               <div
                 className="prose prose-sm prose-gray max-w-none text-gray-600 bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
-                dangerouslySetInnerHTML={{ __html: analysis }}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(analysis) }}
               />
             </div>
             <div className="p-4 bg-gray-50 border-t border-gray-100 flex justify-end">

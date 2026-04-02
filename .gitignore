@@ -33,3 +33,9 @@ sync_test_error.txt
 tsc_errors_latest.txt
 tsc_output*.txt
 all_tests_output.txt
+
+# Debug and analysis files
+*.txt
+*.log
+!CMakeLists.txt
+!robots.txt
