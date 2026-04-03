@@ -89,72 +89,106 @@ export const DetailedBudgetWidget: React.FC<DetailedBudgetWidgetProps> = ({ deta
                 </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-6">
-                {activeBudgets.length > 0 ? activeBudgets.map((cat, idx) => {
-                    const hasBudget = cat.limit > 0;
-                    const isOverLimit = hasBudget && cat.total > cat.limit;
-                    const isNoBudgetDefined = !hasBudget && cat.total > 0;
-                    const percent = hasBudget ? Math.min(100, (cat.total / cat.limit) * 100) : (cat.total > 0 ? 100 : 0);
+            <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-8">
+                {activeBudgets.length > 0 ? (
+                    <>
+                        {/* Categorías con Presupuesto Definido */}
+                        <div className="space-y-6">
+                            {activeBudgets.filter(c => c.limit > 0).map((cat, idx) => {
+                                const percent = Math.min(100, (cat.total / cat.limit) * 100);
+                                const isOverLimit = cat.total > cat.limit;
+                                
+                                let colorClass = "bg-emerald-500";
+                                if (isOverLimit) colorClass = "bg-red-500";
+                                else if (percent > 85) colorClass = "bg-amber-500";
 
-                    let colorClass = "bg-slate-300 dark:bg-onyx-700"; // Default for no budget
-                    if (isOverLimit) colorClass = "bg-red-500";
-                    else if (hasBudget && percent > 85) colorClass = "bg-amber-500";
-                    else if (hasBudget) colorClass = "bg-emerald-500";
-
-                    return (
-                        <div key={idx} className="flex flex-col gap-3">
-                            {/* Category Header */}
-                            <div className="flex justify-between items-center group cursor-default">
-                                <span className="text-sm font-bold text-slate-800 dark:text-slate-200">{cat.name}</span>
-                                <div className="flex items-baseline gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
-                                    <span className={cn("text-sm font-black tabular-nums",
-                                        isOverLimit ? "text-red-600 dark:text-red-400" : "text-slate-900 dark:text-white"
-                                    )}>
-                                        {formatCurrency(cat.total)}
-                                    </span>
-                                    <span className="text-[10px] font-bold text-slate-400">/ {hasBudget ? formatCurrency(cat.limit) : '∞'}</span>
-                                </div>
-                            </div>
-
-                            {/* Category Progress */}
-                            <div className="flex flex-col gap-1.5 mt-1">
-                                <div className="w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-1.5 overflow-hidden">
-                                    <div
-                                        className={cn("h-full rounded-full transition-all duration-500", colorClass)}
-                                        style={{ width: `${percent}%` }}
-                                    />
-                                </div>
-                                <div className="flex justify-between items-center text-[10px] font-bold mt-0.5">
-                                    <span className={cn(isOverLimit ? "text-red-500" : "text-slate-400")}>
-                                        {hasBudget ? Math.round(percent) + '% consumido' : 'Sin presupuesto definido'}
-                                    </span>
-                                    {isOverLimit ? (
-                                        <span className="text-red-500">+{formatCurrency(cat.total - cat.limit)} extra</span>
-                                    ) : isNoBudgetDefined ? (
-                                        <span className="text-slate-500 dark:text-slate-400">Sin límite</span>
-                                    ) : (
-                                        <span className="text-slate-500 dark:text-slate-400">{formatCurrency(cat.limit - cat.total)} margen</span>
-                                    )}
-                                </div>
-                            </div>
-
-                            {/* Subcategories */}
-                            {cat.subcategories.length > 0 && cat.total > 0 && (
-                                <div className="pl-3 border-l-2 border-slate-100 dark:border-onyx-800 flex flex-col gap-1.5 mt-1">
-                                    {cat.subcategories.map((sub, sIdx) => {
-                                        if (sub.total === 0) return null;
-                                        return (
-                                            <div key={sIdx} className="flex justify-between items-center text-xs">
-                                                <span className="text-slate-500 font-medium truncate pr-2">{sub.name}</span>
-                                                <span className="font-bold text-slate-600 dark:text-slate-400 tabular-nums">{formatCurrency(sub.total)}</span>
+                                return (
+                                    <div key={idx} className="flex flex-col gap-3">
+                                        <div className="flex justify-between items-center group cursor-default">
+                                            <span className="text-sm font-bold text-slate-800 dark:text-slate-200">{cat.name}</span>
+                                            <div className="flex items-baseline gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
+                                                <span className={cn("text-sm font-black tabular-nums",
+                                                    isOverLimit ? "text-red-600 dark:text-red-400" : "text-slate-900 dark:text-white"
+                                                )}>
+                                                    {formatCurrency(cat.total)}
+                                                </span>
+                                                <span className="text-[10px] font-bold text-slate-400">/ {formatCurrency(cat.limit)}</span>
                                             </div>
-                                        );
-                                    })}
-                                </div>
-                            )}
+                                        </div>
+
+                                        <div className="flex flex-col gap-1.5 mt-1">
+                                            <div className="w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-1.5 overflow-hidden">
+                                                <div
+                                                    className={cn("h-full rounded-full transition-all duration-500", colorClass)}
+                                                    style={{ width: `${percent}%` }}
+                                                />
+                                            </div>
+                                            <div className="flex justify-between items-center text-[10px] font-bold mt-0.5">
+                                                <span className={cn(isOverLimit ? "text-red-500" : "text-slate-400")}>
+                                                    {Math.round(percent)}% consumido
+                                                </span>
+                                                {isOverLimit ? (
+                                                    <span className="text-red-500">+{formatCurrency(cat.total - cat.limit)} extra</span>
+                                                ) : (
+                                                    <span className="text-slate-500 dark:text-slate-400">{formatCurrency(cat.limit - cat.total)} margen</span>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {cat.subcategories.length > 0 && cat.total > 0 && (
+                                            <div className="pl-3 border-l-2 border-slate-100 dark:border-onyx-800 flex flex-col gap-1.5 mt-1">
+                                                {cat.subcategories.map((sub, sIdx) => {
+                                                    if (sub.total === 0) return null;
+                                                    return (
+                                                        <div key={sIdx} className="flex justify-between items-center text-xs">
+                                                            <span className="text-slate-500 font-medium truncate pr-2">{sub.name}</span>
+                                                            <span className="font-bold text-slate-600 dark:text-slate-400 tabular-nums">{formatCurrency(sub.total)}</span>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
                         </div>
-                    )
-                }) : (
+
+                        {/* Categorías sin Presupuesto */}
+                        {activeBudgets.filter(c => c.limit === 0 && c.total > 0).length > 0 && (
+                            <div className="pt-6 border-t border-slate-100 dark:border-onyx-800/80">
+                                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Gastos Pendientes de Definir</h4>
+                                <div className="space-y-4">
+                                    {activeBudgets.filter(c => c.limit === 0 && c.total > 0).map((cat, idx) => (
+                                        <div key={idx} className="flex flex-col gap-2">
+                                            <div className="flex justify-between items-center bg-slate-50 dark:bg-onyx-800/40 p-3 rounded-xl border border-slate-100 dark:border-onyx-800">
+                                                <span className="text-xs font-bold text-slate-700 dark:text-slate-300">{cat.name}</span>
+                                                <div className="flex items-center gap-3">
+                                                    <span className="text-sm font-black text-slate-900 dark:text-white tabular-nums">{formatCurrency(cat.total)}</span>
+                                                </div>
+                                            </div>
+                                            {cat.subcategories.length > 0 && cat.total > 0 && (
+                                                <div className="pl-4 flex flex-col gap-1.5">
+                                                    {cat.subcategories.map((sub, sIdx) => {
+                                                        if (sub.total === 0) return null;
+                                                        return (
+                                                            <div key={sIdx} className="flex justify-between items-center text-xs">
+                                                                <span className="text-slate-500 font-medium truncate pr-2">{sub.name}</span>
+                                                                <span className="font-bold text-slate-400 tabular-nums">{formatCurrency(sub.total)}</span>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                    <button className="w-full mt-2 py-2.5 border-2 border-dashed border-slate-200 dark:border-onyx-700 text-slate-500 dark:text-slate-400 text-xs font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-onyx-800 transition-colors">
+                                        Configurar Presupuestos
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </>
+                ) : (
                     <div className="flex flex-col items-center justify-center text-center h-full py-10 opacity-50">
                         <TrendingUp className="w-8 h-8 text-slate-400 mb-2" />
                         <span className="text-xs text-slate-500 font-medium">Aún no hay presupuestos establecidos<br />ni gastos registrados este mes.</span>

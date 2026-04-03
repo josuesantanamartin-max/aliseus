@@ -15,12 +15,13 @@ import {
     ArrowUpRight,
     ArrowDownRight,
     CalendarCheck,
-    Layers
+    Layers,
+    AlertTriangle,
+    ArrowRight
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { DetailedBudgetWidget } from './finance/DetailedBudgetWidget';
-import { AiInsightsWidget } from '../widgets/AiInsightsWidget';
 
 export interface PendingFixedPayment {
     id: string;
@@ -342,52 +343,303 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
     // Helper color chooser for chart
     const chartColor = monthBalance >= 0 ? '#10b981' : '#64748b';
 
+    const recentTransactions = [...transactions]
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .slice(0, 5);
+
+
+    // ==========================================
+    // LÓGICA DE CABECERA INTELIGENTE
+    // ==========================================
+    const smartHeader = useMemo(() => {
+        const monthName = selectedDate.toLocaleString('es-ES', { month: 'long', year: 'numeric' });
+        const capMonth = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+        
+        const pendingCount = fixedPayments.pendingItems ? fixedPayments.pendingItems.length : 0;
+        const hasPendingPayments = pendingCount > 0;
+        const budgetPercent = globalBudgetLimit > 0 ? (globalBudgetSpent / globalBudgetLimit) : 0;
+        const isOverBudgetLimit = budgetPercent >= 0.9;
+        const isNegativeBalance = monthBalance < 0;
+
+        let title = "";
+        let colorTheme: 'emerald' | 'amber' | 'rose' | 'slate' = 'emerald';
+        
+        // Prioridad 1: Pagos pendientes urgentes
+        if (hasPendingPayments) {
+            title = `Tienes ${pendingCount} pago${pendingCount > 1 ? 's' : ''} pendiente${pendingCount > 1 ? 's' : ''}`;
+            colorTheme = "amber";
+        } 
+        // Prioridad 2: Alerta Presupuesto
+        else if (isOverBudgetLimit) {
+            title = globalBudgetSpent > globalBudgetLimit 
+                ? "Has superado el presupuesto del mes" 
+                : "Estás al límite del presupuesto";
+            colorTheme = "rose";
+        } 
+        // Prioridad 3: Balance en negativo
+        else if (isNegativeBalance) {
+            title = "Tu balance del mes va en negativo";
+            colorTheme = "rose";
+        } 
+        // Todo controlado
+        else {
+            title = "Vas dentro de presupuesto este mes";
+            colorTheme = "emerald";
+        }
+
+        return {
+            title,
+            colorTheme,
+            dateLabel: capMonth,
+            pendingCount
+        };
+    }, [selectedDate, fixedPayments, globalBudgetSpent, globalBudgetLimit, monthBalance]);
+
+    // Color definitions for smart header
+    const themeStyles = {
+        emerald: 'bg-emerald-50 border-emerald-100 dark:bg-emerald-900/10 dark:border-emerald-800/30 text-emerald-900 dark:text-emerald-100',
+        amber: 'bg-amber-50 border-amber-100 dark:bg-amber-900/10 dark:border-amber-800/30 text-amber-900 dark:text-amber-100',
+        rose: 'bg-rose-50 border-rose-100 dark:bg-rose-900/10 dark:border-rose-800/30 text-rose-900 dark:text-rose-100',
+        slate: 'bg-slate-50 border-slate-100 dark:bg-slate-900/10 dark:border-slate-800/30 text-slate-900 dark:text-slate-100',
+    };
+    const highlightStyles = {
+        emerald: 'text-emerald-600 dark:text-emerald-400',
+        amber: 'text-amber-600 dark:text-amber-400',
+        rose: 'text-rose-600 dark:text-rose-400',
+        slate: 'text-slate-600 dark:text-slate-400',
+    };
+
     return (
-        <div className="flex flex-col gap-6 w-full max-w-7xl mx-auto px-4 lg:px-0">
+        <div className="flex flex-col gap-6 w-full max-w-7xl mx-auto px-4 lg:px-0 pb-12">
 
             {/* ========================================== */}
-            {/* AI INSIGHTS WIDGET                         */}
+            {/* CABECERA DIARIA INTELIGENTE                */}
             {/* ========================================== */}
-            <AiInsightsWidget />
+            <div className={`p-6 md:p-8 rounded-[2rem] border flex flex-col md:flex-row md:items-center justify-between gap-6 transition-colors duration-300 ${themeStyles[smartHeader.colorTheme]}`}>
+                <div className="flex flex-col gap-2">
+                    <p className="text-sm font-bold tracking-widest uppercase opacity-70">
+                        {smartHeader.dateLabel}
+                    </p>
+                    <h2 className="text-2xl md:text-3xl font-black tracking-tight leading-tight">
+                        {smartHeader.title}
+                    </h2>
+                    <div className="flex flex-wrap items-center gap-2 mt-2">
+                        <span className="px-3 py-1 rounded-full bg-black/5 dark:bg-white/10 text-sm font-semibold whitespace-nowrap">
+                            <span className="opacity-70 font-medium mr-1">Gastados</span>{formatCurrency(globalBudgetSpent)}
+                        </span>
+                        <span className="text-black/20 dark:text-white/20">•</span>
+                        <span className="px-3 py-1 rounded-full bg-black/5 dark:bg-white/10 text-sm font-semibold whitespace-nowrap">
+                            <span className="opacity-70 font-medium mr-1">Restantes</span>{formatCurrency(globalBudgetRemaining)}
+                        </span>
+                        <span className="text-black/20 dark:text-white/20">•</span>
+                        <span className={`px-3 py-1 rounded-full bg-white/50 dark:bg-black/50 text-sm font-semibold whitespace-nowrap shadow-sm ${smartHeader.pendingCount > 0 ? highlightStyles.amber : 'opacity-80'}`}>
+                            {smartHeader.pendingCount} pagos pendientes
+                        </span>
+                    </div>
+                </div>
+
+                <div className="shrink-0 flex items-center">
+                    <button className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-black/40 border border-black/10 dark:border-white/10 font-semibold shadow-sm hover:shadow-md transition-all active:scale-95 group">
+                        <span>Ver desglose</span>
+                        <ArrowRight className="w-4 h-4 opacity-70 group-hover:translate-x-1 transition-transform" />
+                    </button>
+                </div>
+            </div>
 
             {/* ========================================== */}
-            {/* ROW 1: THE 4 TOP WIDGETS */}
+            {/* FILA 1: OPERATIVIDAD Y ACCIÓN (HOY)        */}
+            {/* ========================================== */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                {/* --- Próximos Pagos Fijos --- */}
+                <div className="col-span-1 flex flex-col">
+                    <div className={cn(
+                        "rounded-3xl p-6 border shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full min-h-[380px] transition-all duration-300",
+                        fixedPayments.pendingItems && fixedPayments.pendingItems.length > 0
+                            ? "bg-amber-50/30 dark:bg-amber-900/10 border-amber-200 dark:border-amber-800/50"
+                            : "bg-white dark:bg-onyx-900 border-slate-100 dark:border-onyx-800/80"
+                    )}>
+                        <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                <CalendarCheck className={cn("w-4 h-4", 
+                                    fixedPayments.pendingItems && fixedPayments.pendingItems.length > 0 ? "text-amber-500" : "text-slate-400"
+                                )} />
+                                Pagos Fijos de este Mes
+                            </h3>
+                            <div className="flex items-baseline gap-2">
+                                <span className="text-xl font-black text-slate-900 dark:text-white tabular-nums">{formatCurrency(fixedPayments.paid)}</span>
+                                <span className="text-xs font-bold text-slate-400">/ {formatCurrency(fixedPayments.expected)}</span>
+                            </div>
+                        </div>
+
+                        <div className="w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-1.5 mb-3 overflow-hidden shrink-0">
+                            <div
+                                className="h-full bg-blue-600 dark:bg-blue-500 rounded-full transition-all duration-500"
+                                style={{ width: `${Math.min(100, (fixedPayments.paid / Math.max(1, fixedPayments.expected)) * 100)}% ` }}
+                            />
+                        </div>
+
+                        <div className="flex justify-between items-center text-xs font-bold mb-4 shrink-0 border-b border-transparent pb-2">
+                            <span className="text-slate-500">
+                                {fixedPayments.items.length} recibos procesados
+                            </span>
+                            <span className={cn(
+                                "px-3 py-1 rounded-full",
+                                (!fixedPayments.pendingItems || fixedPayments.pendingItems.length === 0) 
+                                    ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+                                    : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                            )}>
+                                {(!fixedPayments.pendingItems || fixedPayments.pendingItems.length === 0) 
+                                    ? "Todo al día" 
+                                    : `${fixedPayments.pendingItems.length} pendientes`}
+                            </span>
+                        </div>
+
+                        {/* Listado */}
+                        <div className="flex-1 overflow-y-auto custom-scrollbar pr-1 -mr-1 space-y-3">
+                            {fixedPayments.pendingItems && fixedPayments.pendingItems.length > 0 && (
+                                <div className="space-y-2">
+                                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest sticky top-0 bg-amber-50/90 dark:bg-onyx-900/90 backdrop-blur-sm py-1 z-10">Pendientes</h4>
+                                    {fixedPayments.pendingItems.map((item) => (
+                                        <div key={item.id} className="flex justify-between items-center bg-white dark:bg-onyx-800 p-3 rounded-2xl shadow-sm border border-slate-100 dark:border-onyx-700">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400">
+                                                    <AlertTriangle className="w-4 h-4" />
+                                                </div>
+                                                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 truncate">{item.category}</span>
+                                            </div>
+                                            <span className="text-sm font-black text-slate-900 dark:text-white tabular-nums">{formatCurrency(item.remainingAmount)}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {fixedPayments.items && fixedPayments.items.length > 0 && (
+                                <div className="space-y-2 mt-4">
+                                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest sticky top-0 bg-white/90 dark:bg-onyx-900/90 backdrop-blur-sm py-1 z-10">Ya Pagados</h4>
+                                    {fixedPayments.items.map((tx) => (
+                                        <div key={tx.id} className="flex justify-between items-center bg-slate-50 dark:bg-onyx-800/50 p-3 rounded-xl border border-transparent">
+                                            <span className="text-xs font-medium text-slate-600 dark:text-slate-400 truncate mr-2">{tx.description || tx.category}</span>
+                                            <span className="text-xs font-bold text-slate-400 dark:text-slate-500 line-through tabular-nums">{formatCurrency(tx.amount)}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {fixedPayments.items.length === 0 && (!fixedPayments.pendingItems || fixedPayments.pendingItems.length === 0) && (
+                                <div className="flex flex-col items-center justify-center h-full text-center py-6">
+                                    <div className="w-12 h-12 bg-slate-50 dark:bg-onyx-800 rounded-full flex items-center justify-center mb-3">
+                                        <CalendarCheck className="w-5 h-5 text-slate-400" />
+                                    </div>
+                                    <p className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Sin previsión de pagos</p>
+                                    <p className="text-xs font-medium text-slate-500 mb-4 px-4">
+                                        Registra tus recibos fijos (alquiler, luz, suscripciones) para saber cuánto dinero quedará realmente libre a fin de mes.
+                                    </p>
+                                    <button className="px-4 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900 text-white text-xs font-bold rounded-xl transition-colors">
+                                        Configurar pagos fijos
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                {/* --- Movimientos Recientes --- */}
+                <div className="col-span-1 flex flex-col">
+                    <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] h-full min-h-[380px] flex flex-col">
+                        <div className="flex justify-between items-center mb-6 shrink-0">
+                            <h3 className="text-sm font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+                                <Activity className="w-4 h-4 text-indigo-500" />
+                                Movimientos Recientes
+                            </h3>
+                            <button className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-3 py-1.5 rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors uppercase tracking-wider">
+                                Historial completo
+                            </button>
+                        </div>
+                        <div className="flex flex-col flex-1 space-y-3 overflow-y-auto custom-scrollbar pr-1 -mr-1">
+                            {recentTransactions.map(tx => (
+                                <div key={tx.id} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-onyx-800/40 rounded-2xl border border-slate-100 dark:border-onyx-700/50 transition-all hover:bg-slate-100 dark:hover:bg-onyx-800 group">
+                                    <div className="flex items-center gap-4">
+                                        <div className={cn("w-10 h-10 rounded-2xl flex items-center justify-center shrink-0", 
+                                            tx.type === 'INCOME' ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400" 
+                                            : "bg-rose-100 text-rose-600 dark:bg-rose-900/30 dark:text-rose-400"
+                                        )}>
+                                            {tx.type === 'INCOME' ? <ArrowDownRight className="w-5 h-5" /> : <ArrowUpRight className="w-5 h-5" />}
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-bold text-slate-800 dark:text-slate-200 line-clamp-1">{tx.description || tx.category}</p>
+                                            <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mt-0.5">{tx.category} &bull; {new Date(tx.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</p>
+                                        </div>
+                                    </div>
+                                    <div className={cn("text-lg font-black tabular-nums tracking-tight shrink-0 pl-2", 
+                                        tx.type === 'INCOME' ? "text-emerald-600 dark:text-emerald-400" : "text-slate-800 dark:text-slate-200"
+                                    )}>
+                                        {tx.type === 'INCOME' ? '+' : '-'}{formatCurrency(tx.amount)}
+                                    </div>
+                                </div>
+                            ))}
+                            
+                            {recentTransactions.length === 0 && (
+                                <div className="flex flex-col items-center justify-center h-full text-center py-6">
+                                    <div className="w-12 h-12 bg-slate-50 dark:bg-onyx-800 rounded-full flex items-center justify-center mb-3">
+                                        <Activity className="w-5 h-5 text-slate-400" />
+                                    </div>
+                                    <p className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Sin historial de pagos</p>
+                                    <p className="text-xs font-medium text-slate-500 mb-4 px-4">
+                                        Conecta tus cuentas bancarias o añade tus gastos manuales para que el panel cobre vida.
+                                    </p>
+                                    <button className="px-4 py-2 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 dark:bg-indigo-900/30 dark:hover:bg-indigo-900/50 dark:text-indigo-300 text-xs font-bold rounded-xl transition-colors">
+                                        Vincular banco
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            {/* ========================================== */}
+            {/* FILA 2: CONTEXTO Y ANÁLISIS (KPIs)         */}
             {/* ========================================== */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
                 {/* 1. Saldo Disponible */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
                     <div>
                         <div className="flex items-center gap-2 mb-2">
                             <Wallet className="w-4 h-4 text-slate-400" />
-                            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Saldo Disponible</h3>
+                            <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Liquidez Disponible</h3>
                         </div>
-                        <div className="text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
+                        <div className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
                             {formatCurrency(totalBalance)}
                         </div>
                     </div>
 
                     <div className="flex flex-col gap-1.5 mt-4 pt-4 border-t border-slate-100 dark:border-onyx-800/80">
-                        {liquidAccounts.map(a => (
+                        {liquidAccounts.slice(0, 2).map(a => (
                             <div key={a.id} className="flex justify-between items-center text-xs">
                                 <span className="text-slate-500 font-medium truncate mr-2">{a.name}</span>
                                 <span className="font-bold text-slate-700 dark:text-slate-300 tabular-nums">{formatCurrency(a.balance)}</span>
                             </div>
                         ))}
-                        {accounts.some(a => ['CREDIT', 'DEBIT'].includes(a.type)) && (
-                            <p className="text-[10px] text-slate-400 font-medium mt-1">Tarjetas excluidas del disponible</p>
+                        {liquidAccounts.length > 2 && (
+                            <div className="text-[10px] text-slate-400 font-medium mt-1">+{liquidAccounts.length - 2} cuentas más</div>
+                        )}
+                        {liquidAccounts.length === 0 && (
+                            <div className="text-xs text-slate-400">Sin liquidez registrada</div>
                         )}
                     </div>
                 </div>
 
                 {/* 2. Total Ahorro */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between relative overflow-hidden">
+                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between relative overflow-hidden">
                     <div className="z-10">
                         <div className="flex items-center gap-2 mb-2">
                             <PiggyBank className="w-4 h-4 text-sky-500" />
-                            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Total Ahorro</h3>
+                            <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Ahorro y Patrimonio</h3>
                         </div>
-                        <div className="text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
+                        <div className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
                             {formatCurrency(totalSavings)}
                         </div>
                         <div className="flex items-center gap-1.5 mt-1 text-xs font-bold text-sky-600 dark:text-sky-400">
@@ -396,71 +648,67 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-1.5 mt-4 pt-4 border-t border-slate-100 dark:border-onyx-800/80 z-10">
-                        {savingsAccounts.map(a => (
-                            <div key={a.id} className="flex justify-between items-center text-xs">
-                                <span className="text-slate-500 font-medium truncate mr-2">{a.name}</span>
-                                <span className="font-bold text-slate-700 dark:text-slate-300 tabular-nums">{formatCurrency(a.balance)}</span>
-                            </div>
-                        ))}
-                        {savingsAccounts.length === 0 && (
-                            <div className="text-xs text-slate-400 font-medium">No hay cuentas de ahorro</div>
-                        )}
-                    </div>
                     <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-sky-50 dark:bg-sky-500/5 rounded-full blur-2xl pointer-events-none"></div>
                 </div>
 
                 {/* 3. Balance del Mes */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
                     <div className="flex items-center gap-2 mb-2">
                         <Activity className="w-4 h-4 text-slate-400" />
-                        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Balance del Mes</h3>
+                        <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Balance del Mes</h3>
                     </div>
                     <div>
-                        <div className={cn("text-3xl font-black tabular-nums tracking-tight flex items-center gap-2",
-                            monthBalance >= 0 ? "text-emerald-500" : "text-slate-900 dark:text-white"
+                        <div className={cn("text-2xl lg:text-3xl font-black tabular-nums tracking-tight flex items-center gap-2 leading-none",
+                            monthBalance >= 0 ? "text-emerald-500" : "text-rose-500"
                         )}>
                             {formatCurrency(monthBalance)}
-                            {monthBalance >= 0 ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5 text-red-500" />}
+                            {monthBalance >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
                         </div>
-                        <div className="flex items-center gap-3 mt-1 text-xs">
-                            <span className="text-slate-500 font-medium flex items-center gap-1">
-                                <ArrowUpRight className="w-3 h-3 text-emerald-500" />
-                                {formatCurrency(monthlyIncome)}
-                            </span>
-                            <span className="text-slate-500 font-medium flex items-center gap-1">
-                                <ArrowDownRight className="w-3 h-3 text-red-400" />
-                                {formatCurrency(monthlyExpenses)}
-                            </span>
+                        <div className="flex items-center gap-2 mt-3 w-full">
+                            <div className="flex flex-col flex-1 bg-slate-50 dark:bg-onyx-800 p-2 rounded-xl border border-slate-100 dark:border-onyx-700/50">
+                                <span className="text-[9px] text-slate-500 dark:text-slate-400 font-bold uppercase mb-0.5">Ingresado</span>
+                                <span className="text-emerald-600 dark:text-emerald-400 font-black text-xs">
+                                    {formatCurrency(monthlyIncome)}
+                                </span>
+                            </div>
+                            <div className="flex flex-col flex-1 bg-slate-50 dark:bg-onyx-800 p-2 rounded-xl border border-slate-100 dark:border-onyx-700/50">
+                                <span className="text-[9px] text-slate-500 dark:text-slate-400 font-bold uppercase mb-0.5">Gastado</span>
+                                <span className="text-rose-600 dark:text-rose-400 font-black text-xs">
+                                    {formatCurrency(monthlyExpenses)}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 {/* 4. Control Rápido Presupuesto */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
                     <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
                             <Target className="w-4 h-4 text-blue-500" />
-                            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Presupuesto</h3>
+                            <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Presupuesto Globlal</h3>
                         </div>
                     </div>
                     <div>
-                        <div className="flex items-baseline gap-1 text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
+                        <div className="flex items-baseline gap-1 text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
                             {formatCurrency(globalBudgetLimit)}
-                            <span className="text-base font-bold text-slate-400">/ {formatCurrency(globalBudgetSpent)}</span>
+                        </div>
+                        
+                        <div className="text-xs font-bold text-slate-400 mb-2">
+                            Límite mensual
                         </div>
 
-                        <div className="mt-3 w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-1.5 mb-2 overflow-hidden">
+                        <div className="mt-2 w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-1.5 mb-2 overflow-hidden">
                             <div
-                                className={cn("h-full rounded-full", globalBudgetSpent > globalBudgetLimit ? "bg-red-500" : "bg-blue-600")}
+                                className={cn("h-full rounded-full", globalBudgetSpent > globalBudgetLimit ? "bg-rose-500" : "bg-blue-600")}
                                 style={{ width: `${Math.min(100, (globalBudgetSpent / Math.max(1, globalBudgetLimit)) * 100)}% ` }}
                             />
                         </div>
 
-                        <div className="text-xs font-bold text-slate-500 dark:text-slate-400 flex justify-between">
-                            <span>Gastado</span>
-                            <span className={cn(globalBudgetRemaining === 0 ? "text-red-500" : "text-blue-600 dark:text-blue-400")}>
-                                Restan {formatCurrency(globalBudgetRemaining)}
+                        <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 flex justify-between uppercase">
+                            <span>Gastado {formatCurrency(globalBudgetSpent)}</span>
+                            <span className={cn(globalBudgetRemaining === 0 ? "text-rose-500" : "text-blue-600 dark:text-blue-400")}>
+                                Quedan {formatCurrency(globalBudgetRemaining)}
                             </span>
                         </div>
                     </div>
@@ -469,19 +717,17 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
             </div>
 
             {/* ========================================== */}
-            {/* ROW 2: MAIN GRID (CHART & DETAILS)         */}
+            {/* FILA 3: ESTRUCTURAL Y TENDENCIAS           */}
             {/* ========================================== */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                {/* ---------- LEFT COLUMN (Span 2) ---------- */}
-                <div className="lg:col-span-2 flex flex-col gap-6">
-
-                    {/* Evolución Chart */}
-                    <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col">
+                {/* Columna Principal: Gráfico Evolutivo */}
+                <div className="lg:col-span-2 flex flex-col">
+                    <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                             <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                <Activity className="w-4 h-4 text-slate-400" />
-                                Evolución del Dinero
+                                <Layers className="w-4 h-4 text-slate-400" />
+                                Histórico de Liquidez
                             </h3>
 
                             {/* Filters */}
@@ -519,8 +765,8 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                             </div>
                         </div>
 
-                        {/* The Chart */}
-                        <div className="h-[280px] w-full">
+                        {/* Chart */}
+                        <div className="h-[280px] md:h-[350px] w-full mt-auto">
                             <ResponsiveContainer width="100%" height="100%">
                                 <AreaChart data={chartData} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
                                     <defs>
@@ -565,80 +811,11 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                             </ResponsiveContainer>
                         </div>
                     </div>
-
-                    {/* Pagos Fijos */}
-                    <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full">
-                        <div className="flex items-center justify-between mb-2">
-                            <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                <CalendarCheck className="w-4 h-4 text-slate-400" />
-                                Pagos Fijos del Mes
-                            </h3>
-                            <div className="flex items-baseline gap-2">
-                                <span className="text-xl font-black text-slate-900 dark:text-white tabular-nums">{formatCurrency(fixedPayments.paid)}</span>
-                                <span className="text-xs font-bold text-slate-400">/ {formatCurrency(fixedPayments.expected)}</span>
-                            </div>
-                        </div>
-
-                        <div className="w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-1.5 mb-2 overflow-hidden shrink-0">
-                            <div
-                                className="h-full bg-blue-600 dark:bg-blue-500 rounded-full"
-                                style={{ width: `${Math.min(100, (fixedPayments.paid / Math.max(1, fixedPayments.expected)) * 100)}% ` }}
-                            />
-                        </div>
-
-                        <div className="flex justify-between items-center text-xs font-bold mb-4 shrink-0">
-                            <span className="text-slate-500">
-                                {fixedPayments.items.length} pagados
-                            </span>
-                            <span className="text-slate-800 dark:text-slate-300">
-                                {fixedPayments.pendingItems ? fixedPayments.pendingItems.length : 0} pendientes
-                            </span>
-                        </div>
-
-                        {/* Contenedor scrolleable */}
-                        <div className="flex-1 overflow-y-auto custom-scrollbar pr-1 -mr-1 space-y-3 min-h-[140px] max-h-[160px]">
-                            {/* Pendientes */}
-                            {fixedPayments.pendingItems && fixedPayments.pendingItems.length > 0 && (
-                                <div className="space-y-2">
-                                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest sticky top-0 bg-white/90 dark:bg-onyx-900/90 backdrop-blur-sm py-1 z-10">Pendientes</h4>
-                                    {fixedPayments.pendingItems.map((item) => (
-                                        <div key={item.id} className="flex justify-between items-center bg-slate-50 dark:bg-onyx-800/50 p-2 rounded-xl">
-                                            <span className="text-xs font-bold text-slate-700 dark:text-slate-300 truncate mr-2">{item.category}</span>
-                                            <span className="text-xs font-black text-slate-900 dark:text-white tabular-nums">{formatCurrency(item.remainingAmount)}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-
-                            {/* Pagados */}
-                            {fixedPayments.items && fixedPayments.items.length > 0 && (
-                                <div className="space-y-2">
-                                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest sticky top-0 bg-white/90 dark:bg-onyx-900/90 backdrop-blur-sm py-1 z-10">Pagados</h4>
-                                    {fixedPayments.items.map((tx) => (
-                                        <div key={tx.id} className="flex justify-between items-center bg-slate-50 dark:bg-onyx-800/50 p-2 rounded-xl">
-                                            <span className="text-xs font-medium text-slate-600 dark:text-slate-400 truncate mr-2">{tx.description || tx.category}</span>
-                                            <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">{formatCurrency(tx.amount)}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-
-                            {fixedPayments.items.length === 0 && (!fixedPayments.pendingItems || fixedPayments.pendingItems.length === 0) && (
-                                <div className="text-center text-xs text-slate-400 py-4">
-                                    No hay pagos fijos programados.
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
                 </div>
 
-                {/* ---------- RIGHT COLUMN (Span 1) ---------- */}
-                <div className="lg:col-span-1">
-
-                    {/* Presupuesto Detallado Mensual */}
+                {/* Columna Derecha: Presupuesto Detallado */}
+                <div className="lg:col-span-1 flex flex-col">
                     <DetailedBudgetWidget detailedBudget={detailedBudget} />
-
                 </div>
 
             </div>
