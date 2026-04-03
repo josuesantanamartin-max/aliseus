@@ -14,27 +14,27 @@ interface SidebarProps {
 
 const SIDEBAR_TEXTS = {
   ES: {
-    dashboard: 'Aura',
-    finance: 'Finanzas',
-    life: 'Vida',
+    dashboard: 'Aura Dashboard',
+    finance: 'Control Financiero',
+    life: 'Gestión Vida',
     settings: 'Ajustes',
     help: 'Ayuda',
     logout: 'Salir',
     suite: 'Aliseus'
   },
   EN: {
-    dashboard: 'Aura',
-    finance: 'Finance',
-    life: 'Life',
+    dashboard: 'Aura Dashboard',
+    finance: 'Finance Control',
+    life: 'Life Management',
     settings: 'Settings',
     help: 'Help',
     logout: 'Log Out',
     suite: 'Aliseus'
   },
   FR: {
-    dashboard: 'Aura',
-    finance: 'Finances',
-    life: 'Vie',
+    dashboard: 'Aura Dashboard',
+    finance: 'Gestion Finances',
+    life: 'Gestion Vie',
     settings: 'Paramètres',
     help: 'Aide',
     logout: 'Quitter',

@@ -10,11 +10,11 @@ interface AuraThemeBarProps {
 }
 
 const THEMES = [
-    { id: 'finances' as const, label: 'Finanzas', icon: Wallet, color: 'brand' },
-    { id: 'kitchen' as const, label: 'Cocina', icon: Utensils, color: 'orange' },
-    { id: 'travel' as const, label: 'Viajes', icon: Plane, color: 'sky' },
-    { id: 'family' as const, label: 'Familia', icon: Users, color: 'rose' },
-    { id: 'investments' as const, label: 'Inversión', icon: TrendingUp, color: 'emerald' },
+    { id: 'finances' as const, label: 'Mi Economía', icon: Wallet, color: 'brand' },
+    { id: 'kitchen' as const, label: 'Mi Cocina', icon: Utensils, color: 'orange' },
+    { id: 'travel' as const, label: 'Mis Viajes', icon: Plane, color: 'sky' },
+    { id: 'family' as const, label: 'Mi Familia', icon: Users, color: 'rose' },
+    { id: 'investments' as const, label: 'Mis Inversiones', icon: TrendingUp, color: 'emerald' },
 ];
 
 export default function AuraThemeBar({ activeTheme, onThemeChange }: AuraThemeBarProps) {
