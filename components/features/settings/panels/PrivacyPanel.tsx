@@ -57,8 +57,8 @@ export const PrivacyPanel = () => {
                 weeklyPlans: useLifeStore.getState().weeklyPlans,
             },
             dashboardData: {
-                layouts: useUserStore.getState().dashboardLayouts,
-                widgets: useUserStore.getState().dashboardWidgets,
+                layouts: (useUserStore.getState() as any).dashboardLayouts ?? [],
+                widgets: (useUserStore.getState() as any).dashboardWidgets ?? [],
             },
             automationData: {
                 rules: useUserStore.getState().automationRules,

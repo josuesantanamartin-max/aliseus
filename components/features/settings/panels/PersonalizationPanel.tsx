@@ -2,17 +2,15 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Layout, Palette, Zap } from 'lucide-react';
 import { useUserStore } from '../../../../store/useUserStore';
-import { DEFAULT_WIDGETS } from '../../../../constants';
 
 export const PersonalizationPanel = () => {
-    const { theme, setTheme, setDashboardWidgets, language } = useUserStore();
+    const { theme, setTheme, language } = useUserStore();
 
     const isSpanish = language === 'ES';
 
     const handleResetLayout = () => {
-        if (window.confirm(isSpanish ? '¿Estás seguro de resetear el diseño del dashboard?' : 'Are you sure you want to reset the dashboard layout?')) {
-            setDashboardWidgets(DEFAULT_WIDGETS);
-        }
+        // TODO: implement when dashboardWidgets are part of useUserStore
+        alert(isSpanish ? 'Función disponible próximamente.' : 'Feature coming soon.');
     };
 
     return (
