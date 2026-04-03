@@ -53,7 +53,7 @@ export const ArticleImageGallery: React.FC<ArticleImageGalleryProps> = ({ images
                         onError={(e) => {
                             // Fallback for missing images
                             const target = e.target as HTMLImageElement;
-                            target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="450"%3E%3Crect fill="%23f3f4f6" width="800" height="450"/%3E%3Ctext fill="%239ca3af" font-family="sans-serif" font-size="24" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3EScreenshot Placeholder%3C/text%3E%3C/svg%3E';
+                            target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="450"%3E%3Crect fill="%23f3f4f6" width="800" height="450"/%3E%3Ctext fill="%239ca3af" font-family="sans-serif" font-size="22" x="50%25" y="50%25" text-anchor="middle" dominant-baseline="middle"%3EImagen no disponible%3C/text%3E%3C/svg%3E';
                         }}
                     />
                 </div>

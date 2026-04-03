@@ -7,15 +7,15 @@ export const FamilySharedCalendar: React.FC = () => {
     const familyEvents = useLifeStore(state => state.familyEvents);
     const addFamilyEvent = useLifeStore(state => state.addFamilyEvent);
 
-    const handleAddTestEvent = () => {
+    const handleAddEvent = () => {
         const types: FamilyEvent['type'][] = ['MEDICAL', 'SPORT', 'EDUCATION', 'SOCIAL'];
         const randomType = types[Math.floor(Math.random() * types.length)];
 
         addFamilyEvent({
             id: crypto.randomUUID(),
-            title: `Nuevo Evento ${Math.floor(Math.random() * 1000)}`,
+            title: 'Nuevo evento familiar',
             time: 'Mañana, 12:00',
-            location: 'Centro de la ciudad',
+            location: 'Por confirmar',
             type: randomType
         });
     };
@@ -32,7 +32,7 @@ export const FamilySharedCalendar: React.FC = () => {
                     </div>
                 </div>
                 <button
-                    onClick={handleAddTestEvent}
+                    onClick={handleAddEvent}
                     className="p-2 bg-gray-50 text-gray-400 hover:text-purple-600 hover:bg-purple-50 rounded-xl transition-all"
                 >
                     <Plus className="w-5 h-5" />
@@ -42,7 +42,7 @@ export const FamilySharedCalendar: React.FC = () => {
             <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-4">
                 {familyEvents.length === 0 ? (
                     <div className="text-center text-gray-400 text-sm py-4">
-                        No hay eventos próximos.
+                        Aún no hay eventos esta semana. Añade el primero.
                     </div>
                 ) : (
                     familyEvents.map(event => (
@@ -53,7 +53,10 @@ export const FamilySharedCalendar: React.FC = () => {
                                         event.type === 'EDUCATION' ? 'bg-emerald-50 text-emerald-600' :
                                             'bg-purple-50 text-purple-600'
                                     }`}>
-                                    {event.type}
+                                    {event.type === 'MEDICAL' ? 'Médico'
+                                        : event.type === 'SPORT' ? 'Deporte'
+                                        : event.type === 'EDUCATION' ? 'Educación'
+                                        : 'Social'}
                                 </span>
                                 <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-purple-400 transition-colors" />
                             </div>

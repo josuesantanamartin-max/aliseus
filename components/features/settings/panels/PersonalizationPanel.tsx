@@ -9,8 +9,8 @@ export const PersonalizationPanel = () => {
     const isSpanish = language === 'ES';
 
     const handleResetLayout = () => {
+        // La restauración del layout estará disponible en la próxima versión
         // TODO: implement when dashboardWidgets are part of useUserStore
-        alert(isSpanish ? 'Función disponible próximamente.' : 'Feature coming soon.');
     };
 
     return (

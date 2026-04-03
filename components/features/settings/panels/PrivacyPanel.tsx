@@ -30,7 +30,7 @@ export const PrivacyPanel = () => {
                 userId: userProfile?.id || 'demo',
                 gdprCompliant: true,
                 dataRetentionPolicy: 'Data is retained as long as your account is active',
-                dpoContact: 'dpo@aliseus.com'
+                dpoContact: 'privacidad@aliseus.com'
             },
             userData: {
                 profile: userProfile,
