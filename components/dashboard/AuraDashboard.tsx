@@ -128,7 +128,7 @@ const AuraDashboard: React.FC = () => {
 
                         {activeTheme === 'family' && (
                             <div className="mx-auto w-full space-y-8 pb-12">
-                                <AuraFamilyOverview selectedDate={selectedDate} />
+                                <AuraFamilyOverview />
                             </div>
                         )}
 

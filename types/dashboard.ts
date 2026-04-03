@@ -43,6 +43,16 @@ export interface DashboardWidget {
     order: number;
 }
 
+// Alias usado por FinanceSummary para el control de visibilidad de widgets financieros
+export type FinanceWidgetType =
+    | 'HEALTH_SCORE'
+    | 'KPI_CARDS'
+    | 'BUDGET_GOALS_SUMMARY'
+    | 'CHART_EVOLUTION'
+    | 'CHART_FLOW'
+    | 'TOP_EXPENSES'
+    | 'RECENT_LIST';
+
 export interface WidgetLayout {
     i: string;
     x: number;
