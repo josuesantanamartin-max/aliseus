@@ -262,7 +262,7 @@ export default function AuraInvestmentsOverview({ onNavigate }: AuraInvestmentsO
                         </div>
                     </div>
                     <div className="relative z-10">
-                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400 mb-1.5">Salud Financiera</p>
+                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400 mb-1.5">Estructura Patrimonial</p>
                         <div className="flex items-baseline gap-2 mb-3">
                             <span className="text-xl font-black text-slate-900 dark:text-white">{formatEUR(totalAssets)}</span>
                             <span className="text-sm text-slate-300 dark:text-onyx-600">/</span>
@@ -325,7 +325,7 @@ export default function AuraInvestmentsOverview({ onNavigate }: AuraInvestmentsO
                             </div>
                             <span className="text-[10px] font-black uppercase tracking-[0.18em] text-white/80">Libertad Financiera · 20 años</span>
                         </div>
-                        <p className="text-sm font-medium text-white/80 mb-1">Vas construyendo hacia</p>
+                        <p className="text-sm font-medium text-white/80 mb-1">Tu capital acumulado generará una renta de</p>
                         <div className="flex items-baseline gap-1.5 mb-2">
                             <h3 className="text-3xl font-black text-white tracking-tight drop-shadow-sm">{formatEUR(retirementProjection.monthlyIncome)}</h3>
                             <span className="text-sm font-bold text-white/80">/mes</span>
@@ -352,8 +352,8 @@ export default function AuraInvestmentsOverview({ onNavigate }: AuraInvestmentsO
                             </div>
                             <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">Recomendación Aura</p>
                         </div>
-                        <p className="text-sm font-bold text-slate-700 dark:text-slate-200 leading-relaxed mb-3">
-                            Para acelerar tu ritmo hacia libertad financiera, la aportación mensual óptima estimada es:
+                        <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed mb-3">
+                            Para potenciar esa renta futura y alcanzar <strong className="font-black text-slate-900 dark:text-white">{formatEUR(retirementProjection.monthlyIncome * 1.5)}/mes</strong>, tu aportación nueva mensual (además del capital actual) debería ser:
                         </p>
                         <div className="flex items-baseline gap-1.5 mb-3">
                             <span className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">{formatEUR(recommendedMonthly)}</span>
