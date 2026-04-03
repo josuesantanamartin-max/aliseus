@@ -98,6 +98,7 @@ const AuraDashboard: React.FC = () => {
                     selectedDate={activeTheme === 'finances' ? selectedDate : undefined}
                     onDateChange={activeTheme === 'finances' ? setSelectedDate : undefined}
                     onNavigate={handleNavigate}
+                    activeModule={activeTheme}
                 />
 
                 {/* --- THEME NAVIGATION --- */}

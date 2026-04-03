@@ -8,6 +8,7 @@ interface IntelligenceHeaderProps {
     selectedDate?: Date;
     onDateChange?: (date: Date) => void;
     onNavigate?: (app: string, tab?: string) => void;
+    activeModule?: string;
 }
 
 
@@ -15,6 +16,7 @@ export default function IntelligenceHeader({
     selectedDate,
     onDateChange,
     onNavigate,
+    activeModule,
 }: IntelligenceHeaderProps) {
     const { userProfile } = useUserStore();
     const firstName = userProfile?.full_name?.split(' ')[0] || 'Usuario';
@@ -64,7 +66,7 @@ export default function IntelligenceHeader({
 
             {/* Center: Aura Command Bar */}
             <div className="flex-1 max-w-2xl px-4 hidden md:block">
-                <AuraCommandBar onNavigate={onNavigate} />
+                <AuraCommandBar onNavigate={onNavigate} activeModule={activeModule} />
             </div>
 
             {/* Right: Custom Date Selector (only shown in finance view) */}
