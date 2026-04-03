@@ -1,8 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { Language, QuickAction, AutomationRule, DashboardWidget, SyncLog, DashboardLayout, UserPersona, FamilyMember } from '../types';
-import { DEFAULT_RULES, DEFAULT_WIDGETS, DEFAULT_LAYOUTS } from '../constants';
-import { getWidgetCategory } from '../components/dashboard/widgetCategories';
+import { Language, QuickAction, AutomationRule, SyncLog, UserPersona, FamilyMember } from '../types';
+import { DEFAULT_RULES } from '../constants';
 
 export interface CookiePreferences {
     essential: boolean;
@@ -33,14 +32,8 @@ interface UserState {
     quickAction: QuickAction | null;
 
     automationRules: AutomationRule[];
-    dashboardWidgets: DashboardWidget[];
     syncLogs: SyncLog[];
 
-    // Dashboard Customization
-    dashboardLayouts: DashboardLayout[];
-    activeLayoutId: string;
-    activeDashboardView: 'FINANCE' | 'KITCHEN' | 'LIFE';
-    isEditMode: boolean;
     userProfile: {
         id?: string;
         email?: string;
@@ -115,21 +108,6 @@ interface UserActions {
     setQuickAction: (action: QuickAction | null) => void;
 
     setAutomationRules: (rules: AutomationRule[] | ((prev: AutomationRule[]) => AutomationRule[])) => void;
-    setDashboardWidgets: (widgets: DashboardWidget[] | ((prev: DashboardWidget[]) => DashboardWidget[])) => void;
-
-    // Dashboard Layout Actions
-    setActiveLayout: (layoutId: string) => void;
-    setActiveDashboardView: (view: 'FINANCE' | 'KITCHEN' | 'LIFE') => void;
-    saveLayout: (layout: DashboardLayout) => void;
-    deleteLayout: (layoutId: string) => void;
-    setEditMode: (enabled: boolean) => void;
-    addWidgetToLayout: (widgetId: string) => void;
-    removeWidgetFromLayout: (widgetId: string) => void;
-    toggleWidgetVisibility: (widgetId: string) => void;
-    changeWidgetSize: (widgetId: string, newSize: 'kpi' | 'half' | 'wide' | 'sidebar' | 'full') => void;
-
-    duplicateLayout: (layoutId: string) => void;
-    renameLayout: (layoutId: string, newName: string) => void;
 
     addSyncLog: (log: SyncLog) => void;
     setLastSyncTime: (time: string) => void;
@@ -159,12 +137,7 @@ export const useUserStore = create<UserState & UserActions>()(
             isFabOpen: false,
             quickAction: null,
             automationRules: DEFAULT_RULES,
-            dashboardWidgets: DEFAULT_WIDGETS,
             syncLogs: [],
-            dashboardLayouts: DEFAULT_LAYOUTS,
-            activeLayoutId: 'default',
-            activeDashboardView: 'FINANCE',
-            isEditMode: false,
             userProfile: null,
 
             // Search Defaults
@@ -225,172 +198,6 @@ export const useUserStore = create<UserState & UserActions>()(
             setAutomationRules: (updater) => set((state) => ({
                 automationRules: typeof updater === 'function' ? updater(state.automationRules) : updater
             })),
-            setDashboardWidgets: (updater) => set((state) => ({
-                dashboardWidgets: typeof updater === 'function' ? updater(state.dashboardWidgets) : updater
-            })),
-
-            // Dashboard Layout Actions
-            setActiveLayout: (layoutId) => set((state) => {
-                const exists = state.dashboardLayouts.some(l => l.id === layoutId);
-                if (exists) return { activeLayoutId: layoutId };
-
-                // If it's a default layout that's missing (migration), add it
-                const defaultLayout = DEFAULT_LAYOUTS.find(l => l.id === layoutId);
-                if (defaultLayout) {
-                    return {
-                        dashboardLayouts: [...state.dashboardLayouts, defaultLayout],
-                        activeLayoutId: layoutId
-                    };
-                }
-
-                return { activeLayoutId: layoutId };
-            }),
-            setActiveDashboardView: (view) => set({ activeDashboardView: view }),
-
-            setEditMode: (enabled) => set({ isEditMode: enabled }),
-
-            saveLayout: (layout) => set((state) => {
-                const existing = state.dashboardLayouts.find(l => l.id === layout.id);
-                if (existing) {
-                    return {
-                        dashboardLayouts: state.dashboardLayouts.map(l =>
-                            l.id === layout.id ? { ...layout, updatedAt: new Date().toISOString() } : l
-                        )
-                    };
-                }
-                return {
-                    dashboardLayouts: [...state.dashboardLayouts, layout]
-                };
-            }),
-
-            deleteLayout: (layoutId) => set((state) => ({
-                dashboardLayouts: state.dashboardLayouts.filter(l => l.id !== layoutId)
-            })),
-
-            addWidgetToLayout: (widgetId) => set((state) => {
-                // Determine target layout based on widget category
-                const category = getWidgetCategory(widgetId);
-
-                let targetLayoutId = state.activeLayoutId;
-
-                if (category === 'FINANCE') targetLayoutId = 'default';
-                else if (category === 'KITCHEN') targetLayoutId = 'kitchen';
-                else if (category === 'LIFE') targetLayoutId = 'life';
-
-                // Ensure target layout exists
-                let targetLayout = state.dashboardLayouts.find(l => l.id === targetLayoutId);
-
-                if (!targetLayout) {
-                    // Fallback to active if target not found (e.g. deleted or not migrated)
-                    targetLayoutId = state.activeLayoutId;
-                    targetLayout = state.dashboardLayouts.find(l => l.id === targetLayoutId);
-                }
-
-                if (!targetLayout) {
-                    targetLayout = state.dashboardLayouts[0];
-                    targetLayoutId = targetLayout?.id || 'default';
-                }
-
-                if (!targetLayout) return state;
-
-                // Don't add if already in layout
-                if (targetLayout.widgets.some(w => w.i === widgetId)) return state;
-
-                const newWidget = {
-                    i: widgetId,
-                    x: 0,
-                    y: 9999, // CSS Grid ignores x/y — placed at end of render order
-                    w: 6,
-                    h: 2,
-                    visible: true,
-                    sizeOverride: 'half' as any
-                };
-
-                return {
-                    dashboardLayouts: state.dashboardLayouts.map(l =>
-                        l.id === targetLayoutId
-                            ? { ...l, widgets: [...l.widgets, newWidget], updatedAt: new Date().toISOString() }
-                            : l
-                    )
-                };
-            }),
-
-            removeWidgetFromLayout: (widgetId) => set((state) => {
-                const activeLayout = state.dashboardLayouts.find(l => l.id === state.activeLayoutId);
-                if (!activeLayout) return state;
-
-                return {
-                    dashboardLayouts: state.dashboardLayouts.map(l =>
-                        l.id === state.activeLayoutId
-                            ? { ...l, widgets: l.widgets.filter(w => w.i !== widgetId), updatedAt: new Date().toISOString() }
-                            : l
-                    )
-                };
-            }),
-
-            toggleWidgetVisibility: (widgetId) => set((state) => {
-                const activeLayout = state.dashboardLayouts.find(l => l.id === state.activeLayoutId);
-                if (!activeLayout) return state;
-
-                return {
-                    dashboardLayouts: state.dashboardLayouts.map(l =>
-                        l.id === state.activeLayoutId
-                            ? {
-                                ...l,
-                                widgets: l.widgets.map(w =>
-                                    w.i === widgetId ? { ...w, visible: !w.visible } : w
-                                ),
-                                updatedAt: new Date().toISOString()
-                            }
-                            : l
-                    )
-                };
-            }),
-
-            changeWidgetSize: (widgetId, newSize) => set((state) => {
-                const activeLayout = state.dashboardLayouts.find(l => l.id === state.activeLayoutId);
-                if (!activeLayout) return state;
-
-                return {
-                    dashboardLayouts: state.dashboardLayouts.map(l =>
-                        l.id === state.activeLayoutId
-                            ? {
-                                ...l,
-                                widgets: l.widgets.map(w =>
-                                    w.i === widgetId ? { ...w, sizeOverride: newSize } : w
-                                ),
-                                updatedAt: new Date().toISOString()
-                            }
-                            : l
-                    )
-                };
-            }),
-
-
-            duplicateLayout: (layoutId) => set((state) => {
-                const layout = state.dashboardLayouts.find(l => l.id === layoutId);
-                if (!layout) return state;
-
-                const newLayout: DashboardLayout = {
-                    ...layout,
-                    id: `${layout.id}-copy-${Date.now()}`,
-                    name: `${layout.name} (Copia)`,
-                    isDefault: false,
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString(),
-                };
-
-                return {
-                    dashboardLayouts: [...state.dashboardLayouts, newLayout],
-                    activeLayoutId: newLayout.id
-                };
-            }),
-
-            renameLayout: (layoutId, newName) => set((state) => ({
-                dashboardLayouts: state.dashboardLayouts.map(l =>
-                    l.id === layoutId ? { ...l, name: newName, updatedAt: new Date().toISOString() } : l
-                )
-            })),
 
             addSyncLog: (log) => set((state) => ({
                 syncLogs: [
@@ -422,11 +229,7 @@ export const useUserStore = create<UserState & UserActions>()(
                 currency: state.currency,
                 theme: state.theme,
                 automationRules: state.automationRules,
-                dashboardWidgets: state.dashboardWidgets,
                 subscription: state.subscription,
-                dashboardLayouts: state.dashboardLayouts,
-                activeLayoutId: state.activeLayoutId,
-                activeDashboardView: state.activeDashboardView,
                 hasCompletedOnboarding: state.hasCompletedOnboarding,
                 onboardingStep: state.onboardingStep,
                 onboardingFocus: state.onboardingFocus,

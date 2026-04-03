@@ -1,4 +1,4 @@
-import { CategoryStructure, DashboardWidget, AutomationRule, DashboardLayout } from './types';
+import { CategoryStructure, AutomationRule } from './types';
 
 // --- PURE CONSTANTS ---
 
@@ -26,144 +26,10 @@ export const INITIAL_CATEGORIES: CategoryStructure[] = [
   { id: 'cat_21', type: 'INCOME', name: 'Transferencia', subCategories: ['Desde otra cuenta', 'Reintegro Ahorros'] },
 ];
 
-export const DEFAULT_WIDGETS: DashboardWidget[] = [
-  { id: 'NET_WORTH', visible: true, order: 1 },
-  { id: 'MONTHLY_FLOW', visible: true, order: 2 },
-  { id: 'FINANCIAL_HEALTH', visible: true, order: 3 },
-  { id: 'UPCOMING_PAYMENTS', visible: true, order: 4 },
-  { id: 'CATEGORY_CHART', visible: true, order: 5 },
-  { id: 'TIMELINE_EVOLUTION', visible: true, order: 6 },
-  { id: 'EXPLORER', visible: true, order: 7 },
-  { id: 'ACTIVE_GOALS', visible: true, order: 8 },
-  { id: 'ACTIVE_DEBTS', visible: true, order: 9 },
-  { id: 'MONTHLY_GOALS', visible: true, order: 10 },
-  { id: 'SPENDING_FORECAST', visible: true, order: 11 },
-  { id: 'PROJECTION_WIDGET', visible: true, order: 12 },
-  { id: 'ANNUAL_COMPARISON', visible: false, order: 13 },
-  { id: 'SHOPPING_LIST', visible: true, order: 14 },
-  { id: 'TODAY_MENU', visible: true, order: 15 },
-  { id: 'FAMILY_AGENDA', visible: true, order: 16 },
-  { id: 'RECIPE_FAVORITES', visible: true, order: 17 },
-  { id: 'WEEKLY_PLAN', visible: true, order: 18 },
-  { id: 'UPCOMING_TRIPS', visible: true, order: 19 },
-  { id: 'FAMILY_TASKS', visible: true, order: 20 },
-  { id: 'CRITICAL_INVENTORY', visible: true, order: 21 },
-  { id: 'BUDGET_STATUS', visible: true, order: 22 },
-  { id: 'RECENT_TRANSACTIONS', visible: true, order: 23 },
-  { id: 'SAVINGS_RATE', visible: true, order: 24 },
-  { id: 'TOP_SPENDERS', visible: true, order: 25 },
-  { id: 'LOW_STOCK_PANTRY', visible: true, order: 26 },
-  { id: 'UPCOMING_BIRTHDAYS', visible: true, order: 27 },
-  { id: 'ALISEUS_INSIGHTS', visible: true, order: 28 },
-  { id: 'INTELLIGENT_TOMORROW', visible: true, order: 29 },
-];
 
 export const DEFAULT_RULES: AutomationRule[] = [
   { id: 'rule_1', name: 'Alerta Gasto Alto (>200€)', trigger: 'TRANSACTION_OVER_AMOUNT', threshold: 200, action: 'SEND_ALERT', isActive: true },
   { id: 'rule_2', name: 'Categoría Viaje Automática', trigger: 'TRIP_CREATED', action: 'CREATE_CATEGORY_FOR_TRIP', isActive: true },
 ];
 
-export const DEFAULT_LAYOUTS: DashboardLayout[] = [
-  {
-    id: 'default',
-    name: 'Finanzas',
-    description: 'Resumen financiero ejecutivo',
-    isDefault: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    widgets: [
-      // ROW 1: The Core 3-Column Layout (25% - 50% - 25%)
-      { i: 'NET_WORTH', x: 0, y: 0, w: 3, h: 2, visible: true, sizeOverride: 'kpi' as any }, // 25% Left
-      { i: 'CASHFLOW_WIDGET', x: 3, y: 0, w: 6, h: 2, visible: true, sizeOverride: 'half' as any }, // 50% Center
-      { i: 'INTELLIGENT_TOMORROW', x: 9, y: 0, w: 3, h: 2, visible: true, sizeOverride: 'sidebar' as any }, // 25% Right
-
-      // ROW 2: Contextual Data
-      { i: 'SAVINGS_RATE', x: 0, y: 2, w: 3, h: 2, visible: true, sizeOverride: 'kpi' as any }, // 25% Left
-      { i: 'UPCOMING_PAYMENTS', x: 3, y: 2, w: 6, h: 2, visible: true, sizeOverride: 'half' as any }, // 50% Center
-      { i: 'CATEGORY_DONUT_WIDGET', x: 9, y: 2, w: 3, h: 2, visible: true, sizeOverride: 'sidebar' as any }, // 25% Right
-
-      // ROW 3: Secondary KPIs
-      { i: 'ACTIVE_DEBTS', x: 0, y: 4, w: 3, h: 2, visible: true, sizeOverride: 'kpi' as any }, // 25% Left
-      { i: 'BUDGET_STATUS', x: 3, y: 4, w: 6, h: 2, visible: true, sizeOverride: 'half' as any }, // 50% Center
-      { i: 'ALISEUS_BRAIN_WIDGET', x: 9, y: 4, w: 3, h: 2, visible: true, sizeOverride: 'sidebar' as any }, // 25% Right
-
-      // ROW 4: Footer metrics
-      { i: 'RECENT_TRANSACTIONS', x: 0, y: 6, w: 3, h: 2, visible: true, sizeOverride: 'sidebar' as any }, // 25% Left
-      { i: 'MONTHLY_GOALS', x: 3, y: 6, w: 6, h: 2, visible: true, sizeOverride: 'half' as any }, // 50% Center
-      { i: 'ALISEUS_INSIGHTS', x: 9, y: 6, w: 3, h: 2, visible: true, sizeOverride: 'sidebar' as any }, // 25% Right
-    ],
-  },
-  {
-    id: 'kitchen',
-    name: 'Cocina',
-    description: 'Gestión de despensa y menú diario',
-    isDefault: false,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    widgets: [
-      { i: 'TODAY_MENU', x: 0, y: 0, w: 12, h: 2, visible: true },
-      { i: 'SHOPPING_LIST', x: 0, y: 2, w: 6, h: 4, visible: true },
-      { i: 'LOW_STOCK_PANTRY', x: 6, y: 2, w: 6, h: 4, visible: true },
-      { i: 'WEEKLY_PLAN', x: 0, y: 6, w: 12, h: 3, visible: true },
-      { i: 'RECIPE_FAVORITES', x: 0, y: 9, w: 12, h: 2, visible: true },
-    ],
-  },
-  {
-    id: 'life',
-    name: 'Vida',
-    description: 'Agenda familiar y bienestar personal',
-    isDefault: false,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    widgets: [
-      { i: 'INTELLIGENT_TOMORROW', x: 0, y: 0, w: 12, h: 2, visible: true },
-      { i: 'FAMILY_AGENDA', x: 0, y: 2, w: 12, h: 3, visible: true },
-      { i: 'FAMILY_TASKS', x: 0, y: 5, w: 6, h: 4, visible: true },
-      { i: 'UPCOMING_BIRTHDAYS', x: 6, y: 5, w: 6, h: 2, visible: true },
-      { i: 'UPCOMING_TRIPS', x: 6, y: 7, w: 6, h: 2, visible: true },
-    ],
-  },
-  {
-    id: 'detailed',
-    name: 'Vista Detallada',
-    description: 'Análisis profundo con todos los widgets',
-    isDefault: false,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    widgets: [
-      { i: 'NET_WORTH', x: 0, y: 0, w: 8, h: 2, visible: true },
-      { i: 'MONTHLY_FLOW', x: 8, y: 0, w: 4, h: 2, visible: true },
-      { i: 'FINANCIAL_HEALTH', x: 0, y: 2, w: 6, h: 2, visible: true },
-      { i: 'UPCOMING_PAYMENTS', x: 6, y: 2, w: 6, h: 2, visible: true },
-      { i: 'TIMELINE_EVOLUTION', x: 0, y: 4, w: 12, h: 3, visible: true },
-      { i: 'CATEGORY_CHART', x: 0, y: 7, w: 6, h: 3, visible: true },
-      { i: 'SPENDING_FORECAST', x: 6, y: 7, w: 6, h: 3, visible: true },
-      { i: 'ACTIVE_GOALS', x: 0, y: 10, w: 6, h: 2, visible: true },
-      { i: 'ACTIVE_DEBTS', x: 6, y: 10, w: 6, h: 2, visible: true },
-      { i: 'PROJECTION_WIDGET', x: 0, y: 12, w: 8, h: 3, visible: true },
-      { i: 'ACCOUNTS_SUMMARY', x: 8, y: 12, w: 4, h: 3, visible: true },
-      { i: 'ALISEUS_INSIGHTS', x: 0, y: 15, w: 6, h: 3, visible: true },
-      { i: 'BUDGET_STATUS', x: 6, y: 15, w: 6, h: 3, visible: true },
-      { i: 'EXPLORER', x: 0, y: 18, w: 12, h: 3, visible: true },
-      { i: 'RECENT_TRANSACTIONS', x: 0, y: 21, w: 6, h: 3, visible: true },
-      { i: 'TOP_SPENDERS', x: 6, y: 21, w: 6, h: 3, visible: true },
-      { i: 'SAVINGS_RATE', x: 0, y: 24, w: 3, h: 2, visible: true },
-      { i: 'LOW_STOCK_PANTRY', x: 3, y: 24, w: 6, h: 3, visible: true },
-      { i: 'UPCOMING_BIRTHDAYS', x: 9, y: 24, w: 3, h: 2, visible: true },
-    ],
-  },
-  {
-    id: 'minimal',
-    name: 'Vista Minimalista',
-    description: 'Solo lo esencial',
-    isDefault: false,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    widgets: [
-      { i: 'NET_WORTH', x: 0, y: 0, w: 8, h: 2, visible: true },
-      { i: 'MONTHLY_FLOW', x: 8, y: 0, w: 4, h: 2, visible: true },
-      { i: 'CATEGORY_CHART', x: 0, y: 2, w: 12, h: 3, visible: true },
-    ],
-  },
-];
 

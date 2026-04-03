@@ -13,9 +13,10 @@ function cn(...inputs: ClassValue[]) {
 interface LifeSnapshotProps {
     hideActivity?: boolean;
     hideNextTrip?: boolean;
+    hidePayments?: boolean;
 }
 
-export default function LifeSnapshot({ hideActivity, hideNextTrip }: LifeSnapshotProps) {
+export default function LifeSnapshot({ hideActivity, hideNextTrip, hidePayments }: LifeSnapshotProps) {
     const { trips } = useLifeStore();
     const { debts, transactions, goals } = useFinanceStore();
 
@@ -160,38 +161,40 @@ export default function LifeSnapshot({ hideActivity, hideNextTrip }: LifeSnapsho
                             </div>
                         </div>
                     ) : (
-                        <div className="flex flex-col gap-2 p-4 rounded-xl border border-dashed border-slate-200 dark:border-onyx-700 items-center justify-center text-center cursor-pointer hover:bg-slate-50 dark:hover:bg-onyx-800/50 transition-colors">
-                            <Plane className="w-5 h-5 text-slate-400 mb-1" />
-                            <span className="text-sm font-medium text-slate-600 dark:text-slate-400">Sin viajes programados</span>
-                            <span className="text-xs text-brand-500 font-medium">Planificar aventura &rarr;</span>
+                        <div className="flex flex-col gap-2 p-4 rounded-xl border border-dashed border-slate-200 dark:border-onyx-700 items-center justify-center text-center cursor-pointer hover:bg-slate-50 dark:hover:bg-onyx-800/50 transition-colors group">
+                            <Plane className="w-5 h-5 text-slate-400 mb-1 group-hover:scale-110 transition-transform" />
+                            <span className="text-sm font-bold text-slate-900 dark:text-white">Aún no hay viajes en el horizonte</span>
+                            <span className="text-xs text-brand-500 font-medium">¿Empezamos a soñar? &rarr;</span>
                         </div>
                     )
                 )}
 
                 {/* 4B: Upcoming Payments Calendar */}
-                <div className="flex flex-col gap-3">
-                    <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-rose-500" /> Pagos a 30 días
-                    </h3>
+                {!hidePayments && (
+                    <div className="flex flex-col gap-3">
+                        <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase flex items-center gap-2">
+                            <Calendar className="w-4 h-4 text-rose-500" /> Pagos a 30 días
+                        </h3>
 
-                    <div className="flex flex-col gap-2">
-                        {upcomingPayments.length > 0 ? upcomingPayments.map(payment => (
-                            <div key={payment.id} className="flex items-center justify-between text-sm py-1 border-b border-slate-100 dark:border-onyx-800/50 last:border-0 hover:px-2 transition-all cursor-pointer group rounded-sm hover:bg-white dark:hover:bg-onyx-900">
-                                <div className="flex items-center gap-3">
-                                    <span className="text-xs font-bold w-10 text-slate-400 dark:text-slate-500 group-hover:text-rose-500 transition-colors">
-                                        {payment.dueDate?.substring(0, 5)}
+                        <div className="flex flex-col gap-2">
+                            {upcomingPayments.length > 0 ? upcomingPayments.map(payment => (
+                                <div key={payment.id} className="flex items-center justify-between text-sm py-1 border-b border-slate-100 dark:border-onyx-800/50 last:border-0 hover:px-2 transition-all cursor-pointer group rounded-sm hover:bg-white dark:hover:bg-onyx-900">
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-xs font-bold w-10 text-slate-400 dark:text-slate-500 group-hover:text-rose-500 transition-colors">
+                                            {payment.dueDate?.substring(0, 5)}
+                                        </span>
+                                        <span className="font-medium text-slate-700 dark:text-slate-300 truncate max-w-[120px]">{payment.name}</span>
+                                    </div>
+                                    <span className="font-semibold text-slate-900 dark:text-white">
+                                        {(payment.minPayment || 0).toLocaleString('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })}
                                     </span>
-                                    <span className="font-medium text-slate-700 dark:text-slate-300 truncate max-w-[120px]">{payment.name}</span>
                                 </div>
-                                <span className="font-semibold text-slate-900 dark:text-white">
-                                    {(payment.minPayment || 0).toLocaleString('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })}
-                                </span>
-                            </div>
-                        )) : (
-                            <span className="text-sm text-slate-500">No hay pagos próximos.</span>
-                        )}
+                            )) : (
+                                <span className="text-sm text-slate-500">No hay pagos próximos.</span>
+                            )}
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {/* --- Zone 2: Family Activity --- */}
                 {!hideActivity && (

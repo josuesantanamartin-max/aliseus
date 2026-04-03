@@ -202,7 +202,7 @@ export default function AuraInvestmentsOverview({ selectedDate: selectedDateProp
                         </div>
                     </div>
                     <div className="relative z-10">
-                        <p className="text-xs font-bold text-onyx-400 dark:text-onyx-500 uppercase tracking-widest mb-1.5">
+                        <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.15em] mb-1.5">
                             Patrimonio Neto
                         </p>
                         <h3 className="text-3xl font-black text-onyx-900 dark:text-white tracking-tight">
@@ -226,7 +226,7 @@ export default function AuraInvestmentsOverview({ selectedDate: selectedDateProp
                         </div>
                     </div>
                     <div className="relative z-10">
-                        <p className="text-xs font-bold text-onyx-400 dark:text-onyx-500 uppercase tracking-widest mb-2">
+                        <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.15em] mb-2">
                             Distribución Balance
                         </p>
                         <div className="flex items-end gap-2 mb-2.5">
@@ -269,7 +269,7 @@ export default function AuraInvestmentsOverview({ selectedDate: selectedDateProp
                         </div>
                     </div>
                     <div className="relative z-10">
-                        <p className="text-xs font-bold text-onyx-400 dark:text-onyx-500 uppercase tracking-widest mb-1.5">
+                        <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.15em] mb-1.5">
                             Capital Activo
                         </p>
                         <h3 className="text-3xl font-black text-onyx-900 dark:text-white tracking-tight">
@@ -299,7 +299,7 @@ export default function AuraInvestmentsOverview({ selectedDate: selectedDateProp
                             <PiggyBank className="w-6 h-6 text-white" />
                         </div>
                         <div className="px-3 py-1.5 bg-black/20 rounded-full backdrop-blur-md border border-white/10">
-                             <span className="text-[10px] font-bold text-white/90 uppercase tracking-widest">
+                             <span className="text-[10px] font-bold text-white/90 uppercase tracking-[0.15em]">
                                 Objetivo a 20 años
                             </span>
                         </div>
@@ -329,8 +329,7 @@ export default function AuraInvestmentsOverview({ selectedDate: selectedDateProp
                 <div className="lg:col-span-2 flex flex-col">
                     <div className="bg-white dark:bg-onyx-900 border border-onyx-100 dark:border-onyx-800 rounded-3xl p-6 shadow-sm flex flex-col">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                            <h3 className="text-sm font-bold text-onyx-900 dark:text-white flex items-center gap-2">
-                                <LineChart className="w-4 h-4 text-indigo-500" />
+                            <h3 className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.15em]">
                                 Evolución del Capital Invertido
                             </h3>
 
@@ -405,15 +404,10 @@ export default function AuraInvestmentsOverview({ selectedDate: selectedDateProp
                 <div className="lg:col-span-1 flex flex-col gap-6">
                     {/* Portfolio Distribution Chart */}
                     <div className="bg-white dark:bg-onyx-900 border border-onyx-100 dark:border-onyx-800 rounded-3xl p-6 shadow-sm h-full flex flex-col">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center">
-                                <PieChartIcon className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-                            </div>
                             <div>
-                                <h3 className="font-bold text-onyx-900 dark:text-white">Distribución de Cartera</h3>
-                                <p className="text-[10px] font-bold text-onyx-400 dark:text-onyx-500 uppercase tracking-widest">Asignación de activos</p>
+                                <h3 className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.15em]">Distribución de Cartera</h3>
+                                <p className="text-[10px] font-bold text-onyx-400 dark:text-onyx-500 uppercase tracking-[0.15em]">Asignación de activos</p>
                             </div>
-                        </div>
                         
                         <div className="flex-1 flex flex-col justify-center">
                             <div className="h-48 w-full relative mb-4">
@@ -474,16 +468,11 @@ export default function AuraInvestmentsOverview({ selectedDate: selectedDateProp
             {/* HORIZONTAL ACCOUNTS SECTION */}
             <div className="bg-white dark:bg-onyx-900 border border-onyx-100 dark:border-onyx-800 rounded-3xl p-6 shadow-sm overflow-hidden">
                 <div className="flex justify-between items-center mb-6">
-                    <div className="flex items-center gap-3">
-                        <div className="p-2 bg-cyan-50 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 rounded-xl">
-                            <Wallet className="w-5 h-5" />
-                        </div>
-                        <div>
-                            <h3 className="text-base font-bold text-onyx-900 dark:text-white">Mis Cuentas</h3>
-                            <p className="text-[10px] text-onyx-400 dark:text-onyx-500 font-bold uppercase tracking-widest">
-                                {accounts.length} Cuentas Activas
-                            </p>
-                        </div>
+                    <div>
+                        <h3 className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.15em]">Mis Cuentas</h3>
+                        <p className="text-[10px] text-onyx-400 dark:text-onyx-500 font-bold uppercase tracking-[0.15em]">
+                            {accounts.length} Cuentas Activas
+                        </p>
                     </div>
                 </div>
 

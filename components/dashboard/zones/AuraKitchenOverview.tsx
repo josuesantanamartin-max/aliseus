@@ -36,8 +36,7 @@ function cn(...inputs: ClassValue[]) {
 function DetailedPantryWidget({ itemsByCategory }: { itemsByCategory: any[] }) {
     return (
         <div className="bg-white dark:bg-onyx-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full min-h-[300px]">
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-                <Layers className="w-5 h-5 text-slate-400" />
+            <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-6">
                 Despensa Detallada
             </h3>
             
@@ -56,7 +55,7 @@ function DetailedPantryWidget({ itemsByCategory }: { itemsByCategory: any[] }) {
                                     <span className="text-sm">{cat.name}</span>
                                 </span>
                                 <span className="font-bold text-slate-900 dark:text-white opacity-50">
-                                    {cat.totalCount} items
+                                    {cat.totalCount} {cat.totalCount === 1 ? 'producto' : 'productos'}
                                 </span>
                             </div>
                             
@@ -343,10 +342,10 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
 
     return (
         <div className="flex flex-col gap-6 w-full max-w-7xl mx-auto px-4 lg:px-0">
-            {/* ROW 1: CABECERA INTELIGENTE */}
+            {/* ROW 1: CABECERA INTELIGENTE (Capa 0) */}
             <div className={`p-6 md:p-8 rounded-[2.5rem] border flex flex-col xl:flex-row xl:items-center justify-between gap-6 transition-[background,border,color] duration-300 ${themeStyles[smartHeader.colorTheme]}`}>
                 <div className="flex flex-col gap-2">
-                    <p className="text-sm font-bold tracking-widest uppercase opacity-70">
+                    <p className="text-[11px] font-bold tracking-[0.2em] uppercase opacity-60">
                         {smartHeader.dateLabel}
                     </p>
                     <h2 className="text-2xl md:text-3xl font-black tracking-tight leading-tight max-w-3xl">
@@ -354,215 +353,232 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
                     </h2>
                     
                     {/* MICROESTADOS */}
-                    <div className="flex flex-wrap items-center gap-3 mt-4">
-                        <div className="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 rounded-xl px-4 py-2 flex items-center gap-2 backdrop-blur-sm">
-                            <TrendingDown className="w-4 h-4 opacity-60" />
-                            <span className="text-sm font-bold">Gasto del mes: {formatCurrency(foodSpendingThisMonth)}</span>
-                        </div>
-                        <div className="bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5 rounded-xl px-4 py-2 flex items-center gap-2 backdrop-blur-sm">
-                            <Leaf className="w-4 h-4 opacity-60" />
-                            <span className="text-sm font-bold">Frescura: {freshnessScore}/100</span>
-                        </div>
+                    <div className="flex flex-wrap items-center gap-2 mt-2">
+                        <span className="px-3 py-1 rounded-full bg-black/5 dark:bg-white/10 text-sm font-semibold whitespace-nowrap">
+                            <span className="opacity-70 font-medium mr-1">Gasto mes</span>{formatCurrency(foodSpendingThisMonth)}
+                        </span>
+                        <span className="text-black/20 dark:text-white/20">•</span>
+                        <span className="px-3 py-1 rounded-full bg-black/5 dark:bg-white/10 text-sm font-semibold whitespace-nowrap">
+                            <span className="opacity-70 font-medium mr-1">Frescura</span>{freshnessScore}/100
+                        </span>
                     </div>
                 </div>
                 
-                <div className="shrink-0 flex items-center self-start xl:self-center mt-2 xl:mt-0">
-                    <button className="flex items-center gap-2 px-6 py-3.5 rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 border border-transparent font-bold shadow-md hover:shadow-lg transition-all active:scale-95 group">
+                <div className="shrink-0 flex items-center self-start xl:self-center">
+                    <button className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-black/40 border border-black/10 dark:border-white/10 font-semibold shadow-sm hover:shadow-md transition-all active:scale-95 group text-sm">
                         <span>{smartHeader.actionLabel}</span>
                         <ArrowRight className="w-4 h-4 opacity-70 group-hover:translate-x-1 transition-transform" />
                     </button>
                 </div>
             </div>
 
-            {/* ROW 2: ESTADO DE HOY (Prioridad Operativa) */}
+            {/* ROW 2: ESTADO DE HOY / ACCIÓN (Capa 1 - 2 Cols) */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 
                 {/* 1. Comidas de Hoy */}
-                <div className="bg-white dark:bg-onyx-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_20px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
-                    <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center gap-3">
-                            <div className="p-3 bg-blue-50 dark:bg-blue-500/10 rounded-2xl">
-                                <Target className="w-6 h-6 text-blue-500" />
-                            </div>
-                            <div>
-                                <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-widest">Comidas Hoy</h3>
-                                <p className="text-xs font-bold text-slate-500 mt-1">Planificación Diaria</p>
-                            </div>
-                        </div>
-                        <div className="flex items-baseline gap-1 text-4xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
-                            {plannedMealsCount}
-                            <span className="text-xl font-bold text-slate-400">/ {totalMealsCount}</span>
+                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between h-full min-h-[380px]">
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <ChefHat className="w-4 h-4 text-slate-400" />
+                            Comidas de Hoy
+                        </h3>
+                        <div className="flex items-baseline gap-1">
+                            <span className="text-xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight">{plannedMealsCount}</span>
+                            <span className="text-xs font-bold text-slate-400">/ {totalMealsCount}</span>
                         </div>
                     </div>
 
-                    <div className="mt-2 w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-2 mb-4 overflow-hidden shadow-inner">
+                    <div className="w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-1.5 mb-3 overflow-hidden shrink-0">
                         <div
                             className={cn("h-full rounded-full transition-all duration-1000", plannedMealsCount === totalMealsCount ? "bg-emerald-500" : "bg-blue-600")}
                             style={{ width: `${(plannedMealsCount / totalMealsCount) * 100}%` }}
                         />
                     </div>
 
-                    <div className="text-sm font-bold flex justify-between items-center mb-6">
-                        <span className="text-slate-500">Estado</span>
-                        <span className={cn("px-4 py-1.5 rounded-xl font-bold text-xs max-w-[65%] text-right overflow-hidden text-ellipsis whitespace-nowrap", plannedMealsCount === totalMealsCount ? "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" : "bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400")}>
-                            {plannedMealsCount === 0 ? "Todavía no has planificado las comidas de hoy" : (plannedMealsCount === totalMealsCount ? "¡Día cubierto!" : `Falta: ${missing.join(', ')}`)}
+                    <div className="flex justify-between items-center text-xs font-bold mb-4 shrink-0 border-b border-transparent pb-2">
+                        <span className="text-slate-500">Planificación diaria</span>
+                        <span className={cn(
+                            "px-3 py-1 rounded-full",
+                            plannedMealsCount === totalMealsCount
+                                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+                                : "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                        )}>
+                            {plannedMealsCount === 0 ? "Sin planificar" : (plannedMealsCount === totalMealsCount ? "Día cubierto" : `Falta: ${missing.join(', ')}`)}
                         </span>
                     </div>
 
-                    {plannedMealsCount < totalMealsCount && (
-                        <button className="w-full py-4 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 text-white dark:text-slate-900 font-bold transition-colors">
-                            Planificar comidas de hoy
-                        </button>
-                    )}
+                    <div className="flex-1 overflow-y-auto custom-scrollbar pr-1 -mr-1 space-y-3">
+                        {plannedMealsCount > 0 ? (
+                             Object.entries(todayMeals).map(([type, meals]: [string, any[]]) => (
+                                meals.length > 0 && (
+                                    <div key={type} className="flex justify-between items-center bg-slate-50 dark:bg-onyx-800/50 p-3 rounded-2xl border border-slate-100 dark:border-onyx-700">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                                                {type === 'breakfast' && <Coffee className="w-4 h-4" />}
+                                                {type === 'lunch' && <ChefHat className="w-4 h-4" />}
+                                                {type === 'dinner' && <Moon className="w-4 h-4" />}
+                                            </div>
+                                            <span className="text-xs font-bold text-slate-700 dark:text-slate-300 truncate uppercase tracking-wider">{type === 'breakfast' ? 'Desayuno' : type === 'lunch' ? 'Comida' : 'Cena'}</span>
+                                        </div>
+                                        <span className="text-sm font-black text-slate-900 dark:text-white truncate max-w-[150px]">{meals[0]?.name}</span>
+                                    </div>
+                                )
+                             ))
+                        ) : (
+                            <div className="flex flex-col items-center justify-center h-full text-center py-6">
+                                <div className="w-12 h-12 bg-slate-50 dark:bg-onyx-800 rounded-full flex items-center justify-center mb-3">
+                                    <ChefHat className="w-5 h-5 text-slate-400" />
+                                </div>
+                                <p className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Nada previsto para hoy</p>
+                                <p className="text-xs font-medium text-slate-500 mb-4 px-4">Mira tus recetas favoritas y organiza el menú del día en un toque.</p>
+                                <button className="px-4 py-2 bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-xs font-bold rounded-xl transition-colors">Planificar hoy</button>
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 {/* 2. Lista de Compra */}
-                <div className="bg-white dark:bg-onyx-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_20px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full min-h-[300px]">
-                    <div className="flex items-center justify-between mb-6 shrink-0">
-                        <div className="flex items-center gap-3">
-                            <div className="p-3 bg-rose-50 dark:bg-rose-500/10 rounded-2xl">
-                                <ShoppingCart className="w-6 h-6 text-rose-500" />
-                            </div>
-                            <div>
-                                <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-widest">Lista de Compra</h3>
-                                <p className="text-xs font-bold text-slate-500 mt-1">Urgencias y requeridos</p>
-                            </div>
-                        </div>
-                        <div className="flex items-baseline gap-2">
-                            <span className="text-2xl font-black text-slate-900 dark:text-white tabular-nums">{lowStockItems.length + shoppingList.length}</span>
+                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full min-h-[380px]">
+                    <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <ShoppingCart className="w-4 h-4 text-slate-400" />
+                            Lista de Compra
+                        </h3>
+                        <div className="flex items-baseline gap-1">
+                            <span className="text-xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight">{lowStockItems.length + shoppingList.length}</span>
+                            <span className="text-xs font-bold text-slate-400">items</span>
                         </div>
                     </div>
 
-                    <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-4">
-                        {lowStockItems && lowStockItems.length > 0 && (
-                            <div className="space-y-2 mb-4">
-                                <h4 className="text-[10px] font-bold text-red-500 uppercase tracking-widest sticky top-0 bg-white/90 dark:bg-onyx-900/90 backdrop-blur-sm py-1 z-10 flex items-center gap-1">
-                                    <Flame className="w-3 h-3" /> Faltantes Urgentes
-                                </h4>
-                                {lowStockItems.map((item) => (
-                                    <div key={'us-'+item.id} className="flex justify-between items-center bg-red-50/50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 p-3 rounded-xl">
-                                        <span className="text-sm font-bold text-red-700 dark:text-red-400 truncate mr-2">{item.name}</span>
-                                        <span className="text-[10px] font-black text-red-900/50 dark:text-red-300/50 tabular-nums uppercase tracking-widest border border-red-200 dark:border-red-800 px-2 py-0.5 rounded-md bg-white/50 dark:bg-black/20">Stock bajo</span>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                    <div className="flex justify-between items-center text-xs font-bold mb-4 shrink-0 border-b border-transparent pb-2">
+                        <span className="text-slate-500">Urgencias y requeridos</span>
+                        <span className={cn(
+                            "px-3 py-1 rounded-full",
+                            (lowStockItems.length === 0) 
+                                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+                                : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                        )}>
+                            {lowStockItems.length === 0 ? "Sin urgencias" : `${lowStockItems.length} críticas`}
+                        </span>
+                    </div>
 
-                        {shoppingList && shoppingList.length > 0 && (
+                    <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-3">
+                        {lowStockItems.length > 0 && (
                             <div className="space-y-2">
-                                <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest sticky top-0 bg-white/90 dark:bg-onyx-900/90 backdrop-blur-sm py-1 z-10 flex items-center gap-1">Requeridos en Menú</h4>
-                                {shoppingList.map((item) => (
-                                    <div key={'sq-'+item.id} className="flex justify-between items-center bg-slate-50 dark:bg-onyx-800/50 p-3 rounded-xl border border-slate-100 dark:border-onyx-800">
-                                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300 truncate mr-2 flex items-center gap-2">
-                                            <div className="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600"/>
-                                            {item.name}
-                                        </span>
-                                        <span className="text-xs font-bold text-slate-500 dark:text-slate-500 tabular-nums">{item.quantity} {item.unit}</span>
+                                <h4 className="text-[10px] font-bold text-red-500 uppercase tracking-widest sticky top-0 bg-white/90 dark:bg-onyx-900/90 backdrop-blur-sm py-1 z-10">Faltantes Críticos</h4>
+                                {lowStockItems.slice(0, 3).map((item) => (
+                                    <div key={'us-'+item.id} className="flex justify-between items-center bg-red-50/50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 p-3 rounded-xl">
+                                        <span className="text-xs font-bold text-red-700 dark:text-red-400 truncate">{item.name}</span>
+                                        <Flame className="w-3 h-3 text-red-500 opacity-50" />
                                     </div>
                                 ))}
                             </div>
                         )}
 
-                        {shoppingList.length === 0 && lowStockItems.length === 0 && (
-                            <div className="text-center text-sm font-medium text-slate-400 pt-8 flex flex-col items-center gap-3">
-                                <Sparkles className="w-8 h-8 text-slate-300 dark:text-onyx-700 opacity-50" />
-                                {plannedMealsCount === 0 && totalPantryItems === 0 
-                                    ? "No hay compras sugeridas porque aún no hay menú o stock suficiente." 
-                                    : "Todo al día. No hay compras pendientes."}
+                        {shoppingList.length > 0 ? (
+                            <div className="space-y-2 mt-4">
+                                <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest sticky top-0 bg-white/90 dark:bg-onyx-900/90 backdrop-blur-sm py-1 z-10">Pendientes</h4>
+                                {shoppingList.slice(0, 5).map((item) => (
+                                    <div key={'sq-'+item.id} className="flex justify-between items-center bg-slate-50 dark:bg-onyx-800/50 p-3 rounded-xl border border-slate-100 dark:border-onyx-800">
+                                        <span className="text-xs font-medium text-slate-700 dark:text-slate-300 truncate mr-2">{item.name}</span>
+                                        <span className="text-[10px] font-bold text-slate-400 tabular-nums">{item.quantity} {item.unit}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : lowStockItems.length === 0 && (
+                            <div className="flex flex-col items-center justify-center h-full text-center py-6">
+                                <div className="w-12 h-12 bg-slate-50 dark:bg-onyx-800 rounded-full flex items-center justify-center mb-3">
+                                    <ShoppingCart className="w-5 h-5 text-slate-400" />
+                                </div>
+                                <p className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Lista vacía</p>
+                                <p className="text-xs font-medium text-slate-500 mb-4 px-4">Todo lo necesario está en stock. Los planes marchan bien.</p>
                             </div>
                         )}
                     </div>
                 </div>
-
             </div>
 
-            {/* ROW 3: ESTADO SEMANAL/MENSUAL */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Frescura */}
-                <div className="bg-slate-50 dark:bg-onyx-900/40 rounded-[2.5rem] p-8 md:p-10 border border-slate-100 dark:border-onyx-800/80 flex flex-col justify-center">
-                    <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6 flex items-center gap-2"><Leaf className="w-5 h-5"/> Nivel de Frescura</h3>
-                    <div className="text-5xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight mb-4 flex items-baseline gap-2">
-                        {freshnessScore} <span className="text-xl font-bold opacity-30">/ 100</span>
+            {/* ROW 3: SNAPSHOTS / KPIs (Capa 2 - 4 Cols) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* 1. Salud de Stock */}
+                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                    <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Salud de Stock</h3>
+                    <div className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight mt-1">
+                        {stockHealth}%
                     </div>
-                    <div className={`text-sm font-bold leading-relaxed ${expiringSoon3Days && expiringSoon3Days.length > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
-                        {expiringSoon3Days && expiringSoon3Days.length > 0 
-                            ? <span>Próximos a caducar en 3 días: <br/><span className="font-medium opacity-80 mt-1 block">{expiringSoon3Days.map((e: any) => e.name).join(', ')}</span></span>
-                            : 'Todo en fecha. Inmejorable.'}
-                    </div>
-                </div>
-
-                {/* Gasto Alimentos */}
-                <div className="bg-slate-50 dark:bg-onyx-900/40 rounded-[2.5rem] p-8 md:p-10 border border-slate-100 dark:border-onyx-800/80 flex flex-col justify-center relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-8 opacity-5">
-                       <TrendingDown className="w-32 h-32" />
-                    </div>
-                    <div className="relative z-10">
-                        <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6 flex items-center gap-2"><ShoppingCart className="w-5 h-5"/> Gasto Mensual Actual</h3>
-                        <div className="text-5xl font-black tabular-nums tracking-tight text-slate-900 dark:text-white mb-4">
-                            {formatCurrency(foodSpendingThisMonth)}
-                        </div>
-                        <p className={`text-sm font-bold ${diffPercent > 0 ? 'text-rose-500' : 'text-emerald-500'}`}>
-                            {diffPercent > 0 ? `Llevas ${formatCurrency(foodSpendingThisMonth - avgFoodSpending)} (${diffPercent}%) por encima de tu media mensual.` : `Llevas ${formatCurrency(Math.abs(foodSpendingThisMonth - avgFoodSpending))} por debajo de tu media.`}
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            {/* ROW 4: SALUD DE STOCK (Ancho Completo) */}
-            <div className="bg-slate-50 dark:bg-onyx-900/30 rounded-[2.5rem] p-8 md:p-12 border border-slate-100 dark:border-onyx-800/50 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-inner">
-                <div>
-                    <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6 flex items-center gap-2"><Activity className="w-5 h-5"/> Salud de Stock Estructural</h3>
-                    <div className="text-6xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight flex items-baseline">
-                        {stockHealth}<span className="text-3xl text-slate-400 ml-1">%</span>
-                    </div>
-                </div>
-                <div className="flex flex-col items-start md:items-end flex-shrink-0 max-w-sm">
-                    <p className={cn("text-base font-black px-6 py-3 rounded-2xl w-full text-center md:text-right border", healthLabel === 'Estable' ? 'bg-emerald-200/50 text-emerald-800 border-emerald-300/50 dark:border-emerald-800/50 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-amber-200/50 text-amber-800 border-amber-300/50 dark:border-amber-800/50 dark:bg-amber-900/30 dark:text-amber-400')}>
+                    <div className={cn("text-[10px] font-bold mt-2", stockHealth > 80 ? "text-emerald-600" : "text-amber-600")}>
                         {healthLabel}
-                    </p>
-                    {totalPantryItems === 0 && (
-                        <p className="mt-4 text-sm font-medium text-slate-500 md:text-right">
-                            Configurar tu despensa base te permite generar listas de compras sugeridas y evitar quedarte sin lo esencial.
-                        </p>
-                    )}
+                    </div>
+                </div>
+
+                {/* 2. Índice de Frescura */}
+                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                    <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Frescura Global</h3>
+                    <div className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight mt-1">
+                        {freshnessScore}<span className="text-sm font-bold opacity-30">/100</span>
+                    </div>
+                    <div className="text-[10px] font-bold text-slate-400 mt-2">
+                        {expiringSoon3Days.length} caducan pronto
+                    </div>
+                </div>
+
+                {/* 3. Gasto Mensual */}
+                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                    <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Inversión en Despensa</h3>
+                    <div className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight mt-1">
+                        {formatCurrency(foodSpendingThisMonth)}
+                    </div>
+                    <div className={cn("text-[10px] font-bold mt-2", diffPercent > 0 ? "text-rose-500" : "text-emerald-500")}>
+                        {diffPercent > 0 ? `+${diffPercent}% vs media` : `${diffPercent}% vs media`}
+                    </div>
+                </div>
+
+                {/* 4. Inventario Total */}
+                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                    <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Artículos en Despensa</h3>
+                    <div className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight mt-1">
+                        {totalPantryItems}
+                    </div>
+                    <div className="text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-wider">
+                        {pantryByCategory.length} categorías únicas
+                    </div>
                 </div>
             </div>
 
-            {/* ROW 5: DESPENSA DETALLADA */}
-            <div>
-                <DetailedPantryWidget itemsByCategory={pantryByCategory} />
-            </div>
-
-            {/* ROW 6: HISTÓRICO DE COMPRA */}
-            <div className="bg-white dark:bg-onyx-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col w-full">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2">
-                    <div>
-                        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Histórico de Compra</h3>
-                        {diffPercent < -50 && <span className="text-[10px] text-slate-400 font-medium">Nota: Variación alta. ¿Aún a principios de mes?</span>}
-                    </div>
-                    <div className="bg-slate-50 dark:bg-onyx-800 border border-slate-100 dark:border-onyx-700/50 rounded-xl p-1 flex">
-                        {(['1m', '6m', '1y'] as const).map(tf => (
-                            <button key={tf} onClick={() => setChartTimeframe(tf)} className={cn("px-4 py-1.5 text-xs font-bold rounded-lg transition-colors", chartTimeframe === tf ? "bg-white dark:bg-onyx-600 text-slate-900 dark:text-white shadow-sm" : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300")}>
-                                {tf}
-                            </button>
-                        ))}
-                    </div>
+            {/* ROW 4: DETALLES Y ANÁLISIS (Capa 3 - 2/3 + 1/3) */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2">
+                    <DetailedPantryWidget itemsByCategory={pantryByCategory} />
                 </div>
-                <div className="h-[200px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart data={chartData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
-                            <defs>
-                                <linearGradient id="colorSpent" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.2} />
-                                    <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                                </linearGradient>
-                            </defs>
-                            <XAxis dataKey="name" hide />
-                            <YAxis hide />
-                            <RechartsTooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px -5px rgba(0,0,0,0.1)' }} itemStyle={{ color: '#0f172a', fontWeight: 'bold' }} formatter={(value: number) => [formatCurrency(Number(value) || 0), 'Gastado']} labelStyle={{ color: '#64748b', fontSize: '12px', marginBottom: '4px' }} />
-                            <Area type="monotone" dataKey="spent" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorSpent)" activeDot={{ r: 6, strokeWidth: 0, fill: '#10b981' }} />
-                        </AreaChart>
-                    </ResponsiveContainer>
+                <div className="lg:col-span-1">
+                    <div className="bg-white dark:bg-onyx-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full">
+                        <div className="flex justify-between items-center mb-6">
+                            <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Evolución de Gasto en Compra</h3>
+                            <div className="bg-slate-50 dark:bg-onyx-800 border border-slate-100 dark:border-onyx-700/50 rounded-lg p-1 flex">
+                                {(['1m', '6m', '1y'] as const).map(tf => (
+                                    <button key={tf} onClick={() => setChartTimeframe(tf)} className={cn("px-2 py-1 text-[10px] font-bold rounded-md transition-colors", chartTimeframe === tf ? "bg-white dark:bg-onyx-600 text-slate-900 dark:text-white shadow-sm" : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300")}>
+                                        {tf}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="h-[200px] w-full mt-auto">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart data={chartData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                                    <defs>
+                                        <linearGradient id="colorSpent" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.2} />
+                                            <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                                        </linearGradient>
+                                    </defs>
+                                    <XAxis dataKey="name" hide />
+                                    <YAxis hide />
+                                    <RechartsTooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px -5px rgba(0,0,0,0.1)' }} itemStyle={{ color: '#0f172a', fontWeight: 'bold' }} formatter={(value: number) => [formatCurrency(Number(value) || 0), 'Gastado']} labelStyle={{ color: '#64748b', fontSize: '12px', marginBottom: '4px' }} />
+                                    <Area type="monotone" dataKey="spent" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorSpent)" activeDot={{ r: 6, strokeWidth: 0, fill: '#10b981' }} />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
                 </div>
             </div>
 

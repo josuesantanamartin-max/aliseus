@@ -366,24 +366,24 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
         
         // Prioridad 1: Pagos pendientes urgentes
         if (hasPendingPayments) {
-            title = `Tienes ${pendingCount} pago${pendingCount > 1 ? 's' : ''} pendiente${pendingCount > 1 ? 's' : ''}`;
+            title = `Tu atención financiera es necesaria: tienes ${pendingCount} pago${pendingCount > 1 ? 's' : ''} pendiente${pendingCount > 1 ? 's' : ''} esta semana.`;
             colorTheme = "amber";
         } 
         // Prioridad 2: Alerta Presupuesto
         else if (isOverBudgetLimit) {
             title = globalBudgetSpent > globalBudgetLimit 
-                ? "Has superado el presupuesto del mes" 
-                : "Estás al límite del presupuesto";
+                ? "El presupuesto familiar se ha excedido. Toca reajustar prioridades." 
+                : "Estamos al límite del presupuesto mensual. Mantengamos el foco.";
             colorTheme = "rose";
         } 
-        // Prioridad 3: Balance en negativo
+        // Prioridad 3: Resultado Mensual en negativo
         else if (isNegativeBalance) {
-            title = "Tu balance del mes va en negativo";
+            title = "El balance de este mes está en negativo. Revisemos los gastos imprevistos.";
             colorTheme = "rose";
         } 
         // Todo controlado
         else {
-            title = "Vas dentro de presupuesto este mes";
+            title = "Economía familiar estable. Tus planes de ahorro están en marcha.";
             colorTheme = "emerald";
         }
 
@@ -417,7 +417,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
             {/* ========================================== */}
             <div className={`p-6 md:p-8 rounded-[2rem] border flex flex-col md:flex-row md:items-center justify-between gap-6 transition-colors duration-300 ${themeStyles[smartHeader.colorTheme]}`}>
                 <div className="flex flex-col gap-2">
-                    <p className="text-sm font-bold tracking-widest uppercase opacity-70">
+                    <p className="text-[11px] font-bold tracking-[0.2em] uppercase opacity-60">
                         {smartHeader.dateLabel}
                     </p>
                     <h2 className="text-2xl md:text-3xl font-black tracking-tight leading-tight">
@@ -548,8 +548,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                 <div className="col-span-1 flex flex-col">
                     <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] h-full min-h-[380px] flex flex-col">
                         <div className="flex justify-between items-center mb-6 shrink-0">
-                            <h3 className="text-sm font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-                                <Activity className="w-4 h-4 text-indigo-500" />
+                            <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">
                                 Movimientos Recientes
                             </h3>
                             <button className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-3 py-1.5 rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors uppercase tracking-wider">
@@ -607,27 +606,23 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                 {/* 1. Saldo Disponible */}
                 <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
                     <div>
-                        <div className="flex items-center gap-2 mb-2">
-                            <Wallet className="w-4 h-4 text-slate-400" />
-                            <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Liquidez Disponible</h3>
+                        <div className="mb-2">
+                            <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Liquidez Disponible</h3>
                         </div>
                         <div className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
                             {formatCurrency(totalBalance)}
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-1.5 mt-4 pt-4 border-t border-slate-100 dark:border-onyx-800/80">
-                        {liquidAccounts.slice(0, 2).map(a => (
+                    <div className="flex flex-col gap-1.5 mt-4 pt-4 border-t border-slate-100 dark:border-onyx-800/80 max-h-[160px] overflow-y-auto custom-scrollbar pr-1">
+                        {liquidAccounts.map(a => (
                             <div key={a.id} className="flex justify-between items-center text-xs">
                                 <span className="text-slate-500 font-medium truncate mr-2">{a.name}</span>
                                 <span className="font-bold text-slate-700 dark:text-slate-300 tabular-nums">{formatCurrency(a.balance)}</span>
                             </div>
                         ))}
-                        {liquidAccounts.length > 2 && (
-                            <div className="text-[10px] text-slate-400 font-medium mt-1">+{liquidAccounts.length - 2} cuentas más</div>
-                        )}
                         {liquidAccounts.length === 0 && (
-                            <div className="text-xs text-slate-400">Sin liquidez registrada</div>
+                            <div className="text-xs text-slate-400 italic">Sin liquidez registrada</div>
                         )}
                     </div>
                 </div>
@@ -635,9 +630,8 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                 {/* 2. Total Ahorro */}
                 <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between relative overflow-hidden">
                     <div className="z-10">
-                        <div className="flex items-center gap-2 mb-2">
-                            <PiggyBank className="w-4 h-4 text-sky-500" />
-                            <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Ahorro y Patrimonio</h3>
+                        <div className="mb-2">
+                            <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Ahorro y Patrimonio</h3>
                         </div>
                         <div className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
                             {formatCurrency(totalSavings)}
@@ -651,20 +645,14 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                     <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-sky-50 dark:bg-sky-500/5 rounded-full blur-2xl pointer-events-none"></div>
                 </div>
 
-                {/* 3. Balance del Mes */}
+                {/* 3. Resultado Mensual */}
                 <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
-                    <div className="flex items-center gap-2 mb-2">
-                        <Activity className="w-4 h-4 text-slate-400" />
-                        <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Balance del Mes</h3>
+                    <div className="mb-4 shrink-0">
+                        <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Resultado Mensual</h3>
                     </div>
-                    <div>
-                        <div className={cn("text-2xl lg:text-3xl font-black tabular-nums tracking-tight flex items-center gap-2 leading-none",
-                            monthBalance >= 0 ? "text-emerald-500" : "text-rose-500"
-                        )}>
-                            {formatCurrency(monthBalance)}
-                            {monthBalance >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-                        </div>
-                        <div className="flex items-center gap-2 mt-3 w-full">
+                    
+                    <div className="flex flex-col gap-4">
+                        <div className="flex items-center gap-2 w-full">
                             <div className="flex flex-col flex-1 bg-slate-50 dark:bg-onyx-800 p-2 rounded-xl border border-slate-100 dark:border-onyx-700/50">
                                 <span className="text-[9px] text-slate-500 dark:text-slate-400 font-bold uppercase mb-0.5">Ingresado</span>
                                 <span className="text-emerald-600 dark:text-emerald-400 font-black text-xs">
@@ -678,15 +666,31 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                                 </span>
                             </div>
                         </div>
+                        
+                        <div className="pt-2 border-t border-slate-50 dark:border-onyx-800">
+                            <div className="flex flex-col">
+                                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">Resultado Neto</span>
+                                <div className={cn("text-2xl lg:text-3xl font-black tabular-nums tracking-tight flex items-center gap-2 leading-none",
+                                    monthBalance >= 0 ? "text-emerald-500" : "text-rose-500"
+                                )}>
+                                    {formatCurrency(monthBalance)}
+                                    {monthBalance >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                                </div>
+                                <p className={cn("text-[10px] font-bold mt-2", 
+                                    monthBalance >= 0 ? "text-emerald-600/70 dark:text-emerald-400/50" : "text-rose-600/70 dark:text-rose-400/50"
+                                )}>
+                                    {monthBalance >= 0 ? "Superávit / Capacidad de ahorro" : "Déficit / Gasto sobre ingresos"}
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 {/* 4. Control Rápido Presupuesto */}
                 <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
                     <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                            <Target className="w-4 h-4 text-blue-500" />
-                            <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Presupuesto Globlal</h3>
+                        <div className="mb-2">
+                            <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Capacidad de Consumo</h3>
                         </div>
                     </div>
                     <div>
@@ -695,7 +699,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                         </div>
                         
                         <div className="text-xs font-bold text-slate-400 mb-2">
-                            Límite mensual
+                            Techo Operativo
                         </div>
 
                         <div className="mt-2 w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-1.5 mb-2 overflow-hidden">
@@ -725,10 +729,9 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                 <div className="lg:col-span-2 flex flex-col">
                     <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                            <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                                <Layers className="w-4 h-4 text-slate-400" />
-                                Histórico de Liquidez
-                            </h3>
+                                <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">
+                                    Histórico de Liquidez
+                                </h3>
 
                             {/* Filters */}
                             <div className="flex flex-wrap items-center gap-2">

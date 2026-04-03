@@ -3,36 +3,27 @@ export type WidgetType = 'NET_WORTH' | 'MONTHLY_FLOW' | 'ACTIVE_GOALS' | 'ACTIVE
 
 export type WidgetCategory = 'FINANCE' | 'LIFE' | 'KITCHEN' | 'ALL';
 
-export interface DashboardWidget {
-    id: string;
-    visible: boolean;
-    order: number;
-}
 
-export type FinanceWidgetType = 'HEALTH_SCORE' | 'KPI_CARDS' | 'BUDGET_GOALS_SUMMARY' | 'CHART_EVOLUTION' | 'CHART_FLOW' | 'TOP_EXPENSES' | 'RECENT_LIST';
+export interface DashboardDataProps {
+    transactions: any[]; // Using any temporarily if imports are complex, but ideally specific types
+    accounts: any[];
+    debts: any[];
+    goals: any[];
+    categories: any[];
+    budgets: any[];
 
-export interface WidgetLayout {
-    i: string;              // Widget ID
-    x: number;              // Grid position X
-    y: number;              // Grid position Y
-    w: number;              // Width (1-12)
-    h: number;              // Height (1-4)
-    minW?: number;          // Minimum width
-    minH?: number;          // Minimum height
-    maxW?: number;          // Maximum width
-    maxH?: number;          // Maximum height
-    static?: boolean;       // Cannot be moved/resized
-    visible?: boolean;      // Visibility toggle
-    sizeOverride?: 'kpi' | 'half' | 'wide' | 'sidebar' | 'full'; // User-overridden size from drop zone
+    // Computed values
+    monthlyIncome: number;
+    monthlyExpenses: number;
 
-}
+    // UI State
+    onNavigate: (app: string, tab?: string) => void;
+    selectedDate: Date;
+    timeMode: 'MONTH' | 'YEAR';
 
-export interface DashboardLayout {
-    id: string;
-    name: string;
-    description?: string;
-    isDefault: boolean;
-    widgets: WidgetLayout[];
-    createdAt: string;
-    updatedAt: string;
+    // Handlers
+    onFilter?: (category: string, subCategory?: string) => void;
+
+    // Dynamic State
+    isExpanded?: boolean;
 }
