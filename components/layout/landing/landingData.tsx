@@ -29,13 +29,13 @@ export const LANDING_TEXTS = {
         benefitsTitle: "Diseñado para la Tranquilidad Mental",
         benefitsSubtitle: "Recupera el control de tu tiempo y tu dinero con una herramienta profesional.",
         pricingTitle: "Planes transparentes y éticos",
-        pricingSubtitle: "Nacimos para ayudar a las familias a ahorrar, por eso ofrecemos precios radicalmente accesibles comparados con otras apps. Accede ahora a la Beta Privada.",
+        pricingSubtitle: "Nacimos para ayudar a las familias a ahorrar, por eso ofrecemos precios radicalmente accesibles comparados con otras apps.",
         pricingMissionTitle: "Precios pensados para familias reales",
-        pricingMissionDesc: "La mayoría de apps de finanzas o menús cuestan tanto que acaban siendo otro gasto más. Aliseus nació con una idea clara: que mejorar tus finanzas no signifique recortar en tus hijos ni en vuestra vida diaria. Por eso el plan familiar cuesta menos que una comida fuera al año.",
-        pricingFairPrice: "Precio justo para familias",
-        pricingStableConditions: "Si entras ahora, mantendrás estas condiciones mientras sigas en Aliseus.",
+        pricingMissionDesc: "La mayoría de apps de finanzas o menús cuestan tanto que acaban siendo otro gasto más. Aliseus nació con una idea clara: que mejorar tus finanzas no signifique recortar en tus hijos ni en vuestra vida diaria. Por eso estos son nuestros precios estándar, diseñados para ser sostenibles y honestos.",
+        pricingFairPrice: "Precios éticos para siempre",
+        pricingStableConditions: "Estas son nuestras tarifas estándar: honestas, sostenibles y pensadas para no subir nunca.",
         pricingSavingsConnection: "Si Aliseus no te ayuda a ahorrar mucho más de lo que cuesta al año, no tiene sentido que exista.",
-        pricingBetaAdvantage: "Los primeros usuarios nos ayudan a pulir Aliseus; a cambio, se llevan este precio para siempre.",
+        pricingBetaAdvantage: "Ventaja Beta: Los usuarios de la beta cerrada recibiréis beneficios exclusivos adicionales por ayudarnos a pulir la herramienta.",
         pricingGoal: "Nuestro objetivo es que cada euro que inviertas en Aliseus vuelva multiplicado en tranquilidad y ahorro.",
         promoBadge: "🔥 Beta Privada: 14 días gratuitos con acceso completo",
 
@@ -48,7 +48,7 @@ export const LANDING_TEXTS = {
         // Billing Toggles
         billingMonthly: "Mensual",
         billingAnnual: "Anual",
-        savePercent: "Ahorra ~45%",
+        savePercent: "Pago Anual Seguro",
 
         // TIER 1: TRIAL
         trialPlan: "Beta Privada",
@@ -166,55 +166,62 @@ export const LANDING_TEXTS = {
         lifeFooterPrice: "Después, desde 2,99€/mes • Cancela cuando quieras"
     },
     EN: {
-        heroBadge: "Aliseus: Integral Smart System",
+        heroBadge: "Aliseus: The ultimate app for families",
         heroStarBadge: "STAR BENEFIT",
-        heroStarBenefit: "Anticipate liquidity issues with 1-12 month projections",
+        heroStarBenefit: "Anticipate when you will run out of money before it happens",
         heroTitle: "Aliseus",
-        heroSubtitle: "Peace of mind for your family.\nStop using 10 different apps. Switch to the system that connects it all.",
-        ctaStart: "Start Free (14 days)",
+        heroSubtitle: "Your daily dashboard with balance, bills, menu, and tasks in one view.\nStop using 10 different apps. Switch to the system that connects it all.",
+        ctaStart: "Request Access (Private Beta)",
         ctaDemo: "Try Demo (No Account)",
         pillarsTitle: "The Aliseus Ecosystem",
-        pillarsSubtitle: "Not just apps. Modules connected by a central brain.",
-        ecosystemTag: "Aliseus Sync™",
+        pillarsSubtitle: "Not just standalone apps. They are modules connected by a central brain.",
+        ecosystemTag: "Total Sync",
         ecosystemTitle: "Your hyper-connected\ncommand center.",
         ecosystemDesc: "Imagine your dinner calendar knowing your grocery budget. Aliseus makes it possible. A 360° view of your life in real-time.",
         benefitsTitle: "Designed for Peace of Mind",
         benefitsSubtitle: "Reclaim control of your time and money with a professional tool.",
-        pricingTitle: "Smart Investment",
-        pricingSubtitle: "14-day free trial with full access. Then choose your plan.",
-        promoBadge: "🔥 14-day free trial with full access",
+        pricingTitle: "Transparent and Ethical Plans",
+        pricingSubtitle: "We were born to help families save, which is why we offer radically accessible prices compared to other apps.",
+        pricingMissionTitle: "Pricing designed for real families",
+        pricingMissionDesc: "Most finance or menu apps cost so much they end up being just another expense. Aliseus was born with a clear idea: that improving your finances shouldn't mean cutting back on your children or your daily life. That's why these are our standard prices, designed to be sustainable and honest.",
+        pricingFairPrice: "Ethical pricing forever",
+        pricingStableConditions: "These are our standard rates: honest, sustainable, and designed to never increase.",
+        pricingSavingsConnection: "If Aliseus doesn't help you save much more than it costs per year, it shouldn't exist.",
+        pricingBetaAdvantage: "Beta Advantage: Join now to receive additional exclusive benefits as a founding user.",
+        pricingGoal: "Our goal is that every euro you invest in Aliseus returns multiplied in peace and savings.",
+        promoBadge: "🔥 Private Beta: 14 days free with full access",
 
         // Magic Connection (AI Optimization Moat)
         magicTitle: "The Magic of Connection",
         magicSubtitle: "The only system that unites your fridge, your menu, and your wallet.",
-        magicExample: "Aliseus detected that your milk and salmon expire tomorrow, generated 3 recipes to use them, and saved you €12 on your next grocery run.",
-        magicTag: "AI Auto-Savings",
+        magicExample: "Aliseus detected that your milk and salmon expire tomorrow, generated 3 recipes to use them, and saved you €12 on your next purchase.",
+        magicTag: "Auto-Savings",
 
         // Billing Toggles
         billingMonthly: "Monthly",
         billingAnnual: "Annual",
-        savePercent: "Save ~45%",
+        savePercent: "Secure Annual Payment",
 
         // TIER 1: TRIAL
-        trialPlan: "Free Trial",
-        trialPrice: "€0",
+        trialPlan: "Private Beta",
+        trialPrice: "0€",
         trialPeriod: "14 days",
-        trialDesc: "Full access to try Aliseus, no commitment.",
-        trialCta: "Start Free",
+        trialDesc: "Full access to test the tool extensively.",
+        trialCta: "Enter Beta",
 
         // TIER 2: PERSONAL
         personalPlan: "Personal",
-        personalPriceMonthly: "€2.99",
-        personalPriceAnnual: "€19.99",
-        personalDesc: "All the power of Aliseus for a single user.",
-        personalCta: "Start Personal",
+        personalPriceMonthly: "2.99€",
+        personalPriceAnnual: "19.99€",
+        personalDesc: "Total organization power for a single user.",
+        personalCta: "Pre-order Personal",
 
         // TIER 3: FAMILY
         familyPlan: "Family",
-        familyPriceMonthly: "€3.99",
-        familyPriceAnnual: "€24.99",
-        familyDesc: "Up to 5 members with real-time collaboration.",
-        familyCta: "Start Family",
+        familyPriceMonthly: "3.99€",
+        familyPriceAnnual: "24.99€",
+        familyDesc: "Up to 5 members with full collaborative environment.",
+        familyCta: "Pre-order Family",
 
         // Features
         featUser1: "1 User",
@@ -225,7 +232,7 @@ export const LANDING_TEXTS = {
         featJunior: "Junior Mode",
         featPriority: "Priority Support",
 
-        btnEnter: "Log In",
+        btnEnter: "Enter",
         backToSuite: "Back to System",
         startWith: "Explore",
         navPillars: "Modules",
@@ -242,14 +249,14 @@ export const LANDING_TEXTS = {
 
         // Target Audience Section
         audienceTitle: "Who is Aliseus for?",
-        audienceSubtitle: "Three profiles, one goal: peace of mind.",
+        audienceSubtitle: "Three profiles, one search: peace of mind.",
         audienceProfiles: [
             {
                 id: "couple",
                 title: "Young Couple",
                 tagline: "Total Sync",
                 desc: "Manage your shared expenses and future plans without arguments. Aliseus connects your goals and your fridge.",
-                features: ["50/50 or proportional shared expenses", "No-waste menus for two", "Saving for your first big trip"]
+                features: ["50/50 or proportional shared expenses", "Waste-free menus for two", "Savings for your first big trip"]
             },
             {
                 id: "family",
@@ -259,8 +266,8 @@ export const LANDING_TEXTS = {
                 features: ["Management for up to 5 members", "Shared calendar and pantry", "Financial education for children"]
             },
             {
-                id: "freelance",
-                title: "Freelancer / Freelance",
+                id: "autonomo",
+                title: "Self-employed / Freelance",
                 tagline: "Professional Clarity",
                 desc: "Separate your personal from professional expenses once and for all. Aliseus helps you project taxes and savings.",
                 features: ["Cash flow separation", "Tax provisioning", "Personal profitability analysis"]
@@ -269,8 +276,8 @@ export const LANDING_TEXTS = {
 
         // AI Magic Savings
         magicSavingsTitle: "Estimated Savings",
-        magicSavingsValue: "Up to €400/mo",
-        magicSavingsDetail: "Bill optimization + zero waste",
+        magicSavingsValue: "Up to 400€/month",
+        magicSavingsDetail: "Integral bill optimization + zero waste",
 
         // Life Module (LandingLife)
         lifeTitle: "Life",
@@ -279,98 +286,104 @@ export const LANDING_TEXTS = {
         lifeStats: ["Features", "Less Waste", "Saved/Week", "Smart Planning"],
         kitchenLabel: "Smart Kitchen",
         kitchenTitle: "From culinary chaos to total organization",
-        kitchenSub: "AI menu planning, pantry management, automatic lists and much more.",
+        kitchenSub: "AI menu planning, pantry management, automatic lists and more.",
         kitchenFeatures: [
             { title: "AI Menu Planner", desc: "Generate complete weekly menus based on your preferences, dietary restrictions and budget. In seconds." },
-            { title: "Recipe Library", desc: "A growing library with advanced search by ingredients, prep time, difficulty and cuisine type." },
-            { title: "Pantry Inventory", desc: "Track what you have at home. Aliseus suggests recipes based on available ingredients." },
-            { title: "Automatic Shopping List", desc: "Add a recipe to your menu and missing ingredients are automatically added to your list." },
-            { title: "Expiry Alerts", desc: "Notifications when products are near expiry. Recipe suggestions to use them up." },
-            { title: "Nutritional Info", desc: "Calories, macros and micronutrients calculated automatically for every recipe." },
-            { title: "Meal Prep Scheduling", desc: "Organize meal prep sessions. Optimize your time by batch cooking for the week." },
-            { title: "Family Preferences", desc: "Manage allergies, intolerances and preferences. Personalized menus for everyone." },
-            { title: "Cost per Meal", desc: "Calculate the real price of every recipe based on ingredients. Optimize your budget." },
-            { title: "Leftover Management", desc: "Register leftovers and get creative suggestions to reuse them. Reduce waste." }
+            { title: "Recipe Library", desc: "A growing library with search by ingredients, time, difficulty and cuisine." },
+            { title: "Pantry Inventory", desc: "Track your inventory. Aliseus suggests recipes based on available items." },
+            { title: "Auto Shopping List", desc: "Add recipes to your menu and missing items are automatically listed." },
+            { title: "Expiry Alerts", desc: "Notifications when items are near expiry. Usage suggestions included." },
+            { title: "Nutritional Info", desc: "Calories, macros and micronutrients calculated automatically." },
+            { title: "Meal Prep Scheduling", desc: "Organize meal prep sessions and optimize batch cooking." },
+            { title: "Family Preferences", desc: "Manage allergies and preferences. Custom menus for everyone." },
+            { title: "Cost per Meal", desc: "Real price per recipe based on ingredients. Budget optimization." },
+            { title: "Leftover Management", desc: "Track leftovers and get creative reuse suggestions. Zero waste." }
         ],
         lifeLabel: "Life Management",
         lifeSectionTitle: "Organize everything that matters",
-        lifeSectionSub: "Trips, important documents, family calendar and more. All centralized and secure.",
+        lifeSectionSub: "Travel, documents, family calendar and more. Centralized and secure.",
         lifeFeatures: [
-            { title: "AI Travel Planner", desc: "Complete itineraries with budget and integrated documents." },
-            { title: "Encrypted Vault", desc: "Your contracts and passports, secure and at hand." },
-            { title: "Family Calendar", desc: "Events, birthdays and appointments for the whole family." },
-            { title: "Aura Dashboard", desc: "Your day summarized: balance, upcoming bills and today's menu." }
+            { title: "AI Travel", desc: "Full itineraries with budget and integrated documents." },
+            { title: "Encrypted Vault", desc: "Contracts and passports, secure and handy." },
+            { icon: Calendar, title: "Family Calendar", desc: "Events, birthdays and appointments." },
+            { title: "Aura Dashboard", desc: "Your day: balance, upcoming bills and today's menu." }
         ],
         lifeCta: "Simplify My Daily Routine",
         useCasesTitle: "Transformation Stories",
-        useCasesSub: "Discover how Aliseus has simplified the daily routine of people like you.",
-        workflowTitle: "From Empty Fridge to Full Menu in 3 Clicks",
+        useCasesSub: "Discover how Aliseus has simplified day-to-day for people like you.",
+        workflowTitle: "Empty Fridge to Full Menu in 3 Clicks",
         workflowSub: "The simplest workflow you've ever seen",
         lifeFooterTitle: "Design the life you want to live",
-        lifeFooterSub: "Aliseus takes care of the logistical chaos so you can enjoy the moments that truly matter.",
-        lifeFooterPrice: "Then, from €2.99/month • Cancel anytime"
+        lifeFooterSub: "Aliseus handles the chaos so you can enjoy what matters.",
+        lifeFooterPrice: "Afterwards, from 2.99€/month • Cancel anytime"
     },
     FR: {
-        heroBadge: "Aliseus : Système Intégral Intelligent",
+        heroBadge: "Aliseus : L'app ultime pour les familles",
         heroStarBadge: "BÉNÉFICE STAR",
-        heroStarBenefit: "Anticipez les problèmes de liquidité avec des projections de 1 à 12 mois",
+        heroStarBenefit: "Anticipez les manques de liquidités avant qu'ils n'arrivent",
         heroTitle: "Aliseus",
-        heroSubtitle: "La tranquillité pour votre famille.\nArrêtez d'utiliser 10 applications différentes. Passez au système qui connecte tout.",
-        ctaStart: "Essai Gratuit (14 jours)",
-        ctaDemo: "Démo (Sans Compte)",
+        heroSubtitle: "Votre tableau de bord quotidien : solde, factures, menu et tâches en une vue.\nArrêtez d'utiliser 10 apps. Passez au système qui connecte tout.",
+        ctaStart: "Demander l'Accès (Bêta Privée)",
+        ctaDemo: "Tester la Démo (Sans Compte)",
         pillarsTitle: "L'Écosystème Aliseus",
-        pillarsSubtitle: "Pas seulement des applications. Des modules connectés par un cerveau central.",
-        ecosystemTag: "Aliseus Sync™",
+        pillarsSubtitle: "Pas seulement des apps séparées. Des modules connectés par un cerveau central.",
+        ecosystemTag: "Sincronisation Totale",
         ecosystemTitle: "Votre centre de commande\nhyper-connecté.",
-        ecosystemDesc: "Imaginez que votre calendrier de dîners connaisse votre budget d'épicerie. Aliseus le rend possible. Une vue à 360° de votre vie en temps réel.",
-        benefitsTitle: "Conçu pour la Tranquillité d'Esprit",
+        ecosystemDesc: "Imaginez que votre calendrier de repas connaisse votre budget courses. Aliseus le rend possible. Une vision à 360° de votre vie en temps réel.",
+        benefitsTitle: "Conçu pour la Sérénité Mentale",
         benefitsSubtitle: "Reprenez le contrôle de votre temps et de votre argent avec un outil professionnel.",
-        pricingTitle: "Investissement Intelligent",
-        pricingSubtitle: "14 jours d'essai gratuit avec accès complet. Ensuite, choisissez votre plan.",
-        promoBadge: "🔥 14 jours d'essai gratuit avec accès complet",
+        pricingTitle: "Plans transparents et éthiques",
+        pricingSubtitle: "Nous sommes nés pour aider les familles à économiser, c'est pourquoi nous offrons des prix radicalement accessibles.",
+        pricingMissionTitle: "Des prix pensés pour les vraies familles",
+        pricingMissionDesc: "La plupart des apps coûtent si cher qu'elles deviennent une dépense de plus. Aliseus est né avec une idée claire : que vos finances ne signifient pas couper dans le budget de vos enfants. Voici nos prix standard, durables et honnêtes.",
+        pricingFairPrice: "Prix éthiques pour toujours",
+        pricingStableConditions: "Voici nos tarifs standard : honnêtes, durables et conçus pour ne jamais augmenter.",
+        pricingBetaAdvantage: "Avantage Bêta : Les utilisateurs de la bêta recevront des bénéfices exclusifs supplémentaires pour nous aider à polir l'outil.",
+        pricingGoal: "Notre objectif est que chaque euro investi revienne multiplié en sérénité et économies.",
+        promoBadge: "🔥 Bêta Privée : 14 jours gratuits avec accès complet",
 
         // Magic Connection (AI Optimization Moat)
         magicTitle: "La Magie de la Connexion",
-        magicSubtitle: "Le seul système qui unit votre frigo, votre menu et votre portefeuille.",
-        magicExample: "Aliseus a détecté que votre lait et votre saumon expirent demain, a généré 3 recettes pour les utiliser et vous a fait économiser 12€ sur vos prochaines courses.",
-        magicTag: "Économies Auto-IA",
+        magicSubtitle: "Le seul système qui unit votre frigo, votre menu et votre poche.",
+        magicExample: "Aliseus a détecté que votre lait périme demain, a généré 3 recettes et vous a fait économiser 12€.",
+        magicTag: "Économies Automatiques",
 
         // Billing Toggles
         billingMonthly: "Mensuel",
         billingAnnual: "Annuel",
-        savePercent: "Économisez ~45%",
+        savePercent: "Paiement Annuel Sécurisé",
 
         // TIER 1: TRIAL
-        trialPlan: "Essai Gratuit",
+        trialPlan: "Bêta Privada",
         trialPrice: "0€",
         trialPeriod: "14 jours",
-        trialDesc: "Accès complet pour tester Aliseus sans engagement.",
-        trialCta: "Commencer Gratuit",
+        trialDesc: "Accès total pour tester l'outil en profondeur.",
+        trialCta: "Entrer en Bêta",
 
         // TIER 2: PERSONAL
         personalPlan: "Personnel",
         personalPriceMonthly: "2,99€",
         personalPriceAnnual: "19,99€",
-        personalDesc: "Toute la puissance d'Aliseus pour un seul utilisateur.",
-        personalCta: "Commencer Personnel",
+        personalDesc: "Puissance d'organisation totale pour un seul utilisateur.",
+        personalCta: "Réserver Personnel",
 
         // TIER 3: FAMILY
         familyPlan: "Famille",
         familyPriceMonthly: "3,99€",
         familyPriceAnnual: "24,99€",
-        familyDesc: "Jusqu'à 5 membres avec collaboration en temps réel.",
-        familyCta: "Commencer Famille",
+        familyDesc: "Jusqu'à 5 membres avec environnement collaboratif.",
+        familyCta: "Réserver Famille",
 
         // Features
         featUser1: "1 Utilisateur",
         featUser5: "Jusqu'à 5 Utilisateurs",
-        featAccess: "Accès Complet",
+        featAccess: "Accès Total",
         featVault: "Coffre Sécurisé",
         featShared: "Espaces Partagés",
         featJunior: "Mode Junior",
         featPriority: "Support Prioritaire",
 
-        btnEnter: "Connexion",
+        btnEnter: "Entrer",
         backToSuite: "Retour au Système",
         startWith: "Explorer",
         navPillars: "Modules",
@@ -387,28 +400,28 @@ export const LANDING_TEXTS = {
 
         // Target Audience Section
         audienceTitle: "Pour qui est Aliseus ?",
-        audienceSubtitle: "Trois profils, un seul but : la tranquillité.",
+        audienceSubtitle: "Trois profils, une seule quête : la sérénité.",
         audienceProfiles: [
             {
-                id: "couple",
+                id: "pareja",
                 title: "Jeune Couple",
-                tagline: "Synchro Totale",
-                desc: "Gérez vos dépenses partagées et vos projets futurs sans disputes. Aliseus connecte vos objectifs et votre frigo.",
-                features: ["Dépenses partagées 50/50 ou prorata", "Menus pour deux anti-gaspillage", "Épargne pour votre premier grand voyage"]
+                tagline: "Synchronie totale",
+                desc: "Gérez vos dépenses partagées sans disputes. Aliseus connecte vos objectifs et votre frigo.",
+                features: ["Dépenses partagées 50/50", "Menus sans gaspillage", "Épargne voyage"]
             },
             {
-                id: "family",
+                id: "familia",
                 title: "Famille avec Enfants",
-                tagline: "Contrôle Absolu",
-                desc: "Du budget scolaire aux menus pour cinq. Gardez le chaos à distance avec le mode familial collaboratif.",
-                features: ["Gestion jusqu'à 5 membres", "Calendrier et garde-manger partagés", "Éducation financière pour les enfants"]
+                tagline: "Contrôle absolu",
+                desc: "Du budget scolaire au menu pour cinq. Gardez le chaos à distance.",
+                features: ["Jusqu'à 5 membres", "Calendrier partagé", "Éducation financière"]
             },
             {
-                id: "freelance",
+                id: "autonomo",
                 title: "Indépendant / Freelance",
-                tagline: "Clarté Professionnelle",
-                desc: "Séparez enfin vos dépenses personnelles et professionnelles. Aliseus vous aide à projeter vos impôts et votre épargne.",
-                features: ["Séparation des flux de trésorerie", "Provision pour impôts", "Analyse de rentabilité personnelle"]
+                tagline: "Clarté professionnelle",
+                desc: "Séparez vos dépenses perso et pro. Aliseus projette vos impôts.",
+                features: ["Séparation des flux", "Provision impôts", "Analyse rentabilité"]
             },
         ],
 
@@ -419,41 +432,41 @@ export const LANDING_TEXTS = {
 
         // Life Module (LandingLife)
         lifeTitle: "Vie",
-        lifeHeroSub: "Automatisez votre foyer et concevez des expériences mémorables",
-        lifeHeroDesc: "Parce que la vie est faite pour être vécue, pas pour être gérée. Aliseus s'occupe de la logistique pour que vous profitiez des moments.",
-        lifeStats: ["Fonctionnalités", "Moins de Gaspillage", "Économisées/Semaine", "Planification Intelligente"],
+        lifeHeroSub: "Automatisez votre foyer",
+        lifeHeroDesc: "Aliseus s'occupe de la logistique pour que vous profitiez des moments.",
+        lifeStats: ["Fonctions", "Zéro Gaspi", "Heures/Semaine", "Planif Intelligente"],
         kitchenLabel: "Cuisine Intelligente",
-        kitchenTitle: "Du chaos culinaire à l'organisation totale",
-        kitchenSub: "Planification de menus par IA, gestion du garde-manger, listes automatiques et bien plus encore.",
+        kitchenTitle: "Organisation totale",
+        kitchenSub: "Menus IA, gestion de garde-manger et plus.",
         kitchenFeatures: [
-            { title: "Planificateur de Menus IA", desc: "Générez des menus hebdomadaires complets selon vos préférences et votre budget. En quelques secondes." },
-            { title: "Bibliothèque de Recettes", desc: "Une bibliothèque en pleine croissance avec recherche avancée par ingrédients et type de cuisine." },
-            { title: "Inventaire du Garde-manger", desc: "Enregistrez ce que vous avez. Aliseus suggère des recettes basées sur les ingrédients disponibles." },
-            { title: "Liste de Courses Automatique", desc: "Ajoutez une recette au menu et les ingrédients manquants s'ajoutent à votre liste." },
-            { title: "Alertes de Péremption", desc: "Notifications quand les produits vont périmer. Suggestions pour les utiliser." },
-            { title: "Infos Nutritionnelles", desc: "Calories, macros et micronutriments calculés automatiquement pour chaque recette." },
-            { title: "Programmation de Meal Prep", desc: "Organisez vos sessions de préparation. Gagnez du temps en cuisinant par lots." },
-            { title: "Préférences Familiales", desc: "Gérez les allergies et préférences. Des menus personnalisés pour tous." },
-            { title: "Coût par Repas", desc: "Calculez le prix réel de chaque recette selon les ingrédients. Optimisez votre budget." },
-            { title: "Gestion des Restes", desc: "Enregistrez les restes et recevez des suggestions créatives. Réduisez le gaspillage." }
+            { title: "Menus IA", desc: "Menus complets basés sur vos goûts et budget." },
+            { title: "Recettes", desc: "Bibliothèque avec filtres intelligents." },
+            { title: "Garde-manger", desc: "Suggestions basées sur ce que vous avez." },
+            { title: "Courses", desc: "Listes auto générées." },
+            { title: "Alertes", desc: "Notifications de caducité." },
+            { title: "Nutrition", desc: "Macros calculés auto." },
+            { title: "Meal Prep", desc: "Gagnez du temps en cuisinant par lots." },
+            { title: "Famille", desc: "Préférences et allergies gérées." },
+            { title: "Coût", desc: "Prix réel par recette." },
+            { title: "Restes", desc: "Réutilisez vos restes de manière créative." }
         ],
         lifeLabel: "Gestion de Vie",
-        lifeSectionTitle: "Organisez tout ce qui compte",
-        lifeSectionSub: "Voyages, documents importants, calendrier familial et plus encore. Tout centralisé et sécurisé.",
+        lifeSectionTitle: "Organisez l'essentiel",
+        lifeSectionSub: "Voyages, documents, calendrier.",
         lifeFeatures: [
-            { title: "Planificateur de Voyages IA", desc: "Itinéraires complets avec budget et documents intégrés." },
-            { title: "Coffre-fort Crypté", desc: "Vos contrats et passeports, sécurisés et à portée de main." },
-            { title: "Calendrier Familial", desc: "Événements, anniversaires et rendez-vous pour toute la famille." },
-            { title: "Tableau de Bord Aura", desc: "Votre journée résumée : solde, prochaines factures et menu du jour." }
+            { title: "Voyages IA", desc: "Itinéraires complets." },
+            { title: "Coffre", desc: "Documents sécurisés." },
+            { title: "Calendrier", desc: "Événements familiaux." },
+            { title: "Aura", desc: "Votre résumé quotidien." }
         ],
-        lifeCta: "Simplifier mon Quotidien",
-        useCasesTitle: "Histoires de Transformation",
-        useCasesSub: "Découvrez comment Aliseus a simplifié la routine quotidienne de personnes comme vous.",
-        workflowTitle: "Du Frigo Vide au Menu Complet en 3 Clics",
-        workflowSub: "Le flux de travail le plus simple que vous ayez jamais vu",
-        lifeFooterTitle: "Concevez la vie que vous voulez vivre",
-        lifeFooterSub: "Aliseus s'occupe du chaos logistique pour que vous profitiez des moments qui comptent vraiment.",
-        lifeFooterPrice: "Ensuite, à partir de 2,99€/mois • Annulez quand vous voulez"
+        lifeCta: "Simplifier ma vie",
+        useCasesTitle: "Témoignages",
+        useCasesSub: "Découvrez Aliseus à travers nos utilisateurs.",
+        workflowTitle: "3 clics",
+        workflowSub: "Simple et efficace",
+        lifeFooterTitle: "Vivez la vie que vous voulez",
+        lifeFooterSub: "On gère le chaos.",
+        lifeFooterPrice: "Dès 2,99€/mois • Sans engagement"
     }
 };
 
