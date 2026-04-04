@@ -491,17 +491,17 @@ export const PRODUCT_DETAILS_BY_LANG: Record<Language, Record<ProductKey, any>> 
         },
         dashboard: {
             title: "Panel Aura",
-            subtitle: "Tu interfaz unificada",
-            description: "La única capa donde ocurre la magia. Tu centro de mando operativo donde ves tu saldo, próximas facturas y el menú de hoy en un solo vistazo.",
+            subtitle: "Tu interfaz unificada por capas",
+            description: "No es solo un dashboard, es un organismo vivo. Aura organiza tu vida en capas temáticas: Finanzas, Cocina, Viajes y Familia, conectadas entre sí para darte una visión total en una sola pantalla.",
             features: [
-                { title: "Mañana Inteligente", desc: "Resumen diario: qué pagar, qué comer y dónde ir." },
-                { title: "Widgets Funcionales", desc: "Drag & drop para colocar los widgets que usas." },
-                { title: "Aliseus Insights", desc: "Motor de IA integrado que detecta patrones y facturas antes de que sean un problema." },
-                { title: "Modo Colaborativo", desc: "Hasta 5 miembros con roles y permisos compartidos." },
-                { title: "Navegación Total", desc: "Salta de revisar una factura a planear un menú en 1 click. Todo conectado." },
-                { title: "Predicciones Automáticas", desc: "El motor de IA de Aliseus analiza gastos pasados para predecir futuros de forma invisible." }
+                { title: "Consola de Inteligencia", desc: "Un resumen dinámico que cambia según la hora del día: facturas por la mañana, recetas por la tarde." },
+                { title: "Capas Temáticas", desc: "Navega entre tus finanzas, menús y viajes sin cambiar de aplicación ni perder el contexto." },
+                { title: "Aliseus Insights", desc: "Motor de IA que detecta patrones y alertas críticas antes de que ocurran." },
+                { title: "Dashboard Unificado", desc: "Toda la información relevante de tus módulos (vida y finanzas) condensada en una interfaz fija y coherente." },
+                { title: "Navegación Fluida", desc: "Salta de revisar una inversión a planear un itinerario de viaje en un solo click." },
+                { title: "IA Invisible", desc: "El motor de Aliseus trabaja en segundo plano para predecir tus flujos de caja y necesidades de compra." }
             ],
-            integrations: ["El panel Aura une y conecta Módulo Finanzas y Módulo Vida", "Sincronización en tiempo real de todos tus módulos"]
+            integrations: ["El panel Aura unifica el Módulo Finanzas y el Módulo Vida", "Sincronización en tiempo real de todos tus datos"]
         }
     },
     EN: {
@@ -536,18 +536,18 @@ export const PRODUCT_DETAILS_BY_LANG: Record<Language, Record<ProductKey, any>> 
             integrations: ["Deducts ingredients from budget", "Plans meals based on calendar events", "Manages leftovers to reduce waste"]
         },
         dashboard: {
-            title: "Aura",
-            subtitle: "The presence that surrounds everything",
-            description: "Aura, the gentle breeze that permeates everything effortlessly. Your personal dashboard that radiates clarity across every aspect of your life: finances, home and time, in a single glance.",
+            title: "Aura Panel",
+            subtitle: "Your unified layered interface",
+            description: "Aura is your central command center. It organizes your life into intelligent thematic layers: Finance, Kitchen, Travel, and Family, all connected to give you a 360° view on a single screen.",
             features: [
-                { title: "Smart Morning", desc: "Daily digest: what to pay, what to eat, where to go." },
-                { title: "Customizable Widgets", desc: "Drag & drop to compose your Aura exactly as you need it." },
-                { title: "Aliseus Insights", desc: "Proactive analysis that detects patterns and alerts you before they become a problem." },
-                { title: "Collaborative Mode", desc: "Up to 5 members with roles and permissions. One Aura for the whole family." },
-                { title: "Total Navigation", desc: "Jump from checking a bill to planning a trip in 1 click. Everything within reach." },
-                { title: "Aliseus Brain", desc: "Proactive insights: 'High coffee spending this month'. Your personal breeze of clarity." }
+                { title: "Intelligence Console", desc: "A dynamic summary that changes with the time of day: bills in the morning, recipes in the evening." },
+                { title: "Thematic Layers", desc: "Navigate between your finances, menus, and travels without switching apps or losing context." },
+                { title: "Aliseus Insights", desc: "AI engine that detects patterns and critical alerts before they happen." },
+                { title: "Unified Dashboard", desc: "All relevant information from your life and finance modules condensed in a fixed, coherent interface." },
+                { title: "Seamless Navigation", desc: "Jump from reviewing an investment to planning a travel itinerary in a single click." },
+                { title: "Invisible AI", desc: "The Aliseus engine works in the background to predict your cash flows and shopping needs." }
             ],
-            integrations: ["The aura that wraps and connects Finance, Life and Kitchen", "Real-time sync across all your modules"]
+            integrations: ["Aura Panel unifies the Finance Module and the Life Module", "Real-time sync for all your data"]
         }
     },
     FR: {
@@ -582,18 +582,18 @@ export const PRODUCT_DETAILS_BY_LANG: Record<Language, Record<ProductKey, any>> 
             integrations: ["Déduit ingrédients du budget", "Planifie repas selon agenda", "Gère les restes pour réduire le gaspillage"]
         },
         dashboard: {
-            title: "Aura",
-            subtitle: "La présence qui enveloppe tout",
-            description: "Aura, la brise douce qui imprègne tout sans effort. Votre tableau de bord personnel qui irradie la clarté sur chaque aspect de votre vie : finances, maison et temps, en un seul souffle.",
+            title: "Panneau Aura",
+            subtitle: "Votre interface unifiée par couches",
+            description: "Aura est votre centre de commande central. Il organise votre vie en couches thématiques intelligentes : Finances, Cuisine, Voyage et Famille, toutes connectées pour une vision à 360°.",
             features: [
-                { title: "Matin Malin", desc: "Résumé : à payer, à manger, où aller." },
-                { title: "Widgets Personnalisables", desc: "Glissez-déposez pour composer votre Aura exactement comme vous en avez besoin." },
-                { title: "Aliseus Insights", desc: "Analyse proactive qui détecte les tendances avant qu'elles ne deviennent un problème." },
-                { title: "Mode Collaboratif", desc: "Jusqu'à 5 membres avec rôles. Une seule Aura pour toute la famille." },
-                { title: "Navigation Totale", desc: "Passez d'une facture à un voyage en 1 clic. Tout à portée de main." },
-                { title: "Cerveau Aliseus", desc: "Insights proactifs : 'Trop de café ce mois-ci'. Votre brise personnelle de clarté." }
+                { title: "Console d'Intelligence", desc: "Un résumé dynamique : factures le matin, menus le soir, selon vos besoins réels." },
+                { title: "Couches Thématiques", desc: "Naviguez entre vos finances, menus et voyages sans changer d'application ni perdre le fil." },
+                { title: "Aliseus Insights", desc: "Moteur d'IA qui détecte les tendances et les alertes critiques de manière proactive." },
+                { title: "Dashboard Unifié", desc: "Toute l'information pertinente condensée dans une interface fixe, claire et ultra-cohérente." },
+                { title: "Navigation Fluide", desc: "Passez de la révision d'un investissement à la planification d'un voyage en un clic." },
+                { title: "IA Invisible", desc: "Le moteur d'Aliseus travaille en arrière-plan pour prédire vos flux de trésorerie y besoins d'achat." }
             ],
-            integrations: ["L'aura qui relie Finances, Vie et Cuisine", "Synchronisation en temps réel dans tous vos modules"]
+            integrations: ["Le Panneau Aura unifie le Module Finances et le Module Vie", "Synchronisation en temps réel de toutes vos données"]
         }
     }
 };
