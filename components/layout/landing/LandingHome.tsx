@@ -45,27 +45,19 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
         },
         {
             q: '¿Mis datos están seguros?',
-            a: 'Absolutamente. Utilizamos encriptación de extremo a extremo con los mismos estándares que los bancos (AES-256). Tus datos financieros y documentos personales están protegidos con autenticación biométrica. Nunca vendemos ni compartimos tu información con terceros.'
+            a: 'Absolutamente. Utilizamos encriptación de extremo a extremo con los mismos estándares que los bancos (AES-256). Tus datos financieros y documentos personales están protegidos con autenticación biométrica.'
         },
         {
-            q: '¿Necesito conectar mis cuentas bancarias?',
-            a: 'No es obligatorio. Puedes registrar transacciones manualmente o importar extractos bancarios. Sin embargo, la conexión bancaria automática (disponible próximamente) te ahorrará tiempo y proporcionará datos en tiempo real.'
+            q: '¿Qué pasa si entro ahora en la Beta Privada?',
+            a: 'Al entrar en la beta, bloqueas el acceso a una herramienta en constante evolución. Estos precios no son una oferta temporal; son nuestros precios estándar y éticos para siempre. Los usuarios de la beta recibiréis, además, beneficios exclusivos que os comunicaremos personalmente.'
         },
         {
-            q: '¿Funciona en todos mis dispositivos?',
-            a: 'Sí. Aliseus se sincroniza automáticamente entre tu móvil, tablet y ordenador. Los cambios que hagas en un dispositivo aparecen instantáneamente en los demás.'
+            q: '¿Puede usar Aliseus toda mi familia?',
+            a: 'Sí. El plan Familiar permite hasta 5 usuarios con espacios compartidos. Podéis gestionar presupuestos conjuntos, menús semanales y el calendario del hogar sin duplicar esfuerzos.'
         },
         {
-            q: '¿Hay límite en el número de transacciones o recetas?',
-            a: 'No. Puedes registrar transacciones ilimitadas, crear todos los presupuestos que necesites, y guardar tantas recetas como quieras.'
-        },
-        {
-            q: '¿Puedo usar Aliseus para gestionar finanzas familiares?',
-            a: 'Sí. El plan Pro permite hasta 5 usuarios con permisos personalizables. Puedes compartir presupuestos, menús semanales y calendarios familiares.'
-        },
-        {
-            q: '¿Qué pasa si cancelo mi suscripción?',
-            a: 'Puedes exportar todos tus datos en cualquier momento (CSV, PDF). Si cancelas el plan Pro, volverás automáticamente al plan gratuito manteniendo acceso a tus datos históricos.'
+            q: '¿Hay algún compromiso de permanencia?',
+            a: 'Ninguno. Puedes cancelar tu suscripción en cualquier momento. Aliseus nace para darte libertad y tranquilidad, no para atarte a un contrato.'
         }
     ];
 
