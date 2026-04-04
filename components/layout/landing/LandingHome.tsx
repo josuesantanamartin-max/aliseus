@@ -124,10 +124,10 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                     {/* Live badge */}
                     <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 rounded-full px-4 py-1.5 mb-8 ml-4">
                         <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-400"></span>
                         </span>
-                        <span className="text-[11px] font-bold text-white/80 tracking-widest uppercase">{t.heroBadge}</span>
+                        <span className="text-[11px] font-bold text-white/80 tracking-widest uppercase">BETA PRIVADA ABIERTA</span>
                     </div>
 
                     <h1 className="flex justify-center mb-8">
@@ -135,7 +135,7 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                     </h1>
                     <p className="text-xl md:text-2xl text-cyan-200 max-w-4xl mx-auto mb-6 leading-relaxed font-light whitespace-pre-line">{t.heroSubtitle}</p>
                     <p className="text-lg text-white/60 max-w-3xl mx-auto mb-12">
-                        La única plataforma que conecta tus <strong className="text-white">finanzas</strong> con tu <strong className="text-white">vida real</strong>. Gestiona presupuestos, elimina deudas, planifica menús y organiza viajes, todo desde un mismo lugar.
+                        Conecta tus <strong className="text-white">finanzas</strong> con tu <strong className="text-white">vida familiar</strong>. Gestiona presupuestos compartidos, planifica menús basados en lo que tienes y organiza tu hogar, todo desde un mismo lugar.
                     </p>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -246,6 +246,62 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                                 <p className="text-gray-600 leading-relaxed text-center">{item.desc}</p>
                             </div>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Estado de la Beta & Transparencia ── */}
+            <section className="py-20 bg-slate-900 border-t border-slate-800 text-white">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white rounded-full px-4 py-1.5 mb-6">
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+                                </span>
+                                <span className="text-xs font-bold tracking-widest uppercase">Transparencia de la Beta</span>
+                            </div>
+                            <h2 className="text-3xl md:text-4xl font-bold mb-6">¿Qué puedes esperar hoy?</h2>
+                            <p className="text-slate-300 text-lg mb-8 leading-relaxed">
+                                Aliseus está en fase de <strong className="text-white">Beta Privada</strong>. Esto significa que la plataforma base es 100% funcional y segura (cumplimos estrictamente con la GDPR y no vendemos tus datos), pero seguimos puliendo detalles basados en la retroalimentación de nuestros primeros usuarios.
+                            </p>
+                            
+                            <div className="space-y-4">
+                                <div className="flex items-start gap-3">
+                                    <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-1">
+                                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-white">Ya Disponible (100% Funcional)</h4>
+                                        <p className="text-sm text-slate-400 mt-1">Dashboards, presupuestos por IA, despensa inteligente, creador de menús, importación CSV, y cálculos avanzados.</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <div className="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center flex-shrink-0 mt-1">
+                                        <Clock className="w-4 h-4 text-amber-400" />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-white">Próximamente</h4>
+                                        <p className="text-sm text-slate-400 mt-1">Sincronización bancaria automática y conexión directa con supermercados.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="relative">
+                            <div className="bg-slate-800 rounded-3xl p-8 border border-slate-700 shadow-2xl relative z-10">
+                                <Shield className="w-10 h-10 text-cyan-400 mb-6" />
+                                <h3 className="text-xl font-bold mb-3">Compromiso de Privacidad</h3>
+                                <p className="text-sm text-slate-400 leading-relaxed mb-6">
+                                    Tu información financiera y familiar es tuya. Usamos cifrado de grado bancario para proteger tus datos. Nunca venderemos tus hábitos de consumo o recetas a terceros. Puedes reclamar el borrado total de tus datos en cualquier momento.
+                                </p>
+                                <div className="flex gap-4">
+                                    <div className="px-4 py-2 bg-slate-900 rounded-lg border border-slate-700 text-xs font-bold text-slate-300">Cumplimiento GDPR</div>
+                                    <div className="px-4 py-2 bg-slate-900 rounded-lg border border-slate-700 text-xs font-bold text-slate-300">Sin Anuncios</div>
+                                </div>
+                            </div>
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-cyan-500/10 blur-3xl z-0 rounded-full"></div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -530,19 +586,24 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                                     <p className="text-cyan-300 font-medium mb-6 text-lg italic">{PRODUCT_DETAILS_BY_LANG[language].dashboard.subtitle}</p>
                                     <p className="text-slate-300 text-lg leading-relaxed">{PRODUCT_DETAILS_BY_LANG[language].dashboard.description}</p>
                                     
-                                    <div className="mt-8 relative rounded-2xl overflow-hidden shadow-2xl border border-white/20 group max-w-sm">
-                                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-teal-500 z-20"></div>
-                                        <img 
-                                            src="/kitchen-preview.png" 
-                                            alt="Aura Kitchen Preview" 
-                                            className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500" 
-                                        />
-                                        <div className="absolute bottom-4 left-4 right-4 bg-slate-950/80 backdrop-blur-md p-3 rounded-xl border border-white/10 flex items-center justify-between">
-                                            <div>
-                                                <p className="text-white font-bold text-xs">Módulo Cocina</p>
-                                                <p className="text-cyan-400 text-[10px]">Menú Inteligente</p>
+                                    <div className="mt-8 relative h-[250px] sm:h-[300px] w-full max-w-md mx-auto md:mx-0 group">
+                                        {/* Back Image (Finance) */}
+                                        <div className="absolute top-0 right-0 w-[85%] rounded-2xl overflow-hidden shadow-2xl border border-white/20 transform translate-x-2 -translate-y-2 group-hover:translate-x-6 group-hover:-translate-y-6 transition-all duration-500 z-10 opacity-70 group-hover:opacity-100">
+                                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-teal-500 z-20"></div>
+                                            <img src="/finance-preview.png" alt="Aura Finance Preview" className="w-full h-auto object-cover" />
+                                        </div>
+
+                                        {/* Front Image (Kitchen) */}
+                                        <div className="absolute bottom-0 left-0 w-[90%] rounded-2xl overflow-hidden shadow-2xl border border-white/20 transform group-hover:scale-[1.02] transition-transform duration-500 z-20">
+                                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-500 to-cyan-500 z-20"></div>
+                                            <img src="/kitchen-preview.png" alt="Aura Kitchen Preview" className="w-full h-auto object-cover" />
+                                            <div className="absolute bottom-3 left-3 right-3 bg-slate-950/80 backdrop-blur-md p-2 sm:p-3 rounded-xl border border-white/10 flex items-center justify-between">
+                                                <div>
+                                                    <p className="text-white font-bold text-[11px] sm:text-xs">Aura Widgets</p>
+                                                    <p className="text-cyan-400 text-[9px] sm:text-[10px]">Módulos Conectados</p>
+                                                </div>
+                                                <LayoutDashboard className="w-4 h-4 text-teal-400" />
                                             </div>
-                                            <Utensils className="w-4 h-4 text-teal-400" />
                                         </div>
                                     </div>
 
@@ -679,8 +740,28 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
             {/* ── Pricing ── */}
             <section id="pricing" className="py-24 bg-white border-t border-gray-200">
                 <div className="max-w-7xl mx-auto px-6 text-center">
+                    <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider mb-8">
+                        <Shield className="w-4 h-4" />
+                        Acceso Beta Limitado
+                    </div>
                     <h2 className="text-4xl font-bold mb-4 tracking-tight text-gray-900">{t.pricingTitle}</h2>
-                    <p className="text-gray-500 text-lg max-w-2xl mx-auto mb-8">{t.pricingSubtitle}</p>
+                    <p className="text-gray-500 text-lg max-w-3xl mx-auto mb-12 font-medium">{t.pricingSubtitle}</p>
+
+                    {/* Ethical Pricing Mission Block */}
+                    <div className="max-w-4xl mx-auto mb-16 p-8 rounded-3xl bg-emerald-50 border border-emerald-100 text-left relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-200/20 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-emerald-200/30 transition-all duration-700"></div>
+                        <div className="relative z-10 flex flex-col md:flex-row gap-6 items-center">
+                            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm border border-emerald-100">
+                                <Heart className="w-7 h-7 text-emerald-600" />
+                            </div>
+                            <div>
+                                <h4 className="text-xl font-bold text-emerald-900 mb-2">{t.pricingMissionTitle}</h4>
+                                <p className="text-emerald-800/80 text-sm leading-relaxed tracking-tight underline-offset-4 decoration-emerald-200">
+                                    {t.pricingMissionDesc}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
                     {/* Billing Toggle */}
                     <div className="flex items-center justify-center gap-4 mb-12">
@@ -717,8 +798,8 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                         {/* TIER 2: PERSONAL */}
                         <div className="bg-white rounded-3xl p-8 border border-gray-200 hover:shadow-xl transition-all flex flex-col text-left group relative">
                             {billingPeriod === 'annual' && (
-                                <div className="absolute top-0 right-0 bg-emerald-100 text-emerald-700 text-[10px] font-bold px-3 py-1 rounded-bl-2xl rounded-tr-2xl uppercase tracking-wider">
-                                    -45%
+                                <div className="absolute top-0 right-0 bg-emerald-500 text-white text-[9px] font-black px-4 py-1.5 rounded-bl-2xl rounded-tr-2xl uppercase tracking-[0.1em] shadow-lg shadow-emerald-500/20">
+                                    {t.pricingFairPrice}
                                 </div>
                             )}
                             <span className="bg-gray-100 text-gray-700 text-[10px] font-bold px-3 py-1 rounded-full uppercase mb-6 w-fit tracking-wider">{t.personalPlan}</span>
@@ -763,6 +844,24 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                             {billingPeriod === 'annual' && (
                                 <p className="text-[10px] text-cyan-400 text-center mt-4 uppercase tracking-widest font-bold">{t.singlePayment}</p>
                             )}
+                        </div>
+                    </div>
+
+                    {/* Savings vs Cost connection */}
+                    <div className="mt-20 max-w-3xl mx-auto">
+                        <div className="p-1 w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent mb-12"></div>
+                        <p className="text-xl font-medium text-gray-900 mb-4 italic leading-relaxed">
+                            "{t.pricingSavingsConnection}"
+                        </p>
+                        <div className="flex flex-col md:flex-row items-center justify-center gap-6 mt-8">
+                            <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
+                                <Zap className="w-5 h-5 text-amber-500" />
+                                <span className="text-xs font-bold text-gray-600">{t.pricingBetaAdvantage}</span>
+                            </div>
+                            <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
+                                <Sparkles className="w-5 h-5 text-cyan-500" />
+                                <span className="text-xs font-bold text-gray-600">{t.pricingGoal}</span>
+                            </div>
                         </div>
                     </div>
                 </div>

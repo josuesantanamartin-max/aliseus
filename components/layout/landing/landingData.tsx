@@ -14,23 +14,30 @@ export const WalletIconMock = ({ className }: { className?: string }) => <Credit
 
 export const LANDING_TEXTS = {
     ES: {
-        heroBadge: "Aliseus: Sistema Integral Inteligente",
+        heroBadge: "Aliseus: La app definitiva para familias",
         heroStarBadge: "BENEFICIO ESTRELLA",
         heroStarBenefit: "Anticipa cuándo te va a faltar dinero antes de que pase",
         heroTitle: "Aliseus",
-        heroSubtitle: "La tranquilidad de tu familia.\nDeja de usar 10 apps diferentes. Pásate al sistema que lo conecta todo.",
-        ctaStart: "Empezar Gratis (14 días)",
+        heroSubtitle: "Tu panel diario con saldo, facturas, menú y tareas en una sola vista.\nDeja de usar 10 apps diferentes. Pásate al sistema que lo conecta todo.",
+        ctaStart: "Solicitar Acceso (Beta Privada)",
         ctaDemo: "Probar Demo (Sin Cuenta)",
         pillarsTitle: "El Ecosistema Aliseus",
         pillarsSubtitle: "No son apps sueltas. Son módulos conectados por un cerebro central.",
-        ecosystemTag: "Aliseus Sync™",
+        ecosystemTag: "Sincronización Total",
         ecosystemTitle: "Tu centro de mando\nhiper-conectado.",
         ecosystemDesc: "Imagina que tu calendario de cenas sabe tu presupuesto de supermercado. Aliseus lo hace posible. Una visión 360° de tu vida en tiempo real.",
         benefitsTitle: "Diseñado para la Tranquilidad Mental",
         benefitsSubtitle: "Recupera el control de tu tiempo y tu dinero con una herramienta profesional.",
-        pricingTitle: "Inversión Inteligente",
-        pricingSubtitle: "14 días de prueba gratis. Después, elige tu plan.",
-        promoBadge: "🔥 14 días de prueba gratuita con acceso completo",
+        pricingTitle: "Planes transparentes y éticos",
+        pricingSubtitle: "Nacimos para ayudar a las familias a ahorrar, por eso ofrecemos precios radicalmente accesibles comparados con otras apps. Accede ahora a la Beta Privada.",
+        pricingMissionTitle: "Precios pensados para familias reales",
+        pricingMissionDesc: "La mayoría de apps de finanzas o menús cuestan tanto que acaban siendo otro gasto más. Aliseus nació con una idea clara: que mejorar tus finanzas no signifique recortar en tus hijos ni en vuestra vida diaria. Por eso el plan familiar cuesta menos que una comida fuera al año.",
+        pricingFairPrice: "Precio justo para familias",
+        pricingStableConditions: "Si entras ahora, mantendrás estas condiciones mientras sigas en Aliseus.",
+        pricingSavingsConnection: "Si Aliseus no te ayuda a ahorrar mucho más de lo que cuesta al año, no tiene sentido que exista.",
+        pricingBetaAdvantage: "Los primeros usuarios nos ayudan a pulir Aliseus; a cambio, se llevan este precio para siempre.",
+        pricingGoal: "Nuestro objetivo es que cada euro que inviertas en Aliseus vuelva multiplicado en tranquilidad y ahorro.",
+        promoBadge: "🔥 Beta Privada: 14 días gratuitos con acceso completo",
 
         // Magic Connection (AI Optimization Moat)
         magicTitle: "La Magia de la Conexión",
@@ -44,25 +51,25 @@ export const LANDING_TEXTS = {
         savePercent: "Ahorra ~45%",
 
         // TIER 1: TRIAL
-        trialPlan: "Prueba Gratuita",
+        trialPlan: "Beta Privada",
         trialPrice: "0€",
         trialPeriod: "14 días",
-        trialDesc: "Acceso total para probar Aliseus sin compromiso.",
-        trialCta: "Empezar Gratis",
+        trialDesc: "Acceso total para probar la herramienta en profundidad.",
+        trialCta: "Entrar a la Beta",
 
         // TIER 2: PERSONAL
         personalPlan: "Personal",
         personalPriceMonthly: "2,99€",
         personalPriceAnnual: "19,99€",
-        personalDesc: "Todo el poder de Aliseus para un solo usuario.",
-        personalCta: "Empezar Personal",
+        personalDesc: "Poder de organización total para un solo usuario.",
+        personalCta: "Reservar Personal",
 
         // TIER 3: FAMILY
         familyPlan: "Familia",
         familyPriceMonthly: "3,99€",
         familyPriceAnnual: "24,99€",
-        familyDesc: "Hasta 5 miembros con colaboración en tiempo real.",
-        familyCta: "Empezar Familia",
+        familyDesc: "Hasta 5 miembros con entorno colaborativo completo.",
+        familyCta: "Reservar Familia",
 
         // Features
         featUser1: "1 Usuario",
@@ -483,18 +490,18 @@ export const PRODUCT_DETAILS_BY_LANG: Record<Language, Record<ProductKey, any>> 
             integrations: ["Descuenta ingredientes comprados del presupuesto", "Planifica comidas según eventos de agenda", "Gestiona sobras para reducir desperdicio"]
         },
         dashboard: {
-            title: "Aura",
-            subtitle: "La presencia que lo envuelve todo",
-            description: "Aura, la brisa suave que lo impregna todo sin esfuerzo. El panel funcional donde ves tu saldo, próximas facturas y menú de hoy en una sola respiración.",
+            title: "Panel Aura",
+            subtitle: "Tu interfaz unificada",
+            description: "La única capa donde ocurre la magia. Tu centro de mando operativo donde ves tu saldo, próximas facturas y el menú de hoy en un solo vistazo.",
             features: [
                 { title: "Mañana Inteligente", desc: "Resumen diario: qué pagar, qué comer y dónde ir." },
-                { title: "Widgets Personalizables", desc: "Drag & drop para componer tu Aura exactamente como la necesitas." },
-                { title: "Aliseus Insights", desc: "Análisis proactivo que detecta patrones y te avisa antes de que sean un problema." },
-                { title: "Modo Colaborativo", desc: "Hasta 5 miembros con roles y permisos. Una sola Aura para toda la familia." },
-                { title: "Navegación Total", desc: "Salta de revisar una factura a planear un viaje en 1 click. Todo al alcance." },
-                { title: "Aliseus Brain", desc: "Tu cerebro central: analiza tus gastos, predice facturas y sugiere qué cocinar hoy." }
+                { title: "Widgets Funcionales", desc: "Drag & drop para colocar los widgets que usas." },
+                { title: "Aliseus Insights", desc: "Motor de IA integrado que detecta patrones y facturas antes de que sean un problema." },
+                { title: "Modo Colaborativo", desc: "Hasta 5 miembros con roles y permisos compartidos." },
+                { title: "Navegación Total", desc: "Salta de revisar una factura a planear un menú en 1 click. Todo conectado." },
+                { title: "Predicciones Automáticas", desc: "El motor de IA de Aliseus analiza gastos pasados para predecir futuros de forma invisible." }
             ],
-            integrations: ["El aura que envuelve y conecta Finanzas, Vida y Cocina", "Sincronización en tiempo real con todos tus módulos"]
+            integrations: ["El panel Aura une y conecta Módulo Finanzas y Módulo Vida", "Sincronización en tiempo real de todos tus módulos"]
         }
     },
     EN: {
