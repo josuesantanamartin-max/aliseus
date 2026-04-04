@@ -71,7 +71,7 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
             { ES: 'Gestión de Despensa e Inventario',       EN: 'Pantry & Inventory Management',        FR: 'Gestion du Garde-Manger' },
             { ES: 'Conexión Finanzas ↔ Vida Real',          EN: 'Finance ↔ Real Life Integration',      FR: 'Intégration Finances ↔ Vie' },
             { ES: 'Calculadora de Deudas (Avalancha/Bola)', EN: 'Debt Calculator (Avalanche/Snowball)',  FR: 'Calculateur de Dettes' },
-            { ES: 'Dashboard Personalizable (Drag & Drop)', EN: 'Customizable Dashboard (Drag & Drop)', FR: 'Tableau de Bord Personnalisable' },
+            { ES: 'Centro de Mando Inteligente (Capas Fijas)', EN: 'Smart Command Center (Fixed Layers)', FR: 'Centre de Commande (Couches Fixes)' },
             { ES: 'Modo Colaborativo Familiar',             EN: 'Family Collaborative Mode',            FR: 'Mode Collaboratif Familial' },
             { ES: 'Simulador de Jubilación',                EN: 'Retirement Simulator',                 FR: 'Simulateur de Retraite' },
             { ES: 'Bóveda Digital de Documentos',           EN: 'Digital Document Vault',               FR: 'Coffre-fort Numérique' },

@@ -1,6 +1,9 @@
 import React from 'react';
 import { Wallet, Utensils, Plane, Users, TrendingUp } from 'lucide-react';
 import { cn } from '../../../utils/cn';
+import { useUserStore } from '../../../store/useUserStore';
+import { DASHBOARD_TEXTS } from '../../../i18n/dashboardTexts';
+
 
 export type AuraTheme = 'finances' | 'kitchen' | 'travel' | 'family' | 'investments';
 
@@ -10,15 +13,20 @@ interface AuraThemeBarProps {
 }
 
 const THEMES = [
-    { id: 'finances' as const, label: 'Mi Economía', icon: Wallet, color: 'brand' },
-    { id: 'kitchen' as const, label: 'Mi Cocina', icon: Utensils, color: 'orange' },
-    { id: 'travel' as const, label: 'Mis Viajes', icon: Plane, color: 'sky' },
-    { id: 'family' as const, label: 'Mi Familia', icon: Users, color: 'rose' },
-    { id: 'investments' as const, label: 'Mis Inversiones', icon: TrendingUp, color: 'emerald' },
+    { id: 'finances' as const, icon: Wallet, color: 'brand' },
+    { id: 'kitchen' as const, icon: Utensils, color: 'orange' },
+    { id: 'travel' as const, icon: Plane, color: 'sky' },
+    { id: 'family' as const, icon: Users, color: 'rose' },
+    { id: 'investments' as const, icon: TrendingUp, color: 'emerald' },
 ];
 
+
 export default function AuraThemeBar({ activeTheme, onThemeChange }: AuraThemeBarProps) {
+    const { language } = useUserStore();
+    const t = (DASHBOARD_TEXTS as any)[language || 'ES']?.themeBar || DASHBOARD_TEXTS.ES.themeBar;
+
     return (
+
         <div className="w-full overflow-x-auto hide-scrollbar pb-2">
             <div className="flex items-center gap-2 min-w-max">
                 {THEMES.map((theme) => {
@@ -40,8 +48,9 @@ export default function AuraThemeBar({ activeTheme, onThemeChange }: AuraThemeBa
                                 <div className="absolute inset-0 bg-white/10 blur-md rounded-full -z-10 animate-pulse transition-opacity duration-1000" />
                             )}
                             <Icon className={cn("w-4 h-4 transition-transform duration-300", isActive ? "text-white scale-110" : "text-slate-400 group-hover:scale-110 group-hover:text-blue-600 dark:group-hover:text-blue-400")} />
-                            <span className="text-sm tracking-wide relative z-10">{theme.label}</span>
+                            <span className="text-sm tracking-wide relative z-10">{t[theme.id]}</span>
                         </button>
+
                     );
                 })}
             </div>

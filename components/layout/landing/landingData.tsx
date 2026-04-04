@@ -35,7 +35,7 @@ export const LANDING_TEXTS = {
         pricingFairPrice: "Precios éticos para siempre",
         pricingStableConditions: "Estas son nuestras tarifas estándar: honestas, sostenibles y pensadas para no subir nunca.",
         pricingSavingsConnection: "Si Aliseus no te ayuda a ahorrar mucho más de lo que cuesta al año, no tiene sentido que exista.",
-        pricingBetaAdvantage: "Ventaja Beta: Los usuarios de la beta cerrada recibiréis beneficios exclusivos adicionales por ayudarnos a pulir la herramienta.",
+        pricingBetaAdvantage: "Sorteo de acceso exclusivo: Contrata el plan anual ahora y obtén 18 meses por el precio de 12 (6 meses extra gratis).",
         pricingGoal: "Nuestro objetivo es que cada euro que inviertas en Aliseus vuelva multiplicado en tranquilidad y ahorro.",
         promoBadge: "🔥 Beta Privada: 14 días gratuitos con acceso completo",
 
@@ -136,25 +136,23 @@ export const LANDING_TEXTS = {
         kitchenTitle: "Del caos culinario a la organización total",
         kitchenSub: "Planificación de menús con IA, gestión de despensa, listas automáticas y mucho más.",
         kitchenFeatures: [
-            { title: "Planificador IA de Menús", desc: "Genera menús semanales completos basados en tus preferencias, restricciones dietéticas y presupuesto. En segundos." },
-            { title: "Biblioteca de Recetas", desc: "Una biblioteca en crecimiento con búsqueda avanzada por ingredientes, tiempo de preparación, dificultad y tipo de cocina." },
-            { title: "Inventario de Despensa", desc: "Registra lo que tienes en casa. Aliseus te sugiere recetas basadas en ingredientes disponibles." },
-            { title: "Lista de Compra Automática", desc: "Añade una receta al menú y los ingredientes faltantes se agregan a tu lista." },
-            { title: "Alertas de Caducidad", desc: "Notificaciones cuando los productos están próximos a caducar. Sugerencias para aprovecharlos." },
-            { title: "Información Nutricional", desc: "Calorías, macros y micronutrientes calculados automáticamente para cada receta." },
-            { title: "Programación de Meal Prep", desc: "Organiza sesiones de preparación de comidas. Optimiza tu tiempo cocinando en lotes." },
-            { title: "Preferencias Familiares", desc: "Gestiona alergias, intolerancias y preferencias. Menús personalizados para todos." },
-            { title: "Coste por Comida", desc: "Calcula el precio real de cada receta basándose en ingredientes. Optimiza tu presupuesto." },
-            { title: "Gestión de Sobras", desc: "Registra sobras y recibe sugerencias creativas para reutilizarlas. Reduce el desperdicio." }
+            { title: "Planificador IA de Menús", desc: "Genera menús semanales equilibrados basados en tus gustos, presupuesto y los ingredientes que ya tienes en casa." },
+            { title: "Salud de Despensa", desc: "Un indicador visual en tiempo real del estado de tu stock. Nunca más te quedes sin lo esencial." },
+            { title: "Índice de Frescura", desc: "Control inteligente de caducidades. Aliseus prioriza recetas con ingredientes próximos a vencer." },
+            { title: "Lista de Compra Automática", desc: "Sincronizada con tu menú y tu stock. Solo compras lo que realmente necesitas." },
+            { title: "Coste Real por Receta", desc: "Calcula cuánto cuesta realmente cada plato basándose en los precios de tu supermercado habitual." },
+            { title: "Gestión de Sobras", desc: "Recetas creativas para reutilizar lo que sobró ayer y reducir el desperdicio a cero." },
+            { title: "Preferencias y Alergias", desc: "Perfiles personalizados para cada miembro de la familia, asegurando menús seguros para todos." },
+            { title: "Biblioteca de Recetas", desc: "Cientos de opciones optimizadas para el ahorro y la nutrición familiar." }
         ],
         lifeLabel: "Gestión de Vida",
-        lifeSectionTitle: "Organiza todo lo que importa",
-        lifeSectionSub: "Viajes, documentos importantes, calendario familiar y más. Todo centralizado y seguro.",
+        lifeSectionTitle: "Tu centro de mando familiar",
+        lifeSectionSub: "Viajes, documentos y la inteligencia de Aura siempre a tu lado.",
         lifeFeatures: [
-            { title: "Viajes con IA", desc: "Itinerarios completos con presupuesto y documentos integrados." },
-            { title: "Bóveda Encriptada", desc: "Tus contratos y pasaportes, seguros y a mano." },
-            { icon: Calendar, title: "Calendario Familiar", desc: "Eventos, cumpleaños y citas de toda la familia." },
-            { title: "Dashboard Aura", desc: "Tu día resumido: saldo, próximas facturas y menú de hoy." }
+            { title: "Radar de Viajes con IA", desc: "Monitorización de precios, itinerarios inteligentes y gestión de documentos para toda la familia." },
+            { title: "Bóveda Encriptada", desc: "Tus contratos, pasaportes y documentos críticos protegidos con seguridad de grado bancario." },
+            { icon: Calendar, title: "Calendario Familiar", desc: "La agenda única que conecta eventos, citas médicas y recordatorios del hogar." },
+            { title: "Dashboard Aura (Panel Real)", desc: "Tu día resumido en capas fijas: finanzas por la mañana, menú por la tarde, sin distracciones." }
         ],
         lifeCta: "Simplificar mi Día a Día",
         useCasesTitle: "Historias de Transformación",
@@ -196,6 +194,20 @@ export const LANDING_TEXTS = {
         magicSubtitle: "The only system that unites your fridge, your menu, and your wallet.",
         magicExample: "Aliseus detected that your milk and salmon expire tomorrow, generated 3 recipes to use them, and saved you €12 on your next purchase.",
         magicTag: "Auto-Savings",
+
+        // Finance Module
+        moduleFinTitle: 'Finance Module: Intelligence & Control',
+        moduleFinDesc: 'Manage your family finances with a technical approach. Aliseus doesn\'t just track tags; it projects your real savings capacity.',
+        moduleFinFeat1: 'Cashflow Intelligence & Net Worth Analysis',
+        moduleFinFeat2: 'Proactive Operational Ceiling (Techo Operativo)',
+        moduleFinFeat3: 'Automated Fixed Payments Control (Todo al día)',
+
+        // Life Module
+        moduleVidaTitle: 'Life Module: Household & Exploration',
+        moduleVidaDesc: 'Your home is a living organism. Aliseus connects your pantry, trips, and family in a unified command center.',
+        moduleVidaFeat1: 'Pantry Health Score & Freshness Index',
+        moduleVidaFeat2: 'Smart Meal Planning & Auto-Shopping List',
+        moduleVidaFeat3: 'Travel Pricing Radar & Destination Countdown',
 
         // Billing Toggles
         billingMonthly: "Monthly",
@@ -348,6 +360,20 @@ export const LANDING_TEXTS = {
         magicExample: "Aliseus a détecté que votre lait périme demain, a généré 3 recettes et vous a fait économiser 12€.",
         magicTag: "Économies Automatiques",
 
+        // Finance Module
+        moduleFinTitle: 'Module Finances : Intelligence et Contrôle',
+        moduleFinDesc: 'Gérez vos finances familiales avec une approche opérationnelle. Aliseus ne se contente pas de suivre les dépenses, il projette votre capacité réelle d\'épargne.',
+        moduleFinFeat1: 'Flux de trésorerie et intelligence de liquidité',
+        moduleFinFeat2: 'Plafond opérationnel et contrôle des paiements fixes',
+        moduleFinFeat3: 'Suivi de l\'évolution du patrimoine net',
+
+        // Life Module
+        moduleVidaTitle: 'Module Vie : Maison et Exploration',
+        moduleVidaDesc: 'Votre maison est un organisme vivant. Aliseus connecte votre garde-manger, vos voyages et votre famille dans un tableau de bord unifié.',
+        moduleVidaFeat1: 'Score de santé du stock et indice de fraîcheur',
+        moduleVidaFeat2: 'Planification intelligente et liste de courses automatique',
+        moduleVidaFeat3: 'Radar de voyage et suivi des destinations',
+
         // Billing Toggles
         billingMonthly: "Mensuel",
         billingAnnual: "Annuel",
@@ -474,139 +500,139 @@ export const PRODUCT_DETAILS_BY_LANG: Record<Language, Record<ProductKey, any>> 
     ES: {
         finance: {
             title: "Módulo Finanzas",
-            subtitle: "Patrimonio Inteligente",
-            description: "No es solo un control de gastos. Es tu CFO personal.",
+            subtitle: "Patrimonio e Inteligencia Operativa",
+            description: "No es solo un control de gastos. Es tu sistema de mando financiero.",
             features: [
-                { title: "Smart Categorization", desc: "La IA entiende si es 'Ocio' o 'Necesidad' automáticamente." },
-                { title: "Deuda Zero", desc: "Estrategias Avalancha y Bola de Nieve para eliminar pasivos." },
-                { title: "Simulador de Futuro", desc: "¿Qué pasa si invierto 100€ más al mes? Aliseus te lo dice." },
-                { title: "Límites Reales", desc: "Presupuestos con IA que se adaptan a tu día a día." },
-                { title: "Importación CSV", desc: "Importa extractos bancarios y vincúlalos a tus cuentas." },
-                { title: "Análisis Predictivo", desc: "Proyecciones a 3, 6 y 12 meses de tu flujo de caja." },
-                { title: "Simulador de Jubilación", desc: "Calcula cuánto necesitas ahorrar para tu retiro." }
+                { title: "Techo Operativo Proactivo", desc: "El presupuesto dinámico que te avisa al 90% y 100% de tu capacidad de gasto diaria." },
+                { title: "Control de Pagos Fijos", desc: "Monitorización automática de recibos y facturas recurrentes para el modo 'Todo al día'." },
+                { title: "Inteligencia de Caja", desc: "Cabecera inteligente que sintetiza tu estado financiero diario en segundos." },
+                { title: "Evolución de Patrimonio", desc: "Gráficos detallados de liquidez y net worth desde 1 mes hasta 5 años." },
+                { title: "Deuda Zero / Snowball", desc: "Estrategias personalizadas para eliminar pasivos de forma eficiente." },
+                { title: "Simulador de Futuro", desc: "Proyecta el impacto de tus inversiones y ahorros a largo plazo." },
+                { title: "Categorización IA", desc: "Clasificación automática de movimientos bancarios con total precisión." }
             ],
-            integrations: ["Proyecta impacto de viajes en tu ahorro", "Sincroniza tickets de compra de cocina", "Calcula coste real de cada receta"]
+            integrations: ["Sincronización con el coste real de tu despensa", "Impacto de planes de viaje en tu liquidez inmediata", "Alertas de desvío de presupuesto"]
         },
         vida: {
             title: "Módulo Vida",
-            subtitle: "Tu Hogar en Autopilot",
-            description: "Recupera 5 horas a la semana automatizando las tareas invisibles.",
+            subtitle: "Tu Hogar en Piloto Automático",
+            description: "Elimina la carga mental de la logística doméstica con un panel de control real.",
             features: [
-                { title: "Chef IA", desc: "Genera menús semanales basados en lo que tienes en la nevera." },
-                { title: "Despensa Inteligente", desc: "Inventario con alertas de caducidad y sugerencias de recetas." },
-                { title: "Lista de Compra", desc: "Se genera automáticamente al añadir recetas al menú." },
-                { title: "Viajes con IA", desc: "Itinerarios completos con presupuesto y documentos integrados." },
-                { title: "Bóveda Encriptada", desc: "Tus contratos y pasaportes, seguros y a mano." },
-                { title: "Calendario Familiar", desc: "Eventos, cumpleaños y citas de toda la familia." },
-                { title: "Academia Junior", desc: "Enseña a tus hijos el valor del dinero jugando." }
+                { title: "Salud de Despensa", desc: "Métrica en tiempo real del estado de tu stock (Pantry Health Score)." },
+                { title: "Índice de Frescura", desc: "Control automático de caducidades para minimizar el desperdicio alimentario." },
+                { title: "Menú Inteligente", desc: "Planificador semanal conectado directamente a lo que ya tienes en casa." },
+                { title: "Lista Auto-generada", desc: "Aliseus sabe qué te falta para tus recetas y lo añade a tu lista de compra." },
+                { title: "Radar de Viajes", desc: "Seguimiento de precios de destinos y cuenta atrás operativa para tu próxima salida." },
+                { title: "Checklist de Viaje", desc: "Listas preparadas por IA según el destino, clima y duración del viaje." },
+                { title: "Bóveda Documental", desc: "Tus contratos, pasaportes y pólizas, siempre seguros y accesibles." }
             ],
-            integrations: ["Descuenta ingredientes comprados del presupuesto", "Planifica comidas según eventos de agenda", "Gestiona sobras para reducir desperdicio"]
+            integrations: ["Sincronización entre alimentación y presupuesto", "Gestión de tareas familiares compartidas", "Alertas de compras urgentes"]
         },
         dashboard: {
             title: "Panel Aura",
-            subtitle: "Tu interfaz unificada por capas",
-            description: "No es solo un dashboard, es un organismo vivo. Aura organiza tu vida en capas temáticas: Finanzas, Cocina, Viajes y Familia, conectadas entre sí para darte una visión total en una sola pantalla.",
+            subtitle: "Tu interfaz unificada por capas fijas",
+            description: "Aura organiza tu vida en capas temáticas inteligentes: Finanzas, Cocina, Viajes y Familia, conectadas entre sí para darte una visión total sin distracciones.",
             features: [
-                { title: "Consola de Inteligencia", desc: "Un resumen dinámico que cambia según la hora del día: facturas por la mañana, recetas por la tarde." },
-                { title: "Capas Temáticas", desc: "Navega entre tus finanzas, menús y viajes sin cambiar de aplicación ni perder el contexto." },
-                { title: "Aliseus Insights", desc: "Motor de IA que detecta patrones y alertas críticas antes de que ocurran." },
-                { title: "Dashboard Unificado", desc: "Toda la información relevante de tus módulos (vida y finanzas) condensada en una interfaz fija y coherente." },
-                { title: "Navegación Fluida", desc: "Salta de revisar una inversión a planear un itinerario de viaje en un solo click." },
-                { title: "IA Invisible", desc: "El motor de Aliseus trabaja en segundo plano para predecir tus flujos de caja y necesidades de compra." }
+                { title: "Consola de Inteligencia", desc: "Interfaz dinámica que muestra lo que necesitas saber según el momento del día." },
+                { title: "Capas Temáticas Fijas", desc: "Olvídate de configurar widgets. Aura ya sabe dónde vive cada dato importante." },
+                { title: "Aliseus Insights", desc: "Motor de IA que predice tus necesidades de compra y flujos de caja antes de que ocurran." },
+                { title: "Navegación Fluida", desc: "Alterna entre finanzas, cocina y viajes manteniendo el contexto familiar unificado." },
+                { title: "Seguridad de Grado Bancario", desc: "Encriptación AES-256 para tus datos financieros y documentos más sensibles." },
+                { title: "Modo Beta Privada", desc: "Acceso temprano con soporte directo del equipo de desarrollo para pulir tu experiencia." }
             ],
-            integrations: ["El panel Aura unifica el Módulo Finanzas y el Módulo Vida", "Sincronización en tiempo real de todos tus datos"]
+            integrations: ["Unificación total del Módulo Finanzas y el Módulo Vida", "Conexión en tiempo real con todos tus activos"]
         }
     },
     EN: {
         finance: {
             title: "Finance Module",
-            subtitle: "Intelligent Wealth",
-            description: "Not just expense tracking. It's your personal CFO.",
+            subtitle: "Wealth & Operational Intelligence",
+            description: "More than just expense tracking. It's your financial command system.",
             features: [
-                { title: "Smart Categorization", desc: "AI understands if it's 'Leisure' or 'Necessity' automatically." },
-                { title: "Zero Debt", desc: "Avalanche and Snowball strategies to eliminate liabilities." },
-                { title: "Future Simulator", desc: "What if I invest €100 more? Aliseus tells you." },
-                { title: "Real Limits", desc: "AI-powered budgets that adapt to your day." },
-                { title: "CSV Import", desc: "Import bank statements and link them to your accounts." },
-                { title: "Predictive Analysis", desc: "Cash flow projections at 3, 6 and 12 months." },
-                { title: "Retirement Simulator", desc: "Calculate how much you need to save for retirement." }
+                { title: "Proactive Operational Ceiling", desc: "A dynamic budget that alerts you at 90% and 100% of your daily spending capacity." },
+                { title: "Fixed Payments Control", desc: "Automatic monitoring of recurring bills and invoices for 'Everything Up to Date' mode." },
+                { title: "Cashflow Intelligence", desc: "Intelligent header synthesizing your daily financial status in seconds." },
+                { title: "Wealth Evolution", desc: "Detailed liquidity and net worth charts from 1 month to 5 years." },
+                { title: "Zero Debt / Snowball", desc: "Personalized strategies to efficiently eliminate liabilities." },
+                { title: "Future Simulator", desc: "Project the impact of your investments and savings over the long term." },
+                { title: "AI Categorization", desc: "Automatic classification of bank transactions with total precision." }
             ],
-            integrations: ["Projects travel impact on savings", "Syncs kitchen grocery receipts", "Calculates real cost per recipe"]
+            integrations: ["Sync with real pantry costs", "Impact of travel plans on immediate liquidity", "Budget deviation alerts"]
         },
         vida: {
             title: "Life Module",
-            subtitle: "Home on Autopilot",
-            description: "Reclaim 5 hours a week simply by automating invisible tasks.",
+            subtitle: "Your Home on Autopilot",
+            description: "Remove the mental load of domestic logistics with a real control panel.",
             features: [
-                { title: "AI Chef", desc: "Generates weekly menus based on what's in your fridge." },
-                { title: "Smart Pantry", desc: "Inventory with expiry alerts and recipe suggestions." },
-                { title: "Shopping List", desc: "Auto-generated when you add recipes to your menu." },
-                { title: "AI Travel Planner", desc: "Full itineraries with budget and integrated documents." },
-                { title: "Encrypted Vault", desc: "Your contracts and passports, safe and handy." },
-                { title: "Family Calendar", desc: "Events, birthdays and appointments for the whole family." },
-                { title: "Junior Academy", desc: "Teach your kids the value of money through play." }
+                { title: "Pantry Health Score", desc: "Real-time metric of your stock status (Pantry Health Score)." },
+                { title: "Freshness Index", desc: "Automatic expiry tracking to minimize food waste." },
+                { title: "Smart Menu", desc: "Weekly planner connected directly to what you already have at home." },
+                { title: "Auto-generated List", desc: "Aliseus knows what you're missing for your recipes and adds it to your shopping list." },
+                { title: "Travel Radar", desc: "Price monitoring for destinations and operational countdown for your next trip." },
+                { title: "Travel Checklist", desc: "AI-prepared lists based on destination, weather, and trip duration." },
+                { title: "Document Vault", desc: "Your contracts, passports, and policies, always secure and accessible." }
             ],
-            integrations: ["Deducts ingredients from budget", "Plans meals based on calendar events", "Manages leftovers to reduce waste"]
+            integrations: ["Sync between food and budget", "Shared family task management", "Urgent shopping alerts"]
         },
         dashboard: {
             title: "Aura Panel",
-            subtitle: "Your unified layered interface",
-            description: "Aura is your central command center. It organizes your life into intelligent thematic layers: Finance, Kitchen, Travel, and Family, all connected to give you a 360° view on a single screen.",
+            subtitle: "Your unified interface via fixed layers",
+            description: "Aura organizes your life into intelligent thematic layers: Finance, Kitchen, Travel, and Family, connected to give you total vision without distractions.",
             features: [
-                { title: "Intelligence Console", desc: "A dynamic summary that changes with the time of day: bills in the morning, recipes in the evening." },
-                { title: "Thematic Layers", desc: "Navigate between your finances, menus, and travels without switching apps or losing context." },
-                { title: "Aliseus Insights", desc: "AI engine that detects patterns and critical alerts before they happen." },
-                { title: "Unified Dashboard", desc: "All relevant information from your life and finance modules condensed in a fixed, coherent interface." },
-                { title: "Seamless Navigation", desc: "Jump from reviewing an investment to planning a travel itinerary in a single click." },
-                { title: "Invisible AI", desc: "The Aliseus engine works in the background to predict your cash flows and shopping needs." }
+                { title: "Intelligence Console", desc: "Dynamic interface showing what you need to know based on the time of day." },
+                { title: "Fixed Thematic Layers", desc: "Forget about configuring widgets. Aura already knows where every important data point lives." },
+                { title: "Aliseus Insights", desc: "AI engine that predicts your shopping needs and cash flows before they happen." },
+                { title: "Seamless Navigation", desc: "Toggle between finance, kitchen, and travel while maintaining unified family context." },
+                { title: "Bank-Grade Security", desc: "AES-256 encryption for your financial data and most sensitive documents." },
+                { title: "Private Beta Mode", desc: "Early access with direct support from the development team to polish your experience." }
             ],
-            integrations: ["Aura Panel unifies the Finance Module and the Life Module", "Real-time sync for all your data"]
+            integrations: ["Total unification of Finance and Life Modules", "Real-time connection with all your assets"]
         }
     },
     FR: {
         finance: {
             title: "Module Finances",
-            subtitle: "Patrimoine Intelligent",
-            description: "Plus qu'un suivi de dépenses. Votre DAF personnel.",
+            subtitle: "Patrimoine et Intelligence Opérationnelle",
+            description: "Plus qu'un suivi de dépenses. C'est votre système de commande financière.",
             features: [
-                { title: "Catégorisation IA", desc: "L'IA comprend si c'est 'Loisir' ou 'Nécessité'." },
-                { title: "Dette Zéro", desc: "Stratégies Avalanche et Boule de Neige pour éliminer les passifs." },
-                { title: "Simulateur Futur", desc: "Et si j'investis 100€ de plus ? Aliseus vous le dit." },
-                { title: "Limites Réelles", desc: "Budgets IA adaptés à votre quotidien." },
-                { title: "Import CSV", desc: "Importez des relevés bancaires et associez-les à vos comptes." },
-                { title: "Analyse Prédictive", desc: "Projections de trésorerie à 3, 6 et 12 mois." },
-                { title: "Simulateur Retraite", desc: "Calculez combien épargner pour votre retraite." }
+                { title: "Plafond Opérationnel Proactif", desc: "Le budget dynamique qui vous alerte à 90% et 100% de votre capacité de dépense quotidienne." },
+                { title: "Contrôle des Paiements Fixes", desc: "Suivi automatique des factures et abonnements pour le mode 'Tout à jour'." },
+                { title: "Intelligence de Trésorerie", desc: "Un en-tête intelligent qui synthétise votre état financier quotidien en quelques secondes." },
+                { title: "Évolution du Patrimoine", desc: "Graphiques détaillés de liquidité et capital net de 1 mois à 5 ans." },
+                { title: "Dette Zéro / Snowball", desc: "Stratégies personnalisées pour éliminer les passifs de manière efficace." },
+                { title: "Simulateur de Futur", desc: "Projetez l'impact de vos investissements et de votre épargne à long terme." },
+                { title: "Catégorisation IA", desc: "Classification automatique de vos transactions bancaires avec une précision totale." }
             ],
-            integrations: ["Projette l'impact voyage sur l'épargne", "Synchro tickets cuisine", "Calcule le coût réel par recette"]
+            integrations: ["Synchronisation avec le coût réel de votre stock", "Impact des voyages sur votre liquidité immédiate", "Alertes de dérive budgétaire"]
         },
         vida: {
             title: "Module Vie",
-            subtitle: "Maison en Autopilote",
-            description: "Gagnez 5h par semaine en automatisant l'invisible.",
+            subtitle: "Votre Foyer en Pilote Automatique",
+            description: "Éliminez la charge mentale de la logistique domestique avec un véritable panneau de contrôle.",
             features: [
-                { title: "Chef IA", desc: "Menus hebdomadaires basés sur le contenu du frigo." },
-                { title: "Garde-manger Intelligent", desc: "Inventaire avec alertes péremption et suggestions." },
-                { title: "Liste de Courses", desc: "Générée automatiquement en ajoutant des recettes." },
-                { title: "Planificateur Voyage IA", desc: "Itinéraires complets avec budget et documents." },
-                { title: "Coffre Chiffré", desc: "Contrats et passeports, sûrs et à portée de main." },
-                { title: "Calendrier Familial", desc: "Événements, anniversaires et rendez-vous." },
-                { title: "Académie Junior", desc: "Apprenez la valeur de l'argent par le jeu." }
+                { title: "Score de Santé du Stock", desc: "Mesure en temps réel de l'état de votre garde-manger (Pantry Health Score)." },
+                { title: "Indice de Fraîcheur", desc: "Suivi intelligent des dates de péremption pour minimiser le gaspillage alimentaire." },
+                { title: "Menus Intelligents", desc: "Planificateur hebdomadaire connecté directement à ce que vous avez déjà chez vous." },
+                { title: "Liste Auto-générée", desc: "Aliseus sait ce qu'il vous manque pour vos recettes et l'ajoute à votre liste de courses." },
+                { title: "Radar de Voyages", desc: "Suivi des prix des destinations et compte à rebours opérationnel pour votre prochain départ." },
+                { title: "Checklist de Voyage", desc: "Listes préparées par l'IA selon la destination, la météo et la durée du voyage." },
+                { title: "Coffre Documentaire", desc: "Vos contrats, passeports et polices d'assurance, toujours sécurisés et accessibles." }
             ],
-            integrations: ["Déduit ingrédients du budget", "Planifie repas selon agenda", "Gère les restes pour réduire le gaspillage"]
+            integrations: ["Synchronisation entre alimentation et budget", "Gestion des tâches familiales partagées", "Alertes de courses urgentes"]
         },
         dashboard: {
             title: "Panneau Aura",
-            subtitle: "Votre interface unifiée par couches",
-            description: "Aura est votre centre de commande central. Il organise votre vie en couches thématiques intelligentes : Finances, Cuisine, Voyage et Famille, toutes connectées pour une vision à 360°.",
+            subtitle: "Votre interface unifiée par couches fixes",
+            description: "Aura organise votre vie en couches thématiques intelligentes : Finances, Cuisine, Voyages et Famille, connectées entre elles pour une vision totale.",
             features: [
-                { title: "Console d'Intelligence", desc: "Un résumé dynamique : factures le matin, menus le soir, selon vos besoins réels." },
-                { title: "Couches Thématiques", desc: "Naviguez entre vos finances, menus et voyages sans changer d'application ni perdre le fil." },
-                { title: "Aliseus Insights", desc: "Moteur d'IA qui détecte les tendances et les alertes critiques de manière proactive." },
-                { title: "Dashboard Unifié", desc: "Toute l'information pertinente condensée dans une interface fixe, claire et ultra-cohérente." },
-                { title: "Navigation Fluide", desc: "Passez de la révision d'un investissement à la planification d'un voyage en un clic." },
-                { title: "IA Invisible", desc: "Le moteur d'Aliseus travaille en arrière-plan pour prédire vos flux de trésorerie y besoins d'achat." }
+                { title: "Console d'Intelligence", desc: "Interface dynamique qui affiche ce que vous devez savoir selon le moment de la journée." },
+                { title: "Couches Thématiques Fixes", desc: "Oubliez la configuration de widgets. Aura sait déjà où se trouve chaque donnée importante." },
+                { title: "Aliseus Insights", desc: "Moteur d'IA qui prédit vos besoins d'achat et vos flux de trésorerie avant qu'ils ne surviennent." },
+                { title: "Navigation Fluide", desc: "Passez des finances à la cuisine ou aux voyages en gardant un contexte familial unifié." },
+                { title: "Sécurité de Grade Bancaire", desc: "Chiffrement AES-256 pour vos données financières et vos documents les plus sensibles." },
+                { title: "Mode Bêta Privée", desc: "Accès anticipé avec support direct de l'équipe pour polir votre expérience." }
             ],
-            integrations: ["Le Panneau Aura unifie le Module Finances et le Module Vie", "Synchronisation en temps réel de toutes vos données"]
+            integrations: ["Unification totale du Module Finances et du Module Vie", "Connexion en temps réel avec tous vos actifs"]
         }
     }
 };

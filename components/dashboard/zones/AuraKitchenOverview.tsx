@@ -25,7 +25,9 @@ import {
     HelpCircle
 } from 'lucide-react';
 import Tooltip from '../../ui/Tooltip';
+import { BetaWelcomeCard } from '../shared/BetaWelcomeCard';
 import { clsx, type ClassValue } from 'clsx';
+
 import { twMerge } from 'tailwind-merge';
 
 function cn(...inputs: ClassValue[]) {
@@ -340,8 +342,23 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
         }).sort((a, b) => b.totalCount - a.totalCount);
     }, [pantryItems]);
 
+    // ==========================================
+    // RENDER: EMPTY STATE (BETA ONBOARDING)
+    // ==========================================
+    if (pantryItems.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 py-12">
+                <BetaWelcomeCard onSetupClick={() => {
+                    // Logic to open onboarding or life-setup
+                    console.log("Navigate to life setup");
+                }} />
+            </div>
+        );
+    }
+
     return (
-        <div className="flex flex-col gap-6 w-full max-w-7xl mx-auto px-4 lg:px-0">
+        <div className="flex flex-col gap-6 w-full max-w-7xl mx-auto px-4 lg:px-0 pb-12">
+
             {/* ROW 1: CABECERA INTELIGENTE (Capa 0) */}
             <div className={`p-6 md:p-8 rounded-[2.5rem] border flex flex-col xl:flex-row xl:items-center justify-between gap-6 transition-[background,border,color] duration-300 ${themeStyles[smartHeader.colorTheme]}`}>
                 <div className="flex flex-col gap-2">

@@ -41,7 +41,18 @@ interface UserState {
         avatar_url?: string;
         persona_type?: UserPersona[];
         familyMembers?: FamilyMember[];
+        referralCode?: string;
+        referredBy?: string | null;
+        betaStatus?: 'ALPHA' | 'BETA' | 'STANDARD';
     } | null;
+
+    referral: {
+        code: string | null;
+        count: number;
+        rewardMonths: number;
+        history: { date: string, type: 'EARNED' | 'REDEEMED', amount: number, description: string }[];
+    };
+
 
     // Saved Search & Filters
     recentSearches: string[];
@@ -58,7 +69,9 @@ interface UserState {
         plan: 'FREE' | 'PERSONAL' | 'FAMILIA';
         status: 'ACTIVE' | 'CANCELED' | 'PAST_DUE' | 'TRIAL' | 'NONE';
         expiryDate?: string;
+        isBetaExtraApplied: boolean; // 6 months extra check
     };
+
     lastSyncTime: string | null;
     defaultShoppingAccount: string | null; // ID de cuenta preferida para compras de cocina
 
@@ -119,7 +132,11 @@ interface UserActions {
     scheduleAccountDeletion: () => void;
     cancelAccountDeletion: () => void;
     setLastDataExport: (date: string) => void;
+    // Referral Actions
+    generateReferralCode: () => void;
+    applyReferral: (code: string) => void;
 }
+
 
 export const useUserStore = create<UserState & UserActions>()(
     persist(
@@ -151,7 +168,15 @@ export const useUserStore = create<UserState & UserActions>()(
             seenTooltips: [],
             sampleDataContext: false,
 
-            subscription: { plan: 'FREE', status: 'NONE' },
+            referral: {
+                code: null,
+                count: 0,
+                rewardMonths: 0,
+                history: [],
+            },
+
+            subscription: { plan: 'FREE', status: 'NONE', isBetaExtraApplied: false },
+
             lastSyncTime: null,
             defaultShoppingAccount: null,
 
@@ -218,7 +243,24 @@ export const useUserStore = create<UserState & UserActions>()(
             }),
             cancelAccountDeletion: () => set({ accountDeletionScheduled: null }),
             setLastDataExport: (date) => set({ lastDataExport: date }),
+
+            generateReferralCode: () => set((state) => {
+                if (state.referral.code) return state;
+                const namePart = state.userProfile?.full_name?.split(' ')[0]?.toUpperCase() || 'ALIS';
+                const randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();
+                return {
+                    referral: {
+                        ...state.referral,
+                        code: `ALIS-${namePart}-${randomPart}`
+                    }
+                };
+            }),
+            applyReferral: (code) => {
+                // Logic to call API and link users
+                console.log("Applying referral code:", code);
+            },
         }),
+
         {
             name: 'onyx_user_store',
             storage: createJSONStorage(() => localStorage),
@@ -240,6 +282,8 @@ export const useUserStore = create<UserState & UserActions>()(
                 recentSearches: state.recentSearches,
                 savedFilters: state.savedFilters,
                 financeSelectedAccountId: state.financeSelectedAccountId,
+                referral: state.referral,
+
                 // Privacy state
                 cookiePreferences: state.cookiePreferences,
                 aiPreferences: state.aiPreferences,

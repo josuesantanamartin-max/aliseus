@@ -15,6 +15,10 @@ import AuraKitchenOverview from './zones/AuraKitchenOverview';
 import AuraTravelOverview from './zones/AuraTravelOverview';
 import AuraFamilyOverview from './zones/AuraFamilyOverview';
 import AuraInvestmentsOverview from './zones/AuraInvestmentsOverview';
+import BetaFeedbackWidget from './BetaFeedbackWidget';
+import { DASHBOARD_TEXTS } from '@/i18n/dashboardTexts';
+
+
 
 // Utility for formatting currency
 const formatCurrency = (val: number) =>
@@ -23,8 +27,9 @@ const formatCurrency = (val: number) =>
 const AuraDashboard: React.FC = () => {
     const { 
         theme, setTheme, setActiveApp, setFinanceActiveTab, setLifeActiveTab,
-        setDemoMode
+        language
     } = useUserStore();
+
 
     const {
         transactions = [], accounts = [], debts = [], categories = [], goals = [], budgets = []
@@ -108,7 +113,8 @@ const AuraDashboard: React.FC = () => {
 
                 {/* --- DYNAMIC VIEWS --- */}
                 <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-                    <React.Suspense fallback={<div className="flex items-center justify-center p-12 text-onyx-400 font-bold m-auto">Cargando módulos interactivos...</div>}>
+                    <React.Suspense fallback={<div className="flex items-center justify-center p-12 text-onyx-400 font-bold m-auto">Loading...</div>}>
+
                         {activeTheme === 'finances' && (
                             <div className="mx-auto w-full space-y-8 pb-12">
                                 <AuraFinanceOverview selectedDate={selectedDate} />
@@ -142,8 +148,14 @@ const AuraDashboard: React.FC = () => {
                 </div>
             </div>
 
+            {/* --- FEEDBACK WIDGET --- */}
+            <div className="fixed bottom-6 right-6 z-[100]">
+                <BetaFeedbackWidget />
+            </div>
+
         </div>
     );
 };
+
 
 export default AuraDashboard;

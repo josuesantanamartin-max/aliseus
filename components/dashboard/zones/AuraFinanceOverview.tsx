@@ -22,6 +22,11 @@ import {
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { DetailedBudgetWidget } from './finance/DetailedBudgetWidget';
+import { BetaWelcomeCard } from '../shared/BetaWelcomeCard';
+import { ReferralWidget } from '../ReferralWidget';
+
+
+
 
 export interface PendingFixedPayment {
     id: string;
@@ -409,42 +414,62 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
         slate: 'text-slate-600 dark:text-slate-400',
     };
 
+    // ==========================================
+    // RENDER: EMPTY STATE (BETA ONBOARDING)
+    // ==========================================
+    if (accounts.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 py-12">
+                <BetaWelcomeCard onSetupClick={() => {
+                    // Logic to open onboarding or account creation
+                    console.log("Navigate to onboarding");
+                }} />
+            </div>
+        );
+    }
+
     return (
         <div className="flex flex-col gap-6 w-full max-w-7xl mx-auto px-4 lg:px-0 pb-12">
 
-            {/* ========================================== */}
-            {/* CABECERA DIARIA INTELIGENTE                */}
-            {/* ========================================== */}
-            <div className={`p-6 md:p-8 rounded-[2rem] border flex flex-col md:flex-row md:items-center justify-between gap-6 transition-colors duration-300 ${themeStyles[smartHeader.colorTheme]}`}>
-                <div className="flex flex-col gap-2">
-                    <p className="text-[11px] font-bold tracking-[0.2em] uppercase opacity-60">
-                        {smartHeader.dateLabel}
-                    </p>
-                    <h2 className="text-2xl md:text-3xl font-black tracking-tight leading-tight">
-                        {smartHeader.title}
-                    </h2>
-                    <div className="flex flex-wrap items-center gap-2 mt-2">
-                        <span className="px-3 py-1 rounded-full bg-black/5 dark:bg-white/10 text-sm font-semibold whitespace-nowrap">
-                            <span className="opacity-70 font-medium mr-1">Gastados</span>{formatCurrency(globalBudgetSpent)}
-                        </span>
-                        <span className="text-black/20 dark:text-white/20">•</span>
-                        <span className="px-3 py-1 rounded-full bg-black/5 dark:bg-white/10 text-sm font-semibold whitespace-nowrap">
-                            <span className="opacity-70 font-medium mr-1">Restantes</span>{formatCurrency(globalBudgetRemaining)}
-                        </span>
-                        <span className="text-black/20 dark:text-white/20">•</span>
-                        <span className={`px-3 py-1 rounded-full bg-white/50 dark:bg-black/50 text-sm font-semibold whitespace-nowrap shadow-sm ${smartHeader.pendingCount > 0 ? highlightStyles.amber : 'opacity-80'}`}>
-                            {smartHeader.pendingCount} pagos pendientes
-                        </span>
+            {/* --- BETA REWARDS & REFERRALS GRID --- */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2">
+                    <div className={cn(
+                        "h-full p-6 md:p-8 rounded-[2rem] border flex flex-col md:flex-row md:items-center justify-between gap-6 transition-colors duration-300",
+                        themeStyles[smartHeader.colorTheme]
+                    )}>
+                        <div className="flex flex-col gap-2">
+                            <p className="text-[11px] font-bold tracking-[0.2em] uppercase opacity-60">
+                                {smartHeader.dateLabel}
+                            </p>
+                            <h2 className="text-2xl md:text-3xl font-black tracking-tight leading-tight">
+                                {smartHeader.title}
+                            </h2>
+                            <div className="flex flex-wrap items-center gap-2 mt-2">
+                                <span className="px-3 py-1 rounded-full bg-black/5 dark:bg-white/10 text-sm font-semibold whitespace-nowrap">
+                                    <span className="opacity-70 font-medium mr-1">Gastados</span>{formatCurrency(globalBudgetSpent)}
+                                </span>
+                                <span className="text-black/20 dark:text-white/20">•</span>
+                                <span className="px-3 py-1 rounded-full bg-black/5 dark:bg-white/10 text-sm font-semibold whitespace-nowrap">
+                                    <span className="opacity-70 font-medium mr-1">Restantes</span>{formatCurrency(globalBudgetRemaining)}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="shrink-0 flex items-center">
+                            <button className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-black/40 border border-black/10 dark:border-white/10 font-semibold shadow-sm hover:shadow-md transition-all active:scale-95 group">
+                                <span>Ver desglose</span>
+                                <ArrowRight className="w-4 h-4 opacity-70 group-hover:translate-x-1 transition-transform" />
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <div className="shrink-0 flex items-center">
-                    <button className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-black/40 border border-black/10 dark:border-white/10 font-semibold shadow-sm hover:shadow-md transition-all active:scale-95 group">
-                        <span>Ver desglose</span>
-                        <ArrowRight className="w-4 h-4 opacity-70 group-hover:translate-x-1 transition-transform" />
-                    </button>
+                <div className="lg:col-span-1">
+                    <ReferralWidget />
                 </div>
             </div>
+
 
             {/* ========================================== */}
             {/* FILA 1: OPERATIVIDAD Y ACCIÓN (HOY)        */}
