@@ -97,7 +97,8 @@ interface UserActions {
     setLanguage: (lang: Language) => void;
     setCurrency: (currency: 'EUR' | 'USD' | 'GBP' | 'MXN' | 'COP' | 'ARS' | 'CLP' | 'CHF' | 'CAD' | 'AUD' | 'INR') => void;
     setTheme: (theme: 'light' | 'dark' | 'system') => void;
-    setSubscription: (sub: UserState['subscription']) => void;
+    setSubscription: (sub: Partial<UserState['subscription']>) => void;
+
     setUserProfile: (profile: UserState['userProfile']) => void;
 
     // Search Actions
@@ -218,7 +219,8 @@ export const useUserStore = create<UserState & UserActions>()(
             setSidebarOpen: (v) => set({ isSidebarOpen: v }),
             setFabOpen: (v) => set({ isFabOpen: v }),
             setQuickAction: (v) => set({ quickAction: v }),
-            setSubscription: (v) => set({ subscription: v }),
+            setSubscription: (v) => set((state) => ({ subscription: { ...state.subscription, ...v } })),
+
 
             setAutomationRules: (updater) => set((state) => ({
                 automationRules: typeof updater === 'function' ? updater(state.automationRules) : updater

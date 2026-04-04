@@ -10,7 +10,7 @@ const ImportDataStep: React.FC = () => {
     const handleComplete = async () => {
         completeOnboarding();
         // Give users Premium Personal status right away after onboarding so they don't see "BASIC"
-        setSubscription({ plan: 'PERSONAL', status: 'ACTIVE' });
+        setSubscription({ plan: 'PERSONAL', status: 'ACTIVE', isBetaExtraApplied: false });
 
         // Save onboarding completion to Supabase user_metadata
         try {
