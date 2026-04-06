@@ -2,11 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useLifeStore } from '@/store/useLifeStore';
 import { useUserStore } from '@/store/useUserStore';
 import { Recipe, RecipeIngredient } from '@/types';
-import { Search, Loader2, ScanLine, Plus } from 'lucide-react';
+import { Search, Loader2, ScanLine, Plus, RefreshCw, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { generateImage } from '@/services/geminiCore';
 import { generateRecipesFromImage } from '@/services/geminiLife';
 import { ProgressiveTooltip } from '@/components/common/ProgressiveTooltip';
+import { ConfirmationModal } from '@/components/common/ConfirmationModal';
 import { PlanRecipeModal } from './PlanRecipeModal';
 import { CookingModeView } from './CookingModeView';
 import { calculateMissingIngredients } from '@/utils/foodUtils';
@@ -47,6 +48,11 @@ export const RecipeBook: React.FC<RecipeBookProps> = ({ onNavigateToMealPlan, in
 
     // States related to creating/editing
     const [isAddRecipeOpen, setIsAddRecipeOpen] = useState(false);
+    const [isSyncModalOpen, setIsSyncModalOpen] = useState(false);
+    const [deleteConfig, setDeleteConfig] = useState<{ isOpen: boolean; recipe: Recipe | null }>({
+        isOpen: false,
+        recipe: null
+    });
     const [viewRecipe, setViewRecipe] = useState<Recipe | null>(null);
     const [editingRecipeId, setEditingRecipeId] = useState<string | null>(null);
     const [newRecipeName, setNewRecipeName] = useState('');
@@ -93,17 +99,26 @@ export const RecipeBook: React.FC<RecipeBookProps> = ({ onNavigateToMealPlan, in
         setIsAddRecipeOpen(true);
     };
 
-    const handleDeleteRecipe = async (recipe: Recipe) => {
-        const confirmed = window.confirm(`¿Estás seguro de que quieres eliminar "${recipe.name}"?`);
-        if (!confirmed) return;
+    const handleDeleteRecipe = (recipe: Recipe) => {
+        setDeleteConfig({ isOpen: true, recipe });
+    };
 
-        try {
-            useLifeStore.getState().deleteRecipe(recipe.id);
-            if (viewRecipe?.id === recipe.id) setViewRecipe(null);
-        } catch (e) {
-            console.error('Error deleting recipe:', e);
-            alert('No se pudo eliminar la receta.');
+    const confirmDeleteRecipe = () => {
+        if (deleteConfig.recipe) {
+            useLifeStore.getState().deleteRecipe(deleteConfig.recipe.id);
+            if (viewRecipe?.id === deleteConfig.recipe.id) setViewRecipe(null);
         }
+        setDeleteConfig({ isOpen: false, recipe: null });
+    };
+
+    const handleSyncCatalog = () => {
+        setIsSyncModalOpen(true);
+    };
+
+    const confirmSyncCatalog = () => {
+        useLifeStore.getState().refreshSampleRecipes();
+        setIsSyncModalOpen(false);
+        alert('Catálogo sincronizado con éxito. Ahora deberías ver las nuevas recetas e imágenes.');
     };
 
     const handleSaveRecipe = (e?: React.MouseEvent) => {
@@ -329,6 +344,13 @@ export const RecipeBook: React.FC<RecipeBookProps> = ({ onNavigateToMealPlan, in
                                 {isChefGenerating ? <Loader2 className="w-4 h-4 animate-spin" /> : <ScanLine className="w-4 h-4" />} Escanear para Cocinar
                             </button>
                         </div>
+                        <button
+                            onClick={handleSyncCatalog}
+                            className="bg-gray-100 hover:bg-gray-200 text-gray-600 p-3 rounded-2xl transition-all flex items-center justify-center w-12 h-12"
+                            title="Sincronizar Catálogo"
+                        >
+                            <RefreshCw className="w-5 h-5" />
+                        </button>
                         <ProgressiveTooltip
                             id="tooltip-add-recipe"
                             title="Cocina con IA"
@@ -411,6 +433,28 @@ export const RecipeBook: React.FC<RecipeBookProps> = ({ onNavigateToMealPlan, in
                     onClose={() => setCookingRecipe(null)}
                 />
             )}
+
+            {/* Premium Confirmation Modals */}
+            <ConfirmationModal
+                isOpen={deleteConfig.isOpen}
+                title="¿Eliminar receta?"
+                message={`Esta acción no se puede deshacer. ¿Estás seguro de que quieres eliminar "${deleteConfig.recipe?.name}"?`}
+                confirmLabel="Eliminar permanentemente"
+                onConfirm={confirmDeleteRecipe}
+                onCancel={() => setDeleteConfig({ isOpen: false, recipe: null })}
+                isDanger={true}
+            />
+
+            <ConfirmationModal
+                isOpen={isSyncModalOpen}
+                title="Sincronizar Catálogo"
+                message="Esto restaurará las recetas de ejemplo predeterminadas e imágenes HD. Tus recetas personalizadas no se verán afectadas (a menos que tengan el mismo nombre que las de ejemplo)."
+                confirmLabel="Sincronizar ahora"
+                cancelLabel="Volver"
+                onConfirm={confirmSyncCatalog}
+                onCancel={() => setIsSyncModalOpen(false)}
+                isDanger={false}
+            />
         </div>
     );
 };

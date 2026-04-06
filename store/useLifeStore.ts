@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { Ingredient, ShoppingItem, Recipe, Trip, FamilyMember, DashboardWidget, WishlistDestination, PriceAlert, TravelDocument } from '../types';
-import { WeeklyPlan, Chore, FamilyEvent } from '../types/life';
+import { Recipe, Ingredient, ShoppingItem, Trip, WishlistDestination, PriceAlert, TravelDocument, FamilyMember, FamilyEvent, DashboardWidget, WeeklyPlan } from '../types';
+import { MOCK_RECIPES, MOCK_PANTRY } from '../data/seeds/lifeSeed';
 import { syncService } from '../services/syncService';
 import { recipeService } from '../services/recipes/recipeService';
 import { idbStorage } from '../utils/idbStorage';
@@ -43,6 +43,7 @@ interface LifeActions {
     setIsSmartPlannerOpen: (isOpen: boolean) => void;
 
     // Granular CRUD — all wired to syncService
+    refreshSampleRecipes: () => void;
     addRecipe: (recipe: Recipe) => void;
     updateRecipe: (id: string, updates: Partial<Recipe>) => void;
     deleteRecipe: (id: string) => void;
@@ -155,6 +156,13 @@ export const useLifeStore = create<LifeState & LifeActions>()(
             setIsSmartPlannerOpen: (isOpen) => set({ isSmartPlannerOpen: isOpen }),
 
             // ── Recipes ──
+            refreshSampleRecipes: () => {
+                set({ 
+                    recipes: MOCK_RECIPES,
+                    pantryItems: MOCK_PANTRY 
+                });
+                localStorage.setItem('Aliseus_sample_data_loaded', 'true');
+            },
             addRecipe: (recipe) => {
                 set((state) => ({ recipes: [...state.recipes, recipe] }));
                 sync(() => syncService.saveRecipe(recipe), 'addRecipe', 'saveRecipe', recipe);
