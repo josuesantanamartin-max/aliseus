@@ -132,18 +132,32 @@ export const householdService = {
     },
 
     /**
-     * Leave a household
+     * Leave a household (remove yourself as a member)
      */
     async leaveHousehold(householdId: string) {
         if (!supabase) throw new Error('Supabase client not initialized');
-        const userId = (await supabase.auth.getUser()).data.user?.id;
-        if (!userId) throw new Error('User not found');
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error('Usuario no encontrado');
 
         const { error } = await supabase
             .from('household_members')
             .delete()
             .eq('household_id', householdId)
-            .eq('user_id', userId);
+            .eq('user_id', user.id);
+
+        if (error) throw error;
+    },
+
+    /**
+     * Delete a household entirely (only for owners)
+     */
+    async deleteHousehold(householdId: string) {
+        if (!supabase) throw new Error('Supabase client not initialized');
+        
+        const { error } = await supabase
+            .from('households')
+            .delete()
+            .eq('id', householdId);
 
         if (error) throw error;
     },

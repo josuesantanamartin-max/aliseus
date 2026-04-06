@@ -17,6 +17,8 @@ interface HouseholdActions {
     createHousehold: (name: string, currency: 'EUR' | 'USD' | 'GBP' | 'MXN' | 'COP' | 'ARS' | 'CLP' | 'CHF' | 'CAD' | 'AUD' | 'INR') => Promise<void>;
     fetchMembers: (householdId: string) => Promise<void>;
     inviteMember: (email: string, role: 'ADMIN' | 'MEMBER' | 'VIEWER') => Promise<any>;
+    leaveHousehold: (id: string) => Promise<void>;
+    deleteHousehold: (id: string) => Promise<void>;
 }
 
 export const useHouseholdStore = create<HouseholdState & HouseholdActions>()(
@@ -84,6 +86,39 @@ export const useHouseholdStore = create<HouseholdState & HouseholdActions>()(
                 if (!activeHouseholdId) throw new Error("No active household");
                 const invite = await householdService.inviteMember(activeHouseholdId, email, role);
                 return invite;
+            },
+
+            leaveHousehold: async (id) => {
+                set({ isLoading: true });
+                try {
+                    await householdService.leaveHousehold(id);
+                    await get().fetchHouseholds();
+                    
+                    // If the leaving household was active, set a different one
+                    const state = get();
+                    if (state.activeHouseholdId === id) {
+                        set({ activeHouseholdId: state.households[0]?.id || null });
+                    }
+                } catch (error: any) {
+                    set({ error: error.message, isLoading: false });
+                    throw error;
+                }
+            },
+
+            deleteHousehold: async (id) => {
+                set({ isLoading: true });
+                try {
+                    await householdService.deleteHousehold(id);
+                    await get().fetchHouseholds();
+                    
+                    const state = get();
+                    if (state.activeHouseholdId === id) {
+                        set({ activeHouseholdId: state.households[0]?.id || null });
+                    }
+                } catch (error: any) {
+                    set({ error: error.message, isLoading: false });
+                    throw error;
+                }
             }
         }),
         {
