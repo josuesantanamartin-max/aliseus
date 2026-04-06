@@ -6,7 +6,7 @@ interface UseSampleDataReturn {
     hasUserData: boolean;
     isBannerDismissed: boolean;
     loadSampleData: () => void;
-    clearAllData: () => void;
+    clearAllData: (keepRecipes?: boolean) => void;
     restoreSampleData: () => void;
     dismissBanner: () => void;
     isLoading: boolean;
@@ -46,10 +46,10 @@ export const useSampleData = (): UseSampleDataReturn => {
         }
     };
 
-    const clearAllData = () => {
+    const clearAllData = (keepRecipes: boolean = true) => {
         setIsLoading(true);
         try {
-            SampleDataService.clearAllData();
+            SampleDataService.clearAllData(keepRecipes);
             checkDataState();
         } finally {
             setIsLoading(false);

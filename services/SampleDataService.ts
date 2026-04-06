@@ -67,26 +67,19 @@ export class SampleDataService {
     }
 
     /**
-     * Clears all data from stores
+     * Clears test data from stores, strictly keeping recipes if requested
      */
-    static clearAllData(): void {
+    static clearAllData(keepRecipes: boolean = true): void {
         const financeStore = useFinanceStore.getState();
         const lifeStore = useLifeStore.getState();
 
         // Clear finance data
-        financeStore.setTransactions([]);
-        financeStore.setAccounts([]);
-        financeStore.setBudgets([]);
-        financeStore.setGoals([]);
-        financeStore.setDebts([]);
+        financeStore.clearAllData();
 
-        // Clear life data
-        lifeStore.setPantryItems([]);
-        lifeStore.setRecipes([]);
-        lifeStore.setTrips([]);
-        lifeStore.setFamilyMembers([]);
-        lifeStore.setWeeklyPlans([]);
-        lifeStore.setShoppingList([]);
+        // Clear life data (optionally keeping recipes)
+        if (typeof (lifeStore as any).clearAllData === 'function') {
+            (lifeStore as any).clearAllData(keepRecipes);
+        }
 
         // Mark that sample data has been cleared
         localStorage.setItem('Aliseus_sample_data_loaded', 'false');

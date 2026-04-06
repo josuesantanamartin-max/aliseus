@@ -339,11 +339,11 @@ export const useLifeStore = create<LifeState & LifeActions>()(
                     console.error('[useLifeStore] loadFromCloud failed:', e);
                 }
             },
-            clearAllData: () => set({
+            clearAllData: (keepRecipes = false) => set((state) => ({
                 weeklyPlans: [],
                 pantryItems: [],
                 shoppingList: [],
-                recipes: [],
+                recipes: keepRecipes ? state.recipes : [],
                 trips: [],
                 travelWishlist: [],
                 priceAlerts: [],
@@ -352,7 +352,7 @@ export const useLifeStore = create<LifeState & LifeActions>()(
                 familyEvents: [],
                 vaultDocuments: [],
                 homeAssets: [],
-            })
+            }))
         }),
         {
             name: 'aliseus_life_store',

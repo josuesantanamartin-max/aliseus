@@ -14,8 +14,8 @@ const SampleDataSection: React.FC = () => {
     } = useSampleData();
 
     const handleClearData = () => {
-        if (window.confirm('¿Estás seguro de que quieres eliminar todos los datos? Esta acción no se puede deshacer.')) {
-            clearAllData();
+        if (window.confirm('¿Estás seguro de que quieres eliminar los datos de prueba? Esto limpiará tus finanzas y lista de la compra, pero mantendrá las recetas de ejemplo. Esta acción no se puede deshacer.')) {
+            clearAllData(true); // true = keep recipes
         }
     };
 
@@ -85,7 +85,7 @@ const SampleDataSection: React.FC = () => {
                     "
                 >
                     <Trash2 className="w-4 h-4" />
-                    Limpiar Todos los Datos
+                    Limpiar Datos de Prueba
                 </button>
             </div>
 

@@ -4,6 +4,7 @@ import { Shield, FileJson, Download, Cookie, Brain, Clock } from 'lucide-react';
 import { useUserStore } from '../../../../store/useUserStore';
 import { useFinanceStore } from '../../../../store/useFinanceStore';
 import { useLifeStore } from '../../../../store/useLifeStore';
+import { SampleDataService } from '../../../../services/SampleDataService';
 
 export const PrivacyPanel = () => {
     const {
@@ -101,13 +102,12 @@ export const PrivacyPanel = () => {
 
     const handleResetData = () => {
         const confirmMsg = isSpanish 
-            ? '¿Estás seguro? Se eliminarán todos tus movimientos, cuentas, recetas y lista de la compra. Esta acción no se puede deshacer.'
-            : 'Are you sure? This will delete all your transactions, accounts, recipes, and shopping list. This action cannot be undone.';
+            ? '¿Estás seguro? Se eliminarán todos tus movimientos, cuentas, despensa y lista de la compra. Las recetas de ejemplo se mantendrán para que puedas seguir usándolas. Esta acción no se puede deshacer.'
+            : 'Are you sure? This will delete all your transactions, accounts, pantry and shopping list. Sample recipes will be kept so you can continue using them. This action cannot be undone.';
         
         if (window.confirm(confirmMsg)) {
-            useFinanceStore.getState().clearAllData();
-            (useLifeStore.getState() as any).clearAllData();
-            alert(isSpanish ? 'Datos restablecidos correctamente' : 'Data reset successfully');
+            SampleDataService.clearAllData(true); // true = keep recipes
+            alert(isSpanish ? 'Datos de prueba eliminados. Recetas conservadas.' : 'Test data cleared. Recipes preserved.');
         }
     };
 
