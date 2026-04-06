@@ -18,9 +18,9 @@ interface GeminiResponse {
  * Make a request to the Gemini API through the serverless proxy
  */
 export async function callGeminiAPI(request: GeminiRequest): Promise<string> {
-    const apiUrl = process.env.NODE_ENV === 'production'
-        ? '/api/gemini'
-        : 'http://localhost:3000/api/gemini'; // Adjust for your dev setup
+    // We use a relative path. In Vercel (Production and 'vercel dev') it works automatically.
+    // If using 'npm run dev' without vercel CLI, this will fail unless a proxy is configured.
+    const apiUrl = '/api/gemini';
 
     try {
         const response = await fetch(apiUrl, {
@@ -60,7 +60,7 @@ export async function callGeminiAPI(request: GeminiRequest): Promise<string> {
  */
 export async function generateContent(
     prompt: string,
-    model: string = 'gemini-2.0-flash-exp'
+    model: string = 'gemini-2.0-flash'
 ): Promise<string> {
     return callGeminiAPI({
         model,
@@ -75,7 +75,7 @@ export async function generateContentWithImage(
     prompt: string,
     imageData: string,
     mimeType: string = 'image/webp',
-    model: string = 'gemini-2.0-flash-exp'
+    model: string = 'gemini-2.0-flash'
 ): Promise<string> {
     return callGeminiAPI({
         model,
@@ -93,7 +93,7 @@ export async function generateContentWithImage(
  */
 export async function generateContentWithSearch(
     prompt: string,
-    model: string = 'gemini-2.0-flash-exp'
+    model: string = 'gemini-2.0-flash'
 ): Promise<string> {
     return callGeminiAPI({
         model,

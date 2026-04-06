@@ -48,7 +48,11 @@ export const recipeService = {
     async saveRecipeToBox(recipe: Recipe): Promise<Recipe> {
         if (!supabase) throw new Error("Supabase internal error");
         const { data: authUser } = await supabase.auth.getUser();
-        if (!authUser.user) throw new Error("Debes iniciar sesión para guardar recetas.");
+        const isDemoMode = !authUser.user;
+        
+        if (isDemoMode) {
+            console.warn('[RecipeService] No active session found. Saving recipe in Volatile/Local mode.');
+        }
 
         const finalRecipe = { ...recipe };
 
@@ -84,7 +88,8 @@ export const recipeService = {
                 );
 
                 try {
-                    const parsed = JSON.parse(result.replace(/```json/g, '').replace(/```/g, ''));
+                    const cleanedResult = this.extractJson(result);
+                    const parsed = JSON.parse(cleanedResult);
                     
                     // Apply translation
                     if (parsed.translatedName) finalRecipe.name = parsed.translatedName;
@@ -93,29 +98,48 @@ export const recipeService = {
                     
                     // Apply nutrition
                     if (parsed.nutrition) {
-                        finalRecipe.calories = parsed.nutrition.calories || 0;
+                        const caloriesNum = Number(parsed.nutrition.calories);
+                        const proteinNum = Number(parsed.nutrition.protein);
+                        const carbsNum = Number(parsed.nutrition.carbs);
+                        const fatNum = Number(parsed.nutrition.fat);
+                        
+                        finalRecipe.calories = isNaN(caloriesNum) ? 0 : caloriesNum;
                         finalRecipe.macros = {
-                            protein: parsed.nutrition.protein || 0,
-                            carbs: parsed.nutrition.carbs || 0,
-                            fat: parsed.nutrition.fat || 0
+                            protein: isNaN(proteinNum) ? 0 : proteinNum,
+                            carbs: isNaN(carbsNum) ? 0 : carbsNum,
+                            fat: isNaN(fatNum) ? 0 : fatNum
                         };
                     }
                 } catch (jsonErr) {
-                    console.warn('Could not parse translation/nutrition from Gemini:', jsonErr);
+                    console.warn('[RecipeService] Could not parse translation/nutrition from Gemini:', jsonErr);
+                    console.debug('[RecipeService] Raw Gemini result:', result);
                 }
-            } catch (aiErr) {
-                console.error('Failed to translate and enrich recipe with Gemini:', aiErr);
+            } catch (aiErr: any) {
+                if (aiErr.message?.includes('Failed to connect') || aiErr.message?.includes('404')) {
+                    console.error('[RecipeService] AI Translation failed (404/Connection). If on Localhost, ensure you are running "vercel dev" instead of "npm run dev".');
+                } else {
+                    console.error('[RecipeService] Gemini Error:', aiErr);
+                }
             }
         }
 
-        // Insert into Supabase
+        // ── Database Persistence ──
+        if (isDemoMode) {
+            // Generate a temporary local ID and return (Skip Supabase)
+            return {
+                ...finalRecipe,
+                id: crypto.randomUUID()
+            };
+        }
+
+        // Insert into Supabase (Cloud Mode)
         const externalId = finalRecipe.id.startsWith('external_') ? finalRecipe.id : null;
         const sourceProvider = externalId ? this.provider.providerId : 'manual';
 
         const { data: insertedRecipe, error: recipeErr } = await supabase
             .from('user_recipes')
             .insert({
-                user_id: authUser.user.id,
+                user_id: authUser.user!.id,
                 external_id: externalId,
                 source_provider: sourceProvider,
                 name: finalRecipe.name,
@@ -127,14 +151,22 @@ export const recipeService = {
                 difficulty: finalRecipe.difficulty,
                 tags: finalRecipe.tags,
                 instructions: finalRecipe.instructions,
-                protein: finalRecipe.macros?.protein || 0,
-                carbs: finalRecipe.macros?.carbs || 0,
-                fat: finalRecipe.macros?.fat || 0,
+                protein: Number(finalRecipe.macros?.protein) || 0,
+                carbs: Number(finalRecipe.macros?.carbs) || 0,
+                fat: Number(finalRecipe.macros?.fat) || 0,
             })
             .select()
             .single();
 
-        if (recipeErr) throw recipeErr;
+        if (recipeErr) {
+            console.error('Supabase Recipe Insert Error Details:', {
+                message: recipeErr.message,
+                details: recipeErr.details,
+                hint: recipeErr.hint,
+                code: recipeErr.code
+            });
+            throw recipeErr;
+        }
 
         // Insert Ingredients
         if (finalRecipe.ingredients && finalRecipe.ingredients.length > 0) {
@@ -149,7 +181,10 @@ export const recipeService = {
                 .from('user_recipe_ingredients')
                 .insert(ingredientsData);
 
-            if (ingErr) throw ingErr;
+            if (ingErr) {
+                console.error('Supabase Ingredients Insert Error Details:', ingErr);
+                throw ingErr;
+            }
         }
 
         // Return unified object
@@ -191,5 +226,13 @@ export const recipeService = {
             })),
             _missingInfo: undefined // Evaluated locally
         };
+    },
+
+    /**
+     * Helper to extract JSON from a string that might contain markdown blocks
+     */
+    extractJson(text: string): string {
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        return jsonMatch ? jsonMatch[0] : text;
     }
 };

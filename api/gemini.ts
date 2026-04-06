@@ -76,7 +76,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const genAI = new GoogleGenerativeAI(cleanKey);
 
         // Use the requested model or fallback
-        const modelName = model || 'gemini-2.5-flash';
+        const modelName = model || 'gemini-2.0-flash';
         const genModel = genAI.getGenerativeModel({ model: modelName });
 
         // Map contents if necessary (handle both parts array and parts wrapping)
