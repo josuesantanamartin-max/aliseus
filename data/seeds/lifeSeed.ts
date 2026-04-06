@@ -204,6 +204,35 @@ export const MOCK_RECIPES: Recipe[] = [
         instructions: ['Cocer fideos y reservar', 'Saltear langostinos y verduras a fuego fuerte', 'Añadir los fideos al wok', 'Mezclar con la salsa y servir muy caliente'],
         macros: { protein: 28, carbs: 52, fat: 8 }
     },
+    {
+        id: 'sample_6',
+        name: 'Papas Arrugadas con Mojo Picón',
+        image: '/images/recipes/papas-arrugadas.png',
+        prepTime: 40,
+        calories: 250,
+        baseServings: 4,
+        courseType: 'SIDE',
+        rating: 5,
+        tags: ['Vegan', 'Gluten-Free', 'Lunch'],
+        instructions: [
+            'Lava bien las papas sin quitarles la piel para eliminar cualquier resto de tierra.',
+            'Pon las papas en una olla y cúbrelas con agua (justo hasta que las tape) y añade unos 100g de sal gorda.',
+            'Cocina a fuego medio unos 20-25 minutos hasta que estén tiernas.',
+            'Escurre el agua y vuelve a poner la olla al fuego, sacudiéndola constantemente durante 2-3 minutos hasta que la piel se seque y se arrugue por efecto de la sal.',
+            'Para el mojo: Tritura 4 dientes de ajo, una cucharadita de comino, una de pimentón, un poco de sal, aceite de oliva y un chorrito de vinagre hasta obtener una salsa espesa.',
+            'Sirve las papas calientes con el mojo por encima.'
+        ],
+        ingredients: [
+            { name: 'Papas pequeñas (tipo gema o picuda)', quantity: 1, unit: 'kg' },
+            { name: 'Sal gorda', quantity: 100, unit: 'g' },
+            { name: 'Ajo', quantity: 4, unit: 'dientes' },
+            { name: 'Pimentón dulce', quantity: 1, unit: 'cucharadita' },
+            { name: 'Comino en grano', quantity: 1, unit: 'cucharadita' },
+            { name: 'Aceite de Oliva VE', quantity: 150, unit: 'ml' },
+            { name: 'Vinagre de vino', quantity: 2, unit: 'cucharadas' }
+        ],
+        macros: { protein: 4, carbs: 45, fat: 12 }
+    }
 ];
 
 export const MOCK_TRIPS: Trip[] = [
