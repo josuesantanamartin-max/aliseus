@@ -265,7 +265,18 @@ export const useUserStore = create<UserState & UserActions>()(
 
         {
             name: 'aliseus_user_store',
+            version: 1,
             storage: createJSONStorage(() => localStorage),
+            migrate: (persistedState: any, version: number) => {
+                if (version === 0) {
+                    // Force upgrade to FAMILIA for all beta users migrating from version 0
+                    if (persistedState.subscription) {
+                        persistedState.subscription.plan = 'FAMILIA';
+                        persistedState.subscription.status = 'ACTIVE';
+                    }
+                }
+                return persistedState;
+            },
             partialize: (state) => ({
                 isAuthenticated: state.isAuthenticated,
                 isDemoMode: state.isDemoMode,
