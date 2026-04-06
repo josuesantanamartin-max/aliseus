@@ -50,34 +50,61 @@ export const recipeService = {
         const { data: authUser } = await supabase.auth.getUser();
         if (!authUser.user) throw new Error("Debes iniciar sesión para guardar recetas.");
 
-        let finalRecipe = { ...recipe };
+        const finalRecipe = { ...recipe };
 
-        // If the recipe came from MVP TheMealDB and has 0 calories, ask Gemini to estimate macros
-        if (finalRecipe.calories === 0 && finalRecipe.id.startsWith(`external_${this.provider.providerId}`)) {
+        // ── AI Enrichment: Translation and Nutrition ──
+        // Only if it's an external recipe (likely in English)
+        const isExternal = finalRecipe.id.startsWith(`external_${this.provider.providerId}`);
+
+        if (isExternal) {
             try {
-                const prompt = `Estima la información nutricional completa para la receta "${finalRecipe.name}" con ingredientes: ${finalRecipe.ingredients.map(i => `${i.quantity}${i.unit} ${i.name}`).join(', ')}. Devuelve SOLO un JSON valido con formato: {"calories": numero, "macros": {"protein": numero, "carbs": numero, "fat": numero}}`;
-                
-                // Using gemini core standard JSON response processing feature
+                const prompt = `Estás procesando una receta llamada "${finalRecipe.name}".
+                    Ingredientes: ${JSON.stringify(finalRecipe.ingredients)}
+                    Instrucciones: ${JSON.stringify(finalRecipe.instructions)}
+
+                    Tu tarea es:
+                    1. Traducir el nombre, ingredientes e instrucciones íntegramente al ESPAÑOL.
+                    2. Estimar el valor nutricional (calorías, proteína, carbohidratos, grasas) basándote en los ingredientes.
+
+                    Devuelve exclusivamente un JSON estricto con esta estructura exacta:
+                    {
+                        "translatedName": "nombre en español",
+                        "translatedIngredients": [{"name": "nombre ingrediente español", "quantity": numero, "unit": "unidad español"}],
+                        "translatedInstructions": ["instrucción 1 en español", "instrucción 2..."],
+                        "nutrition": {
+                            "calories": numero,
+                            "protein": numero,
+                            "carbs": numero,
+                            "fat": numero
+                        }
+                    }`;
+
                 const result = await generateContent(
-                    `SYSTEM: Eres un nutricionista experto. Analiza la receta y devuelve JSON puro estricto. Sin comillas ni bloques markdown.\n\nUSER: ${prompt}`
+                    `SYSTEM: Eres un Chef de Aliseus experto en nutrición y traducción. Analiza la receta y devuelve JSON puro estricto. Sin bloques markdown.\n\nUSER: ${prompt}`
                 );
 
-                // Tries to parse the result as JSON
                 try {
                     const parsed = JSON.parse(result.replace(/```json/g, '').replace(/```/g, ''));
-                    if (parsed.calories) finalRecipe.calories = parsed.calories;
-                    if (parsed.macros) {
+                    
+                    // Apply translation
+                    if (parsed.translatedName) finalRecipe.name = parsed.translatedName;
+                    if (parsed.translatedIngredients) finalRecipe.ingredients = parsed.translatedIngredients;
+                    if (parsed.translatedInstructions) finalRecipe.instructions = parsed.translatedInstructions;
+                    
+                    // Apply nutrition
+                    if (parsed.nutrition) {
+                        finalRecipe.calories = parsed.nutrition.calories || 0;
                         finalRecipe.macros = {
-                            protein: parsed.macros.protein || 0,
-                            carbs: parsed.macros.carbs || 0,
-                            fat: parsed.macros.fat || 0
+                            protein: parsed.nutrition.protein || 0,
+                            carbs: parsed.nutrition.carbs || 0,
+                            fat: parsed.nutrition.fat || 0
                         };
                     }
                 } catch (jsonErr) {
-                    console.warn('Could not parse nutrition from Gemini', jsonErr);
+                    console.warn('Could not parse translation/nutrition from Gemini:', jsonErr);
                 }
             } catch (aiErr) {
-                console.error('Failed to augment recipe with Gemini UI:', aiErr);
+                console.error('Failed to translate and enrich recipe with Gemini:', aiErr);
             }
         }
 
