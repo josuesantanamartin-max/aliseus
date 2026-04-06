@@ -79,70 +79,80 @@ export const MemberManagement: React.FC = () => {
                         <button onClick={() => setShowInviteForm(false)} className="text-gray-400 hover:text-gray-600"><X className="w-4 h-4" /></button>
                     </div>
 
-                    <div className="space-y-3">
-                        <div className="relative">
-                            <Mail className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
-                            <input
-                                type="email"
-                                placeholder="Correo electrónico"
-                                value={inviteEmail}
-                                onChange={(e) => setInviteEmail(e.target.value)}
-                                className="w-full pl-9 pr-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-800 outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                            />
-                        </div>
+                        <div className="space-y-3">
+                            <div className="relative">
+                                <Mail className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+                                <input
+                                    type="email"
+                                    placeholder="Correo electrónico del familiar"
+                                    value={inviteEmail}
+                                    onChange={(e) => setInviteEmail(e.target.value)}
+                                    className="w-full pl-9 pr-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-800 outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                />
+                            </div>
 
-                        <div className="flex gap-2">
-                            {(['ADMIN', 'MEMBER', 'VIEWER'] as const).map(role => (
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Seleccionar Rol</label>
+                                <div className="flex gap-2">
+                                    {(['ADMIN', 'MEMBER', 'VIEWER'] as const).map(role => (
+                                        <button
+                                            key={role}
+                                            onClick={() => setInviteRole(role)}
+                                            className={`flex-1 py-1.5 text-xs font-bold rounded-md border transition-all ${inviteRole === role ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-500/20' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-600 hover:bg-gray-50'}`}
+                                        >
+                                            {role === 'ADMIN' ? 'Administrador' : role === 'MEMBER' ? 'Miembro' : 'Lector'}
+                                        </button>
+                                    ))}
+                                </div>
+                                <div className="p-3 bg-blue-500/5 border border-blue-500/10 rounded-lg">
+                                    <p className="text-[10px] text-blue-600 dark:text-blue-400 leading-relaxed italic">
+                                        {inviteRole === 'ADMIN' && "• Control total: Gestiona finanzas, miembros y toda la configuración del hogar."}
+                                        {inviteRole === 'MEMBER' && "• Participación activa: Añade gastos, recetas y planes, pero no gestiona otros miembros."}
+                                        {inviteRole === 'VIEWER' && "• Solo lectura: Puede ver la información pero no realizar cambios ni añadir datos."}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {!generatedLink ? (
                                 <button
-                                    key={role}
-                                    onClick={() => setInviteRole(role)}
-                                    className={`flex-1 py-1.5 text-xs font-medium rounded-md border transition-all ${inviteRole === role ? 'bg-blue-600 text-white border-blue-600' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-600 hover:bg-gray-50'}`}
+                                    onClick={handleInvite}
+                                    className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition-all shadow-lg shadow-blue-600/20 active:scale-[0.98]"
                                 >
-                                    {role}
+                                    Generar Enlace de Invitación
                                 </button>
-                            ))}
-                        </div>
+                            ) : (
+                                <div className="mt-4 p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800 rounded-xl">
+                                    <h4 className="text-xs font-bold text-emerald-800 dark:text-emerald-300 mb-2 flex items-center gap-1">
+                                        <Link className="w-3 h-3" /> Enlace de Acceso Generado
+                                    </h4>
+                                    <p className="text-[11px] text-emerald-600 dark:text-emerald-400 mb-3 font-medium">
+                                        Envía este enlace secreto a tu familiar. Solo podrá usarse una vez para este email:
+                                    </p>
+                                    <div className="flex items-center gap-2">
+                                        <input
+                                            type="text"
+                                            readOnly
+                                            value={generatedLink}
+                                            className="flex-1 text-[10px] px-2 py-2 bg-white dark:bg-gray-800 border border-emerald-200 dark:border-emerald-700 rounded outline-none text-gray-600 dark:text-gray-300 font-mono"
+                                        />
+                                        <button
+                                            onClick={handleCopy}
+                                            className="p-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition shadow-md"
+                                        >
+                                            <Copy className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                    {copied && <span className="text-[10px] text-emerald-500 font-black mt-2 block animate-pulse">¡ENLACE COPIADO!</span>}
 
-                        {!generatedLink ? (
-                            <button
-                                onClick={handleInvite}
-                                className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
-                            >
-                                Generar Enlace de Invitación
-                            </button>
-                        ) : (
-                            <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-xl">
-                                <h4 className="text-xs font-bold text-blue-800 dark:text-blue-300 mb-2 flex items-center gap-1">
-                                    <Link className="w-3 h-3" /> Enlace Generado
-                                </h4>
-                                <p className="text-xs text-blue-600 dark:text-blue-400 mb-3">
-                                    Copia este enlace y envíaselo a tu familiar por WhatsApp o email:
-                                </p>
-                                <div className="flex items-center gap-2">
-                                    <input
-                                        type="text"
-                                        readOnly
-                                        value={generatedLink}
-                                        className="flex-1 text-xs px-2 py-1.5 bg-white dark:bg-gray-800 border border-blue-200 dark:border-blue-700 rounded outline-none text-gray-600 dark:text-gray-300"
-                                    />
                                     <button
-                                        onClick={handleCopy}
-                                        className="p-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                                        onClick={() => { setGeneratedLink(''); setShowInviteForm(false); }}
+                                        className="w-full mt-4 py-2 border border-emerald-200 text-emerald-600 rounded-lg text-xs font-black uppercase tracking-widest hover:bg-white transition"
                                     >
-                                        <Copy className="w-4 h-4" />
+                                        Finalizar
                                     </button>
                                 </div>
-                                {copied && <span className="text-[10px] text-emerald-500 font-bold mt-1 block">¡Copiado al portapapeles!</span>}
-
-                                <button
-                                    onClick={() => { setGeneratedLink(''); setShowInviteForm(false); }}
-                                    className="w-full mt-3 py-1.5 border border-blue-200 text-blue-600 rounded-lg text-xs font-medium hover:bg-blue-50 transition"
-                                >
-                                    Cerrar
-                                </button>
-                            </div>
-                        )}
-                    </div>
+                            )}
+                        </div>
                 </div>
             )}
 
