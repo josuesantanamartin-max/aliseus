@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHouseholdStore } from '../../../store/useHouseholdStore';
-import { UserPlus, Shield, X, Mail, Users, Star, Link, Copy } from 'lucide-react';
+import { UserPlus, Shield, X, Mail, Users, Star, Link, Copy, MessageSquare } from 'lucide-react';
 import Toast from '../../common/Toast';
 import { useUserStore } from '../../../store/useUserStore';
 
@@ -139,15 +139,36 @@ export const MemberManagement: React.FC = () => {
                                         <button
                                             onClick={handleCopy}
                                             className="p-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition shadow-md"
+                                            title="Copiar enlace"
                                         >
                                             <Copy className="w-4 h-4" />
                                         </button>
                                     </div>
-                                    {copied && <span className="text-[10px] text-emerald-500 font-black mt-2 block animate-pulse">¡ENLACE COPIADO!</span>}
+                                    
+                                    {copied && <span className="text-[10px] text-emerald-500 font-black mt-2 block animate-pulse text-center">¡ENLACE COPIADO!</span>}
+
+                                    <div className="grid grid-cols-2 gap-2 mt-4">
+                                        <a
+                                            href={`https://wa.me/?text=${encodeURIComponent(`¡Hola! Te invito a unirte a mi hogar en Aliseus para gestionar nuestras finanzas y el día a día juntos. Accede aquí: ${generatedLink}`)}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center justify-center gap-2 py-2 bg-[#25D366] hover:bg-[#128C7E] text-white rounded-lg text-[10px] font-bold transition-all shadow-md"
+                                        >
+                                            <MessageSquare className="w-3.5 h-3.5" />
+                                            WhatsApp
+                                        </a>
+                                        <a
+                                            href={`mailto:?subject=${encodeURIComponent('Invitación a Aliseus')}&body=${encodeURIComponent(`¡Hola!\n\nTe invito a unirte a mi hogar en Aliseus para que podamos gestionar nuestras finanzas, recetas y tareas juntos.\n\nPuedes entrar usando este enlace único:\n${generatedLink}\n\n¡Nos vemos dentro!`)}`}
+                                            className="flex items-center justify-center gap-2 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg text-[10px] font-bold transition-all shadow-md"
+                                        >
+                                            <Mail className="w-3.5 h-3.5" />
+                                            Email
+                                        </a>
+                                    </div>
 
                                     <button
                                         onClick={() => { setGeneratedLink(''); setShowInviteForm(false); }}
-                                        className="w-full mt-4 py-2 border border-emerald-200 text-emerald-600 rounded-lg text-xs font-black uppercase tracking-widest hover:bg-white transition"
+                                        className="w-full mt-4 py-2 border border-emerald-200 text-emerald-600 rounded-lg text-xs font-black uppercase tracking-widest hover:bg-emerald-50 transition"
                                     >
                                         Finalizar
                                     </button>
