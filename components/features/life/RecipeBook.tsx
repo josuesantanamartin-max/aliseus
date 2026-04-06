@@ -93,6 +93,19 @@ export const RecipeBook: React.FC<RecipeBookProps> = ({ onNavigateToMealPlan, in
         setIsAddRecipeOpen(true);
     };
 
+    const handleDeleteRecipe = async (recipe: Recipe) => {
+        const confirmed = window.confirm(`¿Estás seguro de que quieres eliminar "${recipe.name}"?`);
+        if (!confirmed) return;
+
+        try {
+            useLifeStore.getState().deleteRecipe(recipe.id);
+            if (viewRecipe?.id === recipe.id) setViewRecipe(null);
+        } catch (e) {
+            console.error('Error deleting recipe:', e);
+            alert('No se pudo eliminar la receta.');
+        }
+    };
+
     const handleSaveRecipe = (e?: React.MouseEvent) => {
         if (e) e.preventDefault();
         if (!newRecipeName) return;
@@ -347,6 +360,7 @@ export const RecipeBook: React.FC<RecipeBookProps> = ({ onNavigateToMealPlan, in
                 onPlanRecipe={setPlanRecipe}
                 onCookRecipe={setCookingRecipe}
                 onEditRecipe={handleEditRecipe}
+                onDeleteRecipe={handleDeleteRecipe}
             />
 
             <RecipeEditorModal
@@ -378,6 +392,7 @@ export const RecipeBook: React.FC<RecipeBookProps> = ({ onNavigateToMealPlan, in
                 onPlanRecipe={setPlanRecipe}
                 onCookRecipe={setCookingRecipe}
                 onEditRecipe={handleEditRecipe}
+                onDeleteRecipe={handleDeleteRecipe}
                 onImportExternal={handleImportExternalRecipe}
             />
 

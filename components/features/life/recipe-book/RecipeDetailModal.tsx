@@ -1,6 +1,6 @@
 import React from 'react';
 import { Recipe } from '@/types';
-import { Clock, Users, Flame, CalendarPlus, X } from 'lucide-react';
+import { Clock, Users, Flame, CalendarPlus, X, Trash2 } from 'lucide-react';
 
 const DEFAULT_FOOD_IMG = "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop";
 
@@ -10,11 +10,12 @@ interface RecipeDetailModalProps {
     onPlanRecipe: (recipe: Recipe) => void;
     onCookRecipe: (recipe: Recipe) => void;
     onEditRecipe: (recipe: Recipe) => void;
+    onDeleteRecipe: (recipe: Recipe) => void;
     onImportExternal?: (recipe: Recipe) => void;
 }
 
 export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
-    recipe, onClose, onPlanRecipe, onCookRecipe, onEditRecipe, onImportExternal
+    recipe, onClose, onPlanRecipe, onCookRecipe, onEditRecipe, onDeleteRecipe, onImportExternal
 }) => {
     if (!recipe) return null;
     const isExternal = recipe.id.startsWith('external_');
@@ -117,6 +118,13 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
                                     className="px-8 bg-gray-50 text-gray-400 py-5 rounded-3xl font-black text-xs uppercase tracking-widest hover:bg-blue-50 hover:text-blue-600 transition-all border border-transparent hover:border-blue-100"
                                 >
                                     Editar
+                                </button>
+                                <button
+                                    onClick={() => { onDeleteRecipe(recipe); }}
+                                    className="p-5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-3xl transition-all border border-transparent hover:border-red-100"
+                                    title="Eliminar receta"
+                                >
+                                    <Trash2 className="w-5 h-5" />
                                 </button>
                             </>
                         )}

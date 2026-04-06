@@ -1,6 +1,6 @@
 import React from 'react';
 import { Recipe } from '@/types';
-import { Clock, Flame, Pencil, CalendarPlus } from 'lucide-react';
+import { Clock, Flame, Pencil, CalendarPlus, Trash2 } from 'lucide-react';
 
 const DEFAULT_FOOD_IMG = "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop";
 
@@ -10,10 +10,11 @@ interface RecipeGridProps {
     onPlanRecipe: (recipe: Recipe) => void;
     onCookRecipe: (recipe: Recipe) => void;
     onEditRecipe: (recipe: Recipe) => void;
+    onDeleteRecipe: (recipe: Recipe) => void;
 }
 
 export const RecipeGrid: React.FC<RecipeGridProps> = ({
-    recipes, onViewRecipe, onPlanRecipe, onCookRecipe, onEditRecipe,
+    recipes, onViewRecipe, onPlanRecipe, onCookRecipe, onEditRecipe, onDeleteRecipe
 }) => (
     <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
@@ -76,8 +77,17 @@ export const RecipeGrid: React.FC<RecipeGridProps> = ({
                                 type="button"
                                 onClick={(e) => { e.stopPropagation(); onEditRecipe(recipe); }}
                                 className="p-3.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all border border-transparent hover:border-blue-100"
+                                title="Editar receta"
                             >
                                 <Pencil className="w-4.5 h-4.5" />
+                            </button>
+                            <button
+                                type="button"
+                                onClick={(e) => { e.stopPropagation(); onDeleteRecipe(recipe); }}
+                                className="p-3.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-2xl transition-all border border-transparent hover:border-red-100"
+                                title="Eliminar receta"
+                            >
+                                <Trash2 className="w-4.5 h-4.5" />
                             </button>
                         </div>
                     </div>
