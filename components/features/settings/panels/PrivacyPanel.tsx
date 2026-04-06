@@ -99,6 +99,18 @@ export const PrivacyPanel = () => {
         setAIPreferences({ [key]: !aiPreferences[key] });
     };
 
+    const handleResetData = () => {
+        const confirmMsg = isSpanish 
+            ? '¿Estás seguro? Se eliminarán todos tus movimientos, cuentas, recetas y lista de la compra. Esta acción no se puede deshacer.'
+            : 'Are you sure? This will delete all your transactions, accounts, recipes, and shopping list. This action cannot be undone.';
+        
+        if (window.confirm(confirmMsg)) {
+            useFinanceStore.getState().clearAllData();
+            (useLifeStore.getState() as any).clearAllData();
+            alert(isSpanish ? 'Datos restablecidos correctamente' : 'Data reset successfully');
+        }
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -107,6 +119,35 @@ export const PrivacyPanel = () => {
             transition={{ duration: 0.3 }}
             className="max-w-4xl space-y-12 pb-12 w-full"
         >
+            {/* Master Data Management Section */}
+            <section className="bg-gradient-to-br from-rose-50 to-white dark:from-rose-950/20 dark:to-aliseus-900/50 p-10 md:p-14 rounded-[50px] border border-rose-200/50 dark:border-rose-500/20 shadow-xl shadow-rose-200/20 dark:shadow-none relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-rose-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+                
+                <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
+                    <div className="flex-1 text-center lg:text-left">
+                        <div className="flex items-center justify-center lg:justify-start gap-4 mb-6">
+                            <div className="p-3 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded-2xl border border-rose-100 dark:border-rose-800/50">
+                                <Shield className="w-6 h-6" />
+                            </div>
+                            <h4 className="text-2xl font-black text-rose-900 dark:text-white tracking-tighter">
+                                {isSpanish ? 'Gestión de Datos Maestros' : 'Master Data Management'}
+                            </h4>
+                        </div>
+                        <p className="text-lg text-rose-900/60 dark:text-rose-100/40 font-medium max-w-xl leading-relaxed">
+                            {isSpanish 
+                                ? 'Elimina todos los datos de prueba y configuraciones para empezar con una cuenta limpia.' 
+                                : 'Remove all test data and configurations to start with a clean account.'}
+                        </p>
+                    </div>
+                    
+                    <button
+                        onClick={handleResetData}
+                        className="shrink-0 px-10 py-6 bg-rose-600 hover:bg-rose-700 text-white rounded-[24px] font-black text-xs uppercase tracking-[0.2em] transition-all active:scale-95 shadow-xl shadow-rose-600/20 flex items-center gap-4"
+                    >
+                        {isSpanish ? 'Limpiar Datos de Prueba' : 'Clear Test Data'}
+                    </button>
+                </div>
+            </section>
             {/* Data Management Section */}
             <section className="bg-white dark:bg-aliseus-900/50 p-10 md:p-14 rounded-[50px] border border-slate-200 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-2xl relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 dark:bg-indigo-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />

@@ -70,7 +70,7 @@ export const SettingsSidebar: React.FC<SettingsSidebarProps> = ({
                             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white dark:bg-white/10 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-sm">
                                 <Star className={`w-3 h-3 ${subscription.plan === 'FAMILIA' ? 'text-amber-500' : 'text-blue-500'} fill-current`} />
                                 <span className="text-[8px] font-black text-slate-600 dark:text-white uppercase tracking-widest">
-                                    {subscription.plan === 'FAMILIA' ? 'Aura Diamond' : subscription.plan === 'PERSONAL' ? 'Aura Pro' : 'Free Account'}
+                                    {subscription.plan === 'FAMILIA' ? 'Familia Premium' : subscription.plan === 'PERSONAL' ? 'Personal Pro' : 'Plan Free'}
                                 </span>
                             </div>
                         </div>

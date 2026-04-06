@@ -125,7 +125,7 @@ export const ProfilePanel = () => {
                         >
                             <Star className={`w-3.5 h-3.5 ${subscription.plan === 'FAMILIA' ? 'text-amber-500' : 'text-blue-500'} fill-current`} />
                             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-600 dark:text-white">
-                                {subscription.plan === 'FAMILIA' ? 'Aura Diamond' : subscription.plan === 'PERSONAL' ? 'Aura Pro' : 'Free Account'}
+                                {subscription.plan === 'FAMILIA' ? 'Familia Premium' : subscription.plan === 'PERSONAL' ? 'Personal Pro' : 'Plan Free'}
                             </span>
                         </motion.div>
                         

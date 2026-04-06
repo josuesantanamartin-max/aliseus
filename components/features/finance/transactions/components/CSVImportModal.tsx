@@ -7,6 +7,8 @@ import { parseDate, normalizeAmount, detectDuplicates, validateTransactions, get
 import { getAllBankTemplates, getBankTemplate, BankTemplate } from '../../../../../config/bankTemplates';
 import { useFinanceStore } from '../../../../../store/useFinanceStore';
 import { useFinanceControllers } from '../../../../../hooks/useFinanceControllers';
+import { parseTransactionsFromText } from '../../../../../services/geminiFinancial';
+import { useToastStore } from '../../../../../store/toastStore';
 
 interface CSVImportModalProps {
     isOpen: boolean;
@@ -48,6 +50,7 @@ const isCreditCardPaymentRow = (description: string): boolean => {
 const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImport }) => {
     const { transactions: existingTransactions, accounts, categories } = useFinanceStore();
     const { transfer } = useFinanceControllers();
+    const { addToast } = useToastStore();
     const [step, setStep] = useState(STEPS.UPLOAD);
     const [file, setFile] = useState<File | null>(null);
     const [rawData, setRawData] = useState<any[]>([]);
@@ -74,6 +77,11 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
         incomeTotal: number;
         expenseTotal: number;
     } | null>(null);
+
+    // New Smart Import State
+    const [importMethod, setImportMethod] = useState<'FILE' | 'TEXT'>('FILE');
+    const [rawText, setRawText] = useState('');
+    const [isExtracting, setIsExtracting] = useState(false);
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const uploadedFile = event.target.files?.[0];
@@ -140,6 +148,39 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
                 setStep(STEPS.BANK_SELECT);
             },
         });
+    };
+
+    const handleSmartExtract = async () => {
+        if (!rawText.trim()) return;
+        setIsExtracting(true);
+        try {
+            const parsed = await parseTransactionsFromText(rawText);
+            if (parsed && parsed.length > 0) {
+                // Pre-process extracted data for preview
+                const withMeta = parsed.map(tx => ({
+                    ...tx,
+                    accountId: selectedAccount || '',
+                    _autoDetected: true,
+                    _isCreditCardPayment: isCreditCardPaymentRow(tx.description || ''),
+                }));
+                setPreviewData(withMeta);
+                
+                // If accounts available, go to account select, otherwise mapping (which will be skipped basically)
+                if (accounts.length > 0) {
+                    setStep(STEPS.ACCOUNT_SELECT);
+                } else {
+                    setStep(STEPS.PREVIEW);
+                }
+                addToast({ message: `Detectadas ${parsed.length} transacciones`, type: 'success' });
+            } else {
+                addToast({ message: "No pudimos extraer ninguna transacción del texto.", type: 'error' });
+            }
+        } catch (error) {
+            console.error("AI Extraction Error:", error);
+            addToast({ message: "Error al procesar el texto con IA.", type: 'error' });
+        } finally {
+            setIsExtracting(false);
+        }
     };
 
     const handleBankSelect = (bankId: string | null) => {
@@ -375,6 +416,8 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
         setValidationErrors([]);
         setDuplicates([]);
         setBalanceInfo(null);
+        setRawText('');
+        setImportMethod('FILE');
     };
 
     if (!isOpen) return null;
@@ -414,21 +457,83 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
                 <div className="p-8 overflow-y-auto custom-scrollbar flex-1">
                     {/* STEP 1: UPLOAD */}
                     {step === STEPS.UPLOAD && (
-                        <div
-                            className="border-2 border-dashed border-aliseus-200 rounded-3xl p-12 flex flex-col items-center justify-center text-center hover:border-cyan-500/50 hover:bg-cyan-50/10 transition-all cursor-pointer group"
-                            onDragOver={handleDragOver}
-                            onDrop={handleDrop}
-                        >
-                            <div className="w-20 h-20 bg-aliseus-50 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-sm">
-                                <FileText className="w-10 h-10 text-aliseus-300 group-hover:text-cyan-600 transition-colors" />
+                        <div className="space-y-6">
+                            {/* Tabs for Import Method */}
+                            <div className="flex bg-aliseus-50 p-1 rounded-2xl w-fit mx-auto mb-4">
+                                <button
+                                    onClick={() => setImportMethod('FILE')}
+                                    className={`px-6 py-2 rounded-xl text-xs font-bold transition-all ${
+                                        importMethod === 'FILE' 
+                                        ? 'bg-white text-cyan-600 shadow-sm' 
+                                        : 'text-aliseus-400 hover:text-aliseus-600'
+                                    }`}
+                                >
+                                    Archivo CSV/Excel
+                                </button>
+                                <button
+                                    onClick={() => setImportMethod('TEXT')}
+                                    className={`px-6 py-2 rounded-xl text-xs font-bold transition-all ${
+                                        importMethod === 'TEXT' 
+                                        ? 'bg-white text-cyan-600 shadow-sm' 
+                                        : 'text-aliseus-400 hover:text-aliseus-600'
+                                    }`}
+                                >
+                                    Pegar Texto / PDF ✨
+                                </button>
                             </div>
-                            <h3 className="text-lg font-bold text-cyan-900 mb-2">Arrastra tu archivo CSV o Excel aquí</h3>
-                            <p className="text-aliseus-500 mb-8 max-w-sm">O haz clic para seleccionar un archivo desde tu ordenador. Asegúrate de que tenga encabezados.</p>
 
-                            <label className="bg-cyan-900 hover:bg-aliseus-800 text-white px-8 py-4 rounded-xl font-bold text-xs uppercase tracking-widest cursor-pointer transition-all shadow-lg shadow-cyan-900/20 active:scale-95">
-                                Seleccionar Archivo
-                                <input type="file" onChange={handleFileUpload} accept=".csv, .xlsx, .xls" className="hidden" />
-                            </label>
+                            {importMethod === 'FILE' ? (
+                                <div
+                                    className="border-2 border-dashed border-aliseus-200 rounded-3xl p-12 flex flex-col items-center justify-center text-center hover:border-cyan-500/50 hover:bg-cyan-50/10 transition-all cursor-pointer group"
+                                    onDragOver={handleDragOver}
+                                    onDrop={handleDrop}
+                                >
+                                    <div className="w-20 h-20 bg-aliseus-50 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-sm">
+                                        <FileText className="w-10 h-10 text-aliseus-300 group-hover:text-cyan-600 transition-colors" />
+                                    </div>
+                                    <h3 className="text-lg font-bold text-cyan-900 mb-2">Arrastra tu archivo CSV o Excel aquí</h3>
+                                    <p className="text-aliseus-500 mb-8 max-w-sm">O haz clic para seleccionar un archivo desde tu ordenador. Asegúrate de que tenga encabezados.</p>
+
+                                    <label className="bg-cyan-900 hover:bg-aliseus-800 text-white px-8 py-4 rounded-xl font-bold text-xs uppercase tracking-widest cursor-pointer transition-all shadow-lg shadow-cyan-900/20 active:scale-95">
+                                        Seleccionar Archivo
+                                        <input type="file" onChange={handleFileUpload} accept=".csv, .xlsx, .xls" className="hidden" />
+                                    </label>
+                                </div>
+                            ) : (
+                                <div className="space-y-4 animate-fade-in">
+                                    <div className="bg-cyan-50/50 p-4 rounded-2xl border border-cyan-100 flex items-start gap-4 mb-2">
+                                        <div className="p-2 bg-cyan-100 rounded-lg">
+                                            <Database className="w-4 h-4 text-cyan-600" />
+                                        </div>
+                                        <p className="text-xs text-cyan-800 leading-relaxed font-medium">
+                                            Abre tu <b>PDF bancario</b>, selecciona el texto de los movimientos, cópialo y pégalo aquí debajo. 
+                                            Nuestro sistema de <b>Inteligencia Artificial</b> extraerá los datos automáticamente.
+                                        </p>
+                                    </div>
+                                    <textarea
+                                        value={rawText}
+                                        onChange={(e) => setRawText(e.target.value)}
+                                        placeholder="Fecha - Concepto - Importe... Pega aquí el texto de tu banco."
+                                        className="w-full h-64 p-6 bg-aliseus-50/50 border-2 border-aliseus-100 rounded-3xl outline-none focus:border-cyan-400 focus:bg-white transition-all text-sm font-medium resize-none custom-scrollbar"
+                                    />
+                                    <button
+                                        onClick={handleSmartExtract}
+                                        disabled={!rawText.trim() || isExtracting}
+                                        className="w-full bg-cyan-900 hover:bg-aliseus-800 disabled:opacity-50 text-white py-4 rounded-2xl font-bold text-sm shadow-xl shadow-cyan-900/10 flex items-center justify-center gap-3 transition-all active:scale-[0.98]"
+                                    >
+                                        {isExtracting ? (
+                                            <>
+                                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                                Procesando con IA...
+                                            </>
+                                        ) : (
+                                            <>
+                                                Extraer Transacciones con IA ✨
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     )}
 

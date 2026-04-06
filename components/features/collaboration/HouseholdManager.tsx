@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useHouseholdStore } from '../../../store/useHouseholdStore';
 import { Plus, Home, Users, Check, LogOut } from 'lucide-react';
+import { useToastStore } from '../../../store/toastStore';
 
 export const HouseholdManager: React.FC = () => {
-    const { households, activeHouseholdId, fetchHouseholds, createHousehold, setActiveHousehold } = useHouseholdStore();
+    const { households, activeHouseholdId, fetchHouseholds, createHousehold, setActiveHousehold, isLoading } = useHouseholdStore();
+    const { addToast } = useToastStore();
     const [isCreating, setIsCreating] = useState(false);
     const [newHouseholdName, setNewHouseholdName] = useState('');
     const [currency, setCurrency] = useState<'EUR' | 'USD' | 'GBP' | 'MXN' | 'COP' | 'ARS' | 'CLP' | 'CHF' | 'CAD' | 'AUD' | 'INR'>('EUR');
@@ -14,9 +16,14 @@ export const HouseholdManager: React.FC = () => {
 
     const handleCreate = async () => {
         if (!newHouseholdName.trim()) return;
-        await createHousehold(newHouseholdName, currency);
-        setNewHouseholdName('');
-        setIsCreating(false);
+        try {
+            await createHousehold(newHouseholdName, currency);
+            addToast({ message: 'Hogar creado correctamente', type: 'success' });
+            setNewHouseholdName('');
+            setIsCreating(false);
+        } catch (error: any) {
+            addToast({ message: 'Error al crear hogar: ' + error.message, type: 'error' });
+        }
     };
 
     const activeHousehold = households.find(h => h.id === activeHouseholdId);
@@ -59,10 +66,10 @@ export const HouseholdManager: React.FC = () => {
                     </div>
                     <button
                         onClick={handleCreate}
-                        disabled={!newHouseholdName.trim()}
-                        className="w-full py-2 bg-aliseus-600 hover:bg-aliseus-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        disabled={!newHouseholdName.trim() || isLoading}
+                        className="w-full py-2 bg-aliseus-600 hover:bg-aliseus-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
                     >
-                        Crear Hogar
+                        {isLoading ? 'Creando...' : 'Crear Hogar'}
                     </button>
                 </div>
             )}

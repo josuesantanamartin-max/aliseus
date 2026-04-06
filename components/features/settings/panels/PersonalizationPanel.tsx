@@ -98,36 +98,6 @@ export const PersonalizationPanel = () => {
                 </div>
             </section>
 
-            {/* Dashboard Layout Section */}
-            <section className="bg-white/40 dark:bg-aliseus-900/50 p-10 md:p-14 rounded-[50px] border border-slate-200/50 dark:border-aliseus-800 shadow-xl shadow-slate-200/40 dark:shadow-none relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
-                
-                <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
-                    <div className="flex-1 text-center lg:text-left">
-                        <div className="flex items-center justify-center lg:justify-start gap-4 mb-6">
-                            <div className="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-2xl border border-blue-100 dark:border-blue-800/50 shadow-inner">
-                                <Layout className="w-6 h-6" />
-                            </div>
-                            <h4 className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">
-                                {isSpanish ? 'Arquitectura del Dashboard' : 'Dashboard Architecture'}
-                            </h4>
-                        </div>
-                        <p className="text-lg text-slate-500 dark:text-gray-400 font-medium max-w-xl leading-relaxed">
-                            {isSpanish 
-                                ? 'Restablece la configuración original de tus widgets si deseas volver a empezar con el diseño maestro de Aura.' 
-                                : 'Reset your widget configuration to start fresh with the Aura master design.'}
-                        </p>
-                    </div>
-                    
-                    <button
-                        onClick={handleResetLayout}
-                        className="shrink-0 px-10 py-6 bg-white dark:bg-aliseus-800 hover:bg-slate-50 dark:hover:bg-aliseus-700 text-slate-900 dark:text-white rounded-[24px] font-black text-xs uppercase tracking-[0.2em] transition-all active:scale-95 shadow-lg border border-slate-200 dark:border-aliseus-600 flex items-center gap-4"
-                    >
-                        <Zap className="w-5 h-5 text-amber-500" />
-                        {isSpanish ? 'Restaurar Diseño' : 'Reset Architecture'}
-                    </button>
-                </div>
-            </section>
         </motion.div>
     );
 };

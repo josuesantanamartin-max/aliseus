@@ -339,6 +339,20 @@ export const useLifeStore = create<LifeState & LifeActions>()(
                     console.error('[useLifeStore] loadFromCloud failed:', e);
                 }
             },
+            clearAllData: () => set({
+                weeklyPlans: [],
+                pantryItems: [],
+                shoppingList: [],
+                recipes: [],
+                trips: [],
+                travelWishlist: [],
+                priceAlerts: [],
+                travelDocuments: [],
+                familyMembers: [],
+                familyEvents: [],
+                vaultDocuments: [],
+                homeAssets: [],
+            })
         }),
         {
             name: 'aliseus_life_store',

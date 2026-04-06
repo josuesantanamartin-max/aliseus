@@ -7,6 +7,7 @@ import { useHouseholdStore } from '../../store/useHouseholdStore';
 import { realtimeService } from '../../services/realtimeService';
 import AliseusLanding from '../layout/AliseusLanding';
 import OnboardingWizard from '../onboarding/OnboardingWizard';
+import { invitationService } from '../../services/invitationService';
 
 interface AuthGateProps {
     children: React.ReactNode;
@@ -35,6 +36,16 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
     };
 
     const [isInitializing, setIsInitializing] = React.useState(true);
+
+    const getInvitationCodeFromUrl = () => {
+        const isInviteRoute = window.location.pathname.startsWith('/invite/');
+        if (isInviteRoute) {
+            return window.location.pathname.split('/')[2];
+        }
+        
+        const params = new URLSearchParams(window.location.search);
+        return params.get('code');
+    };
 
     // Capture isDemoMode at mount time via ref so changes to it don't re-trigger
     // the auth initialization effect (which would cause duplicate listeners and
@@ -140,7 +151,7 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); // Run ONCE on mount â€” isDemoMode changes must NOT re-trigger auth init
 
-    const handleLogin = async (method: 'DEMO' | 'GOOGLE' | 'EMAIL' | 'NOTION', data?: { email: string, password: string, isRegister: boolean }) => {
+    const handleLogin = async (method: 'DEMO' | 'GOOGLE' | 'EMAIL' | 'NOTION', data?: { email: string, password: string, isRegister: boolean, invitationCode?: string }) => {
         console.log(`[AuthGate] handleLogin called with method: ${method}`);
 
         if (method === 'DEMO') {
@@ -184,11 +195,25 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
             try {
                 console.log(`[AuthGate] Attempting ${data.isRegister ? 'Signup' : 'Login'} with Email: ${data.email}`);
                 if (data.isRegister) {
-                    const { error } = await supabase.auth.signUp({
+                    const { data: signUpData, error } = await supabase.auth.signUp({
                         email: data.email,
                         password: data.password,
                     });
                     if (error) throw error;
+
+                    // Consume invitation code if we have one
+                    const inviteToken = data.invitationCode || getInvitationCodeFromUrl();
+                    if (inviteToken && signUpData.user) {
+                        try {
+                            const success = await invitationService.useCode(inviteToken, signUpData.user.id);
+                            if (!success) {
+                                console.warn('[AuthGate] Failed to mark invitation code as used, but registration continued.');
+                            }
+                        } catch (invError) {
+                            console.error('[AuthGate] Error consuming invitation code:', invError);
+                        }
+                    }
+
                     alert("¡Registro con éxito! Por favor, verifica tu email o inicia sesión.");
                 } else {
                     const { error } = await supabase.auth.signInWithPassword({
@@ -217,8 +242,7 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
     }
 
     if (!isAuthenticated) {
-        const isInviteRoute = window.location.pathname.startsWith('/invite/');
-        const inviteToken = isInviteRoute ? window.location.pathname.split('/')[2] : null;
+        const inviteToken = getInvitationCodeFromUrl();
         
         return (
             <AliseusLanding 

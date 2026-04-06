@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Language } from '@/types';
 import { Logo } from './Logo';
+import { invitationService } from '../../services/invitationService';
 import { LANDING_TEXTS } from './landing/landingData';
 import { LandingHeader } from './landing/LandingHeader';
 import { LandingFooter } from './landing/LandingFooter';
@@ -10,7 +11,7 @@ import { LandingLife } from './landing/LandingLife';
 import { LegalPage } from '../legal/LegalPage';
 
 interface AliseusLandingProps {
-  onLogin: (method: 'DEMO' | 'GOOGLE' | 'EMAIL' | 'NOTION', data?: { email: string, password: string, isRegister: boolean }) => void | Promise<void>;
+  onLogin: (method: 'DEMO' | 'GOOGLE' | 'EMAIL' | 'NOTION', data?: { email: string, password: string, isRegister: boolean, invitationCode?: string }) => void | Promise<void>;
   language: Language;
   setLanguage: (lang: Language) => void;
   inviteToken?: string | null;
@@ -152,15 +153,35 @@ const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setL
             <button
               onClick={async () => {
                 if (isRegister) {
-                  // Strict check: only ALISEUS2026 is allowed for full manual entry
-                  const validCodes = ['ALISEUS2026'];
-                  if (!validCodes.includes(betaCode) && !inviteToken) {
-                    alert('Código de acceso inválido. Por favor, asegúrate de escribir ALISEUS2026 o usar tu enlace de invitación.');
+                  const codeToValidate = inviteToken || betaCode;
+                  if (!codeToValidate) {
+                    alert('Se requiere un código de invitación para registrarse.');
+                    return;
+                  }
+                  
+                  setAuthLoading(true);
+                  try {
+                    const validation = await invitationService.validateCode(codeToValidate);
+                    if (!validation.valid) {
+                      alert(validation.message || 'Código de invitación inválido.');
+                      setAuthLoading(false);
+                      return;
+                    }
+                  } catch (error) {
+                    console.error('[AliseusLanding] Validation error:', error);
+                    alert('Error al validar el código. Por favor, inténtalo de nuevo.');
+                    setAuthLoading(false);
                     return;
                   }
                 }
+
                 setAuthLoading(true);
-                await onLogin('EMAIL', { email, password, isRegister });
+                await onLogin('EMAIL', { 
+                  email, 
+                  password, 
+                  isRegister, 
+                  invitationCode: inviteToken || betaCode 
+                });
                 setAuthLoading(false);
               }}
               disabled={authLoading || !email || !password || (isRegister && (!acceptedTerms || (!betaCode && !inviteToken) || !isAgeVerified))}

@@ -55,7 +55,12 @@ export const useHouseholdStore = create<HouseholdState & HouseholdActions>()(
                 try {
                     // @ts-ignore
                     const id = await householdService.createHousehold({ name, currency });
-                    get().fetchHouseholds(); // Refresh list
+                    await get().fetchHouseholds(); // Refresh list and wait
+                    
+                    // Set the newly created household as active
+                    if (id) {
+                        set({ activeHouseholdId: id });
+                    }
                 } catch (error: any) {
                     set({ error: error.message, isLoading: false });
                     throw error;

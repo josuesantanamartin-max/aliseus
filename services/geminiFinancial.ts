@@ -83,3 +83,48 @@ ${context}
     return [];
   }
 };
+
+/**
+ * Parses raw text from a bank statement (PDF text or copy-paste) into structured transactions.
+ */
+export const parseTransactionsFromText = async (
+  rawText: string,
+  language: 'ES' | 'EN' | 'FR' = 'ES',
+  currency: string = 'EUR'
+): Promise<Partial<Transaction>[]> => {
+  try {
+    const prompt = `
+You are a financial data extractor. I will provide you with raw text extracted from a bank statement or a website.
+Your task is to extract all transactions found in the text.
+
+For each transaction, find:
+- date (ISO format YYYY-MM-DD)
+- amount (positive for income, negative for expense)
+- description (clean, readable title)
+- category (one of: Food, Transport, Housing, Health, Entertainment, Shopping, Income, Others)
+- type ('INCOME' or 'EXPENSE')
+
+Text to parse:
+"""
+${rawText.slice(0, 5000)}
+"""
+
+Important:
+- Be precise with amounts and dates.
+- If the text is in Spanish, use appropriate categories.
+- Respond ONLY with a JSON array of transaction objects.
+- Currency is ${currency}.
+
+${language === 'ES' ? 'Responde estrictamente en español.' : ''}
+`;
+
+    const result = await generateContent(prompt);
+    const cleaned = cleanJSON(result);
+    const parsed = JSON.parse(cleaned);
+
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    console.error("Gemini Parse Error:", error);
+    return [];
+  }
+};

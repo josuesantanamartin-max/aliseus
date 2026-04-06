@@ -5,26 +5,39 @@ import { UploadCloud, CheckCircle, ArrowRight } from 'lucide-react';
 
 const ImportDataStep: React.FC = () => {
     const { setOnboardingStep, completeOnboarding, setSubscription } = useUserStore();
-    // const navigate = useNavigate(); // Assuming we are using react-router
+    const fileInputRef = React.useRef<HTMLInputElement>(null);
+    const [fileName, setFileName] = React.useState<string | null>(null);
 
     const handleComplete = async () => {
         completeOnboarding();
-        // Give users Premium Personal status right away after onboarding so they don't see "BASIC"
-        setSubscription({ plan: 'PERSONAL', status: 'ACTIVE', isBetaExtraApplied: false });
+        // Give users Familia Premium status for the beta
+        setSubscription({ 
+            plan: 'FAMILIA', 
+            status: 'ACTIVE', 
+            isBetaExtraApplied: true // Mark as beta benefit
+        });
 
         // Save onboarding completion to Supabase user_metadata
         try {
             const { supabase } = await import('@/services/supabaseClient');
             if (supabase) {
                 await supabase.auth.updateUser({
-                    data: { hasCompletedOnboarding: true }
+                    data: { 
+                        hasCompletedOnboarding: true,
+                        betaPlanApplied: 'FAMILIA'
+                    }
                 });
             }
         } catch (error) {
             console.error("Failed to save onboarding state to Supabase:", error);
         }
+    };
 
-        // State update triggers AuthGate re-render automatically
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setFileName(file.name);
+        }
     };
 
     return (
@@ -32,18 +45,36 @@ const ImportDataStep: React.FC = () => {
             <h2 className="text-3xl font-black text-gray-900 dark:text-white mb-2 text-center">
                 ¿Tienes datos anteriores?
             </h2>
-            <p className="text-gray-500 dark:text-gray-400 mb-8 text-center">
-                Puedes importar tus transacciones desde un Excel o CSV ahora, o hacerlo más tarde desde la configuración.
+            <p className="text-gray-500 dark:text-gray-400 mb-8 text-center text-balance">
+                Importa tus transacciones desde Excel, CSV o <b>PDF bancario</b> ahora, o hazlo más tarde desde Ajustes.
             </p>
 
-            <div className="w-full bg-gray-50 dark:bg-aliseus-800/50 border-2 border-dashed border-gray-200 dark:border-aliseus-700 rounded-2xl p-10 flex flex-col items-center justify-center mb-10 cursor-pointer hover:border-cyan-400 transition-colors group">
+            <input 
+                type="file" 
+                ref={fileInputRef} 
+                onChange={handleFileChange}
+                accept=".csv,.xlsx,.xls,.pdf" 
+                className="hidden" 
+            />
+
+            <div 
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full bg-gray-50 dark:bg-aliseus-800/50 border-2 border-dashed border-gray-200 dark:border-aliseus-700 rounded-2xl p-10 flex flex-col items-center justify-center mb-10 cursor-pointer hover:border-cyan-400 hover:bg-cyan-50/30 dark:hover:bg-cyan-900/10 transition-all group"
+            >
                 <div className="w-16 h-16 bg-white dark:bg-aliseus-800 rounded-full shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <UploadCloud className="w-8 h-8 text-cyan-500" />
                 </div>
-                <h3 className="font-bold text-gray-900 dark:text-white mb-1">Arrastra tu archivo aquí</h3>
-                <p className="text-sm text-gray-500 mb-4">Soporta .csv y .xslx</p>
-                <button className="text-xs font-bold text-cyan-600 bg-cyan-50 dark:bg-cyan-900/20 px-4 py-2 rounded-lg">
-                    Explorar archivos
+                <h3 className="font-bold text-gray-900 dark:text-white mb-1">
+                    {fileName ? fileName : 'Arrastra tu archivo aquí'}
+                </h3>
+                <p className="text-sm text-gray-500 mb-4 text-center">
+                    Soporta CSV, Excel y extractos en PDF
+                </p>
+                <button 
+                    type="button"
+                    className="text-xs font-bold text-cyan-600 bg-cyan-50 dark:bg-cyan-900/20 px-4 py-2 rounded-lg group-hover:bg-cyan-100 dark:group-hover:bg-cyan-900/40 transition-colors"
+                >
+                    {fileName ? 'Cambiar archivo' : 'Explorar archivos'}
                 </button>
             </div>
 
