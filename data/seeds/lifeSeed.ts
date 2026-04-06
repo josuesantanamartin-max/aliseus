@@ -102,7 +102,7 @@ export const MOCK_RECIPES: Recipe[] = [
     },
     {
         id: '8', name: 'Tostada de Aguacate y Huevo', prepTime: 10, calories: 340, tags: ['Breakfast', 'Healthy', 'Quick'], rating: 4.8, baseServings: 1,
-        image: 'https://images.unsplash.com/photo-1603048588665-791ca8aea617?q=80&w=800&auto=format&fit=crop',
+        image: '/images/recipes/avocado-toast.png',
         ingredients: [
             { name: 'Pan Integral', quantity: 1, unit: 'rebanada' },
             { name: 'Aguacate', quantity: 0.5, unit: 'pcs' },
@@ -154,7 +154,7 @@ export const MOCK_RECIPES: Recipe[] = [
     },
     {
         id: '12', name: 'Smoothie Bowl de Frutos Rojos', prepTime: 10, calories: 340, tags: ['Breakfast', 'Healthy', 'Summer'], rating: 4.8, baseServings: 1,
-        image: 'https://images.unsplash.com/photo-1626078436912-e7059737e9e0?q=80&w=800&auto=format&fit=crop',
+        image: '/images/recipes/berry-smoothie.png',
         ingredients: [
             { name: 'Frutos Rojos Congelados', quantity: 150, unit: 'g' },
             { name: 'Plátano', quantity: 1, unit: 'pcs' },
@@ -164,6 +164,45 @@ export const MOCK_RECIPES: Recipe[] = [
         ],
         instructions: ['Triturar frutas con yogur hasta tener textura cremosa', 'Servir en un bol', 'Decorar con granola, fruta fresca y semillas'],
         macros: { protein: 10, carbs: 55, fat: 9 }
+    },
+    {
+        id: '13', name: 'Poke Bowl de Atún', prepTime: 20, calories: 480, tags: ['Lunch', 'Healthy', 'Fresh'], rating: 4.9, baseServings: 1,
+        image: '/images/recipes/poke-tuna.png',
+        ingredients: [
+            { name: 'Atún fresco', quantity: 150, unit: 'g' },
+            { name: 'Arroz para sushi', quantity: 100, unit: 'g' },
+            { name: 'Aguacate', quantity: 0.5, unit: 'pcs' },
+            { name: 'Edamame', quantity: 50, unit: 'g' },
+            { name: 'Salsa de Soja', quantity: 20, unit: 'ml' }
+        ],
+        instructions: ['Trocear el atún en cubos y marinar con soja', 'Cocer el arroz y dejar enfriar', 'Montar el bowl con el arroz de base', 'Añadir el atún, aguacate y edamame por encima'],
+        macros: { protein: 32, carbs: 45, fat: 12 }
+    },
+    {
+        id: '14', name: 'Shakshuka con Queso Feta', prepTime: 25, calories: 320, tags: ['Brunch', 'Vegetarian', 'Mediterranean'], rating: 4.7, baseServings: 2,
+        image: '/images/recipes/shakshuka.png',
+        ingredients: [
+            { name: 'Huevos', quantity: 4, unit: 'pcs' },
+            { name: 'Tomate triturado', quantity: 400, unit: 'g' },
+            { name: 'Pimiento rojo', quantity: 1, unit: 'pcs' },
+            { name: 'Cebolla', quantity: 1, unit: 'pcs' },
+            { name: 'Queso Feta', quantity: 50, unit: 'g' }
+        ],
+        instructions: ['Sofreír cebolla y pimiento', 'Añadir el tomate y cocinar 10 min', 'Hacer huecos y añadir los huevos', 'Cocinar tapado hasta que cuajen y añadir feta al final'],
+        macros: { protein: 18, carbs: 12, fat: 22 }
+    },
+    {
+        id: '15', name: 'Wok de Fideos con Langostinos', prepTime: 15, calories: 410, tags: ['Dinner', 'Asian', 'High Protein'], rating: 4.8, baseServings: 2,
+        image: '/images/recipes/wok-prawns.png',
+        ingredients: [
+            { name: 'Fideos de huevo', quantity: 150, unit: 'g' },
+            { name: 'Langostinos', quantity: 200, unit: 'g' },
+            { name: 'Brócoli', quantity: 100, unit: 'g' },
+            { name: 'Zanahoria', quantity: 1, unit: 'pcs' },
+            { name: 'Salsa de ostras', quantity: 30, unit: 'ml' }
+        ],
+        instructions: ['Cocer fideos y reservar', 'Saltear langostinos y verduras a fuego fuerte', 'Añadir los fideos al wok', 'Mezclar con la salsa y servir muy caliente'],
+        macros: { protein: 28, carbs: 52, fat: 8 }
     },
 ];
 
