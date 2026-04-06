@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import { Ingredient, ShoppingItem, Recipe, Trip, FamilyMember, DashboardWidget, WishlistDestination, PriceAlert, TravelDocument } from '../types';
 import { WeeklyPlan, Chore, FamilyEvent } from '../types/life';
 import { syncService } from '../services/syncService';
+import { recipeService } from '../services/recipes/recipeService';
 import { idbStorage } from '../utils/idbStorage';
 import { offlineQueueService } from '../services/offlineQueueService';
 
@@ -45,6 +46,7 @@ interface LifeActions {
     addRecipe: (recipe: Recipe) => void;
     updateRecipe: (id: string, updates: Partial<Recipe>) => void;
     deleteRecipe: (id: string) => void;
+    importExternalRecipe: (recipe: Recipe) => Promise<void>;
     addPantryItem: (item: Ingredient) => void;
     updatePantryItem: (id: string, updates: Partial<Ingredient>) => void;
     deletePantryItem: (id: string) => void;
@@ -165,6 +167,16 @@ export const useLifeStore = create<LifeState & LifeActions>()(
             deleteRecipe: (id) => {
                 set((state) => ({ recipes: state.recipes.filter(r => r.id !== id) }));
                 sync(() => syncService.deleteRecipe(id), 'deleteRecipe', 'deleteRecipe', id);
+            },
+            importExternalRecipe: async (recipe) => {
+                try {
+                    // Saves to Supabase and estimates calories through Gemini.
+                    const finalRecipe = await recipeService.saveRecipeToBox(recipe);
+                    set((state) => ({ recipes: [finalRecipe, ...state.recipes] }));
+                } catch (e) {
+                    console.error("Failed to import external recipe", e);
+                    throw e;
+                }
             },
 
             // ── Pantry ──
@@ -296,7 +308,7 @@ export const useLifeStore = create<LifeState & LifeActions>()(
                 try {
                     const [cloudPantry, cloudRecipes, cloudShopping, cloudWeekly, cloudFamily, cloudTrips, cloudEvents] = await Promise.all([
                         syncService.fetchPantry(),
-                        syncService.fetchRecipes(),
+                        recipeService.getMyRecipes(), // use the newly centralized recipeService
                         syncService.fetchShoppingList(),
                         syncService.fetchWeeklyPlan(),
                         syncService.fetchFamilyMembers(),

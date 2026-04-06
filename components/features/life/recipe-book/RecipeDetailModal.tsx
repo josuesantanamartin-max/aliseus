@@ -10,12 +10,14 @@ interface RecipeDetailModalProps {
     onPlanRecipe: (recipe: Recipe) => void;
     onCookRecipe: (recipe: Recipe) => void;
     onEditRecipe: (recipe: Recipe) => void;
+    onImportExternal?: (recipe: Recipe) => void;
 }
 
 export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
-    recipe, onClose, onPlanRecipe, onCookRecipe, onEditRecipe,
+    recipe, onClose, onPlanRecipe, onCookRecipe, onEditRecipe, onImportExternal
 }) => {
     if (!recipe) return null;
+    const isExternal = recipe.id.startsWith('external_');
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fade-in" onClick={onClose}>
@@ -89,24 +91,35 @@ export const RecipeDetailModal: React.FC<RecipeDetailModalProps> = ({
 
                     {/* Actions Footer */}
                     <div className="p-8 bg-white border-t border-gray-100 flex gap-4">
-                        <button
-                            onClick={() => { onClose(); onPlanRecipe(recipe); }}
-                            className="flex-1 bg-blue-600 text-white py-5 rounded-3xl font-black text-xs uppercase tracking-[0.2em] shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3"
-                        >
-                            <CalendarPlus className="w-5 h-5" /> Planificar
-                        </button>
-                        <button
-                            onClick={() => { onClose(); onCookRecipe(recipe); }}
-                            className="flex-1 bg-gradient-to-r from-gray-900 to-black text-white py-5 rounded-3xl font-black text-xs uppercase tracking-[0.2em] shadow-[0_20px_40px_rgba(0,0,0,0.2)] hover:shadow-[0_20px_40px_rgba(16,185,129,0.3)] hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3"
-                        >
-                            <Flame className="w-5 h-5 text-emerald-500" /> Comenzar a Cocinar
-                        </button>
-                        <button
-                            onClick={() => { onClose(); onEditRecipe(recipe); }}
-                            className="px-8 bg-gray-50 text-gray-400 py-5 rounded-3xl font-black text-xs uppercase tracking-widest hover:bg-blue-50 hover:text-blue-600 transition-all border border-transparent hover:border-blue-100"
-                        >
-                            Editar
-                        </button>
+                        {isExternal ? (
+                            <button
+                                onClick={() => onImportExternal && onImportExternal(recipe)}
+                                className="flex-1 bg-emerald-600 text-white py-5 rounded-3xl font-black text-xs uppercase tracking-[0.2em] shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3"
+                            >
+                                Guardar en mi Recetario
+                            </button>
+                        ) : (
+                            <>
+                                <button
+                                    onClick={() => { onClose(); onPlanRecipe(recipe); }}
+                                    className="flex-1 bg-blue-600 text-white py-5 rounded-3xl font-black text-xs uppercase tracking-[0.2em] shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3"
+                                >
+                                    <CalendarPlus className="w-5 h-5" /> Planificar
+                                </button>
+                                <button
+                                    onClick={() => { onClose(); onCookRecipe(recipe); }}
+                                    className="flex-1 bg-gradient-to-r from-gray-900 to-black text-white py-5 rounded-3xl font-black text-xs uppercase tracking-[0.2em] shadow-[0_20px_40px_rgba(0,0,0,0.2)] hover:shadow-[0_20px_40px_rgba(16,185,129,0.3)] hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3"
+                                >
+                                    <Flame className="w-5 h-5 text-emerald-500" /> Comenzar a Cocinar
+                                </button>
+                                <button
+                                    onClick={() => { onClose(); onEditRecipe(recipe); }}
+                                    className="px-8 bg-gray-50 text-gray-400 py-5 rounded-3xl font-black text-xs uppercase tracking-widest hover:bg-blue-50 hover:text-blue-600 transition-all border border-transparent hover:border-blue-100"
+                                >
+                                    Editar
+                                </button>
+                            </>
+                        )}
                     </div>
                 </div>
 

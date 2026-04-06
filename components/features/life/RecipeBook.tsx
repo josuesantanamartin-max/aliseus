@@ -15,6 +15,7 @@ import { RecipeGrid } from './recipe-book/RecipeGrid';
 import { RecipeEditorModal } from './recipe-book/RecipeEditorModal';
 import { RecipeSuggestionsModal } from './recipe-book/RecipeSuggestionsModal';
 import { RecipeDetailModal } from './recipe-book/RecipeDetailModal';
+import { recipeService } from '@/services/recipes/recipeService';
 
 interface RecipeBookProps {
     onNavigateToMealPlan?: () => void;
@@ -23,7 +24,7 @@ interface RecipeBookProps {
 }
 
 export const RecipeBook: React.FC<RecipeBookProps> = ({ onNavigateToMealPlan, initialRecipeToOpen, onClearInitialRecipe }) => {
-    const { recipes, setRecipes, pantryItems, shoppingList, setShoppingList } = useLifeStore();
+    const { recipes, importExternalRecipe, pantryItems, shoppingList, setShoppingList } = useLifeStore();
     const { language } = useUserStore();
 
     const [recipeSearchTerm, setRecipeSearchTerm] = useState('');
@@ -31,6 +32,9 @@ export const RecipeBook: React.FC<RecipeBookProps> = ({ onNavigateToMealPlan, in
     const [filterPrepTime, setFilterPrepTime] = useState<string>('All');
     const [filterCalories, setFilterCalories] = useState<string>('All');
     const [filterWithWhatIHave, setFilterWithWhatIHave] = useState(false);
+
+    const [externalRecipes, setExternalRecipes] = useState<Recipe[]>([]);
+    const [isSearchingExternal, setIsSearchingExternal] = useState(false);
 
     const recipeInputRef = useRef<HTMLInputElement>(null);
 
@@ -105,11 +109,44 @@ export const RecipeBook: React.FC<RecipeBookProps> = ({ onNavigateToMealPlan, in
             rating: 0
         };
         if (editingRecipeId) {
-            setRecipes((prev: Recipe[]) => prev.map(r => r.id === editingRecipeId ? recipeData : r));
+            useLifeStore.getState().updateRecipe(editingRecipeId, recipeData);
         } else {
-            setRecipes((prev: Recipe[]) => [...prev, recipeData]);
+            useLifeStore.getState().addRecipe(recipeData);
         }
         setIsAddRecipeOpen(false);
+    };
+
+    const handleSearchExternal = async () => {
+        if (!recipeSearchTerm.trim()) {
+            setExternalRecipes([]);
+            return;
+        }
+        setIsSearchingExternal(true);
+        try {
+            const results = await recipeService.searchExternalRecipes(recipeSearchTerm);
+            setExternalRecipes(results);
+        } catch (e) {
+            console.error(e);
+        }
+        setIsSearchingExternal(false);
+    };
+
+    useEffect(() => {
+        const t = setTimeout(() => {
+            handleSearchExternal();
+        }, 800);
+        return () => clearTimeout(t);
+    }, [recipeSearchTerm]);
+
+    const handleImportExternalRecipe = async (recipe: Recipe) => {
+        try {
+            await importExternalRecipe(recipe);
+            setExternalRecipes(prev => prev.filter(r => r.id !== recipe.id));
+            alert(`${recipe.name} guardada en tu recetario privado.`);
+            setViewRecipe(null);
+        } catch (e) {
+            alert('Error al guardar la receta.');
+        }
     };
 
     const handleGenerateAIImage = async (e: React.MouseEvent) => {
@@ -151,21 +188,9 @@ export const RecipeBook: React.FC<RecipeBookProps> = ({ onNavigateToMealPlan, in
     };
 
     const handleSaveGeneratedRecipe = (recipe: Recipe) => {
-        generateImage(recipe.name, "4:3", 'food').then(res => {
-            if (res.imageUrl) {
-                setRecipes((prev: Recipe[]) => prev.map(r => {
-                    if (r.name === recipe.name && !r.image) {
-                        return { ...r, image: res.imageUrl };
-                    }
-                    return r;
-                }));
-            }
-        });
-
-        setRecipes((prev: Recipe[]) => [{ ...recipe, id: Math.random().toString(36).substr(2, 9) }, ...prev]);
+        handleImportExternalRecipe(recipe);
         setIsRecipeResultOpen(false);
         setGeneratedRecipes([]);
-        alert("Receta guardada");
     };
 
     const handleAddToMealPlan = (recipe: Recipe, date: string, meal: 'breakfast' | 'lunch' | 'dinner') => {
@@ -271,6 +296,8 @@ export const RecipeBook: React.FC<RecipeBookProps> = ({ onNavigateToMealPlan, in
         return true;
     });
 
+    const allDisplayedRecipes = [...filteredRecipes, ...externalRecipes];
+
     // ── Render ──────────────────────────────────────────────
 
     return (
@@ -279,7 +306,8 @@ export const RecipeBook: React.FC<RecipeBookProps> = ({ onNavigateToMealPlan, in
                 <div className="flex justify-between items-center">
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                        <input type="text" value={recipeSearchTerm} onChange={(e) => setRecipeSearchTerm(e.target.value)} placeholder="Buscar receta..." className="pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-emerald-100 w-64" />
+                        <input type="text" value={recipeSearchTerm} onChange={(e) => setRecipeSearchTerm(e.target.value)} placeholder="Buscar receta o explorar base de datos..." className="pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-emerald-100 w-64 md:w-80" />
+                        {isSearchingExternal && <Loader2 className="w-4 h-4 text-emerald-500 animate-spin absolute right-3 top-1/2 -translate-y-1/2" />}
                     </div>
                     <div className="flex gap-2">
                         <div className="relative">
@@ -314,7 +342,7 @@ export const RecipeBook: React.FC<RecipeBookProps> = ({ onNavigateToMealPlan, in
             </div>
 
             <RecipeGrid
-                recipes={filteredRecipes}
+                recipes={allDisplayedRecipes}
                 onViewRecipe={setViewRecipe}
                 onPlanRecipe={setPlanRecipe}
                 onCookRecipe={setCookingRecipe}
@@ -350,6 +378,7 @@ export const RecipeBook: React.FC<RecipeBookProps> = ({ onNavigateToMealPlan, in
                 onPlanRecipe={setPlanRecipe}
                 onCookRecipe={setCookingRecipe}
                 onEditRecipe={handleEditRecipe}
+                onImportExternal={handleImportExternalRecipe}
             />
 
             {planRecipe && (
