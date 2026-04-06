@@ -34,9 +34,10 @@ export const MemberManagement: React.FC = () => {
 
             setInviteEmail('');
             // Optional: setShowInviteForm remain open to show the link
-        } catch (e) {
+        } catch (e: any) {
             console.error("Failed to invite", e);
-            alert("No se pudo crear la invitación. Revisa tus permisos.");
+            const errorMsg = e.message || "Error desconocido";
+            alert(`No se pudo crear la invitación: ${errorMsg}. Revisa si eres el Administrador de este hogar.`);
         }
     };
 
