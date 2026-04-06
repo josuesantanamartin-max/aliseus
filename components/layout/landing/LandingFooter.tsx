@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Logo } from '../Logo';
+import { PaymentMethods } from '../../common/PaymentMethods';
 import { LegalPage } from '../../legal/LegalPage';
 
 interface LandingFooterProps {
@@ -24,7 +25,10 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({ onNavigate, t }) =
                     <div className="flex items-center gap-2.5 cursor-pointer group" onClick={() => onNavigate('HOME')}>
                         <Logo className="h-8 w-auto group-hover:scale-105 transition-all duration-300 drop-shadow-sm" />
                     </div>
-                    <div className="text-sm text-gray-500">&copy; {new Date().getFullYear()} Aliseus. La tranquilidad de tu familia.</div>
+                    <div className="flex flex-col md:flex-row items-center gap-8">
+                        <PaymentMethods variant="grayscale" className="opacity-60 scale-90" />
+                        <div className="text-sm text-gray-500">&copy; {new Date().getFullYear()} Aliseus. La tranquilidad de tu familia.</div>
+                    </div>
                     <div className="flex gap-6 text-sm font-medium text-gray-600">
                         <button
                             onClick={() => setShowLegalModal('privacy')}

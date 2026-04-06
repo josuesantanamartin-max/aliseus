@@ -5,7 +5,7 @@ import { useUserStore } from '../../store/useUserStore';
 import { DASHBOARD_TEXTS } from '../../i18n/dashboardTexts';
 import { cn } from '../../utils/cn';
 
-export default function BetaFeedbackWidget() {
+export default function BetaFeedbackWidget({ variant = 'floating' }: { variant?: 'floating' | 'sidebar' }) {
     const { language } = useUserStore();
     const t = DASHBOARD_TEXTS[language as 'ES' | 'EN']?.feedback || DASHBOARD_TEXTS.ES.feedback;
 
@@ -39,20 +39,35 @@ export default function BetaFeedbackWidget() {
 
     return (
         <>
-            {/* Pulsating Floating Button */}
-            <motion.button
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setIsOpen(true)}
-                className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-700 text-white rounded-full shadow-2xl flex items-center justify-center border border-white/20 group overflow-hidden"
-            >
-                <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <MessageSquare className="w-6 h-6" />
-                {/* Notification dot */}
-                <div className="absolute top-3 right-3 w-3 h-3 bg-red-500 border-2 border-white rounded-full animate-pulse" />
-            </motion.button>
+            {/* Button Selector Based on Variant */}
+            {variant === 'floating' ? (
+                <motion.button
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setIsOpen(true)}
+                    className="fixed bottom-6 left-6 z-50 w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-700 text-white rounded-full shadow-2xl flex items-center justify-center border border-white/20 group overflow-hidden"
+                >
+                    <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <MessageSquare className="w-6 h-6" />
+                    {/* Notification dot */}
+                    <div className="absolute top-3 right-3 w-3 h-3 bg-red-500 border-2 border-white rounded-full animate-pulse" />
+                </motion.button>
+            ) : (
+                <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => setIsOpen(true)}
+                    className="w-full flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-300 group relative text-aliseus-400 dark:text-aliseus-500 hover:text-aliseus-900 dark:hover:text-aliseus-200 hover:bg-aliseus-50/50 dark:hover:bg-aliseus-900/50"
+                >
+                    <div className="relative">
+                        <MessageSquare className="w-5 h-5 transition-all duration-300 text-aliseus-400 group-hover:text-blue-600 group-hover:scale-110" />
+                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full animate-pulse opacity-70" />
+                    </div>
+                    <span className="text-[13px] tracking-tight">Soporte y Feedback</span>
+                </motion.button>
+            )}
 
             {/* Modal Backdrop */}
             <AnimatePresence>
@@ -63,7 +78,7 @@ export default function BetaFeedbackWidget() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => !isSending && !isSent && setIsOpen(false)}
-                            className="absolute inset-0 bg-onyx-950/60 backdrop-blur-sm"
+                            className="absolute inset-0 bg-aliseus-950/60 backdrop-blur-sm"
                         />
 
                         {/* Modal Content */}
@@ -71,7 +86,7 @@ export default function BetaFeedbackWidget() {
                             initial={{ scale: 0.9, opacity: 0, y: 20 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                            className="relative w-full max-w-md bg-white dark:bg-onyx-900 rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100 dark:border-onyx-800"
+                            className="relative w-full max-w-md bg-white dark:bg-aliseus-900 rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100 dark:border-aliseus-800"
                         >
                             {/* Decorative background element */}
                             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
@@ -83,7 +98,7 @@ export default function BetaFeedbackWidget() {
                                     </div>
                                     <button 
                                         onClick={() => setIsOpen(false)}
-                                        className="p-2 hover:bg-slate-100 dark:hover:bg-onyx-800 rounded-full text-slate-400 transition-colors"
+                                        className="p-2 hover:bg-slate-100 dark:hover:bg-aliseus-800 rounded-full text-slate-400 transition-colors"
                                     >
                                         <X className="w-5 h-5" />
                                     </button>
@@ -128,7 +143,7 @@ export default function BetaFeedbackWidget() {
                                                             "flex flex-col items-center gap-2 p-3 rounded-2xl border transition-all text-center",
                                                             isActive 
                                                                 ? "bg-blue-50 dark:bg-blue-900/30 border-blue-500 text-blue-600 dark:text-blue-400"
-                                                                : "bg-slate-50/50 dark:bg-onyx-800/50 border-transparent text-slate-400 hover:bg-slate-100 dark:hover:bg-onyx-800"
+                                                                : "bg-slate-50/50 dark:bg-aliseus-800/50 border-transparent text-slate-400 hover:bg-slate-100 dark:hover:bg-aliseus-800"
                                                         )}
                                                     >
                                                         <Icon className="w-5 h-5" />
@@ -150,7 +165,7 @@ export default function BetaFeedbackWidget() {
                                                 value={message}
                                                 onChange={(e) => setMessage(e.target.value)}
                                                 placeholder={t.placeholder}
-                                                className="w-full h-32 bg-slate-50 dark:bg-onyx-800/50 border border-slate-100 dark:border-onyx-800 rounded-[1.5rem] p-4 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none"
+                                                className="w-full h-32 bg-slate-50 dark:bg-aliseus-800/50 border border-slate-100 dark:border-aliseus-800 rounded-[1.5rem] p-4 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none"
                                             />
                                         </div>
 

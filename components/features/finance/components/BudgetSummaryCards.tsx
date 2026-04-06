@@ -20,12 +20,12 @@ export const BudgetSummaryCards: React.FC<BudgetSummaryCardsProps> = ({ selected
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* MONTHLY CARD */}
-            <div className={`p-6 rounded-3xl border transition-all duration-300 relative overflow-hidden ${selectedDetails.monthly.limit > 0 ? 'bg-white border-onyx-100 shadow-sm' : 'bg-onyx-50/50 border-onyx-50 opacity-80'}`}>
+            <div className={`p-6 rounded-3xl border transition-all duration-300 relative overflow-hidden ${selectedDetails.monthly.limit > 0 ? 'bg-white border-aliseus-100 shadow-sm' : 'bg-aliseus-50/50 border-aliseus-50 opacity-80'}`}>
                 <div className="flex justify-between items-start mb-4 relative z-10">
                     <div>
                         <div className="flex items-center gap-2 mb-1">
                             <CalendarRange className="w-4 h-4 text-cyan-500" />
-                            <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest">Este Mes</p>
+                            <p className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest">Este Mes</p>
                         </div>
                         <h3 className="text-3xl font-black text-cyan-900 tracking-tighter">{formatEUR(selectedDetails.monthly.spent)}</h3>
                     </div>
@@ -37,29 +37,29 @@ export const BudgetSummaryCards: React.FC<BudgetSummaryCardsProps> = ({ selected
                 </div>
                 {selectedDetails.monthly.limit > 0 ? (
                     <div className="relative z-10">
-                        <div className="w-full h-2 bg-onyx-100 rounded-full overflow-hidden mb-2">
+                        <div className="w-full h-2 bg-aliseus-100 rounded-full overflow-hidden mb-2">
                             <div
                                 className={`h-full rounded-full transition-all duration-1000 ${selectedDetails.monthly.isExceeded ? 'bg-red-500' : 'bg-cyan-500'}`}
                                 style={{ width: `${Math.min(selectedDetails.monthly.percentage, 100)}%` }}
                             />
                         </div>
-                        <p className="text-right text-[10px] font-bold text-onyx-400 uppercase tracking-widest">
+                        <p className="text-right text-[10px] font-bold text-aliseus-400 uppercase tracking-widest">
                             Límite: {formatEUR(selectedDetails.monthly.limit)}
                         </p>
                     </div>
                 ) : (
-                    <p className="text-xs text-onyx-400 mt-2 font-medium">Sin límite mensual definido</p>
+                    <p className="text-xs text-aliseus-400 mt-2 font-medium">Sin límite mensual definido</p>
                 )}
             </div>
 
             {/* YEARLY CARD */}
-            <div className={`p-6 rounded-3xl border transition-all duration-300 relative overflow-hidden ${selectedDetails.yearly.limit > 0 ? 'bg-gradient-to-br from-cyan-600 to-teal-600 text-white shadow-xl' : 'bg-onyx-50/50 border-onyx-50 opacity-80'}`}>
+            <div className={`p-6 rounded-3xl border transition-all duration-300 relative overflow-hidden ${selectedDetails.yearly.limit > 0 ? 'bg-gradient-to-br from-cyan-600 to-teal-600 text-white shadow-xl' : 'bg-aliseus-50/50 border-aliseus-50 opacity-80'}`}>
                 {selectedDetails.yearly.limit > 0 && <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/30 rounded-full blur-2xl -mr-10 -mt-10"></div>}
                 <div className="flex justify-between items-start mb-4 relative z-10">
                     <div>
                         <div className="flex items-center gap-2 mb-1">
-                            <Scale className={`w-4 h-4 ${selectedDetails.yearly.limit > 0 ? 'text-cyan-400' : 'text-onyx-300'}`} />
-                            <p className={`text-[10px] font-bold uppercase tracking-widest ${selectedDetails.yearly.limit > 0 ? 'text-onyx-400' : 'text-onyx-400'}`}>Año Actual</p>
+                            <Scale className={`w-4 h-4 ${selectedDetails.yearly.limit > 0 ? 'text-cyan-400' : 'text-aliseus-300'}`} />
+                            <p className={`text-[10px] font-bold uppercase tracking-widest ${selectedDetails.yearly.limit > 0 ? 'text-aliseus-400' : 'text-aliseus-400'}`}>Año Actual</p>
                         </div>
                         <h3 className={`text-3xl font-black tracking-tighter ${selectedDetails.yearly.limit > 0 ? 'text-white' : 'text-cyan-900'}`}>{formatEUR(selectedDetails.yearly.spent)}</h3>
                     </div>
@@ -82,7 +82,7 @@ export const BudgetSummaryCards: React.FC<BudgetSummaryCardsProps> = ({ selected
                         </p>
                     </div>
                 ) : (
-                    <p className="text-xs text-onyx-400 mt-2 font-medium">Sin límite anual definido</p>
+                    <p className="text-xs text-aliseus-400 mt-2 font-medium">Sin límite anual definido</p>
                 )}
             </div>
         </div>

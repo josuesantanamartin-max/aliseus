@@ -291,13 +291,13 @@ export const HelpCenter: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
             {/* Header */}
-            <div className="bg-gradient-to-r from-onyx-600 to-onyx-800 text-white py-12">
+            <div className="bg-gradient-to-r from-aliseus-600 to-aliseus-800 text-white py-12">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="flex items-center gap-3 mb-4">
                         <HelpCircle className="w-10 h-10" />
                         <h1 className="text-4xl font-bold">Centro de Ayuda</h1>
                     </div>
-                    <p className="text-onyx-100 text-lg mb-6">
+                    <p className="text-aliseus-100 text-lg mb-6">
                         Encuentra respuestas, guías y tutoriales para aprovechar al máximo Aliseus
                     </p>
 
@@ -309,7 +309,7 @@ export const HelpCenter: React.FC = () => {
                             placeholder="Buscar artículos, guías, tutoriales..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-12 pr-4 py-3 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-0 focus:ring-2 focus:ring-onyx-300 outline-none"
+                            className="w-full pl-12 pr-4 py-3 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-0 focus:ring-2 focus:ring-aliseus-300 outline-none"
                         />
                     </div>
                 </div>
@@ -324,7 +324,7 @@ export const HelpCenter: React.FC = () => {
                             setSelectedArticle(null);
                         }}
                         className={`px-6 py-3 rounded-lg font-semibold transition-all ${activeTab === 'articles'
-                            ? 'bg-onyx-600 text-white shadow-md'
+                            ? 'bg-aliseus-600 text-white shadow-md'
                             : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
                             }`}
                     >
@@ -339,7 +339,7 @@ export const HelpCenter: React.FC = () => {
                             setSelectedArticle(null);
                         }}
                         className={`px-6 py-3 rounded-lg font-semibold transition-all ${activeTab === 'faq'
-                            ? 'bg-onyx-600 text-white shadow-md'
+                            ? 'bg-aliseus-600 text-white shadow-md'
                             : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
                             }`}
                     >
@@ -364,7 +364,7 @@ export const HelpCenter: React.FC = () => {
                                             setSelectedArticle(null);
                                         }}
                                         className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${selectedCategory === category
-                                            ? 'bg-onyx-100 dark:bg-onyx-900 text-onyx-700 dark:text-onyx-300 font-medium'
+                                            ? 'bg-aliseus-100 dark:bg-aliseus-900 text-aliseus-700 dark:text-aliseus-300 font-medium'
                                             : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
                                             }`}
                                     >
@@ -377,15 +377,15 @@ export const HelpCenter: React.FC = () => {
                             <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                                 <h3 className="font-semibold text-gray-900 dark:text-white mb-3">Enlaces Rápidos</h3>
                                 <div className="space-y-2">
-                                    <a href="/legal/privacy" className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-onyx-600 dark:hover:text-onyx-400">
+                                    <a href="/legal/privacy" className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-aliseus-600 dark:hover:text-aliseus-400">
                                         <FileText className="w-4 h-4" />
                                         Política de Privacidad
                                     </a>
-                                    <a href="/legal/terms" className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-onyx-600 dark:hover:text-onyx-400">
+                                    <a href="/legal/terms" className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-aliseus-600 dark:hover:text-aliseus-400">
                                         <FileText className="w-4 h-4" />
                                         Términos de Servicio
                                     </a>
-                                    <a href="mailto:support@aliseus.com" className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-onyx-600 dark:hover:text-onyx-400">
+                                    <a href="mailto:support@aliseus.com" className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-aliseus-600 dark:hover:text-aliseus-400">
                                         <MessageCircle className="w-4 h-4" />
                                         Contactar Soporte
                                     </a>
@@ -401,12 +401,12 @@ export const HelpCenter: React.FC = () => {
                             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
                                 <button
                                     onClick={() => setSelectedArticle(null)}
-                                    className="text-onyx-600 dark:text-onyx-400 hover:underline mb-4 flex items-center gap-1"
+                                    className="text-aliseus-600 dark:text-aliseus-400 hover:underline mb-4 flex items-center gap-1"
                                 >
                                     ← Volver a artículos
                                 </button>
                                 <div className="mb-4">
-                                    <span className="inline-block px-3 py-1 bg-onyx-100 dark:bg-onyx-900 text-onyx-700 dark:text-onyx-300 rounded-full text-sm font-medium mb-2">
+                                    <span className="inline-block px-3 py-1 bg-aliseus-100 dark:bg-aliseus-900 text-aliseus-700 dark:text-aliseus-300 rounded-full text-sm font-medium mb-2">
                                         {selectedArticle.category[lang]}
                                     </span>
                                     <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
@@ -427,7 +427,7 @@ export const HelpCenter: React.FC = () => {
                                 </div>
                                 <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                                        ¿Te resultó útil este artículo? <a href="mailto:support@aliseus.com" className="text-onyx-600 dark:text-onyx-400 hover:underline">Envíanos tu feedback</a>
+                                        ¿Te resultó útil este artículo? <a href="mailto:support@aliseus.com" className="text-aliseus-600 dark:text-aliseus-400 hover:underline">Envíanos tu feedback</a>
                                     </p>
                                 </div>
                             </div>
@@ -456,12 +456,12 @@ export const HelpCenter: React.FC = () => {
                                             <div className="flex items-start justify-between">
                                                 <div className="flex-1">
                                                     <div className="flex items-center gap-2 mb-2">
-                                                        <Book className="w-5 h-5 text-onyx-600 dark:text-onyx-400" />
-                                                        <span className="text-sm font-medium text-onyx-600 dark:text-onyx-400">
+                                                        <Book className="w-5 h-5 text-aliseus-600 dark:text-aliseus-400" />
+                                                        <span className="text-sm font-medium text-aliseus-600 dark:text-aliseus-400">
                                                             {article.category[lang]}
                                                         </span>
                                                     </div>
-                                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-onyx-600 dark:group-hover:text-onyx-400 transition-colors">
+                                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-aliseus-600 dark:group-hover:text-aliseus-400 transition-colors">
                                                         {article.title[lang]}
                                                     </h3>
                                                     <div className="flex flex-wrap gap-2">
@@ -475,7 +475,7 @@ export const HelpCenter: React.FC = () => {
                                                         ))}
                                                     </div>
                                                 </div>
-                                                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-onyx-600 dark:group-hover:text-onyx-400 transition-colors flex-shrink-0 ml-4" />
+                                                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-aliseus-600 dark:group-hover:text-aliseus-400 transition-colors flex-shrink-0 ml-4" />
                                             </div>
                                         </button>
                                     ))}
@@ -492,7 +492,7 @@ export const HelpCenter: React.FC = () => {
                                         </p>
                                         <a
                                             href="mailto:support@aliseus.com"
-                                            className="inline-flex items-center gap-2 text-onyx-600 dark:text-onyx-400 hover:underline"
+                                            className="inline-flex items-center gap-2 text-aliseus-600 dark:text-aliseus-400 hover:underline"
                                         >
                                             <MessageCircle className="w-4 h-4" />
                                             Contactar Soporte

@@ -19,7 +19,7 @@ export const LANDING_TEXTS = {
         heroStarBenefit: "Anticipa cuándo te va a faltar dinero antes de que pase",
         heroTitle: "Aliseus",
         heroSubtitle: "Tu panel diario con saldo, facturas, menú y tareas en una sola vista.\nDeja de usar 10 apps diferentes. Pásate al sistema que lo conecta todo.",
-        ctaStart: "Solicitar Acceso (Beta Privada)",
+        ctaStart: "Unirse como Socio Fundador",
         ctaDemo: "Probar Demo (Sin Cuenta)",
         pillarsTitle: "El Ecosistema Aliseus",
         pillarsSubtitle: "No son apps sueltas. Son módulos conectados por un cerebro central.",
@@ -35,9 +35,9 @@ export const LANDING_TEXTS = {
         pricingFairPrice: "Precios éticos para siempre",
         pricingStableConditions: "Estas son nuestras tarifas estándar: honestas, sostenibles y pensadas para no subir nunca.",
         pricingSavingsConnection: "Si Aliseus no te ayuda a ahorrar mucho más de lo que cuesta al año, no tiene sentido que exista.",
-        pricingBetaAdvantage: "Sorteo de acceso exclusivo: Contrata el plan anual ahora y obtén 18 meses por el precio de 12 (6 meses extra gratis).",
+        pricingBetaAdvantage: "Ventaja de Socio Fundador: Únete ahora para recibir beneficios exclusivos y ayudar a dar forma al futuro de Aliseus.",
         pricingGoal: "Nuestro objetivo es que cada euro que inviertas en Aliseus vuelva multiplicado en tranquilidad y ahorro.",
-        promoBadge: "🔥 Beta Privada: 14 días gratuitos con acceso completo",
+        promoBadge: "🔥 Socio Fundador: Acceso exclusivo al Lanzamiento Inicial",
 
         // Magic Connection (AI Optimization Moat)
         magicTitle: "La Magia de la Conexión",
@@ -51,11 +51,11 @@ export const LANDING_TEXTS = {
         savePercent: "Pago Anual Seguro",
 
         // TIER 1: TRIAL
-        trialPlan: "Beta Privada",
+        trialPlan: "Socio Fundador",
         trialPrice: "0€",
         trialPeriod: "14 días",
         trialDesc: "Acceso total para probar la herramienta en profundidad.",
-        trialCta: "Entrar a la Beta",
+        trialCta: "Acceder como Socio Fundador",
 
         // TIER 2: PERSONAL
         personalPlan: "Personal",
@@ -537,8 +537,8 @@ export const PRODUCT_DETAILS_BY_LANG: Record<Language, Record<ProductKey, any>> 
                 { title: "Capas Temáticas Fijas", desc: "Olvídate de configurar widgets. Aura ya sabe dónde vive cada dato importante." },
                 { title: "Aliseus Insights", desc: "Motor de IA que predice tus necesidades de compra y flujos de caja antes de que ocurran." },
                 { title: "Navegación Fluida", desc: "Alterna entre finanzas, cocina y viajes manteniendo el contexto familiar unificado." },
-                { title: "Seguridad de Grado Bancario", desc: "Encriptación AES-256 para tus datos financieros y documentos más sensibles." },
-                { title: "Modo Beta Privada", desc: "Acceso temprano con soporte directo del equipo de desarrollo para pulir tu experiencia." }
+                { title: "Seguridad de Grado Bancario", desc: "Encriptación AES-256 para tus datos. Seguridad biométrica preparada para la futura App móvil." },
+                { title: "Acceso Socio Fundador", desc: "Acceso temprano con soporte directo del equipo de desarrollo para pulir tu experiencia." }
             ],
             integrations: ["Unificación total del Módulo Finanzas y el Módulo Vida", "Conexión en tiempo real con todos tus activos"]
         }
@@ -583,7 +583,7 @@ export const PRODUCT_DETAILS_BY_LANG: Record<Language, Record<ProductKey, any>> 
                 { title: "Fixed Thematic Layers", desc: "Forget about configuring widgets. Aura already knows where every important data point lives." },
                 { title: "Aliseus Insights", desc: "AI engine that predicts your shopping needs and cash flows before they happen." },
                 { title: "Seamless Navigation", desc: "Toggle between finance, kitchen, and travel while maintaining unified family context." },
-                { title: "Bank-Grade Security", desc: "AES-256 encryption for your financial data and most sensitive documents." },
+                { title: "Bank-Grade Security", desc: "AES-256 encryption for your data. Biometric security ready for the future mobile App." },
                 { title: "Private Beta Mode", desc: "Early access with direct support from the development team to polish your experience." }
             ],
             integrations: ["Total unification of Finance and Life Modules", "Real-time connection with all your assets"]
@@ -629,7 +629,7 @@ export const PRODUCT_DETAILS_BY_LANG: Record<Language, Record<ProductKey, any>> 
                 { title: "Couches Thématiques Fixes", desc: "Oubliez la configuration de widgets. Aura sait déjà où se trouve chaque donnée importante." },
                 { title: "Aliseus Insights", desc: "Moteur d'IA qui prédit vos besoins d'achat et vos flux de trésorerie avant qu'ils ne surviennent." },
                 { title: "Navigation Fluide", desc: "Passez des finances à la cuisine ou aux voyages en gardant un contexte familial unifié." },
-                { title: "Sécurité de Grade Bancaire", desc: "Chiffrement AES-256 pour vos données financières et vos documents les plus sensibles." },
+                { title: "Sécurité de Grade Bancaire", desc: "Chiffrement AES-256 pour vos données. Sécurité biométrique prête pour la future App mobile." },
                 { title: "Mode Bêta Privée", desc: "Accès anticipé avec support direct de l'équipe pour polir votre expérience." }
             ],
             integrations: ["Unification totale du Module Finances et du Module Vie", "Connexion en temps réel avec tous vos actifs"]

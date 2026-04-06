@@ -276,7 +276,7 @@ const Accounts: React.FC<AccountsProps> = ({ onViewTransactions }) => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
           <h2 className="text-3xl font-bold text-cyan-900 tracking-tight">Cuentas y Activos</h2>
-          <p className="text-xs font-semibold text-onyx-400 mt-2 uppercase tracking-[0.2em]">Gestión integral de tu patrimonio</p>
+          <p className="text-xs font-semibold text-aliseus-400 mt-2 uppercase tracking-[0.2em]">Gestión integral de tu patrimonio</p>
         </div>
         {!isModalOpen && (
           <button onClick={openNew} className="flex items-center gap-2.5 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-widest transition-all duration-300 shadow-lg shadow-cyan-900/20 active:scale-95">

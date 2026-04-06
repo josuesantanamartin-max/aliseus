@@ -53,23 +53,23 @@ export const AccountForm: React.FC<AccountFormProps> = ({
     const isBankLike = selectedType === 'BANK' || selectedType === 'SAVINGS';
 
     return (
-        <div className="bg-white p-8 rounded-onyx shadow-xl border border-onyx-100 animate-fade-in relative overflow-hidden w-full">
+        <div className="bg-white p-8 rounded-Aliseus shadow-xl border border-aliseus-100 animate-fade-in relative overflow-hidden w-full">
             {/* Modal header */}
-            <div className="flex justify-between items-center mb-6 pb-6 border-b border-onyx-50">
+            <div className="flex justify-between items-center mb-6 pb-6 border-b border-aliseus-50">
                 <div className="flex items-center gap-3">
                     {step === 2 && !editingId && (
-                        <button type="button" onClick={() => setStep(1)} className="p-2 hover:bg-onyx-50 rounded-full transition-colors text-onyx-400 hover:text-onyx-700">
+                        <button type="button" onClick={() => setStep(1)} className="p-2 hover:bg-aliseus-50 rounded-full transition-colors text-aliseus-400 hover:text-aliseus-700">
                             <ChevronLeft className="w-5 h-5" />
                         </button>
                     )}
                     <div>
                         <h4 className="text-2xl font-bold tracking-tight text-cyan-900">{editingId ? 'Editar' : (step === 1 ? 'Nueva cuenta' : getTypeLabel(selectedType))}</h4>
-                        <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mt-1">
+                        <p className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mt-1">
                             {editingId ? 'Actualizar información' : (step === 1 ? 'Elige el tipo' : 'Paso 2 · Información')}
                         </p>
                     </div>
                 </div>
-                <button onClick={onClose} className="p-2 hover:bg-onyx-50 rounded-full transition-colors"><X className="w-5 h-5 text-onyx-400" /></button>
+                <button onClick={onClose} className="p-2 hover:bg-aliseus-50 rounded-full transition-colors"><X className="w-5 h-5 text-aliseus-400" /></button>
             </div>
 
             {/* STEP 1: Type selector */}
@@ -81,13 +81,13 @@ export const AccountForm: React.FC<AccountFormProps> = ({
                         return (
                             <button key={t.value} type="button"
                                 onClick={() => { setSelectedType(t.value as Account['type']); setStep(2); }}
-                                className="flex flex-col items-center gap-2 p-4 rounded-2xl border-2 border-onyx-100 hover:border-cyan-300 hover:shadow-md transition-all group text-left">
+                                className="flex flex-col items-center gap-2 p-4 rounded-2xl border-2 border-aliseus-100 hover:border-cyan-300 hover:shadow-md transition-all group text-left">
                                 <div className={`p-3 rounded-xl ${cls.split(' ').slice(0, 2).join(' ')} group-hover:scale-110 transition-transform`}>
                                     <Icon className="w-6 h-6" />
                                 </div>
                                 <div>
                                     <p className="font-bold text-sm text-cyan-900 text-center leading-tight">{t.label}</p>
-                                    <p className="text-[10px] text-onyx-400 text-center leading-tight mt-0.5">{t.sub}</p>
+                                    <p className="text-[10px] text-aliseus-400 text-center leading-tight mt-0.5">{t.sub}</p>
                                 </div>
                             </button>
                         );
@@ -135,12 +135,12 @@ export const AccountForm: React.FC<AccountFormProps> = ({
                             )}
                             {(selectedType === 'BANK' || selectedType === 'SAVINGS') && (
                                 <div>
-                                    <label className="label-xs">IBAN <span className="text-onyx-300 normal-case font-normal">(opcional)</span></label>
+                                    <label className="label-xs">IBAN <span className="text-aliseus-300 normal-case font-normal">(opcional)</span></label>
                                     <input value={form.iban} onChange={e => setF('iban', e.target.value)} className="input-field font-mono tracking-widest" placeholder="ES00 0000 0000 00 …" />
                                 </div>
                             )}
                             <div className={isCardType ? 'col-span-2' : ''}>
-                                <label className="label-xs">Descripción <span className="text-onyx-300 normal-case font-normal">(opcional)</span></label>
+                                <label className="label-xs">Descripción <span className="text-aliseus-300 normal-case font-normal">(opcional)</span></label>
                                 <input value={form.description} onChange={e => setF('description', e.target.value)} className="input-field" placeholder="Notas sobre esta cuenta…" />
                             </div>
                         </div>
@@ -151,7 +151,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({
                                 <p className="text-[10px] font-bold text-emerald-700 uppercase tracking-widest">Opciones de rentabilidad</p>
                                 <label className="flex items-center gap-3 cursor-pointer">
                                     <div onClick={() => setF('isRemunerated', !form.isRemunerated)}
-                                        className={`w-11 h-6 rounded-full transition-colors ${form.isRemunerated || selectedType === 'SAVINGS' ? 'bg-emerald-500' : 'bg-onyx-200'} flex items-center`}>
+                                        className={`w-11 h-6 rounded-full transition-colors ${form.isRemunerated || selectedType === 'SAVINGS' ? 'bg-emerald-500' : 'bg-aliseus-200'} flex items-center`}>
                                         <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform mx-0.5 ${form.isRemunerated || selectedType === 'SAVINGS' ? 'translate-x-5' : ''}`} />
                                     </div>
                                     <span className="text-sm font-semibold text-cyan-900">Cuenta remunerada / genera intereses</span>
@@ -177,7 +177,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({
                                         <div className="flex gap-2 flex-wrap mt-1">
                                             {CARD_NETWORKS.map(n => (
                                                 <button key={n.value} type="button" onClick={() => setF('cardNetwork', n.value)}
-                                                    className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${form.cardNetwork === n.value ? 'bg-cyan-600 text-white border-cyan-600' : 'bg-white text-onyx-500 border-onyx-200 hover:border-cyan-300'}`}>
+                                                    className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${form.cardNetwork === n.value ? 'bg-cyan-600 text-white border-cyan-600' : 'bg-white text-aliseus-500 border-aliseus-200 hover:border-cyan-300'}`}>
                                                     {n.label}
                                                 </button>
                                             ))}
@@ -195,7 +195,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({
                                     <p className="text-[10px] font-bold text-cyan-700 uppercase tracking-widest flex items-center gap-2">
                                         <ShieldCheck className="w-3.5 h-3.5" /> Cuenta de cargo (liquidación)
                                     </p>
-                                    <p className="text-xs text-onyx-400">Selecciona la cuenta desde la que se carga el pago al finalizar el mes. Puede ser de cualquier banco.</p>
+                                    <p className="text-xs text-aliseus-400">Selecciona la cuenta desde la que se carga el pago al finalizar el mes. Puede ser de cualquier banco.</p>
                                     <select value={form.linkedAccountId} onChange={e => setF('linkedAccountId', e.target.value)} className="input-field">
                                         <option value="">Sin cuenta vinculada</option>
                                         {accounts.filter(a => a.type === 'BANK' || a.type === 'SAVINGS').map(a => (
@@ -233,7 +233,7 @@ export const AccountForm: React.FC<AccountFormProps> = ({
                                             <div className="flex gap-3 mt-1">
                                                 {[{ val: 'END_OF_MONTH', label: 'Saldo total' }, { val: 'REVOLVING', label: 'En cuotas (revolving)' }].map(m => (
                                                     <button key={m.val} type="button" onClick={() => setF('paymentMode', m.val)}
-                                                        className={`flex-1 py-2.5 rounded-xl text-xs font-bold border transition-all ${form.paymentMode === m.val ? 'bg-rose-600 text-white border-rose-600' : 'bg-white text-onyx-500 border-onyx-200 hover:border-rose-300'}`}>
+                                                        className={`flex-1 py-2.5 rounded-xl text-xs font-bold border transition-all ${form.paymentMode === m.val ? 'bg-rose-600 text-white border-rose-600' : 'bg-white text-aliseus-500 border-aliseus-200 hover:border-rose-300'}`}>
                                                         {m.label}
                                                     </button>
                                                 ))}
@@ -264,19 +264,19 @@ export const AccountForm: React.FC<AccountFormProps> = ({
                         {isBankLike && !editingId && (
                             <div className="space-y-3">
                                 <div className="flex items-center justify-between">
-                                    <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest">Tarjetas vinculadas a esta cuenta</p>
+                                    <p className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest">Tarjetas vinculadas a esta cuenta</p>
                                     <button type="button" onClick={onAddLinkedCard} className="flex items-center gap-1.5 text-xs font-bold text-cyan-600 hover:text-cyan-700 transition-colors">
                                         <Plus className="w-3.5 h-3.5" /> Añadir tarjeta
                                     </button>
                                 </div>
                                 {linkedCards.length === 0 && (
-                                    <p className="text-xs text-onyx-300 italic">Puedes añadir tarjetas de débito o crédito que se carguen a esta cuenta (del mismo banco o de otro).</p>
+                                    <p className="text-xs text-aliseus-300 italic">Puedes añadir tarjetas de débito o crédito que se carguen a esta cuenta (del mismo banco o de otro).</p>
                                 )}
                                 {linkedCards.map((card, i) => (
-                                    <div key={i} className="p-4 bg-onyx-50/50 rounded-2xl border border-onyx-100 grid grid-cols-2 gap-3">
+                                    <div key={i} className="p-4 bg-aliseus-50/50 rounded-2xl border border-aliseus-100 grid grid-cols-2 gap-3">
                                         <div className="col-span-2 flex justify-between items-center">
-                                            <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest">Tarjeta {i + 1}</p>
-                                            <button type="button" onClick={() => onRemoveLinkedCard(i)} className="text-onyx-300 hover:text-red-500 transition-colors"><X className="w-4 h-4" /></button>
+                                            <p className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest">Tarjeta {i + 1}</p>
+                                            <button type="button" onClick={() => onRemoveLinkedCard(i)} className="text-aliseus-300 hover:text-red-500 transition-colors"><X className="w-4 h-4" /></button>
                                         </div>
                                         <div className="col-span-2">
                                             <label className="label-xs">Nombre</label>
@@ -307,8 +307,8 @@ export const AccountForm: React.FC<AccountFormProps> = ({
                         )}
                     </div>
 
-                    <div className="flex gap-4 pt-4 border-t border-onyx-50">
-                        <button type="button" onClick={onClose} className="flex-1 py-4 rounded-xl font-bold text-xs uppercase tracking-widest text-onyx-500 hover:bg-onyx-50 transition-colors">Cancelar</button>
+                    <div className="flex gap-4 pt-4 border-t border-aliseus-50">
+                        <button type="button" onClick={onClose} className="flex-1 py-4 rounded-xl font-bold text-xs uppercase tracking-widest text-aliseus-500 hover:bg-aliseus-50 transition-colors">Cancelar</button>
                         <button type="submit" className="flex-[2] bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white py-4 rounded-xl font-bold text-xs uppercase tracking-widest shadow-xl shadow-cyan-900/20 transition-all active:scale-95">
                             {editingId ? 'Guardar cambios' : `Crear ${linkedCards.filter(c => c.name.trim()).length > 0 ? `+ ${linkedCards.filter(c => c.name.trim()).length} tarjeta(s)` : ''}`}
                         </button>

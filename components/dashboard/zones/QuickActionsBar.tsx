@@ -16,14 +16,14 @@ export default function QuickActionsBar() {
 
     return (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-4xl px-4 pointer-events-none">
-            <div className="bg-white/90 dark:bg-onyx-800/90 backdrop-blur-md rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-slate-200/50 dark:border-onyx-700/50 p-2 pointer-events-auto flex items-center justify-between overflow-x-auto hide-scrollbar gap-2 transition-transform hover:scale-[1.01] duration-300">
+            <div className="bg-white/90 dark:bg-aliseus-800/90 backdrop-blur-md rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-slate-200/50 dark:border-aliseus-700/50 p-2 pointer-events-auto flex items-center justify-between overflow-x-auto hide-scrollbar gap-2 transition-transform hover:scale-[1.01] duration-300">
                 {actions.map((action, i) => {
                     const Icon = action.icon;
                     return (
                         <button
                             key={i}
                             onClick={action.action}
-                            className={`flex flex-col items-center justify-center gap-1.5 min-w-[72px] md:min-w-[96px] py-2 px-1 rounded-xl transition-all hover:bg-slate-50 dark:hover:bg-onyx-700 group active:scale-95`}
+                            className={`flex flex-col items-center justify-center gap-1.5 min-w-[72px] md:min-w-[96px] py-2 px-1 rounded-xl transition-all hover:bg-slate-50 dark:hover:bg-aliseus-700 group active:scale-95`}
                         >
                             <div className={`p-2 rounded-full ${action.bg} ${action.color} group-hover:scale-110 transition-transform`}>
                                 <Icon className="w-5 h-5" />

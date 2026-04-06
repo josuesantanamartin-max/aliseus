@@ -92,7 +92,7 @@ const FocusPickerStep: React.FC = () => {
                             className={`relative p-6 rounded-2xl border-2 cursor-pointer transition-all duration-300 hover:scale-[1.02] group ${
                                 isSelected
                                     ? `${area.border} ${area.bg} shadow-md scale-[1.02]`
-                                    : 'border-gray-100 dark:border-onyx-700 bg-white dark:bg-onyx-800 hover:border-gray-200 dark:hover:border-onyx-600'
+                                    : 'border-gray-100 dark:border-aliseus-700 bg-white dark:bg-aliseus-800 hover:border-gray-200 dark:hover:border-aliseus-600'
                             }`}
                         >
                             {/* Checkbox */}
@@ -100,7 +100,7 @@ const FocusPickerStep: React.FC = () => {
                                 <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${
                                     isSelected
                                         ? `bg-gradient-to-br ${area.color} border-transparent`
-                                        : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-onyx-800'
+                                        : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-aliseus-800'
                                 }`}>
                                     {isSelected && <CheckCircle2 className="w-4 h-4 text-white" />}
                                 </div>

@@ -6,7 +6,7 @@ import { supabase } from './supabaseClient';
  * This runs automatically on first login with a Supabase account
  */
 export const migrationService = {
-    MIGRATION_KEY: 'onyx_migration_completed',
+    MIGRATION_KEY: 'Aliseus_migration_completed',
 
     /**
      * Check if migration has already been completed
@@ -26,8 +26,8 @@ export const migrationService = {
      * Get data from localStorage stores
      */
     getLocalData() {
-        const financeData = localStorage.getItem('onyx_finance_store');
-        const lifeData = localStorage.getItem('onyx_life_store');
+        const financeData = localStorage.getItem('Aliseus_finance_store');
+        const lifeData = localStorage.getItem('Aliseus_life_store');
 
         return {
             finance: financeData ? JSON.parse(financeData).state : null,

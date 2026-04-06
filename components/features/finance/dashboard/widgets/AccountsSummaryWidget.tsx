@@ -48,22 +48,22 @@ const AccountsSummaryWidget: React.FC<AccountsSummaryWidgetProps> = ({ accounts,
     const sortedAccounts = [...accounts].sort((a, b) => b.balance - a.balance);
 
     return (
-        <div className="bg-white dark:bg-onyx-900 p-6 rounded-3xl border border-onyx-100 dark:border-onyx-800 shadow-sm flex flex-col h-full group">
+        <div className="bg-white dark:bg-aliseus-900 p-6 rounded-3xl border border-aliseus-100 dark:border-aliseus-800 shadow-sm flex flex-col h-full group">
             <div className="flex justify-between items-center mb-6">
                 <div className="flex items-center gap-3">
                     <div className="p-2 bg-cyan-50 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 rounded-xl">
                         <Wallet className="w-5 h-5" />
                     </div>
                     <div>
-                        <h3 className="text-base font-bold text-onyx-900 dark:text-white">Mis Cuentas</h3>
-                        <p className="text-[10px] text-onyx-400 dark:text-onyx-500 font-bold uppercase tracking-widest">
+                        <h3 className="text-base font-bold text-aliseus-900 dark:text-white">Mis Cuentas</h3>
+                        <p className="text-[10px] text-aliseus-400 dark:text-aliseus-500 font-bold uppercase tracking-widest">
                             {accounts.length} Cuentas Activas
                         </p>
                     </div>
                 </div>
                 <button
                     onClick={() => onNavigate('finance', 'accounts')}
-                    className="p-2 hover:bg-onyx-50 dark:hover:bg-onyx-800 rounded-lg text-onyx-400 hover:text-cyan-600 transition-colors"
+                    className="p-2 hover:bg-aliseus-50 dark:hover:bg-aliseus-800 rounded-lg text-aliseus-400 hover:text-cyan-600 transition-colors"
                 >
                     <ChevronRight className="w-5 h-5" />
                 </button>
@@ -72,8 +72,8 @@ const AccountsSummaryWidget: React.FC<AccountsSummaryWidgetProps> = ({ accounts,
             <div className="flex-1 overflow-y-auto custom-scrollbar space-y-3 -mr-2 pr-2">
                 {sortedAccounts.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center text-center p-4">
-                        <Wallet className="w-8 h-8 text-onyx-200 mb-2" />
-                        <p className="text-sm text-onyx-400 mb-4">No hay cuentas</p>
+                        <Wallet className="w-8 h-8 text-aliseus-200 mb-2" />
+                        <p className="text-sm text-aliseus-400 mb-4">No hay cuentas</p>
                         <button onClick={() => onNavigate('finance', 'accounts')} className="px-4 py-2 bg-cyan-50 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 border border-cyan-100 dark:border-cyan-800 rounded-xl text-xs font-bold hover:bg-cyan-100 dark:hover:bg-cyan-900 transition-colors shadow-sm">
                             Añadir Cuenta
                         </button>
@@ -87,19 +87,19 @@ const AccountsSummaryWidget: React.FC<AccountsSummaryWidgetProps> = ({ accounts,
                             <div
                                 key={account.id}
                                 onClick={() => onNavigate('finance', 'accounts')}
-                                className="flex items-center justify-between p-3 rounded-2xl hover:bg-onyx-50 dark:hover:bg-onyx-800 transition-colors cursor-pointer group/item border border-transparent hover:border-onyx-100 dark:hover:border-onyx-700"
+                                className="flex items-center justify-between p-3 rounded-2xl hover:bg-aliseus-50 dark:hover:bg-aliseus-800 transition-colors cursor-pointer group/item border border-transparent hover:border-aliseus-100 dark:hover:border-aliseus-700"
                             >
                                 <div className="flex items-center gap-3">
                                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${colorClass}`}>
                                         <Icon className="w-5 h-5" />
                                     </div>
                                     <div>
-                                        <p className="font-bold text-sm text-onyx-900 dark:text-white">{account.name}</p>
-                                        <p className="text-[10px] font-bold text-onyx-400 dark:text-onyx-500 uppercase tracking-wider">{getTypeName(account.type)}</p>
+                                        <p className="font-bold text-sm text-aliseus-900 dark:text-white">{account.name}</p>
+                                        <p className="text-[10px] font-bold text-aliseus-400 dark:text-aliseus-500 uppercase tracking-wider">{getTypeName(account.type)}</p>
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                    <p className={`font-bold text-sm ${account.balance < 0 ? 'text-red-500' : 'text-onyx-900 dark:text-white'}`}>
+                                    <p className={`font-bold text-sm ${account.balance < 0 ? 'text-red-500' : 'text-aliseus-900 dark:text-white'}`}>
                                         {formatEUR(account.balance)}
                                     </p>
                                 </div>
@@ -109,9 +109,9 @@ const AccountsSummaryWidget: React.FC<AccountsSummaryWidgetProps> = ({ accounts,
                 )}
             </div>
 
-            <div className="mt-4 pt-4 border-t border-onyx-100 dark:border-onyx-800 flex justify-between items-center">
-                <span className="text-xs font-bold text-onyx-400 uppercase tracking-wider">Total</span>
-                <span className="text-lg font-black text-onyx-900 dark:text-white">
+            <div className="mt-4 pt-4 border-t border-aliseus-100 dark:border-aliseus-800 flex justify-between items-center">
+                <span className="text-xs font-bold text-aliseus-400 uppercase tracking-wider">Total</span>
+                <span className="text-lg font-black text-aliseus-900 dark:text-white">
                     {formatEUR(accounts.reduce((acc, curr) => acc + curr.balance, 0))}
                 </span>
             </div>

@@ -21,7 +21,7 @@ export const LinkedCardTile: React.FC<LinkedCardTileProps> = ({
     return (
         <div
             onClick={() => onViewTransactions(card.id)}
-            className={`relative overflow-hidden rounded-onyx shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:shadow-xl cursor-pointer group h-40 flex flex-col justify-between p-6 ${isCredit ? 'bg-cyan-900 text-white border border-onyx-800' : 'bg-emerald-950 text-white border border-emerald-900'}`}
+            className={`relative overflow-hidden rounded-Aliseus shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:shadow-xl cursor-pointer group h-40 flex flex-col justify-between p-6 ${isCredit ? 'bg-cyan-900 text-white border border-aliseus-800' : 'bg-emerald-950 text-white border border-emerald-900'}`}
         >
             <div className={`absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20 -mr-12 -mt-12 transition-all duration-700 group-hover:scale-150 ${isCredit ? 'bg-cyan-500' : 'bg-emerald-400'}`} />
             <div className="relative z-10 flex justify-between items-start">

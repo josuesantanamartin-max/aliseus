@@ -41,7 +41,7 @@ export default function AuraThemeBar({ activeTheme, onThemeChange }: AuraThemeBa
                                 "flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-500 border relative overflow-hidden group font-medium",
                                 isActive
                                     ? "bg-gradient-to-r from-blue-700 to-blue-900 dark:from-blue-600 dark:to-blue-800 text-white border-transparent shadow-[0_8px_16px_-6px_rgba(29,78,216,0.5)] scale-105"
-                                    : "bg-white/60 dark:bg-onyx-900/60 backdrop-blur-md text-slate-600 dark:text-slate-300 border-slate-200/50 dark:border-onyx-700/50 hover:bg-white dark:hover:bg-onyx-800 hover:border-blue-400/50 dark:hover:border-blue-600/50 hover:shadow-lg hover:-translate-y-0.5"
+                                    : "bg-white/60 dark:bg-aliseus-900/60 backdrop-blur-md text-slate-600 dark:text-slate-300 border-slate-200/50 dark:border-aliseus-700/50 hover:bg-white dark:hover:bg-aliseus-800 hover:border-blue-400/50 dark:hover:border-blue-600/50 hover:shadow-lg hover:-translate-y-0.5"
                             )}
                         >
                             {isActive && (

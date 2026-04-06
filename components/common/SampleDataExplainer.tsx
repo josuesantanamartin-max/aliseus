@@ -39,7 +39,7 @@ const SampleDataExplainer: React.FC<SampleDataExplainerProps> = ({ section }) =>
     const content = SECTION_TEXTS[section || 'DEFAULT'] || SECTION_TEXTS.DEFAULT;
 
     return (
-        <div className="relative bg-gradient-to-r from-cyan-50 via-white to-teal-50 dark:from-cyan-950/40 dark:via-onyx-900/60 dark:to-teal-950/40 border border-cyan-200/60 dark:border-cyan-800/40 rounded-2xl px-5 py-3.5 flex items-center gap-4 animate-fade-in shadow-sm group">
+        <div className="relative bg-gradient-to-r from-cyan-50 via-white to-teal-50 dark:from-cyan-950/40 dark:via-aliseus-900/60 dark:to-teal-950/40 border border-cyan-200/60 dark:border-cyan-800/40 rounded-2xl px-5 py-3.5 flex items-center gap-4 animate-fade-in shadow-sm group">
             {/* Subtle glow */}
             <div className="absolute inset-0 rounded-2xl bg-cyan-400/5 dark:bg-cyan-400/10 blur-xl pointer-events-none" />
 

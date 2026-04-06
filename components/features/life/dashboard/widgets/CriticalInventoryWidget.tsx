@@ -42,7 +42,7 @@ const CriticalInventoryWidget: React.FC<CriticalInventoryWidgetProps> = ({ onNav
     };
 
     return (
-        <div className="bg-white dark:bg-onyx-900 rounded-[2rem] p-8 shadow-sm border border-gray-100 dark:border-onyx-800 hover:shadow-lg transition-all h-full flex flex-col">
+        <div className="bg-white dark:bg-aliseus-900 rounded-[2rem] p-8 shadow-sm border border-gray-100 dark:border-aliseus-800 hover:shadow-lg transition-all h-full flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
@@ -110,7 +110,7 @@ const CriticalInventoryWidget: React.FC<CriticalInventoryWidgetProps> = ({ onNav
                                     ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-900/50'
                                     : isLowStock
                                         ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-900/50'
-                                        : 'bg-gray-50 dark:bg-onyx-800 border-gray-200 dark:border-onyx-700'
+                                        : 'bg-gray-50 dark:bg-aliseus-800 border-gray-200 dark:border-aliseus-700'
                                     }`}
                             >
                                 <div className="flex items-start justify-between">
@@ -141,7 +141,7 @@ const CriticalInventoryWidget: React.FC<CriticalInventoryWidgetProps> = ({ onNav
                                             e.stopPropagation();
                                             onNavigate('life', 'shopping');
                                         }}
-                                        className="ml-2 p-1.5 bg-white dark:bg-onyx-900 rounded-lg border border-gray-200 dark:border-onyx-700 hover:bg-gray-50 dark:hover:bg-onyx-800 transition-colors"
+                                        className="ml-2 p-1.5 bg-white dark:bg-aliseus-900 rounded-lg border border-gray-200 dark:border-aliseus-700 hover:bg-gray-50 dark:hover:bg-aliseus-800 transition-colors"
                                         title="Añadir a lista de compra"
                                     >
                                         <ShoppingCart className="w-3.5 h-3.5 text-gray-600 dark:text-gray-400" />

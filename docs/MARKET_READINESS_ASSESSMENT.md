@@ -18,7 +18,7 @@
 â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–‘ 98%
 ```
 
-Aliseus ha superado la fase de preparación técnica y ahora se encuentra en estado **lanzamiento inminente**. Se ha implementado con éxito el **Sistema de Invitaciones Beta**, se ha auditado y refinado la **Integración con Stripe** (incluyendo guía de pruebas), y se han pulido los flujos de **Autenticación**. La documentación técnica y de usuario es del 100%. El producto es extremadamente sólido y profesional.
+Aliseus ha superado la fase de preparación técnica y ahora se encuentra en estado **lanzamiento inminente**. Se ha implementado con éxito el **Sistema de Acceso Socio Fundador**, se ha auditado y refinado la **Integración con Stripe** (incluyendo guía de pruebas), y se han pulido los flujos de **Autenticación**. La documentación técnica y de usuario es del 100%. El producto es extremadamente sólido y profesional.
 
 ### ðŸ“Š Desglose de Puntuación
 

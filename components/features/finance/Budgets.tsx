@@ -418,7 +418,7 @@ const Budgets: React.FC<BudgetsProps> = ({ onViewTransactions }) => {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
                     <h2 className="text-3xl font-bold text-cyan-900 tracking-tight">Presupuestos Interactivos</h2>
-                    <p className="text-xs font-semibold text-onyx-400 mt-2 uppercase tracking-[0.2em]">Control de Gastos por Categoría</p>
+                    <p className="text-xs font-semibold text-aliseus-400 mt-2 uppercase tracking-[0.2em]">Control de Gastos por Categoría</p>
                 </div>
                 <div className="flex gap-3">
                     <button
@@ -477,7 +477,7 @@ const Budgets: React.FC<BudgetsProps> = ({ onViewTransactions }) => {
 
                             {/* Yearly Section */}
                             {selectedDetails.yearly.items.length > 0 && (
-                                <div className="space-y-4 pt-4 border-t border-onyx-50">
+                                <div className="space-y-4 pt-4 border-t border-aliseus-50">
                                     <h4 className="text-sm font-bold text-cyan-900 uppercase tracking-widest flex items-center gap-2">
                                         <span className="w-2 h-2 rounded-full bg-cyan-900"></span>
                                         Presupuestos Anuales
@@ -491,11 +491,11 @@ const Budgets: React.FC<BudgetsProps> = ({ onViewTransactions }) => {
                             )}
 
                             {selectedDetails.monthly.items.length === 0 && selectedDetails.yearly.items.length === 0 && (
-                                <div className="bg-onyx-50/50 rounded-xl border border-dashed border-onyx-200 p-12 text-center flex flex-col items-center justify-center">
-                                    <Wand2 className="w-8 h-8 text-onyx-300 mb-4" />
-                                    <p className="text-onyx-400 font-bold text-sm mb-4">No hay límites configurados para esta categoría.</p>
+                                <div className="bg-aliseus-50/50 rounded-xl border border-dashed border-aliseus-200 p-12 text-center flex flex-col items-center justify-center">
+                                    <Wand2 className="w-8 h-8 text-aliseus-300 mb-4" />
+                                    <p className="text-aliseus-400 font-bold text-sm mb-4">No hay límites configurados para esta categoría.</p>
                                     <div className="flex gap-3">
-                                        <button onClick={() => { resetForm(); setIsModalOpen(true); }} className="px-6 py-3 bg-white border border-onyx-200 rounded-xl shadow-sm hover:bg-onyx-50 text-cyan-600 font-bold text-xs uppercase tracking-widest transition-all">Crear Manual</button>
+                                        <button onClick={() => { resetForm(); setIsModalOpen(true); }} className="px-6 py-3 bg-white border border-aliseus-200 rounded-xl shadow-sm hover:bg-aliseus-50 text-cyan-600 font-bold text-xs uppercase tracking-widest transition-all">Crear Manual</button>
                                         <button onClick={() => handleAnalyzeAndSuggest(12)} className="px-6 py-3 bg-cyan-50 border border-cyan-100 rounded-xl shadow-sm hover:bg-cyan-100 text-cyan-700 font-bold text-xs uppercase tracking-widest transition-all">Sugerir con IA</button>
                                     </div>
                                 </div>
@@ -503,7 +503,7 @@ const Budgets: React.FC<BudgetsProps> = ({ onViewTransactions }) => {
 
                         </div>
                     ) : (
-                        <div className="h-full flex flex-col items-center justify-center text-onyx-300 min-h-[400px]">
+                        <div className="h-full flex flex-col items-center justify-center text-aliseus-300 min-h-[400px]">
                             <Landmark className="w-16 h-16 mb-4 opacity-20" />
                             <p className="font-bold uppercase tracking-widest text-sm">Selecciona una categoría</p>
                         </div>
@@ -526,9 +526,9 @@ const Budgets: React.FC<BudgetsProps> = ({ onViewTransactions }) => {
             {/* MODALS (Kept minimal for this file replacement, ensure full content is preserved in real app) */}
             {isModalOpen && (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center bg-cyan-900/40 backdrop-blur-md p-4 animate-fade-in text-cyan-900">
-                    <div className="bg-white rounded-onyx shadow-2xl w-full max-w-lg overflow-hidden max-h-[90vh] flex flex-col border border-onyx-100 relative shadow-cyan-500/10">
+                    <div className="bg-white rounded-Aliseus shadow-2xl w-full max-w-lg overflow-hidden max-h-[90vh] flex flex-col border border-aliseus-100 relative shadow-cyan-500/10">
                         {/* Headers */}
-                        <div className="bg-white px-10 py-8 flex justify-between items-center border-b border-onyx-50 sticky top-0 z-10">
+                        <div className="bg-white px-10 py-8 flex justify-between items-center border-b border-aliseus-50 sticky top-0 z-10">
                             <div>
                                 <h3 className="text-2xl font-bold tracking-tight flex items-center gap-4">
                                     <div className="p-3 rounded-xl shadow-sm bg-cyan-50 text-cyan-600">
@@ -537,28 +537,28 @@ const Budgets: React.FC<BudgetsProps> = ({ onViewTransactions }) => {
                                     {editingId ? 'Editar Límite' : 'Nuevo Límite'}
                                 </h3>
                             </div>
-                            <button onClick={resetForm} className="text-onyx-400 hover:text-cyan-900 transition-all p-2.5 hover:bg-onyx-50 rounded-xl"><X className="w-7 h-7" /></button>
+                            <button onClick={resetForm} className="text-aliseus-400 hover:text-cyan-900 transition-all p-2.5 hover:bg-aliseus-50 rounded-xl"><X className="w-7 h-7" /></button>
                         </div>
                         <form onSubmit={handleSubmit} className="p-10 space-y-8 overflow-y-auto custom-scrollbar">
                             {/* Form fields same as before... re-implementing briefly for completeness */}
                             <div>
-                                <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-2">Categoría</label>
-                                <select required value={category} onChange={e => setCategory(e.target.value)} className={`w-full p-4 bg-onyx-50 border ${validationErrors.category ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-2xl font-bold text-sm outline-none`}><option value="">Seleccionar...</option>{expenseCategories.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}</select>
+                                <label className="block text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-2">Categoría</label>
+                                <select required value={category} onChange={e => setCategory(e.target.value)} className={`w-full p-4 bg-aliseus-50 border ${validationErrors.category ? 'border-red-300 ring-2 ring-red-500/20' : 'border-aliseus-100'} rounded-2xl font-bold text-sm outline-none`}><option value="">Seleccionar...</option>{expenseCategories.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}</select>
                                 {validationErrors.category && <p className="text-red-500 text-[10px] mt-2 font-bold px-2">{validationErrors.category}</p>}
                             </div>
                             <div>
-                                <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-2">Subcategoría</label>
-                                <select value={subCategory} onChange={e => setSubCategory(e.target.value)} disabled={!category} className={`w-full p-4 bg-onyx-50 border ${validationErrors.subCategory ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-2xl font-bold text-sm outline-none`}><option value="">Global</option>{expenseCategories.find(c => c.name === category)?.subCategories.map(s => <option key={s} value={s}>{s}</option>)}</select>
+                                <label className="block text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-2">Subcategoría</label>
+                                <select value={subCategory} onChange={e => setSubCategory(e.target.value)} disabled={!category} className={`w-full p-4 bg-aliseus-50 border ${validationErrors.subCategory ? 'border-red-300 ring-2 ring-red-500/20' : 'border-aliseus-100'} rounded-2xl font-bold text-sm outline-none`}><option value="">Global</option>{expenseCategories.find(c => c.name === category)?.subCategories.map(s => <option key={s} value={s}>{s}</option>)}</select>
                                 {validationErrors.subCategory && <p className="text-red-500 text-[10px] mt-2 font-bold px-2">{validationErrors.subCategory}</p>}
                             </div>
                             <div>
-                                <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-2">Periodo</label>
-                                <select value={period} onChange={e => setPeriod(e.target.value as any)} className={`w-full p-4 bg-onyx-50 border ${validationErrors.period ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-2xl font-bold text-sm outline-none`}><option value="MONTHLY">Mensual</option><option value="YEARLY">Anual</option><option value="CUSTOM">Personalizado</option></select>
+                                <label className="block text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-2">Periodo</label>
+                                <select value={period} onChange={e => setPeriod(e.target.value as any)} className={`w-full p-4 bg-aliseus-50 border ${validationErrors.period ? 'border-red-300 ring-2 ring-red-500/20' : 'border-aliseus-100'} rounded-2xl font-bold text-sm outline-none`}><option value="MONTHLY">Mensual</option><option value="YEARLY">Anual</option><option value="CUSTOM">Personalizado</option></select>
                                 {validationErrors.period && <p className="text-red-500 text-[10px] mt-2 font-bold px-2">{validationErrors.period}</p>}
                             </div>
                             <div>
-                                <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-2">Límite (€)</label>
-                                <input type="number" required value={limit} onChange={e => setLimit(e.target.value)} className={`w-full p-4 bg-onyx-50 border ${validationErrors.limit ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-2xl font-bold text-xl outline-none`} />
+                                <label className="block text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-2">Límite (€)</label>
+                                <input type="number" required value={limit} onChange={e => setLimit(e.target.value)} className={`w-full p-4 bg-aliseus-50 border ${validationErrors.limit ? 'border-red-300 ring-2 ring-red-500/20' : 'border-aliseus-100'} rounded-2xl font-bold text-xl outline-none`} />
                                 {validationErrors.limit && <p className="text-red-500 text-[10px] mt-2 font-bold px-2">{validationErrors.limit}</p>}
                             </div>
                             <button type="submit" className="w-full bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white py-4 rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg transition-all">Guardar</button>

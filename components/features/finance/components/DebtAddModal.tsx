@@ -71,8 +71,8 @@ export const DebtAddModal: React.FC<DebtAddModalProps> = ({
 
     return (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-cyan-900/40 backdrop-blur-md p-4 animate-fade-in text-cyan-900">
-            <div className="bg-white rounded-onyx shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh] border border-onyx-100 relative shadow-cyan-500/10">
-                <div className="bg-white px-10 py-8 flex justify-between items-center border-b border-onyx-50 sticky top-0 z-10">
+            <div className="bg-white rounded-Aliseus shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh] border border-aliseus-100 relative shadow-cyan-500/10">
+                <div className="bg-white px-10 py-8 flex justify-between items-center border-b border-aliseus-50 sticky top-0 z-10">
                     <div>
                         <h3 className="text-2xl font-bold tracking-tight flex items-center gap-4">
                             <div className="p-3 bg-cyan-50 text-cyan-600 rounded-xl shadow-sm">
@@ -80,72 +80,72 @@ export const DebtAddModal: React.FC<DebtAddModalProps> = ({
                             </div>
                             Nueva Deuda
                         </h3>
-                        <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mt-2 ml-16">Alta de pasivo financiero</p>
+                        <p className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mt-2 ml-16">Alta de pasivo financiero</p>
                     </div>
-                    <button onClick={handleClose} className="text-onyx-400 hover:text-cyan-900 p-2.5 hover:bg-onyx-50 rounded-xl transition-all">
+                    <button onClick={handleClose} className="text-aliseus-400 hover:text-cyan-900 p-2.5 hover:bg-aliseus-50 rounded-xl transition-all">
                         <X className="w-7 h-7" />
                     </button>
                 </div>
                 <form onSubmit={handleAddSubmit} className="p-10 space-y-10 overflow-y-auto custom-scrollbar">
                     <div className="space-y-8">
                         <div>
-                            <label className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3 block text-center md:text-left">Nombre de la Obligación</label>
-                            <input required type="text" value={newName} onChange={(e) => setNewName(e.target.value)} className="w-full p-5 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all placeholder:text-onyx-300 shadow-inner" placeholder="Ej: Hipoteca, Préstamo Personal..." />
+                            <label className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-3 block text-center md:text-left">Nombre de la Obligación</label>
+                            <input required type="text" value={newName} onChange={(e) => setNewName(e.target.value)} className="w-full p-5 bg-aliseus-50 border border-aliseus-100 rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all placeholder:text-aliseus-300 shadow-inner" placeholder="Ej: Hipoteca, Préstamo Personal..." />
                         </div>
                         <div className="grid grid-cols-2 gap-8">
                             <div>
-                                <label className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3 block">Naturaleza</label>
-                                <select value={newType} onChange={(e) => setNewType(e.target.value as any)} className="w-full p-5 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all cursor-pointer shadow-inner">
+                                <label className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-3 block">Naturaleza</label>
+                                <select value={newType} onChange={(e) => setNewType(e.target.value as any)} className="w-full p-5 bg-aliseus-50 border border-aliseus-100 rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all cursor-pointer shadow-inner">
                                     <option value="LOAN">Préstamo</option>
                                     <option value="MORTGAGE">Hipoteca</option>
                                     <option value="CREDIT_CARD">Tarjeta</option>
                                 </select>
                             </div>
                             <div>
-                                <label className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3 block">Día de Cobro</label>
-                                <input type="number" min="1" max="31" value={newDay} onChange={(e) => setNewDay(e.target.value)} className="w-full p-5 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner" placeholder="1-31" />
+                                <label className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-3 block">Día de Cobro</label>
+                                <input type="number" min="1" max="31" value={newDay} onChange={(e) => setNewDay(e.target.value)} className="w-full p-5 bg-aliseus-50 border border-aliseus-100 rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner" placeholder="1-31" />
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-8">
                             <div className="col-span-1">
-                                <label className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3 block">Importe Original</label>
+                                <label className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-3 block">Importe Original</label>
                                 <div className="relative group/input">
-                                    <input required type="number" step="0.01" value={newOriginal} onChange={(e) => setNewOriginal(e.target.value)} className="w-full p-5 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-xl text-cyan-900 focus:bg-white transition-all shadow-inner text-center" />
-                                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-onyx-300 font-bold">€</span>
+                                    <input required type="number" step="0.01" value={newOriginal} onChange={(e) => setNewOriginal(e.target.value)} className="w-full p-5 bg-aliseus-50 border border-aliseus-100 rounded-2xl font-bold text-xl text-cyan-900 focus:bg-white transition-all shadow-inner text-center" />
+                                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-aliseus-300 font-bold">€</span>
                                 </div>
                             </div>
                             <div className="col-span-1">
-                                <label className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3 block">Saldo Pendiente</label>
+                                <label className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-3 block">Saldo Pendiente</label>
                                 <div className="relative group/input">
-                                    <input required type="number" step="0.01" value={newBalance} onChange={(e) => setNewBalance(e.target.value)} className="w-full p-5 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-xl text-cyan-900 focus:bg-white transition-all shadow-inner text-center" />
-                                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-onyx-300 font-bold">€</span>
+                                    <input required type="number" step="0.01" value={newBalance} onChange={(e) => setNewBalance(e.target.value)} className="w-full p-5 bg-aliseus-50 border border-aliseus-100 rounded-2xl font-bold text-xl text-cyan-900 focus:bg-white transition-all shadow-inner text-center" />
+                                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-aliseus-300 font-bold">€</span>
                                 </div>
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-8">
                             <div>
-                                <label className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3 block">Tipo Interés (%)</label>
-                                <input type="number" step="0.01" value={newRate} onChange={(e) => setNewRate(e.target.value)} className="w-full p-5 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-xl text-cyan-900 focus:bg-white transition-all shadow-inner text-center" />
+                                <label className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-3 block">Tipo Interés (%)</label>
+                                <input type="number" step="0.01" value={newRate} onChange={(e) => setNewRate(e.target.value)} className="w-full p-5 bg-aliseus-50 border border-aliseus-100 rounded-2xl font-bold text-xl text-cyan-900 focus:bg-white transition-all shadow-inner text-center" />
                             </div>
                             <div>
-                                <label className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3 block">Cuota Mínima</label>
-                                <input type="number" step="0.01" value={newMin} onChange={(e) => setNewMin(e.target.value)} className="w-full p-5 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-xl text-cyan-900 focus:bg-white transition-all shadow-inner text-center" />
+                                <label className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-3 block">Cuota Mínima</label>
+                                <input type="number" step="0.01" value={newMin} onChange={(e) => setNewMin(e.target.value)} className="w-full p-5 bg-aliseus-50 border border-aliseus-100 rounded-2xl font-bold text-xl text-cyan-900 focus:bg-white transition-all shadow-inner text-center" />
                             </div>
                         </div>
                         <div>
-                            <label className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3 block">Cuenta de Pago Asociada</label>
-                            <select value={newAccountId} onChange={(e) => setNewAccountId(e.target.value)} className="w-full p-5 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 transition-all cursor-pointer shadow-inner">
+                            <label className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-3 block">Cuenta de Pago Asociada</label>
+                            <select value={newAccountId} onChange={(e) => setNewAccountId(e.target.value)} className="w-full p-5 bg-aliseus-50 border border-aliseus-100 rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 transition-all cursor-pointer shadow-inner">
                                 {accounts.map(acc => <option key={acc.id} value={acc.id}>{acc.name} ({formatEUR(acc.balance)})</option>)}
                             </select>
                         </div>
                         <div className="grid grid-cols-2 gap-8">
                             <div>
-                                <label className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3 block">Fecha Apertura</label>
-                                <input type="date" value={newStartDate} onChange={(e) => setNewStartDate(e.target.value)} className="w-full p-5 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-cyan-900 text-xs focus:bg-white transition-all shadow-inner" />
+                                <label className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-3 block">Fecha Apertura</label>
+                                <input type="date" value={newStartDate} onChange={(e) => setNewStartDate(e.target.value)} className="w-full p-5 bg-aliseus-50 border border-aliseus-100 rounded-2xl font-bold text-cyan-900 text-xs focus:bg-white transition-all shadow-inner" />
                             </div>
                             <div>
-                                <label className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3 block">Vencimiento Final</label>
-                                <input type="date" value={newEndDate} onChange={(e) => setNewEndDate(e.target.value)} className="w-full p-5 bg-onyx-50 border border-onyx-100 rounded-2xl font-bold text-cyan-900 text-xs focus:bg-white transition-all shadow-inner" />
+                                <label className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-3 block">Vencimiento Final</label>
+                                <input type="date" value={newEndDate} onChange={(e) => setNewEndDate(e.target.value)} className="w-full p-5 bg-aliseus-50 border border-aliseus-100 rounded-2xl font-bold text-cyan-900 text-xs focus:bg-white transition-all shadow-inner" />
                             </div>
                         </div>
                     </div>

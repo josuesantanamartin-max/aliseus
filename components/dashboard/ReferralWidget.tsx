@@ -48,7 +48,7 @@ export const ReferralWidget: React.FC = () => {
                         <Gift size={20} />
                     </div>
                     <div>
-                        <h3 className="text-sm font-semibold text-slate-800">Programa de Referidos</h3>
+                        <h3 className="text-sm font-semibold text-slate-800">Plan Amigos</h3>
                         <p className="text-xs text-slate-500">Gana 3 meses por cada amigo</p>
                     </div>
                 </div>

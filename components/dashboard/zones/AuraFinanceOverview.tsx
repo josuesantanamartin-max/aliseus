@@ -23,7 +23,6 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { DetailedBudgetWidget } from './finance/DetailedBudgetWidget';
 import { BetaWelcomeCard } from '../shared/BetaWelcomeCard';
-import { ReferralWidget } from '../ReferralWidget';
 
 
 
@@ -431,42 +430,36 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
     return (
         <div className="flex flex-col gap-6 w-full max-w-7xl mx-auto px-4 lg:px-0 pb-12">
 
-            {/* --- BETA REWARDS & REFERRALS GRID --- */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2">
-                    <div className={cn(
-                        "h-full p-6 md:p-8 rounded-[2rem] border flex flex-col md:flex-row md:items-center justify-between gap-6 transition-colors duration-300",
-                        themeStyles[smartHeader.colorTheme]
-                    )}>
-                        <div className="flex flex-col gap-2">
-                            <p className="text-[11px] font-bold tracking-[0.2em] uppercase opacity-60">
-                                {smartHeader.dateLabel}
-                            </p>
-                            <h2 className="text-2xl md:text-3xl font-black tracking-tight leading-tight">
-                                {smartHeader.title}
-                            </h2>
-                            <div className="flex flex-wrap items-center gap-2 mt-2">
-                                <span className="px-3 py-1 rounded-full bg-black/5 dark:bg-white/10 text-sm font-semibold whitespace-nowrap">
-                                    <span className="opacity-70 font-medium mr-1">Gastados</span>{formatCurrency(globalBudgetSpent)}
-                                </span>
-                                <span className="text-black/20 dark:text-white/20">•</span>
-                                <span className="px-3 py-1 rounded-full bg-black/5 dark:bg-white/10 text-sm font-semibold whitespace-nowrap">
-                                    <span className="opacity-70 font-medium mr-1">Restantes</span>{formatCurrency(globalBudgetRemaining)}
-                                </span>
-                            </div>
-                        </div>
-
-                        <div className="shrink-0 flex items-center">
-                            <button className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-black/40 border border-black/10 dark:border-white/10 font-semibold shadow-sm hover:shadow-md transition-all active:scale-95 group">
-                                <span>Ver desglose</span>
-                                <ArrowRight className="w-4 h-4 opacity-70 group-hover:translate-x-1 transition-transform" />
-                            </button>
+            {/* --- SMART HEADER --- */}
+            <div>
+                <div className={cn(
+                    "h-full p-6 md:p-8 rounded-[2rem] border flex flex-col md:flex-row md:items-center justify-between gap-6 transition-colors duration-300",
+                    themeStyles[smartHeader.colorTheme]
+                )}>
+                    <div className="flex flex-col gap-2">
+                        <p className="text-[11px] font-bold tracking-[0.2em] uppercase opacity-60">
+                            {smartHeader.dateLabel}
+                        </p>
+                        <h2 className="text-2xl md:text-3xl font-black tracking-tight leading-tight">
+                            {smartHeader.title}
+                        </h2>
+                        <div className="flex flex-wrap items-center gap-2 mt-2">
+                            <span className="px-3 py-1 rounded-full bg-black/5 dark:bg-white/10 text-sm font-semibold whitespace-nowrap">
+                                <span className="opacity-70 font-medium mr-1">Gastados</span>{formatCurrency(globalBudgetSpent)}
+                            </span>
+                            <span className="text-black/20 dark:text-white/20">•</span>
+                            <span className="px-3 py-1 rounded-full bg-black/5 dark:bg-white/10 text-sm font-semibold whitespace-nowrap">
+                                <span className="opacity-70 font-medium mr-1">Restantes</span>{formatCurrency(globalBudgetRemaining)}
+                            </span>
                         </div>
                     </div>
-                </div>
 
-                <div className="lg:col-span-1">
-                    <ReferralWidget />
+                    <div className="shrink-0 flex items-center">
+                        <button className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-black/40 border border-black/10 dark:border-white/10 font-semibold shadow-sm hover:shadow-md transition-all active:scale-95 group">
+                            <span>Ver desglose</span>
+                            <ArrowRight className="w-4 h-4 opacity-70 group-hover:translate-x-1 transition-transform" />
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -482,7 +475,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                         "rounded-3xl p-6 border shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full min-h-[380px] transition-all duration-300",
                         fixedPayments.pendingItems && fixedPayments.pendingItems.length > 0
                             ? "bg-amber-50/30 dark:bg-amber-900/10 border-amber-200 dark:border-amber-800/50"
-                            : "bg-white dark:bg-onyx-900 border-slate-100 dark:border-onyx-800/80"
+                            : "bg-white dark:bg-aliseus-900 border-slate-100 dark:border-aliseus-800/80"
                     )}>
                         <div className="flex items-center justify-between mb-4">
                             <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
@@ -497,7 +490,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                             </div>
                         </div>
 
-                        <div className="w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-1.5 mb-3 overflow-hidden shrink-0">
+                        <div className="w-full bg-slate-100 dark:bg-aliseus-800 rounded-full h-1.5 mb-3 overflow-hidden shrink-0">
                             <div
                                 className="h-full bg-blue-600 dark:bg-blue-500 rounded-full transition-all duration-500"
                                 style={{ width: `${Math.min(100, (fixedPayments.paid / Math.max(1, fixedPayments.expected)) * 100)}% ` }}
@@ -524,9 +517,9 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                         <div className="flex-1 overflow-y-auto custom-scrollbar pr-1 -mr-1 space-y-3">
                             {fixedPayments.pendingItems && fixedPayments.pendingItems.length > 0 && (
                                 <div className="space-y-2">
-                                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest sticky top-0 bg-amber-50/90 dark:bg-onyx-900/90 backdrop-blur-sm py-1 z-10">Pendientes</h4>
+                                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest sticky top-0 bg-amber-50/90 dark:bg-aliseus-900/90 backdrop-blur-sm py-1 z-10">Pendientes</h4>
                                     {fixedPayments.pendingItems.map((item) => (
-                                        <div key={item.id} className="flex justify-between items-center bg-white dark:bg-onyx-800 p-3 rounded-2xl shadow-sm border border-slate-100 dark:border-onyx-700">
+                                        <div key={item.id} className="flex justify-between items-center bg-white dark:bg-aliseus-800 p-3 rounded-2xl shadow-sm border border-slate-100 dark:border-aliseus-700">
                                             <div className="flex items-center gap-3">
                                                 <div className="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-amber-600 dark:text-amber-400">
                                                     <AlertTriangle className="w-4 h-4" />
@@ -541,9 +534,9 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
 
                             {fixedPayments.items && fixedPayments.items.length > 0 && (
                                 <div className="space-y-2 mt-4">
-                                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest sticky top-0 bg-white/90 dark:bg-onyx-900/90 backdrop-blur-sm py-1 z-10">Ya Pagados</h4>
+                                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest sticky top-0 bg-white/90 dark:bg-aliseus-900/90 backdrop-blur-sm py-1 z-10">Ya Pagados</h4>
                                     {fixedPayments.items.map((tx) => (
-                                        <div key={tx.id} className="flex justify-between items-center bg-slate-50 dark:bg-onyx-800/50 p-3 rounded-xl border border-transparent">
+                                        <div key={tx.id} className="flex justify-between items-center bg-slate-50 dark:bg-aliseus-800/50 p-3 rounded-xl border border-transparent">
                                             <span className="text-xs font-medium text-slate-600 dark:text-slate-400 truncate mr-2">{tx.description || tx.category}</span>
                                             <span className="text-xs font-bold text-slate-400 dark:text-slate-500 line-through tabular-nums">{formatCurrency(tx.amount)}</span>
                                         </div>
@@ -553,7 +546,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
 
                             {fixedPayments.items.length === 0 && (!fixedPayments.pendingItems || fixedPayments.pendingItems.length === 0) && (
                                 <div className="flex flex-col items-center justify-center h-full text-center py-6">
-                                    <div className="w-12 h-12 bg-slate-50 dark:bg-onyx-800 rounded-full flex items-center justify-center mb-3">
+                                    <div className="w-12 h-12 bg-slate-50 dark:bg-aliseus-800 rounded-full flex items-center justify-center mb-3">
                                         <CalendarCheck className="w-5 h-5 text-slate-400" />
                                     </div>
                                     <p className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Sin previsión de pagos</p>
@@ -571,7 +564,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
 
                 {/* --- Movimientos Recientes --- */}
                 <div className="col-span-1 flex flex-col">
-                    <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] h-full min-h-[380px] flex flex-col">
+                    <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-6 border border-slate-100 dark:border-aliseus-800 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] h-full min-h-[380px] flex flex-col">
                         <div className="flex justify-between items-center mb-6 shrink-0">
                             <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">
                                 Movimientos Recientes
@@ -582,7 +575,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                         </div>
                         <div className="flex flex-col flex-1 space-y-3 overflow-y-auto custom-scrollbar pr-1 -mr-1">
                             {recentTransactions.map(tx => (
-                                <div key={tx.id} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-onyx-800/40 rounded-2xl border border-slate-100 dark:border-onyx-700/50 transition-all hover:bg-slate-100 dark:hover:bg-onyx-800 group">
+                                <div key={tx.id} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-aliseus-800/40 rounded-2xl border border-slate-100 dark:border-aliseus-700/50 transition-all hover:bg-slate-100 dark:hover:bg-aliseus-800 group">
                                     <div className="flex items-center gap-4">
                                         <div className={cn("w-10 h-10 rounded-2xl flex items-center justify-center shrink-0", 
                                             tx.type === 'INCOME' ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400" 
@@ -605,7 +598,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                             
                             {recentTransactions.length === 0 && (
                                 <div className="flex flex-col items-center justify-center h-full text-center py-6">
-                                    <div className="w-12 h-12 bg-slate-50 dark:bg-onyx-800 rounded-full flex items-center justify-center mb-3">
+                                    <div className="w-12 h-12 bg-slate-50 dark:bg-aliseus-800 rounded-full flex items-center justify-center mb-3">
                                         <Activity className="w-5 h-5 text-slate-400" />
                                     </div>
                                     <p className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Sin historial de pagos</p>
@@ -629,7 +622,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
                 {/* 1. Saldo Disponible */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-5 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
                     <div>
                         <div className="mb-2">
                             <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Liquidez Disponible</h3>
@@ -639,7 +632,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-1.5 mt-4 pt-4 border-t border-slate-100 dark:border-onyx-800/80 max-h-[160px] overflow-y-auto custom-scrollbar pr-1">
+                    <div className="flex flex-col gap-1.5 mt-4 pt-4 border-t border-slate-100 dark:border-aliseus-800/80 max-h-[160px] overflow-y-auto custom-scrollbar pr-1">
                         {liquidAccounts.map(a => (
                             <div key={a.id} className="flex justify-between items-center text-xs">
                                 <span className="text-slate-500 font-medium truncate mr-2">{a.name}</span>
@@ -653,7 +646,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                 </div>
 
                 {/* 2. Total Ahorro */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between relative overflow-hidden">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-5 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between relative overflow-hidden">
                     <div className="z-10">
                         <div className="mb-2">
                             <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Ahorro y Patrimonio</h3>
@@ -671,20 +664,20 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                 </div>
 
                 {/* 3. Resultado Mensual */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-5 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
                     <div className="mb-4 shrink-0">
                         <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Resultado Mensual</h3>
                     </div>
                     
                     <div className="flex flex-col gap-4">
                         <div className="flex items-center gap-2 w-full">
-                            <div className="flex flex-col flex-1 bg-slate-50 dark:bg-onyx-800 p-2 rounded-xl border border-slate-100 dark:border-onyx-700/50">
+                            <div className="flex flex-col flex-1 bg-slate-50 dark:bg-aliseus-800 p-2 rounded-xl border border-slate-100 dark:border-aliseus-700/50">
                                 <span className="text-[9px] text-slate-500 dark:text-slate-400 font-bold uppercase mb-0.5">Ingresado</span>
                                 <span className="text-emerald-600 dark:text-emerald-400 font-black text-xs">
                                     {formatCurrency(monthlyIncome)}
                                 </span>
                             </div>
-                            <div className="flex flex-col flex-1 bg-slate-50 dark:bg-onyx-800 p-2 rounded-xl border border-slate-100 dark:border-onyx-700/50">
+                            <div className="flex flex-col flex-1 bg-slate-50 dark:bg-aliseus-800 p-2 rounded-xl border border-slate-100 dark:border-aliseus-700/50">
                                 <span className="text-[9px] text-slate-500 dark:text-slate-400 font-bold uppercase mb-0.5">Gastado</span>
                                 <span className="text-rose-600 dark:text-rose-400 font-black text-xs">
                                     {formatCurrency(monthlyExpenses)}
@@ -692,7 +685,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                             </div>
                         </div>
                         
-                        <div className="pt-2 border-t border-slate-50 dark:border-onyx-800">
+                        <div className="pt-2 border-t border-slate-50 dark:border-aliseus-800">
                             <div className="flex flex-col">
                                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1">Resultado Neto</span>
                                 <div className={cn("text-2xl lg:text-3xl font-black tabular-nums tracking-tight flex items-center gap-2 leading-none",
@@ -712,7 +705,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                 </div>
 
                 {/* 4. Control Rápido Presupuesto */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-5 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
                     <div className="flex items-center justify-between mb-2">
                         <div className="mb-2">
                             <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Capacidad de Consumo</h3>
@@ -727,7 +720,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                             Techo Operativo
                         </div>
 
-                        <div className="mt-2 w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-1.5 mb-2 overflow-hidden">
+                        <div className="mt-2 w-full bg-slate-100 dark:bg-aliseus-800 rounded-full h-1.5 mb-2 overflow-hidden">
                             <div
                                 className={cn("h-full rounded-full", globalBudgetSpent > globalBudgetLimit ? "bg-rose-500" : "bg-blue-600")}
                                 style={{ width: `${Math.min(100, (globalBudgetSpent / Math.max(1, globalBudgetLimit)) * 100)}% ` }}
@@ -752,7 +745,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
 
                 {/* Columna Principal: Gráfico Evolutivo */}
                 <div className="lg:col-span-2 flex flex-col">
-                    <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full">
+                    <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-6 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                                 <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">
                                     Histórico de Liquidez
@@ -760,7 +753,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
 
                             {/* Filters */}
                             <div className="flex flex-wrap items-center gap-2">
-                                <div className="bg-slate-50 dark:bg-onyx-800 border border-slate-100 dark:border-onyx-700 rounded-lg p-1 flex">
+                                <div className="bg-slate-50 dark:bg-aliseus-800 border border-slate-100 dark:border-aliseus-700 rounded-lg p-1 flex">
                                     {(['1m', '6m', '1y', '3y', '5y'] as const).map(tf => (
                                         <button
                                             key={tf}
@@ -768,7 +761,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                                             className={cn(
                                                 "px-3 py-1 text-xs font-bold rounded-md transition-colors",
                                                 chartTimeframe === tf
-                                                    ? "bg-white dark:bg-onyx-600 text-slate-900 dark:text-white shadow-sm"
+                                                    ? "bg-white dark:bg-aliseus-600 text-slate-900 dark:text-white shadow-sm"
                                                     : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
                                             )}
                                         >
@@ -781,7 +774,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                                     <select
                                         value={chartAccountId}
                                         onChange={(e) => setChartAccountId(e.target.value)}
-                                        className="appearance-none bg-slate-50 dark:bg-onyx-800 border border-slate-100 dark:border-onyx-700 rounded-lg px-3 py-1.5 pr-8 text-xs font-bold text-slate-700 dark:text-slate-300 outline-none cursor-pointer"
+                                        className="appearance-none bg-slate-50 dark:bg-aliseus-800 border border-slate-100 dark:border-aliseus-700 rounded-lg px-3 py-1.5 pr-8 text-xs font-bold text-slate-700 dark:text-slate-300 outline-none cursor-pointer"
                                     >
                                         <option value="all">Todas las cuentas</option>
                                         {accounts.map(a => (
@@ -803,7 +796,7 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                                             <stop offset="95%" stopColor={chartColor} stopOpacity={0} />
                                         </linearGradient>
                                     </defs>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="text-slate-100 dark:text-onyx-800/50" />
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="text-slate-100 dark:text-aliseus-800/50" />
                                     <XAxis
                                         dataKey="name"
                                         axisLine={false}

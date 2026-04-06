@@ -26,7 +26,7 @@ export const BetaWelcomeCard: React.FC<BetaWelcomeCardProps> = ({ onSetupClick }
         <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-4xl mx-auto rounded-[2.5rem] bg-white dark:bg-onyx-900 border border-slate-100 dark:border-onyx-800 shadow-2xl overflow-hidden relative"
+            className="w-full max-w-4xl mx-auto rounded-[2.5rem] bg-white dark:bg-aliseus-900 border border-slate-100 dark:border-aliseus-800 shadow-2xl overflow-hidden relative"
         >
             {/* Background Accents */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50 dark:bg-indigo-900/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
@@ -37,7 +37,7 @@ export const BetaWelcomeCard: React.FC<BetaWelcomeCardProps> = ({ onSetupClick }
                 <div className="w-full md:w-1/2 space-y-8">
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-widest">
                         <Sparkles className="w-3.5 h-3.5" />
-                        Beta Privada Aliseus
+                        Socio Fundador Aliseus
                     </div>
 
                     <div className="space-y-4">
@@ -64,7 +64,7 @@ export const BetaWelcomeCard: React.FC<BetaWelcomeCardProps> = ({ onSetupClick }
                                 setMockData();
                             }}
 
-                            className="px-8 py-4 bg-slate-50 dark:bg-onyx-800 text-slate-600 dark:text-slate-300 rounded-2xl font-bold text-lg hover:bg-slate-100 dark:hover:bg-onyx-700 transition-all border border-slate-100 dark:border-onyx-700 flex items-center justify-center gap-3"
+                            className="px-8 py-4 bg-slate-50 dark:bg-aliseus-800 text-slate-600 dark:text-slate-300 rounded-2xl font-bold text-lg hover:bg-slate-100 dark:hover:bg-aliseus-700 transition-all border border-slate-100 dark:border-aliseus-700 flex items-center justify-center gap-3"
                         >
                             <Database className="w-5 h-5" />
                             {texts.secondaryAction}
@@ -73,7 +73,7 @@ export const BetaWelcomeCard: React.FC<BetaWelcomeCardProps> = ({ onSetupClick }
                 </div>
 
                 {/* Benefits Side */}
-                <div className="w-full md:w-1/2 bg-slate-50/50 dark:bg-onyx-800/40 rounded-[2rem] p-8 border border-slate-100 dark:border-onyx-800/50">
+                <div className="w-full md:w-1/2 bg-slate-50/50 dark:bg-aliseus-800/40 rounded-[2rem] p-8 border border-slate-100 dark:border-aliseus-800/50">
                     <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-8">
                         {texts.benefitTitle}
                     </h3>
@@ -81,7 +81,7 @@ export const BetaWelcomeCard: React.FC<BetaWelcomeCardProps> = ({ onSetupClick }
                     <div className="space-y-6">
                         {texts.benefits.map((benefit: string, idx: number) => (
                             <div key={idx} className="flex gap-4 group">
-                                <div className="w-12 h-12 rounded-2xl bg-white dark:bg-onyx-800 flex items-center justify-center shadow-sm border border-slate-100 dark:border-onyx-700 group-hover:scale-110 transition-transform">
+                                <div className="w-12 h-12 rounded-2xl bg-white dark:bg-aliseus-800 flex items-center justify-center shadow-sm border border-slate-100 dark:border-aliseus-700 group-hover:scale-110 transition-transform">
                                     {idx === 0 && <ShieldCheck className="w-6 h-6 text-emerald-500" />}
                                     {idx === 1 && <Zap className="w-6 h-6 text-amber-500" />}
                                     {idx === 2 && <Sparkles className="w-6 h-6 text-indigo-500" />}
@@ -95,14 +95,14 @@ export const BetaWelcomeCard: React.FC<BetaWelcomeCardProps> = ({ onSetupClick }
                         ))}
                     </div>
 
-                    <div className="mt-10 pt-8 border-t border-slate-200 dark:border-onyx-700 flex items-center gap-4">
+                    <div className="mt-10 pt-8 border-t border-slate-200 dark:border-aliseus-700 flex items-center gap-4">
                         <div className="flex -space-x-2">
                             {[1, 2, 3].map(i => (
-                                <div key={i} className="w-8 h-8 rounded-full border-2 border-white dark:border-onyx-900 bg-slate-200 dark:bg-onyx-700" />
+                                <div key={i} className="w-8 h-8 rounded-full border-2 border-white dark:border-aliseus-900 bg-slate-200 dark:bg-aliseus-700" />
                             ))}
                         </div>
                         <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                            +40 familias en la beta
+                            +40 familias pioneras
                         </p>
                     </div>
                 </div>

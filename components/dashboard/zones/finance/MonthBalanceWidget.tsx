@@ -10,7 +10,7 @@ export interface MonthBalanceWidgetProps {
 
 export const MonthBalanceWidget: React.FC<MonthBalanceWidgetProps> = ({ monthBalance, monthlyIncome, monthlyExpenses }) => {
     return (
-        <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+        <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-6 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
             <div className="flex items-center gap-2 mb-2">
                 <Activity className="w-4 h-4 text-slate-400" />
                 <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Resultado Mensual</h3>

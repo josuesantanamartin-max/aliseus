@@ -40,8 +40,8 @@ export interface BackupData {
  */
 export class BackupService {
     private static readonly BACKUP_VERSION = '1.0.0';
-    private static readonly STORAGE_KEY = 'onyx_backup_config';
-    private static readonly LOCAL_BACKUP_KEY = 'onyx_local_backups';
+    private static readonly STORAGE_KEY = 'Aliseus_backup_config';
+    private static readonly LOCAL_BACKUP_KEY = 'Aliseus_local_backups';
 
     /**
      * Get backup configuration
@@ -391,7 +391,7 @@ export class BackupService {
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = `onyx-backup-${backup.metadata.timestamp}.json`;
+            link.download = `aliseus-backup-${backup.metadata.timestamp}.json`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);

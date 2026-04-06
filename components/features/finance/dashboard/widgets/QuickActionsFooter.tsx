@@ -15,19 +15,19 @@ const QuickActionsFooter: React.FC<QuickActionsFooterProps> = ({ onNavigate }) =
                 { label: 'Gasto', icon: CreditCard, color: 'text-red-500', bg: 'bg-red-50', action: () => onNavigate('finance', 'transactions') },
                 { label: 'Menú', icon: Utensils, color: 'text-emerald-500', bg: 'bg-emerald-50', action: () => onNavigate('life', 'kitchen-planner') },
                 { label: 'Viaje', icon: Luggage, color: 'text-rose-500', bg: 'bg-rose-50', action: () => onNavigate('life', 'travel') },
-                { label: 'Bóveda', icon: Lock, color: 'text-onyx-600', bg: 'bg-onyx-100', action: () => onNavigate('life', 'vault') },
+                { label: 'Bóveda', icon: Lock, color: 'text-aliseus-600', bg: 'bg-aliseus-100', action: () => onNavigate('life', 'vault') },
                 { label: 'Familia', icon: Baby, color: 'text-cyan-primary', bg: 'bg-cyan-50', action: () => onNavigate('life', 'family') },
                 { label: 'Espacios', icon: Home, color: 'text-cyan-500', bg: 'bg-cyan-50', action: () => onNavigate('life', 'spaces') },
             ].map((btn, i) => (
                 <button
                     key={i}
                     onClick={btn.action}
-                    className="bg-white border border-onyx-100 p-6 rounded-onyx shadow-sm hover:shadow-lg hover:-translate-y-1.5 transition-all duration-300 flex flex-col items-center gap-4 group"
+                    className="bg-white border border-aliseus-100 p-6 rounded-Aliseus shadow-sm hover:shadow-lg hover:-translate-y-1.5 transition-all duration-300 flex flex-col items-center gap-4 group"
                 >
                     <div className={`p-4 rounded-2xl ${btn.bg} ${btn.color} group-hover:scale-110 transition-all duration-500 shadow-sm group-hover:shadow-md`}>
                         <btn.icon className="w-5 h-5" />
                     </div>
-                    <span className="text-[10px] font-bold text-onyx-400 uppercase tracking-[0.2em] group-hover:text-cyan-900 transition-colors">{btn.label}</span>
+                    <span className="text-[10px] font-bold text-aliseus-400 uppercase tracking-[0.2em] group-hover:text-cyan-900 transition-colors">{btn.label}</span>
                 </button>
             ))}
         </div>

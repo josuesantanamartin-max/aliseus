@@ -73,7 +73,7 @@ export const ProgressiveTooltip: React.FC<ProgressiveTooltipProps> = ({
                     className={`absolute z-[200] ${POSITION_CLASSES[position]} animate-fade-in`}
                     style={{ pointerEvents: 'auto' }}
                 >
-                    <div className="bg-gray-900 dark:bg-onyx-800 text-white rounded-xl px-4 py-3 shadow-2xl border border-gray-700/50 max-w-[260px] min-w-[220px] relative">
+                    <div className="bg-gray-900 dark:bg-aliseus-800 text-white rounded-xl px-4 py-3 shadow-2xl border border-gray-700/50 max-w-[260px] min-w-[220px] relative">
                         {/* Arrow */}
                         <div className={`absolute w-0 h-0 border-[6px] border-transparent ${ARROW_CLASSES[position]}`} />
 

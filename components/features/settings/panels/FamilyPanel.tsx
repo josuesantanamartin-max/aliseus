@@ -28,7 +28,7 @@ export const FamilyPanel = () => {
                     <HouseholdManager />
                     <MemberManagement />
                 </div>
-                <div className="bg-white dark:bg-onyx-900 rounded-[40px] shadow-2xl shadow-indigo-500/5 border border-gray-100 dark:border-onyx-800 overflow-hidden ring-1 ring-black/5">
+                <div className="bg-white dark:bg-aliseus-900 rounded-[40px] shadow-2xl shadow-indigo-500/5 border border-gray-100 dark:border-aliseus-800 overflow-hidden ring-1 ring-black/5">
                     <HouseholdChat />
                 </div>
             </div>

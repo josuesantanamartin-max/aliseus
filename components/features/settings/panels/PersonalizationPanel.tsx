@@ -44,7 +44,7 @@ export const PersonalizationPanel = () => {
                             id: 'dark', 
                             label: isSpanish ? 'Modo Oscuro' : 'Dark Mode', 
                             icon: '🌙', 
-                            preview: 'from-[#0c0c1e] via-indigo-950 to-onyx-950',
+                            preview: 'from-[#0c0c1e] via-indigo-950 to-aliseus-950',
                             accent: 'text-indigo-400',
                             border: 'border-indigo-500/30'
                         },
@@ -52,9 +52,9 @@ export const PersonalizationPanel = () => {
                             id: 'system', 
                             label: isSpanish ? 'Sistema' : 'System', 
                             icon: '💻', 
-                            preview: 'from-gray-100 via-white to-gray-200 dark:from-[#0c0c1e] dark:via-onyx-900 dark:to-onyx-950',
+                            preview: 'from-gray-100 via-white to-gray-200 dark:from-[#0c0c1e] dark:via-aliseus-900 dark:to-aliseus-950',
                             accent: 'text-emerald-500',
-                            border: 'border-gray-200 dark:border-onyx-700'
+                            border: 'border-gray-200 dark:border-aliseus-700'
                         }
                     ].map((mode) => (
                         <motion.button
@@ -65,7 +65,7 @@ export const PersonalizationPanel = () => {
                             className={`group relative h-64 rounded-[40px] overflow-hidden border-2 transition-all duration-500 ${
                                 theme === mode.id || (theme === 'system' && mode.id === 'system')
                                     ? 'border-indigo-500 ring-4 ring-indigo-500/10 shadow-2xl'
-                                    : 'border-transparent hover:border-gray-200 dark:hover:border-white/10 bg-white dark:bg-onyx-900'
+                                    : 'border-transparent hover:border-gray-200 dark:hover:border-white/10 bg-white dark:bg-aliseus-900'
                             }`}
                         >
                             {/* Visual Preview */}
@@ -99,7 +99,7 @@ export const PersonalizationPanel = () => {
             </section>
 
             {/* Dashboard Layout Section */}
-            <section className="bg-white/40 dark:bg-onyx-900/50 p-10 md:p-14 rounded-[50px] border border-slate-200/50 dark:border-onyx-800 shadow-xl shadow-slate-200/40 dark:shadow-none relative overflow-hidden group">
+            <section className="bg-white/40 dark:bg-aliseus-900/50 p-10 md:p-14 rounded-[50px] border border-slate-200/50 dark:border-aliseus-800 shadow-xl shadow-slate-200/40 dark:shadow-none relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
                 
                 <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
@@ -121,7 +121,7 @@ export const PersonalizationPanel = () => {
                     
                     <button
                         onClick={handleResetLayout}
-                        className="shrink-0 px-10 py-6 bg-white dark:bg-onyx-800 hover:bg-slate-50 dark:hover:bg-onyx-700 text-slate-900 dark:text-white rounded-[24px] font-black text-xs uppercase tracking-[0.2em] transition-all active:scale-95 shadow-lg border border-slate-200 dark:border-onyx-600 flex items-center gap-4"
+                        className="shrink-0 px-10 py-6 bg-white dark:bg-aliseus-800 hover:bg-slate-50 dark:hover:bg-aliseus-700 text-slate-900 dark:text-white rounded-[24px] font-black text-xs uppercase tracking-[0.2em] transition-all active:scale-95 shadow-lg border border-slate-200 dark:border-aliseus-600 flex items-center gap-4"
                     >
                         <Zap className="w-5 h-5 text-amber-500" />
                         {isSpanish ? 'Restaurar Diseño' : 'Reset Architecture'}

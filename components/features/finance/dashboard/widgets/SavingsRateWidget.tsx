@@ -16,7 +16,7 @@ const SavingsRateWidget: React.FC<SavingsRateWidgetProps> = ({ monthlyIncome, mo
     const isNegative = savingsRate < 0;
 
     return (
-        <div className="bg-white dark:bg-onyx-900 p-5 rounded-[2rem] border border-onyx-100 dark:border-onyx-800 shadow-sm relative overflow-hidden h-full flex flex-col justify-between group/widget hover:shadow-lg transition-all">
+        <div className="bg-white dark:bg-aliseus-900 p-5 rounded-[2rem] border border-aliseus-100 dark:border-aliseus-800 shadow-sm relative overflow-hidden h-full flex flex-col justify-between group/widget hover:shadow-lg transition-all">
             <div className={`absolute -right-6 -top-6 w-32 h-32 rounded-full blur-2xl transition-colors ${isNegative ? 'bg-rose-500/5 group-hover/widget:bg-rose-500/10' : isHealthy ? 'bg-emerald-500/5 group-hover/widget:bg-emerald-500/10' : 'bg-amber-500/5 group-hover/widget:bg-amber-500/10'}`}></div>
 
             <div className="flex justify-between items-start relative z-10">
@@ -32,7 +32,7 @@ const SavingsRateWidget: React.FC<SavingsRateWidgetProps> = ({ monthlyIncome, mo
             </div>
 
             <div className="relative z-10 mt-4">
-                <h4 className="text-[10px] font-black text-onyx-400 dark:text-onyx-500 uppercase tracking-widest mb-1">Tasa de Ahorro</h4>
+                <h4 className="text-[10px] font-black text-aliseus-400 dark:text-aliseus-500 uppercase tracking-widest mb-1">Tasa de Ahorro</h4>
                 <div className="flex items-baseline gap-2">
                     <span className="text-4xl sm:text-5xl font-black text-cyan-900 dark:text-white tracking-tighter">
                         {savingsRate.toFixed(1)}%
@@ -40,13 +40,13 @@ const SavingsRateWidget: React.FC<SavingsRateWidgetProps> = ({ monthlyIncome, mo
                 </div>
             </div>
 
-            <div className="relative z-10 mt-6 w-full bg-onyx-50 dark:bg-onyx-800 h-1.5 rounded-full overflow-hidden">
+            <div className="relative z-10 mt-6 w-full bg-aliseus-50 dark:bg-aliseus-800 h-1.5 rounded-full overflow-hidden">
                 <div
                     className={`h-full rounded-full transition-all duration-1000 ${isNegative ? 'bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.3)]' : isHealthy ? 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.3)]' : 'bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.3)]'}`}
                     style={{ width: `${Math.min(Math.max(savingsRate, 0), 100)}%` }}
                 ></div>
             </div>
-            <p className="text-[11px] font-bold text-onyx-400 mt-3 relative z-10">
+            <p className="text-[11px] font-bold text-aliseus-400 mt-3 relative z-10">
                 {isNegative ? 'Gastando más de lo ingresado' : isHealthy ? '¡Ahorro óptimo > 20%!' : 'Apunta a ahorrar el 20%'}
             </p>
         </div>

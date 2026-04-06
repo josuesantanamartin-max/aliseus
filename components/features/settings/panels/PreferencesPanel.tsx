@@ -17,7 +17,7 @@ export const PreferencesPanel = () => {
             className="max-w-4xl space-y-12 pb-12"
         >
             {/* Language Section */}
-            <section className="bg-white dark:bg-onyx-900/50 p-10 md:p-14 rounded-[50px] border border-slate-200 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-2xl relative overflow-hidden group">
+            <section className="bg-white dark:bg-aliseus-900/50 p-10 md:p-14 rounded-[50px] border border-slate-200 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-2xl relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-blue-500/5 dark:bg-indigo-500/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
                 
                 <div className="relative z-10 space-y-10">
@@ -62,7 +62,7 @@ export const PreferencesPanel = () => {
             </section>
 
             {/* Currency Section */}
-            <section className="bg-white dark:bg-onyx-900/50 p-10 md:p-14 rounded-[50px] border border-slate-200 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-2xl relative overflow-hidden group">
+            <section className="bg-white dark:bg-aliseus-900/50 p-10 md:p-14 rounded-[50px] border border-slate-200 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-2xl relative overflow-hidden group">
                 <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-emerald-500/5 rounded-full blur-[80px] translate-y-1/2 translate-x-1/2" />
                 
                 <div className="relative z-10 space-y-10">

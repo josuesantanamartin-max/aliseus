@@ -380,7 +380,7 @@ const TimelineEvolutionWidget: React.FC<TimelineEvolutionWidgetProps> = ({
     };
 
     return (
-        <div className="bg-white dark:bg-onyx-900 p-8 rounded-3xl border border-onyx-100 dark:border-onyx-800 shadow-sm relative overflow-hidden group">
+        <div className="bg-white dark:bg-aliseus-900 p-8 rounded-3xl border border-aliseus-100 dark:border-aliseus-800 shadow-sm relative overflow-hidden group">
             {/* Header */}
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 gap-4 relative z-10">
                 <div>
@@ -390,7 +390,7 @@ const TimelineEvolutionWidget: React.FC<TimelineEvolutionWidgetProps> = ({
                         </div>
                         Evolución Temporal
                     </h3>
-                    <p className="text-xs font-semibold text-onyx-400 dark:text-onyx-500 mt-2 uppercase tracking-[0.15em]">
+                    <p className="text-xs font-semibold text-aliseus-400 dark:text-aliseus-500 mt-2 uppercase tracking-[0.15em]">
                         {viewMode === 'CATEGORIES' ? 'Gastos por Categoría'
                             : viewMode === 'SUBCATEGORIES' ? 'Comparar Subcategorías'
                                 : viewMode === 'INCOME_VS_EXPENSES' ? 'Ingresos vs Gastos'
@@ -402,12 +402,12 @@ const TimelineEvolutionWidget: React.FC<TimelineEvolutionWidgetProps> = ({
                 {/* Controls */}
                 <div className="flex flex-wrap items-center gap-3">
                     {/* View Mode Toggle */}
-                    <div className="bg-onyx-50 dark:bg-onyx-800 p-1 rounded-xl flex items-center gap-1 h-full flex flex-col">
+                    <div className="bg-aliseus-50 dark:bg-aliseus-800 p-1 rounded-xl flex items-center gap-1 h-full flex flex-col">
                         <button
                             onClick={() => { setViewMode('CATEGORIES'); setHiddenSeries(new Set()); handleCategoryChange(null); }}
                             className={`px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 ${viewMode === 'CATEGORIES'
-                                ? 'bg-white dark:bg-onyx-700 shadow-sm text-cyan-primary dark:text-cyan-400'
-                                : 'text-onyx-400 dark:text-onyx-500 hover:text-onyx-600 dark:hover:text-onyx-300'
+                                ? 'bg-white dark:bg-aliseus-700 shadow-sm text-cyan-primary dark:text-cyan-400'
+                                : 'text-aliseus-400 dark:text-aliseus-500 hover:text-aliseus-600 dark:hover:text-aliseus-300'
                                 }`}
                         >
                             <BarChart3 className="w-3.5 h-3.5" />
@@ -416,8 +416,8 @@ const TimelineEvolutionWidget: React.FC<TimelineEvolutionWidgetProps> = ({
                         <button
                             onClick={() => { setViewMode('SUBCATEGORIES'); setHiddenSeries(new Set()); }}
                             className={`px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 ${viewMode === 'SUBCATEGORIES'
-                                ? 'bg-white dark:bg-onyx-700 shadow-sm text-cyan-primary dark:text-cyan-400'
-                                : 'text-onyx-400 dark:text-onyx-500 hover:text-onyx-600 dark:hover:text-onyx-300'
+                                ? 'bg-white dark:bg-aliseus-700 shadow-sm text-cyan-primary dark:text-cyan-400'
+                                : 'text-aliseus-400 dark:text-aliseus-500 hover:text-aliseus-600 dark:hover:text-aliseus-300'
                                 }`}
                         >
                             <Filter className="w-3.5 h-3.5" />
@@ -426,8 +426,8 @@ const TimelineEvolutionWidget: React.FC<TimelineEvolutionWidgetProps> = ({
                         <button
                             onClick={() => { setViewMode('ACCOUNTS'); setHiddenSeries(new Set()); handleCategoryChange(null); }}
                             className={`px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 ${viewMode === 'ACCOUNTS'
-                                ? 'bg-white dark:bg-onyx-700 shadow-sm text-cyan-primary dark:text-cyan-400'
-                                : 'text-onyx-400 dark:text-onyx-500 hover:text-onyx-600 dark:hover:text-onyx-300'
+                                ? 'bg-white dark:bg-aliseus-700 shadow-sm text-cyan-primary dark:text-cyan-400'
+                                : 'text-aliseus-400 dark:text-aliseus-500 hover:text-aliseus-600 dark:hover:text-aliseus-300'
                                 }`}
                         >
                             <Wallet className="w-3.5 h-3.5" />
@@ -436,8 +436,8 @@ const TimelineEvolutionWidget: React.FC<TimelineEvolutionWidgetProps> = ({
                         <button
                             onClick={() => { setViewMode('INCOME_VS_EXPENSES'); setHiddenSeries(new Set()); handleCategoryChange(null); }}
                             className={`px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 ${viewMode === 'INCOME_VS_EXPENSES'
-                                ? 'bg-white dark:bg-onyx-700 shadow-sm text-cyan-primary dark:text-cyan-400'
-                                : 'text-onyx-400 dark:text-onyx-500 hover:text-onyx-600 dark:hover:text-onyx-300'
+                                ? 'bg-white dark:bg-aliseus-700 shadow-sm text-cyan-primary dark:text-cyan-400'
+                                : 'text-aliseus-400 dark:text-aliseus-500 hover:text-aliseus-600 dark:hover:text-aliseus-300'
                                 }`}
                         >
                             <TrendingUp className="w-3.5 h-3.5" />
@@ -446,8 +446,8 @@ const TimelineEvolutionWidget: React.FC<TimelineEvolutionWidgetProps> = ({
                         <button
                             onClick={() => { setViewMode('COMPARISON'); setHiddenSeries(new Set()); handleCategoryChange(null); }}
                             className={`px-3 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest transition-all flex items-center gap-2 ${viewMode === 'COMPARISON'
-                                ? 'bg-white dark:bg-onyx-700 shadow-sm text-cyan-primary dark:text-cyan-400'
-                                : 'text-onyx-400 dark:text-onyx-500 hover:text-onyx-600 dark:hover:text-onyx-300'
+                                ? 'bg-white dark:bg-aliseus-700 shadow-sm text-cyan-primary dark:text-cyan-400'
+                                : 'text-aliseus-400 dark:text-aliseus-500 hover:text-aliseus-600 dark:hover:text-aliseus-300'
                                 }`}
                         >
                             <Activity className="w-3.5 h-3.5" />
@@ -473,7 +473,7 @@ const TimelineEvolutionWidget: React.FC<TimelineEvolutionWidgetProps> = ({
                             <select
                                 value={selectedCategory || ''}
                                 onChange={(e) => handleCategoryChange(e.target.value || null)}
-                                className="appearance-none bg-onyx-50 dark:bg-onyx-800 text-onyx-900 dark:text-white px-4 py-2 pr-8 rounded-xl text-xs font-bold uppercase tracking-widest border border-transparent hover:border-cyan-200 dark:hover:border-cyan-900 transition-all cursor-pointer"
+                                className="appearance-none bg-aliseus-50 dark:bg-aliseus-800 text-aliseus-900 dark:text-white px-4 py-2 pr-8 rounded-xl text-xs font-bold uppercase tracking-widest border border-transparent hover:border-cyan-200 dark:hover:border-cyan-900 transition-all cursor-pointer"
                             >
                                 <option value="">Todas las Categorías</option>
                                 {categories
@@ -483,7 +483,7 @@ const TimelineEvolutionWidget: React.FC<TimelineEvolutionWidgetProps> = ({
                                     ))
                                 }
                             </select>
-                            <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-onyx-400 pointer-events-none" />
+                            <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-aliseus-400 pointer-events-none" />
                         </div>
                     )}
 
@@ -506,14 +506,14 @@ const TimelineEvolutionWidget: React.FC<TimelineEvolutionWidgetProps> = ({
 
                     {/* Range Selector (hidden for COMPARISON mode) */}
                     {viewMode !== 'COMPARISON' && (
-                        <div className="bg-onyx-50 dark:bg-onyx-800 p-1 rounded-xl flex items-center gap-1 h-full flex flex-col">
+                        <div className="bg-aliseus-50 dark:bg-aliseus-800 p-1 rounded-xl flex items-center gap-1 h-full flex flex-col">
                             {(['3M', '6M', '1Y', 'ALL'] as ChartRange[]).map(range => (
                                 <button
                                     key={range}
                                     onClick={() => { setChartRange(range); setHiddenSeries(new Set()); }}
                                     className={`px-2.5 py-1.5 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${chartRange === range
-                                        ? 'bg-white dark:bg-onyx-700 shadow-sm text-cyan-900 dark:text-white'
-                                        : 'text-onyx-400 dark:text-onyx-500 hover:text-onyx-600 dark:hover:text-onyx-300'
+                                        ? 'bg-white dark:bg-aliseus-700 shadow-sm text-cyan-900 dark:text-white'
+                                        : 'text-aliseus-400 dark:text-aliseus-500 hover:text-aliseus-600 dark:hover:text-aliseus-300'
                                         }`}
                                 >
                                     {range}
@@ -527,7 +527,7 @@ const TimelineEvolutionWidget: React.FC<TimelineEvolutionWidgetProps> = ({
             {/* Chart */}
             <div className="h-[400px] w-full relative z-10">
                 {currentData.data.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center h-full text-onyx-300 dark:text-onyx-600">
+                    <div className="flex flex-col items-center justify-center h-full text-aliseus-300 dark:text-aliseus-600">
                         <TrendingUp className="w-16 h-16 mx-auto mb-4 opacity-10" />
                         <p className="text-sm font-bold uppercase tracking-widest opacity-40">Sin datos en este periodo</p>
                     </div>
@@ -644,10 +644,10 @@ const TimelineEvolutionWidget: React.FC<TimelineEvolutionWidgetProps> = ({
             </div>
 
             {/* Legend Controls / Subcategory Selection */}
-            <div className="mt-6 pt-6 border-t border-onyx-100 dark:border-onyx-800 relative z-10">
+            <div className="mt-6 pt-6 border-t border-aliseus-100 dark:border-aliseus-800 relative z-10">
                 <div className="flex items-center gap-2 mb-3">
-                    <Filter className="w-4 h-4 text-onyx-400" />
-                    <span className="text-xs font-bold text-onyx-400 uppercase tracking-wider">
+                    <Filter className="w-4 h-4 text-aliseus-400" />
+                    <span className="text-xs font-bold text-aliseus-400 uppercase tracking-wider">
                         {viewMode === 'SUBCATEGORIES' ? 'Seleccionar Subcategorías' : 'Filtrar Series'}
                     </span>
                 </div>
@@ -659,7 +659,7 @@ const TimelineEvolutionWidget: React.FC<TimelineEvolutionWidgetProps> = ({
                             .filter((c: CategoryStructure) => c.type === 'EXPENSE' && !NON_OPERATING_CATS.includes(c.name))
                             .map((category: CategoryStructure) => (
                                 <div key={category.id}>
-                                    <h4 className="text-xs font-bold text-onyx-500 dark:text-onyx-400 uppercase tracking-wider mb-2">
+                                    <h4 className="text-xs font-bold text-aliseus-500 dark:text-aliseus-400 uppercase tracking-wider mb-2">
                                         {category.name}
                                     </h4>
                                     <div className="flex flex-wrap gap-2">
@@ -674,8 +674,8 @@ const TimelineEvolutionWidget: React.FC<TimelineEvolutionWidgetProps> = ({
                                                     key={fullKey}
                                                     onClick={() => toggleSubCategory(fullKey)}
                                                     className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all flex items-center gap-2 ${isSelected
-                                                        ? 'bg-white dark:bg-onyx-800 border-onyx-200 dark:border-onyx-700 text-onyx-900 dark:text-white shadow-sm'
-                                                        : 'bg-transparent border-onyx-200 dark:border-onyx-700 text-onyx-400 dark:text-onyx-500 opacity-50 hover:opacity-100'
+                                                        ? 'bg-white dark:bg-aliseus-800 border-aliseus-200 dark:border-aliseus-700 text-aliseus-900 dark:text-white shadow-sm'
+                                                        : 'bg-transparent border-aliseus-200 dark:border-aliseus-700 text-aliseus-400 dark:text-aliseus-500 opacity-50 hover:opacity-100'
                                                         }`}
                                                 >
                                                     <div
@@ -703,8 +703,8 @@ const TimelineEvolutionWidget: React.FC<TimelineEvolutionWidgetProps> = ({
                                 key={period}
                                 onClick={() => toggleSeries(period)}
                                 className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all flex items-center gap-2 ${hiddenSeries.has(period)
-                                    ? 'bg-transparent border-onyx-200 dark:border-onyx-700 text-onyx-400 dark:text-onyx-500 opacity-50'
-                                    : 'bg-white dark:bg-onyx-800 border-onyx-200 dark:border-onyx-700 text-onyx-900 dark:text-white shadow-sm'
+                                    ? 'bg-transparent border-aliseus-200 dark:border-aliseus-700 text-aliseus-400 dark:text-aliseus-500 opacity-50'
+                                    : 'bg-white dark:bg-aliseus-800 border-aliseus-200 dark:border-aliseus-700 text-aliseus-900 dark:text-white shadow-sm'
                                     }`}
                             >
                                 <div
@@ -728,8 +728,8 @@ const TimelineEvolutionWidget: React.FC<TimelineEvolutionWidgetProps> = ({
                                 key={series}
                                 onClick={() => toggleSeries(series)}
                                 className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all flex items-center gap-2 ${hiddenSeries.has(series)
-                                    ? 'bg-transparent border-onyx-200 dark:border-onyx-700 text-onyx-400 dark:text-onyx-500 opacity-50'
-                                    : 'bg-white dark:bg-onyx-800 border-onyx-200 dark:border-onyx-700 text-onyx-900 dark:text-white shadow-sm'
+                                    ? 'bg-transparent border-aliseus-200 dark:border-aliseus-700 text-aliseus-400 dark:text-aliseus-500 opacity-50'
+                                    : 'bg-white dark:bg-aliseus-800 border-aliseus-200 dark:border-aliseus-700 text-aliseus-900 dark:text-white shadow-sm'
                                     }`}
                             >
                                 <div

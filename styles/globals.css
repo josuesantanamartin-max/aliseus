@@ -4,27 +4,27 @@
 
 :root {
   /* Aliseus Scale (Grays/Blacks) - Default Light Mode */
-  --color-onyx-50: 248 250 252;
+  --color-aliseus-50: 248 250 252;
   /* #F8FAFC */
-  --color-onyx-100: 241 245 249;
+  --color-aliseus-100: 241 245 249;
   /* #F1F5F9 */
-  --color-onyx-200: 226 232 240;
+  --color-aliseus-200: 226 232 240;
   /* #E2E8F0 */
-  --color-onyx-300: 203 213 225;
+  --color-aliseus-300: 203 213 225;
   /* #CBD5E1 */
-  --color-onyx-400: 148 163 184;
+  --color-aliseus-400: 148 163 184;
   /* #94A3B8 */
-  --color-onyx-500: 100 116 139;
+  --color-aliseus-500: 100 116 139;
   /* #64748B */
-  --color-onyx-600: 71 85 105;
+  --color-aliseus-600: 71 85 105;
   /* #475569 */
-  --color-onyx-700: 51 65 85;
+  --color-aliseus-700: 51 65 85;
   /* #334155 */
-  --color-onyx-800: 30 41 59;
+  --color-aliseus-800: 30 41 59;
   /* #1E293B */
-  --color-onyx-900: 15 23 42;
+  --color-aliseus-900: 15 23 42;
   /* #0F172A */
-  --color-onyx-950: 2 6 23;
+  --color-aliseus-950: 2 6 23;
   /* #020617 */
 
   /* Cyan Primary (Aliseus — Canarian ocean blue) */
@@ -35,15 +35,15 @@
 
   /* Base Backgrounds & Text */
   --bg-primary: 248 250 252;
-  /* onyx-50 */
+  /* aliseus-50 */
   --bg-card: 255 255 255;
   /* white */
   --text-primary: 2 6 23;
-  /* onyx-950 */
+  /* aliseus-950 */
   --text-secondary: 100 116 139;
-  /* onyx-500 */
+  /* aliseus-500 */
   --border-primary: 226 232 240;
-  /* onyx-200 */
+  /* aliseus-200 */
 }
 
 [data-theme='dark'] {
@@ -57,15 +57,15 @@
 
   /* Base Backgrounds Mapping */
   --bg-primary: 2 6 23;
-  /* onyx-950 */
+  /* aliseus-950 */
   --bg-card: 15 23 42;
-  /* onyx-900 */
+  /* aliseus-900 */
   --text-primary: 248 250 252;
-  /* onyx-50 */
+  /* aliseus-50 */
   --text-secondary: 148 163 184;
-  /* onyx-400 */
+  /* aliseus-400 */
   --border-primary: 30 41 59;
-  /* onyx-800 */
+  /* aliseus-800 */
 }
 
 /* Global Styles moved from inline */
@@ -95,12 +95,12 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgb(var(--color-onyx-200));
+  background: rgb(var(--color-aliseus-200));
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(var(--color-onyx-300));
+  background: rgb(var(--color-aliseus-300));
 }
 
 /* Animations */

@@ -51,14 +51,14 @@ const ComparisonChart: React.FC<ComparisonChartProps> = ({ transactions }) => {
     }, [transactions]);
 
     return (
-        <div className="bg-white p-10 rounded-onyx border border-onyx-100 shadow-sm hover:shadow-lg transition-all duration-500 group">
+        <div className="bg-white p-10 rounded-Aliseus border border-aliseus-100 shadow-sm hover:shadow-lg transition-all duration-500 group">
             <div className="flex justify-between items-center mb-10">
                 <div>
                     <h3 className="text-xl font-bold text-cyan-900 tracking-tight flex items-center gap-3">
-                        <div className="p-2 bg-onyx-50 text-cyan-primary rounded-lg group-hover:bg-cyan-50 transition-colors"><Activity className="w-5 h-5" /></div>
+                        <div className="p-2 bg-aliseus-50 text-cyan-primary rounded-lg group-hover:bg-cyan-50 transition-colors"><Activity className="w-5 h-5" /></div>
                         Comparativa Mensual
                     </h3>
-                    <p className="text-[10px] font-bold text-onyx-400 mt-2 uppercase tracking-[0.2em]">Rendimiento frente al periodo anterior</p>
+                    <p className="text-[10px] font-bold text-aliseus-400 mt-2 uppercase tracking-[0.2em]">Rendimiento frente al periodo anterior</p>
                 </div>
             </div>
 
@@ -109,8 +109,8 @@ const ComparisonChart: React.FC<ComparisonChartProps> = ({ transactions }) => {
                             : change < 0;
 
                         return (
-                            <div key={item.category} className="p-5 bg-onyx-50/50 rounded-2xl border border-onyx-100/30 hover:bg-white hover:shadow-md transition-all duration-300">
-                                <p className="text-[9px] font-bold text-onyx-400 uppercase tracking-widest mb-2.5">{item.category}</p>
+                            <div key={item.category} className="p-5 bg-aliseus-50/50 rounded-2xl border border-aliseus-100/30 hover:bg-white hover:shadow-md transition-all duration-300">
+                                <p className="text-[9px] font-bold text-aliseus-400 uppercase tracking-widest mb-2.5">{item.category}</p>
                                 <p className="text-lg font-bold text-cyan-900 tracking-tight mb-2">{formatEUR(item.actual)}</p>
                                 <div className={`flex items-center gap-1.5 text-[10px] font-bold ${isPositiveChange ? 'text-emerald-600' : 'text-red-500'}`}>
                                     {isPositiveChange ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}

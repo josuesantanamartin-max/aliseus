@@ -132,7 +132,7 @@ export const RetirementSimulator: React.FC = () => {
             <div className="flex justify-between items-center mb-6">
                 <div>
                     <h2 className="text-2xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
-                        <Calculator className="w-6 h-6 text-onyx-500" />
+                        <Calculator className="w-6 h-6 text-aliseus-500" />
                         Planificador de Jubilación
                     </h2>
                     <p className="text-gray-500 dark:text-gray-400">Simula tu futuro financiero con ajuste de inflación real.</p>
@@ -140,7 +140,7 @@ export const RetirementSimulator: React.FC = () => {
                 <div className="flex gap-2">
                     <button
                         onClick={() => setShowSaveModal(true)}
-                        className="bg-onyx-600 hover:bg-onyx-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+                        className="bg-aliseus-600 hover:bg-aliseus-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
                     >
                         <Save className="w-4 h-4" />
                         {activePlanId ? 'Actualizar Plan' : 'Guardar Plan'}
@@ -227,7 +227,7 @@ export const RetirementSimulator: React.FC = () => {
                     {/* Comparativo de Escenarios */}
                     <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                         <h3 className="font-bold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
-                            <TrendingUp className="w-5 h-5 text-onyx-500" />
+                            <TrendingUp className="w-5 h-5 text-aliseus-500" />
                             Escenarios Comparativos (Rendimiento Anual)
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -243,10 +243,10 @@ export const RetirementSimulator: React.FC = () => {
                                 return (
                                     <div key={s.label} className={cn(
                                         "relative p-4 rounded-xl border-2 transition-all duration-500",
-                                        isActive ? "border-onyx-500 bg-onyx-50/20 shadow-lg shadow-onyx-500/10 scale-[1.02] z-10" : "border-slate-50 bg-white dark:bg-gray-900/50 grayscale-[0.3]"
+                                        isActive ? "border-aliseus-500 bg-aliseus-50/20 shadow-lg shadow-aliseus-500/10 scale-[1.02] z-10" : "border-slate-50 bg-white dark:bg-gray-900/50 grayscale-[0.3]"
                                     )}>
                                         {isActive && (
-                                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-onyx-600 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-md z-20 whitespace-nowrap border-2 border-white dark:border-gray-800">
+                                            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-aliseus-600 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-md z-20 whitespace-nowrap border-2 border-white dark:border-gray-800">
                                                 TU PLAN ACTUAL
                                             </div>
                                         )}
@@ -368,7 +368,7 @@ export const RetirementSimulator: React.FC = () => {
                                     type="text"
                                     value={planName}
                                     onChange={(e) => setPlanName(e.target.value)}
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900 focus:ring-2 focus:ring-onyx-500 outline-none"
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900 focus:ring-2 focus:ring-aliseus-500 outline-none"
                                 />
                             </div>
                             <div className="flex justify-end gap-3 mt-6">
@@ -380,7 +380,7 @@ export const RetirementSimulator: React.FC = () => {
                                 </button>
                                 <button
                                     onClick={handleSave}
-                                    className="px-4 py-2 bg-onyx-600 text-white rounded-lg hover:bg-onyx-700"
+                                    className="px-4 py-2 bg-aliseus-600 text-white rounded-lg hover:bg-aliseus-700"
                                 >
                                     Guardar
                                 </button>
@@ -403,7 +403,7 @@ const InputGroup = ({ label, name, value, onChange, prefix, ...props }: any) => 
                 type="number"
                 value={value}
                 onChange={onChange}
-                className={`w-full ${prefix ? 'pl-7' : 'px-3'} py-2 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900 focus:ring-2 focus:ring-onyx-500 outline-none transition-all`}
+                className={`w-full ${prefix ? 'pl-7' : 'px-3'} py-2 rounded-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-900 focus:ring-2 focus:ring-aliseus-500 outline-none transition-all`}
                 {...props}
             />
         </div>

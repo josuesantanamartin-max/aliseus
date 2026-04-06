@@ -29,18 +29,18 @@ export default {
                 'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.05)',
             },
             colors: {
-                onyx: {
-                    50: 'rgb(var(--color-onyx-50) / <alpha-value>)',
-                    100: 'rgb(var(--color-onyx-100) / <alpha-value>)',
-                    200: 'rgb(var(--color-onyx-200) / <alpha-value>)',
-                    300: 'rgb(var(--color-onyx-300) / <alpha-value>)',
-                    400: 'rgb(var(--color-onyx-400) / <alpha-value>)',
-                    500: 'rgb(var(--color-onyx-500) / <alpha-value>)',
-                    600: 'rgb(var(--color-onyx-600) / <alpha-value>)',
-                    700: 'rgb(var(--color-onyx-700) / <alpha-value>)',
-                    800: 'rgb(var(--color-onyx-800) / <alpha-value>)',
-                    900: 'rgb(var(--color-onyx-900) / <alpha-value>)',
-                    950: 'rgb(var(--color-onyx-950) / <alpha-value>)',
+                aliseus: {
+                    50: 'rgb(var(--color-aliseus-50) / <alpha-value>)',
+                    100: 'rgb(var(--color-aliseus-100) / <alpha-value>)',
+                    200: 'rgb(var(--color-aliseus-200) / <alpha-value>)',
+                    300: 'rgb(var(--color-aliseus-300) / <alpha-value>)',
+                    400: 'rgb(var(--color-aliseus-400) / <alpha-value>)',
+                    500: 'rgb(var(--color-aliseus-500) / <alpha-value>)',
+                    600: 'rgb(var(--color-aliseus-600) / <alpha-value>)',
+                    700: 'rgb(var(--color-aliseus-700) / <alpha-value>)',
+                    800: 'rgb(var(--color-aliseus-800) / <alpha-value>)',
+                    900: 'rgb(var(--color-aliseus-900) / <alpha-value>)',
+                    950: 'rgb(var(--color-aliseus-950) / <alpha-value>)',
                 },
                 indigo: {
                     primary: 'rgb(var(--color-indigo-primary) / <alpha-value>)',
@@ -48,7 +48,7 @@ export default {
                 }
             },
             borderRadius: {
-                'onyx': '24px'
+                'aliseus': '24px'
             }
         },
     },

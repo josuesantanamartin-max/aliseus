@@ -20,21 +20,21 @@ const WelcomeStep: React.FC = () => {
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-2xl mb-10">
-                <div className="p-4 bg-gray-50 dark:bg-onyx-800 rounded-xl border border-gray-100 dark:border-onyx-700">
+                <div className="p-4 bg-gray-50 dark:bg-aliseus-800 rounded-xl border border-gray-100 dark:border-aliseus-700">
                     <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center mb-3 mx-auto text-blue-600 dark:text-blue-400">
                         <ShieldCheck className="w-5 h-5" />
                     </div>
                     <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-1">100% Privado</h3>
                     <p className="text-xs text-gray-500">Tus datos nunca salen de tu dispositivo local.</p>
                 </div>
-                <div className="p-4 bg-gray-50 dark:bg-onyx-800 rounded-xl border border-gray-100 dark:border-onyx-700">
+                <div className="p-4 bg-gray-50 dark:bg-aliseus-800 rounded-xl border border-gray-100 dark:border-aliseus-700">
                     <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center mb-3 mx-auto text-purple-600 dark:text-purple-400">
                         <User className="w-5 h-5" />
                     </div>
                     <h3 className="font-bold text-gray-900 dark:text-white text-sm mb-1">Personalizado</h3>
                     <p className="text-xs text-gray-500">Se adapta a si eres estudiante, familia o pro.</p>
                 </div>
-                <div className="p-4 bg-gray-50 dark:bg-onyx-800 rounded-xl border border-gray-100 dark:border-onyx-700">
+                <div className="p-4 bg-gray-50 dark:bg-aliseus-800 rounded-xl border border-gray-100 dark:border-aliseus-700">
                     <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mb-3 mx-auto text-green-600 dark:text-green-400">
                         <Sparkles className="w-5 h-5" />
                     </div>

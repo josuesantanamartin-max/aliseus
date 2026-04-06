@@ -34,7 +34,7 @@ const UpcomingTripsWidget: React.FC<UpcomingTripsWidgetProps> = ({ onNavigate })
     };
 
     return (
-        <div className="bg-white dark:bg-onyx-900 rounded-[2rem] p-8 shadow-sm border border-gray-100 dark:border-onyx-800 hover:shadow-lg transition-all h-full flex flex-col">
+        <div className="bg-white dark:bg-aliseus-900 rounded-[2rem] p-8 shadow-sm border border-gray-100 dark:border-aliseus-800 hover:shadow-lg transition-all h-full flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
@@ -82,7 +82,7 @@ const UpcomingTripsWidget: React.FC<UpcomingTripsWidgetProps> = ({ onNavigate })
                                 onClick={() => onNavigate('life', 'trips')}
                                 className={`p-4 rounded-xl border transition-all cursor-pointer ${isUrgent
                                         ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-900/50'
-                                        : 'bg-gray-50 dark:bg-onyx-800 border-gray-200 dark:border-onyx-700'
+                                        : 'bg-gray-50 dark:bg-aliseus-800 border-gray-200 dark:border-aliseus-700'
                                     } hover:shadow-md`}
                             >
                                 {/* Trip Header */}
@@ -101,7 +101,7 @@ const UpcomingTripsWidget: React.FC<UpcomingTripsWidgetProps> = ({ onNavigate })
                                             </span>
                                         </div>
                                     </div>
-                                    <div className={`px-2 py-1 rounded-lg ${isUrgent ? 'bg-blue-100 dark:bg-blue-900/30' : 'bg-gray-100 dark:bg-onyx-700'
+                                    <div className={`px-2 py-1 rounded-lg ${isUrgent ? 'bg-blue-100 dark:bg-blue-900/30' : 'bg-gray-100 dark:bg-aliseus-700'
                                         }`}>
                                         <span className={`text-xs font-black ${isUrgent ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400'
                                             }`}>
@@ -111,7 +111,7 @@ const UpcomingTripsWidget: React.FC<UpcomingTripsWidgetProps> = ({ onNavigate })
                                 </div>
 
                                 {/* Budget */}
-                                <div className="flex items-center justify-between p-2 bg-white dark:bg-onyx-900 rounded-lg border border-gray-200 dark:border-onyx-700">
+                                <div className="flex items-center justify-between p-2 bg-white dark:bg-aliseus-900 rounded-lg border border-gray-200 dark:border-aliseus-700">
                                     <div className="flex items-center gap-2">
                                         <Wallet className="w-3 h-3 text-gray-400" />
                                         <span className="text-xs text-gray-600 dark:text-gray-400">
@@ -137,7 +137,7 @@ const UpcomingTripsWidget: React.FC<UpcomingTripsWidgetProps> = ({ onNavigate })
                                                 {trip.checklist.filter(item => item.completed).length}/{trip.checklist.length}
                                             </span>
                                         </div>
-                                        <div className="mt-1 h-1.5 bg-gray-200 dark:bg-onyx-700 rounded-full overflow-hidden">
+                                        <div className="mt-1 h-1.5 bg-gray-200 dark:bg-aliseus-700 rounded-full overflow-hidden">
                                             <div
                                                 className="h-full bg-blue-500 rounded-full transition-all"
                                                 style={{

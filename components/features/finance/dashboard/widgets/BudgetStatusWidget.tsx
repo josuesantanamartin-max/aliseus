@@ -90,18 +90,18 @@ const BudgetStatusWidget: React.FC<BudgetStatusWidgetProps> = ({ budgets, transa
 
     if (sortedCategories.length === 0) {
         return (
-            <div className="bg-white dark:bg-onyx-900 p-8 rounded-onyx border border-onyx-100 dark:border-onyx-800 shadow-sm">
+            <div className="bg-white dark:bg-aliseus-900 p-8 rounded-Aliseus border border-aliseus-100 dark:border-aliseus-800 shadow-sm">
                 <div className="flex flex-col items-center justify-center text-center opacity-50 py-16">
-                    <Activity className="w-12 h-12 text-onyx-200 dark:text-onyx-700 mb-3" />
-                    <p className="text-sm font-bold text-onyx-400 dark:text-onyx-500 uppercase tracking-widest">Sin presupuestos activos</p>
-                    <p className="text-xs text-onyx-300 dark:text-onyx-600 mt-1">Define presupuestos para controlar tus gastos</p>
+                    <Activity className="w-12 h-12 text-aliseus-200 dark:text-aliseus-700 mb-3" />
+                    <p className="text-sm font-bold text-aliseus-400 dark:text-aliseus-500 uppercase tracking-widest">Sin presupuestos activos</p>
+                    <p className="text-xs text-aliseus-300 dark:text-aliseus-600 mt-1">Define presupuestos para controlar tus gastos</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="bg-white dark:bg-onyx-900 p-6 rounded-[2rem] border border-onyx-100 dark:border-onyx-800 shadow-sm hover:shadow-lg transition-all h-full flex flex-col relative overflow-hidden group/widget">
+        <div className="bg-white dark:bg-aliseus-900 p-6 rounded-[2rem] border border-aliseus-100 dark:border-aliseus-800 shadow-sm hover:shadow-lg transition-all h-full flex flex-col relative overflow-hidden group/widget">
             <div className="flex justify-between items-center mb-4 shrink-0 relative z-10">
                 <div>
                     <div className="flex items-center gap-3 mb-2">
@@ -110,7 +110,7 @@ const BudgetStatusWidget: React.FC<BudgetStatusWidgetProps> = ({ budgets, transa
                         </div>
                         <h3 className="text-lg font-black text-cyan-900 dark:text-white tracking-tight">Control de Presupuestos</h3>
                     </div>
-                    <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest">
+                    <p className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest">
                         {timeMode === 'MONTH'
                             ? selectedDate.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })
                             : selectedDate.getFullYear()}
@@ -124,13 +124,13 @@ const BudgetStatusWidget: React.FC<BudgetStatusWidgetProps> = ({ budgets, transa
                     const hasSubcategories = data.subcategories.length > 0;
 
                     return (
-                        <div key={category} className="p-4 bg-onyx-50/50 dark:bg-onyx-800/50 rounded-2xl border border-onyx-100 dark:border-onyx-700 hover:bg-white dark:hover:bg-onyx-800 hover:shadow-sm transition-all">
+                        <div key={category} className="p-4 bg-aliseus-50/50 dark:bg-aliseus-800/50 rounded-2xl border border-aliseus-100 dark:border-aliseus-700 hover:bg-white dark:hover:bg-aliseus-800 hover:shadow-sm transition-all">
                             {/* Category Row */}
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                                 {/* Left: Category Summary */}
                                 <div className="space-y-2">
                                     <div className="flex items-center justify-between">
-                                        <span className="block text-[10px] font-black text-onyx-400 dark:text-onyx-500 uppercase tracking-[0.15em] truncate pr-2">
+                                        <span className="block text-[10px] font-black text-aliseus-400 dark:text-aliseus-500 uppercase tracking-[0.15em] truncate pr-2">
                                             {category}
                                         </span>
                                         <span className={`text-xl font-black shrink-0 ${categoryPercentage > 100 ? 'text-red-500' :
@@ -144,12 +144,12 @@ const BudgetStatusWidget: React.FC<BudgetStatusWidgetProps> = ({ budgets, transa
                                         <span className="text-xl font-black text-cyan-900 dark:text-white tracking-tight">
                                             {formatMoney(data.totalSpent)}
                                         </span>
-                                        <span className="text-[10px] font-bold text-onyx-400 dark:text-onyx-500 truncate">
+                                        <span className="text-[10px] font-bold text-aliseus-400 dark:text-aliseus-500 truncate">
                                             / {formatMoney(data.totalLimit)}
                                         </span>
                                     </div>
 
-                                    <div className="w-full bg-onyx-100 dark:bg-onyx-700 h-2 rounded-full overflow-hidden">
+                                    <div className="w-full bg-aliseus-100 dark:bg-aliseus-700 h-2 rounded-full overflow-hidden">
                                         <div
                                             className={`h-full rounded-full transition-all duration-1000 ${categoryPercentage > 100 ? 'bg-gradient-to-r from-red-500 to-red-600' :
                                                 categoryPercentage > 80 ? 'bg-gradient-to-r from-amber-400 to-amber-500' :
@@ -174,15 +174,15 @@ const BudgetStatusWidget: React.FC<BudgetStatusWidgetProps> = ({ budgets, transa
                                     {hasSubcategories ? (
                                         <div className="space-y-1.5">
                                             {data.subcategories.sort((a, b) => b.percentage - a.percentage).map((sub, idx) => (
-                                                <div key={idx} className="flex items-center justify-between p-2.5 bg-white dark:bg-onyx-900 rounded-xl border border-onyx-100 dark:border-onyx-700">
+                                                <div key={idx} className="flex items-center justify-between p-2.5 bg-white dark:bg-aliseus-900 rounded-xl border border-aliseus-100 dark:border-aliseus-700">
                                                     <div className="flex-1 min-w-0 pr-2">
-                                                        <p className="text-xs font-bold text-onyx-800 dark:text-onyx-200 truncate">{sub.name}</p>
-                                                        <p className="text-[10px] font-bold text-onyx-400 dark:text-onyx-500 truncate mt-0.5">
+                                                        <p className="text-xs font-bold text-aliseus-800 dark:text-aliseus-200 truncate">{sub.name}</p>
+                                                        <p className="text-[10px] font-bold text-aliseus-400 dark:text-aliseus-500 truncate mt-0.5">
                                                             {formatMoney(sub.spent)} / {formatMoney(sub.limit)}
                                                         </p>
                                                     </div>
                                                     <div className="flex items-center gap-3 shrink-0">
-                                                        <div className="w-16 bg-onyx-100 dark:bg-onyx-800 h-1.5 rounded-full overflow-hidden hidden sm:block">
+                                                        <div className="w-16 bg-aliseus-100 dark:bg-aliseus-800 h-1.5 rounded-full overflow-hidden hidden sm:block">
                                                             <div
                                                                 className={`h-full rounded-full ${sub.percentage > 100 ? 'bg-red-500' :
                                                                     sub.percentage > 80 ? 'bg-amber-500' : 'bg-emerald-500'
@@ -201,7 +201,7 @@ const BudgetStatusWidget: React.FC<BudgetStatusWidgetProps> = ({ budgets, transa
                                         </div>
                                     ) : (
                                         <div className="flex flex-col items-center justify-center h-full opacity-40 py-2">
-                                            <p className="text-[10px] font-bold uppercase tracking-widest text-onyx-400">Sin subcategorías</p>
+                                            <p className="text-[10px] font-bold uppercase tracking-widest text-aliseus-400">Sin subcategorías</p>
                                         </div>
                                     )}
                                 </div>

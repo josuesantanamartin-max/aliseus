@@ -10,7 +10,7 @@ export interface TotalSavingsWidgetProps {
 
 export const TotalSavingsWidget: React.FC<TotalSavingsWidgetProps> = ({ totalSavings, savingsThisMonth, savingsAccounts }) => {
     return (
-        <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between relative overflow-hidden">
+        <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-6 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between relative overflow-hidden">
             <div className="z-10">
                 <div className="flex items-center gap-2 mb-2">
                     <PiggyBank className="w-4 h-4 text-sky-500" />
@@ -25,7 +25,7 @@ export const TotalSavingsWidget: React.FC<TotalSavingsWidgetProps> = ({ totalSav
                 </div>
             </div>
 
-            <div className="flex flex-col gap-1.5 mt-4 pt-4 border-t border-slate-100 dark:border-onyx-800/80 z-10">
+            <div className="flex flex-col gap-1.5 mt-4 pt-4 border-t border-slate-100 dark:border-aliseus-800/80 z-10">
                 {savingsAccounts.map(a => (
                     <div key={a.id} className="flex justify-between items-center text-xs">
                         <span className="text-slate-500 font-medium truncate mr-2">{a.name}</span>

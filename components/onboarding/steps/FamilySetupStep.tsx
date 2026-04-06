@@ -66,7 +66,7 @@ const FamilySetupStep: React.FC = () => {
             {/* List of Members */}
             <div className="w-full mb-8 space-y-3">
                 {members.map((member) => (
-                    <div key={member.id} className="flex items-center justify-between p-4 bg-white dark:bg-onyx-800 rounded-xl border border-gray-100 dark:border-onyx-700 shadow-sm animate-fade-in-up">
+                    <div key={member.id} className="flex items-center justify-between p-4 bg-white dark:bg-aliseus-800 rounded-xl border border-gray-100 dark:border-aliseus-700 shadow-sm animate-fade-in-up">
                         <div className="flex items-center gap-4">
                             <div className="w-10 h-10 rounded-full bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
                                 <User className="w-5 h-5" />
@@ -86,14 +86,14 @@ const FamilySetupStep: React.FC = () => {
                 ))}
 
                 {members.length === 0 && (
-                    <div className="text-center py-8 border-2 border-dashed border-gray-200 dark:border-onyx-700 rounded-xl text-gray-400">
+                    <div className="text-center py-8 border-2 border-dashed border-gray-200 dark:border-aliseus-700 rounded-xl text-gray-400">
                         No has añadido ningún miembro aún.
                     </div>
                 )}
             </div>
 
             {/* Add Member Form */}
-            <div className="w-full bg-gray-50 dark:bg-onyx-800/50 p-6 rounded-2xl mb-8">
+            <div className="w-full bg-gray-50 dark:bg-aliseus-800/50 p-6 rounded-2xl mb-8">
                 <h3 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-4 flex items-center gap-2">
                     <UserPlus className="w-4 h-4" /> Añadir Miembro
                 </h3>
@@ -103,19 +103,19 @@ const FamilySetupStep: React.FC = () => {
                         placeholder="Nombre"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="p-3 rounded-lg border border-gray-200 dark:border-onyx-600 bg-white dark:bg-onyx-900 focus:ring-2 focus:ring-cyan-500 outline-none"
+                        className="p-3 rounded-lg border border-gray-200 dark:border-aliseus-600 bg-white dark:bg-aliseus-900 focus:ring-2 focus:ring-cyan-500 outline-none"
                     />
                     <select
                         value={relationship}
                         onChange={(e) => setRelationship(e.target.value)}
-                        className="p-3 rounded-lg border border-gray-200 dark:border-onyx-600 bg-white dark:bg-onyx-900 focus:ring-2 focus:ring-cyan-500 outline-none"
+                        className="p-3 rounded-lg border border-gray-200 dark:border-aliseus-600 bg-white dark:bg-aliseus-900 focus:ring-2 focus:ring-cyan-500 outline-none"
                     >
                         {RELATIONSHIPS.map(r => <option key={r} value={r}>{r}</option>)}
                     </select>
                     <select
                         value={role}
                         onChange={(e) => setRole(e.target.value as any)}
-                        className="p-3 rounded-lg border border-gray-200 dark:border-onyx-600 bg-white dark:bg-onyx-900 focus:ring-2 focus:ring-cyan-500 outline-none"
+                        className="p-3 rounded-lg border border-gray-200 dark:border-aliseus-600 bg-white dark:bg-aliseus-900 focus:ring-2 focus:ring-cyan-500 outline-none"
                     >
                         {ROLES.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
                     </select>

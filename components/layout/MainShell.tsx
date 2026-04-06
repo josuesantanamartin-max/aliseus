@@ -57,7 +57,7 @@ const MainShell: React.FC = () => {
     };
 
     return (
-        <div className="flex h-screen bg-onyx-50 font-sans text-onyx-950 overflow-hidden relative">
+        <div className="flex h-screen bg-aliseus-50 font-sans text-aliseus-950 overflow-hidden relative">
             <Sidebar onLogout={handleLogout} />
             <main className="flex-1 flex flex-col h-screen overflow-hidden relative bg-primary transition-colors duration-300">
                 <div className="flex-1 overflow-y-auto custom-scrollbar">

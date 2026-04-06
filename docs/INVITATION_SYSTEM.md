@@ -1,4 +1,4 @@
-# Sistema de Invitaciones Beta - Guía de Implementación
+# Sistema de Invitaciones - Socio Fundador
 
 ## Descripción
 

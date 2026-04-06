@@ -23,9 +23,9 @@ export const AccountSidebar: React.FC<AccountSidebarProps> = ({
     onDragStart, onDragOver, onDrop, onDragEnd,
 }) => (
     <div className="md:col-span-4 space-y-6">
-        <div className="flex items-center justify-between pb-4 border-b border-onyx-100">
+        <div className="flex items-center justify-between pb-4 border-b border-aliseus-100">
             <h3 className="font-bold text-cyan-900 text-lg">Tus Cuentas</h3>
-            <span className="text-xs font-bold bg-onyx-100 px-2 py-1 rounded-lg text-onyx-500">{accounts.length} Activas</span>
+            <span className="text-xs font-bold bg-aliseus-100 px-2 py-1 rounded-lg text-aliseus-500">{accounts.length} Activas</span>
         </div>
         <div className="space-y-3">
             {accounts.map((account, index) => {
@@ -40,10 +40,10 @@ export const AccountSidebar: React.FC<AccountSidebarProps> = ({
                         onDrop={e => onDrop(e, index)} onDragEnd={onDragEnd}
                         onClick={() => onSelectAccount(account.id)}
                         className={`p-5 rounded-2xl border cursor-pointer transition-all duration-300 group relative overflow-hidden select-none
-                            ${isSelected ? 'bg-gradient-to-br from-cyan-600 to-teal-600 text-white border-transparent shadow-xl scale-[1.02]' : 'bg-white text-cyan-900 border-onyx-100 hover:border-cyan-200 hover:bg-slate-50'}
+                            ${isSelected ? 'bg-gradient-to-br from-cyan-600 to-teal-600 text-white border-transparent shadow-xl scale-[1.02]' : 'bg-white text-cyan-900 border-aliseus-100 hover:border-cyan-200 hover:bg-slate-50'}
                             ${isDraggedOver ? 'border-cyan-400 border-2 scale-[1.01] shadow-md shadow-cyan-200' : ''}
                             ${dragIndex === index ? 'opacity-50' : ''}`}>
-                        <div className={`absolute left-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing ${isSelected ? 'text-white/30' : 'text-onyx-300'}`}>
+                        <div className={`absolute left-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing ${isSelected ? 'text-white/30' : 'text-aliseus-300'}`}>
                             <GripVertical className="w-4 h-4" />
                         </div>
                         <div className="flex justify-between items-center mb-1 pl-3">
@@ -52,9 +52,9 @@ export const AccountSidebar: React.FC<AccountSidebarProps> = ({
                                     <Icon className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    {account.bankName && <p className={`text-[10px] font-bold uppercase tracking-widest ${isSelected ? 'text-white/50' : 'text-onyx-400'}`}>{account.bankName}</p>}
+                                    {account.bankName && <p className={`text-[10px] font-bold uppercase tracking-widest ${isSelected ? 'text-white/50' : 'text-aliseus-400'}`}>{account.bankName}</p>}
                                     <p className="font-semibold text-sm leading-tight line-clamp-1">{account.name}</p>
-                                    <p className={`text-[10px] ${isSelected ? 'text-white/40' : 'text-onyx-300'}`}>{cfg.label}</p>
+                                    <p className={`text-[10px] ${isSelected ? 'text-white/40' : 'text-aliseus-300'}`}>{cfg.label}</p>
                                 </div>
                             </div>
                         </div>

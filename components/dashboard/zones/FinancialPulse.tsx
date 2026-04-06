@@ -56,7 +56,7 @@ export default function FinancialPulse() {
     return (
         <div className="flex flex-col h-full w-full">
             {/* Main Pulso Financiero Card (Mobile First Design) */}
-            <div className="rounded-[2.5rem] bg-gradient-to-b from-sky-50 via-white to-brand-50/30 dark:from-onyx-900 dark:via-onyx-900/80 dark:to-onyx-800 p-8 shadow-sm border border-slate-100 dark:border-onyx-800 flex flex-col gap-8 relative overflow-hidden">
+            <div className="rounded-[2.5rem] bg-gradient-to-b from-sky-50 via-white to-brand-50/30 dark:from-aliseus-900 dark:via-aliseus-900/80 dark:to-aliseus-800 p-8 shadow-sm border border-slate-100 dark:border-aliseus-800 flex flex-col gap-8 relative overflow-hidden">
 
                 {/* Header Metrics */}
                 <div className="flex flex-col gap-1 z-10">
@@ -79,7 +79,7 @@ export default function FinancialPulse() {
 
                 {/* Progress Bar */}
                 <div className="flex flex-col gap-2 z-10 py-2">
-                    <div className="h-4 bg-slate-200 dark:bg-onyx-800 rounded-full overflow-hidden w-full relative">
+                    <div className="h-4 bg-slate-200 dark:bg-aliseus-800 rounded-full overflow-hidden w-full relative">
                         <div
                             className={cn(
                                 "h-full rounded-full transition-all duration-1000 ease-out",
@@ -96,7 +96,7 @@ export default function FinancialPulse() {
                 </div>
 
                 {/* The Hero Metric: Restante Real */}
-                <div className="flex flex-col gap-1 z-10 pt-2 pb-4 border-b border-white/50 dark:border-onyx-700/50">
+                <div className="flex flex-col gap-1 z-10 pt-2 pb-4 border-b border-white/50 dark:border-aliseus-700/50">
                     <span className="text-sm font-medium text-slate-600 dark:text-slate-400">Restante Real</span>
                     <div className="flex items-baseline gap-3">
                         <span className="text-6xl md:text-7xl font-black text-emerald-600 dark:text-emerald-400 tracking-tighter tabular-nums drop-shadow-sm">
@@ -113,7 +113,7 @@ export default function FinancialPulse() {
                     <h3 className="text-xs font-bold text-slate-500 tracking-widest uppercase">Mi Economía</h3>
                     <div className="flex flex-wrap items-center gap-4">
                         {mainAccount && (
-                            <div className="flex items-center gap-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 bg-white/50 dark:bg-onyx-800/50 px-3 py-1.5 rounded-xl border border-white dark:border-onyx-700">
+                            <div className="flex items-center gap-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 bg-white/50 dark:bg-aliseus-800/50 px-3 py-1.5 rounded-xl border border-white dark:border-aliseus-700">
                                 <Building2 className="w-4 h-4 text-sky-500" />
                                 <span>Cuenta Principal: <strong className="text-slate-900 dark:text-white">{formatCurrency(mainAccount.balance)}</strong></span>
                             </div>

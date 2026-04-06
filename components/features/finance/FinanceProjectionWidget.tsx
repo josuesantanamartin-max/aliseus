@@ -96,7 +96,7 @@ const FinanceProjectionWidget = () => {
     };
 
     return (
-        <div className="bg-white dark:bg-onyx-900 p-6 rounded-3xl border border-gray-100 dark:border-onyx-800 shadow-sm h-full flex flex-col relative">
+        <div className="bg-white dark:bg-aliseus-900 p-6 rounded-3xl border border-gray-100 dark:border-aliseus-800 shadow-sm h-full flex flex-col relative">
             <div className="flex justify-between items-start mb-6">
                 <div>
                     <div className="flex items-center gap-3">
@@ -109,13 +109,13 @@ const FinanceProjectionWidget = () => {
                         <div className="relative">
                             <button
                                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                className="bg-gray-50 dark:bg-onyx-800 hover:bg-gray-100 dark:hover:bg-onyx-700 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors flex items-center gap-1 border border-gray-200 dark:border-onyx-700"
+                                className="bg-gray-50 dark:bg-aliseus-800 hover:bg-gray-100 dark:hover:bg-aliseus-700 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors flex items-center gap-1 border border-gray-200 dark:border-aliseus-700"
                             >
                                 {getTimeframeLabel(timeframe)} <ChevronDown className="w-3 h-3" />
                             </button>
 
                             {isDropdownOpen && (
-                                <div className="absolute top-full mt-1 left-0 z-50 bg-white dark:bg-onyx-800 border border-gray-100 dark:border-onyx-700 shadow-xl rounded-xl py-2 w-32 animate-in fade-in slide-in-from-top-2">
+                                <div className="absolute top-full mt-1 left-0 z-50 bg-white dark:bg-aliseus-800 border border-gray-100 dark:border-aliseus-700 shadow-xl rounded-xl py-2 w-32 animate-in fade-in slide-in-from-top-2">
                                     {(['1M', '3M', '6M', '1Y'] as Timeframe[]).map((tf) => (
                                         <button
                                             key={tf}
@@ -123,7 +123,7 @@ const FinanceProjectionWidget = () => {
                                                 setTimeframe(tf);
                                                 setIsDropdownOpen(false);
                                             }}
-                                            className={`w-full text-left px-4 py-2 text-sm transition-colors ${timeframe === tf ? 'bg-cyan-50 dark:bg-cyan-900/20 text-cyan-600 dark:text-cyan-400 font-bold' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-onyx-700 font-medium'}`}
+                                            className={`w-full text-left px-4 py-2 text-sm transition-colors ${timeframe === tf ? 'bg-cyan-50 dark:bg-cyan-900/20 text-cyan-600 dark:text-cyan-400 font-bold' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-aliseus-700 font-medium'}`}
                                         >
                                             {getTimeframeLabel(tf)}
                                         </button>
@@ -187,7 +187,7 @@ const FinanceProjectionWidget = () => {
                 </ResponsiveContainer>
             </div>
 
-            <div className="mt-4 flex items-center justify-between pt-4 border-t border-gray-50 dark:border-onyx-800">
+            <div className="mt-4 flex items-center justify-between pt-4 border-t border-gray-50 dark:border-aliseus-800">
                 <div>
                     <p className="text-[10px] uppercase font-bold text-gray-400 tracking-widest">Balance Actual</p>
                     <p className="text-lg font-bold text-gray-900 dark:text-white">{new Intl.NumberFormat('es-ES', { style: 'currency', currency: currency || 'EUR' }).format(currentBalance)}</p>

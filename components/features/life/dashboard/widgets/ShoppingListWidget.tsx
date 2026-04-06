@@ -11,7 +11,7 @@ const ShoppingListWidget: React.FC<ShoppingListWidgetProps> = ({ onNavigate }) =
     const topItems = shoppingList.filter(i => !i.checked).slice(0, 4);
 
     return (
-        <div className="bg-white dark:bg-onyx-900 rounded-[2rem] p-6 shadow-sm border border-gray-100 dark:border-onyx-800 hover:shadow-lg transition-all h-full relative group">
+        <div className="bg-white dark:bg-aliseus-900 rounded-[2rem] p-6 shadow-sm border border-gray-100 dark:border-aliseus-800 hover:shadow-lg transition-all h-full relative group">
             <div className="flex justify-between items-center mb-6">
                 <div className="flex items-center gap-3">
                     <div className="p-2.5 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl text-indigo-600 dark:text-indigo-400">
@@ -28,7 +28,7 @@ const ShoppingListWidget: React.FC<ShoppingListWidgetProps> = ({ onNavigate }) =
                 </div>
                 <button
                     onClick={() => onNavigate('life', 'grocery-list')}
-                    className="p-2 hover:bg-gray-100 dark:hover:bg-onyx-800 rounded-full text-indigo-600 dark:text-indigo-400 transition-colors"
+                    className="p-2 hover:bg-gray-100 dark:hover:bg-aliseus-800 rounded-full text-indigo-600 dark:text-indigo-400 transition-colors"
                 >
                     <Plus className="w-4 h-4" />
                 </button>
@@ -37,7 +37,7 @@ const ShoppingListWidget: React.FC<ShoppingListWidgetProps> = ({ onNavigate }) =
             <div className="space-y-3">
                 {topItems.length > 0 ? (
                     topItems.map((item) => (
-                        <div key={item.id} className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-onyx-800 rounded-xl border border-gray-100 dark:border-onyx-700/50">
+                        <div key={item.id} className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-aliseus-800 rounded-xl border border-gray-100 dark:border-aliseus-700/50">
                             <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${item.checked ? 'bg-green-500 border-green-500' : 'border-gray-300 dark:border-gray-600'}`}>
                                 {item.checked && <Check className="w-3 h-3 text-white" />}
                             </div>

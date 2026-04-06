@@ -99,7 +99,7 @@ export const LifeOverview: React.FC<LifeOverviewProps> = () => {
 
                 <div
                     onClick={() => setActiveTab('travel')}
-                    className="bg-white dark:bg-onyx-900 rounded-[2.5rem] p-8 border border-gray-100 dark:border-onyx-800 shadow-sm relative overflow-hidden group cursor-pointer hover:border-blue-200 dark:hover:border-blue-900/50 hover:shadow-md transition-all"
+                    className="bg-white dark:bg-aliseus-900 rounded-[2.5rem] p-8 border border-gray-100 dark:border-aliseus-800 shadow-sm relative overflow-hidden group cursor-pointer hover:border-blue-200 dark:hover:border-blue-900/50 hover:shadow-md transition-all"
                 >
                     <div className="flex justify-between items-start mb-6">
                         <div className="p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-2xl"><Plane className="w-6 h-6" /></div>
@@ -119,7 +119,7 @@ export const LifeOverview: React.FC<LifeOverviewProps> = () => {
 
                 <div
                     onClick={() => setActiveTab('family')}
-                    className="bg-white dark:bg-onyx-900 rounded-[2.5rem] p-8 border border-gray-100 dark:border-onyx-800 shadow-sm relative overflow-hidden group cursor-pointer hover:border-yellow-200 dark:hover:border-yellow-900/50 hover:shadow-md transition-all"
+                    className="bg-white dark:bg-aliseus-900 rounded-[2.5rem] p-8 border border-gray-100 dark:border-aliseus-800 shadow-sm relative overflow-hidden group cursor-pointer hover:border-yellow-200 dark:hover:border-yellow-900/50 hover:shadow-md transition-all"
                 >
                     <div className="flex justify-between items-start mb-6">
                         <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-500 rounded-2xl"><Baby className="w-6 h-6" /></div>
@@ -129,7 +129,7 @@ export const LifeOverview: React.FC<LifeOverviewProps> = () => {
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white">{t.members}</h3>
                     <div className="flex -space-x-2 mt-4">
                         {familyMembers.slice(0, 4).map((m, i) => (
-                            <div key={i} className="w-8 h-8 rounded-full bg-gray-200 dark:bg-onyx-700 border-2 border-white dark:border-onyx-800 flex items-center justify-center text-xs font-bold text-gray-500 dark:text-gray-300">
+                            <div key={i} className="w-8 h-8 rounded-full bg-gray-200 dark:bg-aliseus-700 border-2 border-white dark:border-aliseus-800 flex items-center justify-center text-xs font-bold text-gray-500 dark:text-gray-300">
                                 {m.name[0]}
                             </div>
                         ))}
@@ -138,7 +138,7 @@ export const LifeOverview: React.FC<LifeOverviewProps> = () => {
 
                 <div
                     onClick={() => setActiveTab('spaces')}
-                    className="bg-white dark:bg-onyx-900 rounded-[2.5rem] p-8 border border-gray-100 dark:border-onyx-800 shadow-sm relative overflow-hidden group cursor-pointer hover:border-cyan-200 dark:hover:border-cyan-900/50 hover:shadow-md transition-all"
+                    className="bg-white dark:bg-aliseus-900 rounded-[2.5rem] p-8 border border-gray-100 dark:border-aliseus-800 shadow-sm relative overflow-hidden group cursor-pointer hover:border-cyan-200 dark:hover:border-cyan-900/50 hover:shadow-md transition-all"
                 >
                     <div className="p-3 bg-cyan-50 dark:bg-cyan-900/20 text-cyan-600 dark:text-cyan-400 rounded-2xl w-fit mb-6"><Home className="w-6 h-6" /></div>
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white">{t.spaces}</h3>

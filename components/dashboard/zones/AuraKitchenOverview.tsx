@@ -37,7 +37,7 @@ function cn(...inputs: ClassValue[]) {
 // Re-using the DetailedBudgetWidget concept, we'll build an inline DetailedPantryWidget
 function DetailedPantryWidget({ itemsByCategory }: { itemsByCategory: any[] }) {
     return (
-        <div className="bg-white dark:bg-onyx-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full min-h-[300px]">
+        <div className="bg-white dark:bg-aliseus-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full min-h-[300px]">
             <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-6">
                 Despensa Detallada
             </h3>
@@ -61,7 +61,7 @@ function DetailedPantryWidget({ itemsByCategory }: { itemsByCategory: any[] }) {
                                 </span>
                             </div>
                             
-                            <div className="w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-1.5 overflow-hidden">
+                            <div className="w-full bg-slate-100 dark:bg-aliseus-800 rounded-full h-1.5 overflow-hidden">
                                 <div 
                                     className="h-full rounded-full transition-all duration-1000"
                                     style={{ 
@@ -72,11 +72,11 @@ function DetailedPantryWidget({ itemsByCategory }: { itemsByCategory: any[] }) {
                             </div>
                             
                             {cat.topItems && cat.topItems.length > 0 && (
-                                <div className="pl-4 mt-2 space-y-2 border-l-2 border-slate-100 dark:border-onyx-800 ml-1">
+                                <div className="pl-4 mt-2 space-y-2 border-l-2 border-slate-100 dark:border-aliseus-800 ml-1">
                                     {cat.topItems.map((item: any, i: number) => (
                                         <div key={i} className="flex justify-between items-center text-[11px] font-medium">
                                             <span className="text-slate-500 truncate max-w-[120px]">{item.name}</span>
-                                            <span className="font-bold text-slate-600 dark:text-slate-400 tabular-nums bg-slate-50 dark:bg-onyx-800 px-2 py-0.5 rounded-md">
+                                            <span className="font-bold text-slate-600 dark:text-slate-400 tabular-nums bg-slate-50 dark:bg-aliseus-800 px-2 py-0.5 rounded-md">
                                                 {item.quantity} {item.unit}
                                             </span>
                                         </div>
@@ -393,7 +393,7 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 
                 {/* 1. Comidas de Hoy */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between h-full min-h-[380px]">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-6 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between h-full min-h-[380px]">
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
                             <ChefHat className="w-4 h-4 text-slate-400" />
@@ -405,7 +405,7 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
                         </div>
                     </div>
 
-                    <div className="w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-1.5 mb-3 overflow-hidden shrink-0">
+                    <div className="w-full bg-slate-100 dark:bg-aliseus-800 rounded-full h-1.5 mb-3 overflow-hidden shrink-0">
                         <div
                             className={cn("h-full rounded-full transition-all duration-1000", plannedMealsCount === totalMealsCount ? "bg-emerald-500" : "bg-blue-600")}
                             style={{ width: `${(plannedMealsCount / totalMealsCount) * 100}%` }}
@@ -428,7 +428,7 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
                         {plannedMealsCount > 0 ? (
                              Object.entries(todayMeals).map(([type, meals]: [string, any[]]) => (
                                 meals.length > 0 && (
-                                    <div key={type} className="flex justify-between items-center bg-slate-50 dark:bg-onyx-800/50 p-3 rounded-2xl border border-slate-100 dark:border-onyx-700">
+                                    <div key={type} className="flex justify-between items-center bg-slate-50 dark:bg-aliseus-800/50 p-3 rounded-2xl border border-slate-100 dark:border-aliseus-700">
                                         <div className="flex items-center gap-3">
                                             <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
                                                 {type === 'breakfast' && <Coffee className="w-4 h-4" />}
@@ -443,7 +443,7 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
                              ))
                         ) : (
                             <div className="flex flex-col items-center justify-center h-full text-center py-6">
-                                <div className="w-12 h-12 bg-slate-50 dark:bg-onyx-800 rounded-full flex items-center justify-center mb-3">
+                                <div className="w-12 h-12 bg-slate-50 dark:bg-aliseus-800 rounded-full flex items-center justify-center mb-3">
                                     <ChefHat className="w-5 h-5 text-slate-400" />
                                 </div>
                                 <p className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Nada previsto para hoy</p>
@@ -455,7 +455,7 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
                 </div>
 
                 {/* 2. Lista de Compra */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full min-h-[380px]">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-6 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full min-h-[380px]">
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
                             <ShoppingCart className="w-4 h-4 text-slate-400" />
@@ -482,7 +482,7 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
                     <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-3">
                         {lowStockItems.length > 0 && (
                             <div className="space-y-2">
-                                <h4 className="text-[10px] font-bold text-red-500 uppercase tracking-widest sticky top-0 bg-white/90 dark:bg-onyx-900/90 backdrop-blur-sm py-1 z-10">Faltantes Críticos</h4>
+                                <h4 className="text-[10px] font-bold text-red-500 uppercase tracking-widest sticky top-0 bg-white/90 dark:bg-aliseus-900/90 backdrop-blur-sm py-1 z-10">Faltantes Críticos</h4>
                                 {lowStockItems.slice(0, 3).map((item) => (
                                     <div key={'us-'+item.id} className="flex justify-between items-center bg-red-50/50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 p-3 rounded-xl">
                                         <span className="text-xs font-bold text-red-700 dark:text-red-400 truncate">{item.name}</span>
@@ -494,9 +494,9 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
 
                         {shoppingList.length > 0 ? (
                             <div className="space-y-2 mt-4">
-                                <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest sticky top-0 bg-white/90 dark:bg-onyx-900/90 backdrop-blur-sm py-1 z-10">Pendientes</h4>
+                                <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest sticky top-0 bg-white/90 dark:bg-aliseus-900/90 backdrop-blur-sm py-1 z-10">Pendientes</h4>
                                 {shoppingList.slice(0, 5).map((item) => (
-                                    <div key={'sq-'+item.id} className="flex justify-between items-center bg-slate-50 dark:bg-onyx-800/50 p-3 rounded-xl border border-slate-100 dark:border-onyx-800">
+                                    <div key={'sq-'+item.id} className="flex justify-between items-center bg-slate-50 dark:bg-aliseus-800/50 p-3 rounded-xl border border-slate-100 dark:border-aliseus-800">
                                         <span className="text-xs font-medium text-slate-700 dark:text-slate-300 truncate mr-2">{item.name}</span>
                                         <span className="text-[10px] font-bold text-slate-400 tabular-nums">{item.quantity} {item.unit}</span>
                                     </div>
@@ -504,7 +504,7 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
                             </div>
                         ) : lowStockItems.length === 0 && (
                             <div className="flex flex-col items-center justify-center h-full text-center py-6">
-                                <div className="w-12 h-12 bg-slate-50 dark:bg-onyx-800 rounded-full flex items-center justify-center mb-3">
+                                <div className="w-12 h-12 bg-slate-50 dark:bg-aliseus-800 rounded-full flex items-center justify-center mb-3">
                                     <ShoppingCart className="w-5 h-5 text-slate-400" />
                                 </div>
                                 <p className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">Lista vacía</p>
@@ -518,7 +518,7 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
             {/* ROW 3: SNAPSHOTS / KPIs (Capa 2 - 4 Cols) */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* 1. Salud de Stock */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-5 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
                     <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Salud de Stock</h3>
                     <div className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight mt-1">
                         {stockHealth}%
@@ -529,7 +529,7 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
                 </div>
 
                 {/* 2. Índice de Frescura */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-5 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
                     <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Frescura Global</h3>
                     <div className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight mt-1">
                         {freshnessScore}<span className="text-sm font-bold opacity-30">/100</span>
@@ -540,7 +540,7 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
                 </div>
 
                 {/* 3. Gasto Mensual */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-5 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
                     <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Inversión en Despensa</h3>
                     <div className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight mt-1">
                         {formatCurrency(foodSpendingThisMonth)}
@@ -551,7 +551,7 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
                 </div>
 
                 {/* 4. Inventario Total */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-5 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
                     <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Artículos en Despensa</h3>
                     <div className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight mt-1">
                         {totalPantryItems}
@@ -568,12 +568,12 @@ export default function AuraKitchenOverview({ selectedDate: selectedDateProp }: 
                     <DetailedPantryWidget itemsByCategory={pantryByCategory} />
                 </div>
                 <div className="lg:col-span-1">
-                    <div className="bg-white dark:bg-onyx-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full">
+                    <div className="bg-white dark:bg-aliseus-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full">
                         <div className="flex justify-between items-center mb-6">
                             <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Evolución de Gasto en Compra</h3>
-                            <div className="bg-slate-50 dark:bg-onyx-800 border border-slate-100 dark:border-onyx-700/50 rounded-lg p-1 flex">
+                            <div className="bg-slate-50 dark:bg-aliseus-800 border border-slate-100 dark:border-aliseus-700/50 rounded-lg p-1 flex">
                                 {(['1m', '6m', '1y'] as const).map(tf => (
-                                    <button key={tf} onClick={() => setChartTimeframe(tf)} className={cn("px-2 py-1 text-[10px] font-bold rounded-md transition-colors", chartTimeframe === tf ? "bg-white dark:bg-onyx-600 text-slate-900 dark:text-white shadow-sm" : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300")}>
+                                    <button key={tf} onClick={() => setChartTimeframe(tf)} className={cn("px-2 py-1 text-[10px] font-bold rounded-md transition-colors", chartTimeframe === tf ? "bg-white dark:bg-aliseus-600 text-slate-900 dark:text-white shadow-sm" : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300")}>
                                         {tf}
                                     </button>
                                 ))}

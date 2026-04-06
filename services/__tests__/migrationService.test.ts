@@ -50,7 +50,7 @@ describe('MigrationService', () => {
         });
 
         it('should return true if migration completed', () => {
-            localStorage.setItem('onyx_migration_completed', 'true');
+            localStorage.setItem('Aliseus_migration_completed', 'true');
             expect(migrationService.isMigrationCompleted()).toBe(true);
         });
     });
@@ -58,15 +58,15 @@ describe('MigrationService', () => {
     describe('markMigrationCompleted', () => {
         it('should mark migration as completed', () => {
             migrationService.markMigrationCompleted();
-            expect(localStorage.getItem('onyx_migration_completed')).toBe('true');
+            expect(localStorage.getItem('Aliseus_migration_completed')).toBe('true');
         });
     });
 
     describe('resetMigrationStatus', () => {
         it('should reset migration status', () => {
-            localStorage.setItem('onyx_migration_completed', 'true');
+            localStorage.setItem('Aliseus_migration_completed', 'true');
             migrationService.resetMigrationStatus();
-            expect(localStorage.getItem('onyx_migration_completed')).toBeNull();
+            expect(localStorage.getItem('Aliseus_migration_completed')).toBeNull();
         });
     });
 
@@ -79,7 +79,7 @@ describe('MigrationService', () => {
                 },
             };
 
-            localStorage.setItem('onyx_finance_store', JSON.stringify(financeData));
+            localStorage.setItem('Aliseus_finance_store', JSON.stringify(financeData));
 
             const data = migrationService.getLocalData();
 
@@ -94,7 +94,7 @@ describe('MigrationService', () => {
                 },
             };
 
-            localStorage.setItem('onyx_life_store', JSON.stringify(lifeData));
+            localStorage.setItem('Aliseus_life_store', JSON.stringify(lifeData));
 
             const data = migrationService.getLocalData();
 
@@ -120,7 +120,7 @@ describe('MigrationService', () => {
         });
 
         it('should return success if migration already completed', async () => {
-            localStorage.setItem('onyx_migration_completed', 'true');
+            localStorage.setItem('Aliseus_migration_completed', 'true');
 
             const result = await migrationService.migrateToCloud();
 
@@ -138,7 +138,7 @@ describe('MigrationService', () => {
                 },
             };
 
-            localStorage.setItem('onyx_finance_store', JSON.stringify(financeData));
+            localStorage.setItem('Aliseus_finance_store', JSON.stringify(financeData));
             mockSaveAccount.mockResolvedValue({});
 
             const result = await migrationService.migrateToCloud();
@@ -159,7 +159,7 @@ describe('MigrationService', () => {
                 },
             };
 
-            localStorage.setItem('onyx_finance_store', JSON.stringify(financeData));
+            localStorage.setItem('Aliseus_finance_store', JSON.stringify(financeData));
             mockSaveTransaction.mockResolvedValue({});
 
             const result = await migrationService.migrateToCloud();
@@ -176,7 +176,7 @@ describe('MigrationService', () => {
                 },
             };
 
-            localStorage.setItem('onyx_finance_store', JSON.stringify(financeData));
+            localStorage.setItem('Aliseus_finance_store', JSON.stringify(financeData));
             mockSaveBudget.mockResolvedValue({});
 
             const result = await migrationService.migrateToCloud();
@@ -192,7 +192,7 @@ describe('MigrationService', () => {
                 },
             };
 
-            localStorage.setItem('onyx_finance_store', JSON.stringify(financeData));
+            localStorage.setItem('Aliseus_finance_store', JSON.stringify(financeData));
             mockSaveGoal.mockResolvedValue({});
 
             const result = await migrationService.migrateToCloud();
@@ -208,7 +208,7 @@ describe('MigrationService', () => {
                 },
             };
 
-            localStorage.setItem('onyx_finance_store', JSON.stringify(financeData));
+            localStorage.setItem('Aliseus_finance_store', JSON.stringify(financeData));
             mockSaveDebt.mockResolvedValue({});
 
             const result = await migrationService.migrateToCloud();
@@ -227,7 +227,7 @@ describe('MigrationService', () => {
                 },
             };
 
-            localStorage.setItem('onyx_life_store', JSON.stringify(lifeData));
+            localStorage.setItem('Aliseus_life_store', JSON.stringify(lifeData));
             mockSavePantryItem.mockResolvedValue({});
 
             const result = await migrationService.migrateToCloud();
@@ -243,7 +243,7 @@ describe('MigrationService', () => {
                 },
             };
 
-            localStorage.setItem('onyx_life_store', JSON.stringify(lifeData));
+            localStorage.setItem('Aliseus_life_store', JSON.stringify(lifeData));
             mockSaveRecipe.mockResolvedValue({});
 
             const result = await migrationService.migrateToCloud();
@@ -259,7 +259,7 @@ describe('MigrationService', () => {
                 },
             };
 
-            localStorage.setItem('onyx_life_store', JSON.stringify(lifeData));
+            localStorage.setItem('Aliseus_life_store', JSON.stringify(lifeData));
             mockSaveShoppingItem.mockResolvedValue({});
 
             const result = await migrationService.migrateToCloud();
@@ -278,7 +278,7 @@ describe('MigrationService', () => {
                 },
             };
 
-            localStorage.setItem('onyx_life_store', JSON.stringify(lifeData));
+            localStorage.setItem('Aliseus_life_store', JSON.stringify(lifeData));
             mockSaveWeeklyPlan.mockResolvedValue({});
 
             const result = await migrationService.migrateToCloud();
@@ -294,7 +294,7 @@ describe('MigrationService', () => {
                 },
             };
 
-            localStorage.setItem('onyx_life_store', JSON.stringify(lifeData));
+            localStorage.setItem('Aliseus_life_store', JSON.stringify(lifeData));
             mockSaveFamilyMember.mockResolvedValue({});
 
             const result = await migrationService.migrateToCloud();
@@ -310,7 +310,7 @@ describe('MigrationService', () => {
                 },
             };
 
-            localStorage.setItem('onyx_finance_store', JSON.stringify(financeData));
+            localStorage.setItem('Aliseus_finance_store', JSON.stringify(financeData));
             mockSaveAccount.mockRejectedValueOnce(new Error('Save failed'));
 
             const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
@@ -330,12 +330,12 @@ describe('MigrationService', () => {
                 },
             };
 
-            localStorage.setItem('onyx_finance_store', JSON.stringify(financeData));
+            localStorage.setItem('Aliseus_finance_store', JSON.stringify(financeData));
             mockSaveAccount.mockResolvedValue({});
 
             await migrationService.migrateToCloud();
 
-            expect(localStorage.getItem('onyx_migration_completed')).toBe('true');
+            expect(localStorage.getItem('Aliseus_migration_completed')).toBe('true');
         });
 
         it('should calculate total migrated items', async () => {
@@ -352,8 +352,8 @@ describe('MigrationService', () => {
                 },
             };
 
-            localStorage.setItem('onyx_finance_store', JSON.stringify(financeData));
-            localStorage.setItem('onyx_life_store', JSON.stringify(lifeData));
+            localStorage.setItem('Aliseus_finance_store', JSON.stringify(financeData));
+            localStorage.setItem('Aliseus_life_store', JSON.stringify(lifeData));
 
             mockSaveAccount.mockResolvedValue({});
             mockSaveTransaction.mockResolvedValue({});

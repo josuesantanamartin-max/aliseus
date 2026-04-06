@@ -5,7 +5,7 @@ import { useFinanceStore } from '../../store/useFinanceStore';
 import { useLifeStore } from '../../store/useLifeStore';
 import { useHouseholdStore } from '../../store/useHouseholdStore';
 import { realtimeService } from '../../services/realtimeService';
-import AliseusLanding from '../layout/OnyxLanding';
+import AliseusLanding from '../layout/AliseusLanding';
 import OnboardingWizard from '../onboarding/OnboardingWizard';
 
 interface AuthGateProps {
@@ -217,7 +217,17 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
     }
 
     if (!isAuthenticated) {
-        return <AliseusLanding onLogin={handleLogin} language={language} setLanguage={setLanguage} />;
+        const isInviteRoute = window.location.pathname.startsWith('/invite/');
+        const inviteToken = isInviteRoute ? window.location.pathname.split('/')[2] : null;
+        
+        return (
+            <AliseusLanding 
+                onLogin={handleLogin} 
+                language={language} 
+                setLanguage={setLanguage} 
+                inviteToken={inviteToken}
+            />
+        );
     }
 
     // New: Check for Onboarding Completion check

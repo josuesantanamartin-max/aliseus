@@ -40,9 +40,9 @@ export const BudgetCategoryList: React.FC<BudgetCategoryListProps> = ({
 }) => {
     return (
         <div className="lg:col-span-4 space-y-4">
-            <div className="flex items-center justify-between pb-4 border-b border-onyx-100">
+            <div className="flex items-center justify-between pb-4 border-b border-aliseus-100">
                 <h3 className="font-bold text-cyan-900 text-lg">Categorías</h3>
-                <span className="text-xs font-bold bg-onyx-100 px-2 py-1 rounded-lg text-onyx-500">
+                <span className="text-xs font-bold bg-aliseus-100 px-2 py-1 rounded-lg text-aliseus-500">
                     {categoryStats.filter(c => c.hasBudgets).length} Activas
                 </span>
             </div>
@@ -54,16 +54,16 @@ export const BudgetCategoryList: React.FC<BudgetCategoryListProps> = ({
                         <div
                             key={stat.name}
                             onClick={() => setSelectedCategoryName(stat.name)}
-                            className={`p-5 rounded-2xl border cursor-pointer transition-all duration-300 group relative overflow-hidden ${isSelected ? 'bg-gradient-to-br from-cyan-600 to-teal-600 text-white border-transparent shadow-xl scale-[1.02]' : 'bg-white text-cyan-900 border-onyx-100 hover:border-cyan-200 hover:bg-slate-50'}`}
+                            className={`p-5 rounded-2xl border cursor-pointer transition-all duration-300 group relative overflow-hidden ${isSelected ? 'bg-gradient-to-br from-cyan-600 to-teal-600 text-white border-transparent shadow-xl scale-[1.02]' : 'bg-white text-cyan-900 border-aliseus-100 hover:border-cyan-200 hover:bg-slate-50'}`}
                         >
                             <div className="flex justify-between items-center mb-3">
                                 <div className="flex items-center gap-3">
-                                    <div className={`p-2 rounded-xl ${isSelected ? 'bg-white/10' : 'bg-onyx-50 text-onyx-500'}`}>
+                                    <div className={`p-2 rounded-xl ${isSelected ? 'bg-white/10' : 'bg-aliseus-50 text-aliseus-500'}`}>
                                         {getCategoryIcon(stat.name)}
                                     </div>
                                     <div>
                                         <p className="font-bold text-sm leading-tight">{stat.name}</p>
-                                        <p className={`text-[9px] font-bold uppercase tracking-widest ${isSelected ? 'text-white/50' : 'text-onyx-400'}`}>
+                                        <p className={`text-[9px] font-bold uppercase tracking-widest ${isSelected ? 'text-white/50' : 'text-aliseus-400'}`}>
                                             {stat.budgetCount} {stat.budgetCount === 1 ? 'Límite' : 'Límites'}
                                         </p>
                                     </div>
@@ -77,11 +77,11 @@ export const BudgetCategoryList: React.FC<BudgetCategoryListProps> = ({
 
                             <div className="space-y-1">
                                 <div className="flex justify-between items-end text-xs font-bold">
-                                    <span className={isSelected ? 'text-white/80' : 'text-onyx-600'}>{formatEUR(stat.totalSpent)}</span>
+                                    <span className={isSelected ? 'text-white/80' : 'text-aliseus-600'}>{formatEUR(stat.totalSpent)}</span>
                                     {stat.hasMonthlyLimit ? (
-                                        <span className={isSelected ? 'text-white/40' : 'text-onyx-300'}>/ {formatEUR(stat.totalLimit)}</span>
+                                        <span className={isSelected ? 'text-white/40' : 'text-aliseus-300'}>/ {formatEUR(stat.totalLimit)}</span>
                                     ) : (
-                                        <span className={isSelected ? 'text-white/30' : 'text-onyx-300'}>Mes Actual</span>
+                                        <span className={isSelected ? 'text-white/30' : 'text-aliseus-300'}>Mes Actual</span>
                                     )}
                                 </div>
                                 <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">

@@ -28,7 +28,7 @@ const UnplannedDaysWidget: React.FC<UnplannedDaysWidgetProps> = ({ onNavigate })
     return (
         <div 
             onClick={() => onNavigate('life', 'kitchen-planner')}
-            className="group cursor-pointer bg-white dark:bg-onyx-900 p-6 rounded-[2rem] h-full flex flex-col border border-onyx-100 dark:border-onyx-800 shadow-sm hover:shadow-xl hover:border-indigo-200 dark:hover:border-indigo-900/40 transition-all"
+            className="group cursor-pointer bg-white dark:bg-aliseus-900 p-6 rounded-[2rem] h-full flex flex-col border border-aliseus-100 dark:border-aliseus-800 shadow-sm hover:shadow-xl hover:border-indigo-200 dark:hover:border-indigo-900/40 transition-all"
         >
             <div className="flex items-center gap-3 mb-6">
                 <div className={`p-3 rounded-2xl border transition-colors ${
@@ -37,25 +37,25 @@ const UnplannedDaysWidget: React.FC<UnplannedDaysWidgetProps> = ({ onNavigate })
                     <CalendarX className="w-5 h-5" />
                 </div>
                 <div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-onyx-400 dark:text-onyx-500">Plan de la Semana</p>
-                    <h3 className="text-lg font-black text-onyx-950 dark:text-white">Días sin Planificar</h3>
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-aliseus-400 dark:text-aliseus-500">Plan de la Semana</p>
+                    <h3 className="text-lg font-black text-aliseus-950 dark:text-white">Días sin Planificar</h3>
                 </div>
             </div>
 
             <div className="flex items-baseline gap-2 mb-2">
                 <span className={`text-6xl font-black tracking-tighter ${
-                    unplannedCount > 2 ? 'text-onyx-950 dark:text-white' : 'text-emerald-600 dark:text-emerald-400'
+                    unplannedCount > 2 ? 'text-aliseus-950 dark:text-white' : 'text-emerald-600 dark:text-emerald-400'
                 }`}>
                     {unplannedCount}
                 </span>
-                <span className="text-sm font-bold text-onyx-400 uppercase">días</span>
+                <span className="text-sm font-bold text-aliseus-400 uppercase">días</span>
             </div>
 
             <div className="mt-auto flex items-center justify-between">
-                <p className="text-[10px] font-bold text-onyx-500 max-w-[120px]">
+                <p className="text-[10px] font-bold text-aliseus-500 max-w-[120px]">
                     {unplannedCount === 0 ? '¡Semana completa!' : 'Haz clic para completar la planificación.'}
                 </p>
-                <div className="p-2 bg-onyx-50 dark:bg-onyx-800 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                <div className="p-2 bg-aliseus-50 dark:bg-aliseus-800 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-all">
                     <ArrowUpRight className="w-4 h-4" />
                 </div>
             </div>

@@ -95,7 +95,7 @@ export default function LifeSnapshot({ hideActivity, hideNextTrip, hidePayments 
 
 
     return (
-        <div className="flex flex-col h-full bg-slate-50/50 dark:bg-onyx-800/30 rounded-2xl p-6 border border-slate-100 dark:border-onyx-800 shadow-sm">
+        <div className="flex flex-col h-full bg-slate-50/50 dark:bg-aliseus-800/30 rounded-2xl p-6 border border-slate-100 dark:border-aliseus-800 shadow-sm">
 
             <div className="flex items-center justify-between pointer-events-none mb-6">
                 <h2 className="text-xl font-bold text-slate-900 dark:text-white">Panorama de Vida</h2>
@@ -111,13 +111,13 @@ export default function LifeSnapshot({ hideActivity, hideNextTrip, hidePayments 
                                     <Plane className="w-5 h-5 text-brand-600 dark:text-brand-400" />
                                     <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-tight">Próximo Viaje</h3>
                                 </div>
-                                <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest bg-slate-100 dark:bg-onyx-800 px-2 py-0.5 rounded">
+                                <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest bg-slate-100 dark:bg-aliseus-800 px-2 py-0.5 rounded">
                                     Confirmado
                                 </span>
                             </div>
 
                             <div className="group relative">
-                                <div className="relative h-28 rounded-xl overflow-hidden bg-slate-200 dark:bg-onyx-700 shadow-sm">
+                                <div className="relative h-28 rounded-xl overflow-hidden bg-slate-200 dark:bg-aliseus-700 shadow-sm">
                                     {/* Destination placeholder */}
                                     <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/80 to-transparent" />
                                     <div className="absolute top-3 right-3 bg-white/20 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold text-white uppercase tracking-widest border border-white/20">
@@ -154,14 +154,14 @@ export default function LifeSnapshot({ hideActivity, hideNextTrip, hidePayments 
                                     <div className="flex items-center justify-between w-full">
                                         <span className="text-[10px] font-bold text-brand-600 dark:text-brand-400">75%</span>
                                     </div>
-                                    <div className="w-full h-1.5 bg-brand-100 dark:bg-onyx-800 rounded-full overflow-hidden">
+                                    <div className="w-full h-1.5 bg-brand-100 dark:bg-aliseus-800 rounded-full overflow-hidden">
                                         <div className="h-full bg-brand-500 rounded-full" style={{ width: '75%' }} />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     ) : (
-                        <div className="flex flex-col gap-2 p-4 rounded-xl border border-dashed border-slate-200 dark:border-onyx-700 items-center justify-center text-center cursor-pointer hover:bg-slate-50 dark:hover:bg-onyx-800/50 transition-colors group">
+                        <div className="flex flex-col gap-2 p-4 rounded-xl border border-dashed border-slate-200 dark:border-aliseus-700 items-center justify-center text-center cursor-pointer hover:bg-slate-50 dark:hover:bg-aliseus-800/50 transition-colors group">
                             <Plane className="w-5 h-5 text-slate-400 mb-1 group-hover:scale-110 transition-transform" />
                             <span className="text-sm font-bold text-slate-900 dark:text-white">Aún no hay viajes en el horizonte</span>
                             <span className="text-xs text-brand-500 font-medium">¿Empezamos a soñar? &rarr;</span>
@@ -178,7 +178,7 @@ export default function LifeSnapshot({ hideActivity, hideNextTrip, hidePayments 
 
                         <div className="flex flex-col gap-2">
                             {upcomingPayments.length > 0 ? upcomingPayments.map(payment => (
-                                <div key={payment.id} className="flex items-center justify-between text-sm py-1 border-b border-slate-100 dark:border-onyx-800/50 last:border-0 hover:px-2 transition-all cursor-pointer group rounded-sm hover:bg-white dark:hover:bg-onyx-900">
+                                <div key={payment.id} className="flex items-center justify-between text-sm py-1 border-b border-slate-100 dark:border-aliseus-800/50 last:border-0 hover:px-2 transition-all cursor-pointer group rounded-sm hover:bg-white dark:hover:bg-aliseus-900">
                                     <div className="flex items-center gap-3">
                                         <span className="text-xs font-bold w-10 text-slate-400 dark:text-slate-500 group-hover:text-rose-500 transition-colors">
                                             {payment.dueDate?.substring(0, 5)}
@@ -213,8 +213,8 @@ export default function LifeSnapshot({ hideActivity, hideNextTrip, hidePayments 
                             {recentActivity.map((activity, i) => {
                                 const Icon = activity.icon;
                                 return (
-                                    <div key={activity.id} className="group flex items-start gap-3 p-3 rounded-2xl bg-white dark:bg-onyx-900 border border-slate-100 dark:border-onyx-800 shadow-sm transition-all hover:bg-slate-50 dark:hover:bg-onyx-800/80 hover:border-brand-200 dark:hover:border-brand-900/40">
-                                        <div className={cn("mt-0.5 p-2 rounded-xl bg-slate-50 dark:bg-onyx-800 group-hover:scale-110 transition-transform", activity.color)}>
+                                    <div key={activity.id} className="group flex items-start gap-3 p-3 rounded-2xl bg-white dark:bg-aliseus-900 border border-slate-100 dark:border-aliseus-800 shadow-sm transition-all hover:bg-slate-50 dark:hover:bg-aliseus-800/80 hover:border-brand-200 dark:hover:border-brand-900/40">
+                                        <div className={cn("mt-0.5 p-2 rounded-xl bg-slate-50 dark:bg-aliseus-800 group-hover:scale-110 transition-transform", activity.color)}>
                                             <Icon className="w-4 h-4" />
                                         </div>
                                         <div className="flex flex-col gap-0.5 min-w-0 flex-1">

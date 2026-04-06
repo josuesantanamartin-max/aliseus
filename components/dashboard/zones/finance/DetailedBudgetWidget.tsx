@@ -38,7 +38,7 @@ export const DetailedBudgetWidget: React.FC<DetailedBudgetWidgetProps> = ({ deta
     }, [activeBudgets]);
 
     return (
-        <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] h-full flex flex-col">
+        <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-6 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] h-full flex flex-col">
             <div className="flex items-center justify-between mb-4">
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
                     <Layers className="w-4 h-4 text-slate-400" />
@@ -47,7 +47,7 @@ export const DetailedBudgetWidget: React.FC<DetailedBudgetWidgetProps> = ({ deta
             </div>
 
             {/* Global Summary Card */}
-            <div className="mb-6 bg-slate-50 dark:bg-onyx-800/40 rounded-2xl p-4 border border-slate-100 dark:border-onyx-800 flex flex-col gap-3">
+            <div className="mb-6 bg-slate-50 dark:bg-aliseus-800/40 rounded-2xl p-4 border border-slate-100 dark:border-aliseus-800 flex flex-col gap-3">
                 <div className="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400 font-medium">
                     <span>Estado Mensual</span>
                     {globalState.isOverGlobal ? (
@@ -78,7 +78,7 @@ export const DetailedBudgetWidget: React.FC<DetailedBudgetWidgetProps> = ({ deta
                     </div>
                 </div>
 
-                <div className="w-full bg-slate-200 dark:bg-onyx-700/50 rounded-full h-1.5 overflow-hidden mt-1">
+                <div className="w-full bg-slate-200 dark:bg-aliseus-700/50 rounded-full h-1.5 overflow-hidden mt-1">
                     <div
                         className={cn("h-full rounded-full transition-all duration-500",
                             globalState.isOverGlobal ? "bg-red-500" :
@@ -117,7 +117,7 @@ export const DetailedBudgetWidget: React.FC<DetailedBudgetWidgetProps> = ({ deta
                                         </div>
 
                                         <div className="flex flex-col gap-1.5 mt-1">
-                                            <div className="w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-1.5 overflow-hidden">
+                                            <div className="w-full bg-slate-100 dark:bg-aliseus-800 rounded-full h-1.5 overflow-hidden">
                                                 <div
                                                     className={cn("h-full rounded-full transition-all duration-500", colorClass)}
                                                     style={{ width: `${percent}%` }}
@@ -136,7 +136,7 @@ export const DetailedBudgetWidget: React.FC<DetailedBudgetWidgetProps> = ({ deta
                                         </div>
 
                                         {cat.subcategories.length > 0 && cat.total > 0 && (
-                                            <div className="pl-3 border-l-2 border-slate-100 dark:border-onyx-800 flex flex-col gap-1.5 mt-1">
+                                            <div className="pl-3 border-l-2 border-slate-100 dark:border-aliseus-800 flex flex-col gap-1.5 mt-1">
                                                 {cat.subcategories.map((sub, sIdx) => {
                                                     if (sub.total === 0) return null;
                                                     return (
@@ -155,12 +155,12 @@ export const DetailedBudgetWidget: React.FC<DetailedBudgetWidgetProps> = ({ deta
 
                         {/* Categorías sin Presupuesto */}
                         {activeBudgets.filter(c => c.limit === 0 && c.total > 0).length > 0 && (
-                            <div className="pt-6 border-t border-slate-100 dark:border-onyx-800/80">
+                            <div className="pt-6 border-t border-slate-100 dark:border-aliseus-800/80">
                                 <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Gastos Pendientes de Definir</h4>
                                 <div className="space-y-4">
                                     {activeBudgets.filter(c => c.limit === 0 && c.total > 0).map((cat, idx) => (
                                         <div key={idx} className="flex flex-col gap-2">
-                                            <div className="flex justify-between items-center bg-slate-50 dark:bg-onyx-800/40 p-3 rounded-xl border border-slate-100 dark:border-onyx-800">
+                                            <div className="flex justify-between items-center bg-slate-50 dark:bg-aliseus-800/40 p-3 rounded-xl border border-slate-100 dark:border-aliseus-800">
                                                 <span className="text-xs font-bold text-slate-700 dark:text-slate-300">{cat.name}</span>
                                                 <div className="flex items-center gap-3">
                                                     <span className="text-sm font-black text-slate-900 dark:text-white tabular-nums">{formatCurrency(cat.total)}</span>
@@ -181,7 +181,7 @@ export const DetailedBudgetWidget: React.FC<DetailedBudgetWidgetProps> = ({ deta
                                             )}
                                         </div>
                                     ))}
-                                    <button className="w-full mt-2 py-2.5 border-2 border-dashed border-slate-200 dark:border-onyx-700 text-slate-500 dark:text-slate-400 text-xs font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-onyx-800 transition-colors">
+                                    <button className="w-full mt-2 py-2.5 border-2 border-dashed border-slate-200 dark:border-aliseus-700 text-slate-500 dark:text-slate-400 text-xs font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-aliseus-800 transition-colors">
                                         Configurar Presupuestos
                                     </button>
                                 </div>

@@ -32,7 +32,7 @@ export const SecurityPanel = () => {
             className="max-w-4xl space-y-12 pb-12 w-full"
         >
             {/* Authentication Section */}
-            <section className="bg-white dark:bg-onyx-900/50 p-10 md:p-14 rounded-[50px] border border-slate-200 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-2xl relative overflow-hidden group">
+            <section className="bg-white dark:bg-aliseus-900/50 p-10 md:p-14 rounded-[50px] border border-slate-200 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-2xl relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 dark:bg-indigo-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
                 
                 <div className="relative z-10 space-y-10">
@@ -96,7 +96,7 @@ export const SecurityPanel = () => {
                     <button 
                         key={item.id}
                         onClick={() => setActiveLegalPage(item.id)}
-                        className="p-10 bg-white dark:bg-onyx-900/50 rounded-[40px] border border-slate-200 dark:border-white/5 flex items-center gap-6 hover:bg-slate-50 dark:hover:bg-white/5 hover:border-blue-200 dark:hover:border-white/10 transition-all text-left group shadow-xl shadow-slate-200/40 dark:shadow-none"
+                        className="p-10 bg-white dark:bg-aliseus-900/50 rounded-[40px] border border-slate-200 dark:border-white/5 flex items-center gap-6 hover:bg-slate-50 dark:hover:bg-white/5 hover:border-blue-200 dark:hover:border-white/10 transition-all text-left group shadow-xl shadow-slate-200/40 dark:shadow-none"
                     >
                         <div className="p-4 bg-blue-500/10 dark:bg-indigo-500/10 text-blue-600 dark:text-indigo-400 rounded-2xl group-hover:scale-110 transition-transform border border-blue-500/20 shadow-inner">
                             <item.icon className="w-7 h-7" />
@@ -111,7 +111,7 @@ export const SecurityPanel = () => {
 
             {/* Danger Zone */}
             <section className="relative overflow-hidden p-1 bg-gradient-to-br from-rose-500/20 to-transparent rounded-[50px]">
-                <div className="bg-white dark:bg-onyx-950 p-10 md:p-14 rounded-[48px] space-y-8 relative overflow-hidden border border-rose-100 dark:border-white/5 shadow-2xl shadow-rose-500/5">
+                <div className="bg-white dark:bg-aliseus-950 p-10 md:p-14 rounded-[48px] space-y-8 relative overflow-hidden border border-rose-100 dark:border-white/5 shadow-2xl shadow-rose-500/5">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-rose-500/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
                     
                     <div className="relative z-10">

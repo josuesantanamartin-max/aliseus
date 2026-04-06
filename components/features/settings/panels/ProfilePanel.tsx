@@ -73,7 +73,7 @@ export const ProfilePanel = () => {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `onyx_backup_${new Date().toISOString().split('T')[0]}.json`;
+        a.download = `Aliseus_backup_${new Date().toISOString().split('T')[0]}.json`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -89,8 +89,8 @@ export const ProfilePanel = () => {
             className="space-y-12"
         >
             {/* 1. PREMIUM HEADER */}
-            <div className="relative mb-12 rounded-[40px] overflow-hidden bg-white/40 dark:bg-onyx-950 border border-slate-200/50 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-2xl group ring-1 ring-slate-200/50 dark:ring-indigo-500/20">
-                <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-blue-50/40 to-white/80 dark:from-[#0c0c1e] dark:via-indigo-950/40 dark:to-onyx-950" />
+            <div className="relative mb-12 rounded-[40px] overflow-hidden bg-white/40 dark:bg-aliseus-950 border border-slate-200/50 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-2xl group ring-1 ring-slate-200/50 dark:ring-indigo-500/20">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-blue-50/40 to-white/80 dark:from-[#0c0c1e] dark:via-indigo-950/40 dark:to-aliseus-950" />
                 
                 {/* Dynamic Aura Glows */}
                 <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 animate-pulse" />
@@ -99,7 +99,7 @@ export const ProfilePanel = () => {
                 <div className="relative z-10 p-8 md:p-14 flex flex-col md:flex-row items-center gap-10">
                     <div className="relative group/avatar cursor-pointer" onClick={handleOpenProfileEdit}>
                         <div className="w-36 h-36 md:w-48 md:h-48 bg-white p-2 rounded-[40px] backdrop-blur-md shadow-2xl relative transition-all duration-700 group-hover/avatar:scale-105 ring-1 ring-slate-200/50 group-hover/avatar:rotate-3">
-                            <div className="w-full h-full rounded-[34px] bg-slate-50 dark:bg-onyx-900 overflow-hidden relative">
+                            <div className="w-full h-full rounded-[34px] bg-slate-50 dark:bg-aliseus-900 overflow-hidden relative">
                                 {userProfile?.avatar_url ? (
                                     <img src={userProfile.avatar_url} alt="Profile" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                 ) : (
@@ -157,7 +157,7 @@ export const ProfilePanel = () => {
                     <motion.div 
                         key={idx}
                         whileHover={{ y: -5 }}
-                        className="bg-white/40 dark:bg-onyx-900/50 p-8 rounded-[32px] border border-slate-200/50 dark:border-onyx-800 shadow-sm flex flex-col items-center justify-center text-center hover:shadow-xl hover:border-blue-500/30 transition-all duration-500 group relative overflow-hidden"
+                        className="bg-white/40 dark:bg-aliseus-900/50 p-8 rounded-[32px] border border-slate-200/50 dark:border-aliseus-800 shadow-sm flex flex-col items-center justify-center text-center hover:shadow-xl hover:border-blue-500/30 transition-all duration-500 group relative overflow-hidden"
                     >
                         <div className={`absolute inset-0 bg-gradient-to-br from-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
                         <div className={`w-14 h-14 ${stat.bg} ${stat.color} rounded-[20px] flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 border`}>
@@ -169,12 +169,12 @@ export const ProfilePanel = () => {
                 ))}
             </div>
 
-            <hr className="border-slate-100 dark:border-onyx-800 my-4" />
+            <hr className="border-slate-100 dark:border-aliseus-800 my-4" />
 
             {/* 3. HOUSEHOLD & COLLABORATION */}
             <div className="space-y-16">
                 {/* Data Vault */}
-                <div className="bg-emerald-50/30 dark:bg-onyx-950 p-10 md:p-14 rounded-[40px] border border-emerald-200/50 dark:border-white/5 shadow-xl shadow-emerald-500/5 relative overflow-hidden group ring-1 ring-emerald-500/10">
+                <div className="bg-emerald-50/30 dark:bg-aliseus-950 p-10 md:p-14 rounded-[40px] border border-emerald-200/50 dark:border-white/5 shadow-xl shadow-emerald-500/5 relative overflow-hidden group ring-1 ring-emerald-500/10">
                     <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-emerald-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 group-hover:bg-emerald-500/10 transition-colors duration-700" />
                     <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
                         <div className="flex-1 text-center lg:text-left">
@@ -209,21 +209,21 @@ export const ProfilePanel = () => {
                             exit={{ opacity: 0, scale: 0.9, y: 30 }}
                             transition={{ type: "spring", damping: 25, stiffness: 300 }}
                             onSubmit={handleUpdateProfile}
-                            className="bg-white dark:bg-onyx-900 rounded-[48px] p-10 max-w-lg w-full shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] relative overflow-hidden border border-white/5 ring-1 ring-white/10"
+                            className="bg-white dark:bg-aliseus-900 rounded-[48px] p-10 max-w-lg w-full shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] relative overflow-hidden border border-white/5 ring-1 ring-white/10"
                         >
                             <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 opacity-20" />
                             <div className="absolute -top-10 -right-10 w-40 h-40 bg-indigo-500/20 rounded-full blur-[60px]" />
 
                             <div className="relative z-10 text-center mb-10">
-                                <div className="w-32 h-32 mx-auto bg-onyx-950 rounded-[40px] p-2 shadow-2xl mb-6 relative group/modal-avatar">
-                                    <div className="w-full h-full rounded-[34px] bg-onyx-900 overflow-hidden ring-1 ring-white/10">
+                                <div className="w-32 h-32 mx-auto bg-aliseus-950 rounded-[40px] p-2 shadow-2xl mb-6 relative group/modal-avatar">
+                                    <div className="w-full h-full rounded-[34px] bg-aliseus-900 overflow-hidden ring-1 ring-white/10">
                                         {editProfileAvatar ? (
                                             <img src={editProfileAvatar} className="w-full h-full object-cover" />
                                         ) : (
                                             <User className="w-full h-full p-8 text-gray-800" />
                                         )}
                                     </div>
-                                    <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-indigo-500 rounded-2xl flex items-center justify-center shadow-xl border-4 border-onyx-950">
+                                    <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-indigo-500 rounded-2xl flex items-center justify-center shadow-xl border-4 border-aliseus-950">
                                         <Camera className="w-5 h-5 text-white" />
                                     </div>
                                 </div>
@@ -238,7 +238,7 @@ export const ProfilePanel = () => {
                                         type="text"
                                         value={editProfileName}
                                         onChange={e => setEditProfileName(e.target.value)}
-                                        className="w-full p-5 bg-gray-50 dark:bg-onyx-950 border border-gray-100 dark:border-onyx-800 rounded-[20px] font-bold focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all dark:text-white shadow-inner text-lg tracking-tight"
+                                        className="w-full p-5 bg-gray-50 dark:bg-aliseus-950 border border-gray-100 dark:border-aliseus-800 rounded-[20px] font-bold focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all dark:text-white shadow-inner text-lg tracking-tight"
                                         placeholder="Tu nombre real o alias"
                                     />
                                 </div>
@@ -249,7 +249,7 @@ export const ProfilePanel = () => {
                                         value={editProfileAvatar}
                                         onChange={e => setEditProfileAvatar(e.target.value)}
                                         placeholder="https://..."
-                                        className="w-full p-5 bg-gray-50 dark:bg-onyx-950 border border-gray-100 dark:border-onyx-800 rounded-[20px] font-bold focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm dark:text-white shadow-inner font-mono tracking-tight"
+                                        className="w-full p-5 bg-gray-50 dark:bg-aliseus-950 border border-gray-100 dark:border-aliseus-800 rounded-[20px] font-bold focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-sm dark:text-white shadow-inner font-mono tracking-tight"
                                     />
                                 </div>
                             </div>
@@ -258,7 +258,7 @@ export const ProfilePanel = () => {
                                 <button
                                     type="button"
                                     onClick={() => setIsProfileEditOpen(false)}
-                                    className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-onyx-800 hover:bg-gray-200 dark:hover:bg-onyx-700 rounded-[20px] transition-all active:scale-95"
+                                    className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-aliseus-800 hover:bg-gray-200 dark:hover:bg-aliseus-700 rounded-[20px] transition-all active:scale-95"
                                 >
                                     Descartar
                                 </button>

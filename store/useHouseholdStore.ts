@@ -16,7 +16,7 @@ interface HouseholdActions {
     setActiveHousehold: (id: string) => void;
     createHousehold: (name: string, currency: 'EUR' | 'USD' | 'GBP' | 'MXN' | 'COP' | 'ARS' | 'CLP' | 'CHF' | 'CAD' | 'AUD' | 'INR') => Promise<void>;
     fetchMembers: (householdId: string) => Promise<void>;
-    inviteMember: (email: string, role: 'ADMIN' | 'MEMBER' | 'VIEWER') => Promise<void>;
+    inviteMember: (email: string, role: 'ADMIN' | 'MEMBER' | 'VIEWER') => Promise<any>;
 }
 
 export const useHouseholdStore = create<HouseholdState & HouseholdActions>()(
@@ -82,7 +82,7 @@ export const useHouseholdStore = create<HouseholdState & HouseholdActions>()(
             }
         }),
         {
-            name: 'onyx_household_store',
+            name: 'aliseus_household_store',
             storage: createJSONStorage(() => localStorage),
             partialize: (state) => ({
                 activeHouseholdId: state.activeHouseholdId,

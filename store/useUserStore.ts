@@ -176,7 +176,7 @@ export const useUserStore = create<UserState & UserActions>()(
                 history: [],
             },
 
-            subscription: { plan: 'FREE', status: 'NONE', isBetaExtraApplied: false },
+            subscription: { plan: 'FAMILIA', status: 'ACTIVE', isBetaExtraApplied: false },
 
             lastSyncTime: null,
             defaultShoppingAccount: null,
@@ -264,7 +264,7 @@ export const useUserStore = create<UserState & UserActions>()(
         }),
 
         {
-            name: 'onyx_user_store',
+            name: 'aliseus_user_store',
             storage: createJSONStorage(() => localStorage),
             partialize: (state) => ({
                 isAuthenticated: state.isAuthenticated,

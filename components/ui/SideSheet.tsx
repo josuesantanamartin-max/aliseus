@@ -30,7 +30,7 @@ const SideSheet: React.FC<SideSheetProps> = ({ isOpen, onClose, title, children 
         <div className="fixed inset-0 z-50 flex justify-end">
             {/* Overlay background (Glass effect) */}
             <div
-                className={`fixed inset-0 bg-onyx-900/40 dark:bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'
+                className={`fixed inset-0 bg-aliseus-900/40 dark:bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'
                     }`}
                 onClick={onClose}
                 aria-hidden="true"
@@ -38,17 +38,17 @@ const SideSheet: React.FC<SideSheetProps> = ({ isOpen, onClose, title, children 
 
             {/* Sidebar content */}
             <div
-                className={`relative w-full max-w-2xl h-full bg-white dark:bg-onyx-900 shadow-2xl transition-transform duration-300 ease-in-out transform flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'
+                className={`relative w-full max-w-2xl h-full bg-white dark:bg-aliseus-900 shadow-2xl transition-transform duration-300 ease-in-out transform flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'
                     }`}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-onyx-100 dark:border-onyx-800 shrink-0">
-                    <h2 className="text-xl font-bold tracking-tight text-onyx-900 dark:text-white">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-aliseus-100 dark:border-aliseus-800 shrink-0">
+                    <h2 className="text-xl font-bold tracking-tight text-aliseus-900 dark:text-white">
                         {title || 'Detalles'}
                     </h2>
                     <button
                         onClick={onClose}
-                        className="p-2 rounded-full hover:bg-onyx-100 dark:hover:bg-onyx-800 text-onyx-500 transition-colors"
+                        className="p-2 rounded-full hover:bg-aliseus-100 dark:hover:bg-aliseus-800 text-aliseus-500 transition-colors"
                         aria-label="Cerrar panel lateral"
                     >
                         <X className="w-5 h-5" />

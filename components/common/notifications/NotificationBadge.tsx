@@ -20,14 +20,14 @@ const NotificationBadge: React.FC<NotificationBadgeProps> = ({ onClick, isActive
             whileTap={{ scale: 0.96 }}
             onClick={onClick}
             className={`w-full flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-300 group relative ${isActive
-                    ? 'text-onyx-950 dark:text-white font-bold bg-onyx-50 dark:bg-onyx-900 border border-onyx-100 dark:border-onyx-800 shadow-sm'
-                    : 'text-onyx-400 dark:text-onyx-500 hover:text-onyx-900 dark:hover:text-onyx-200 hover:bg-onyx-50/50 dark:hover:bg-onyx-900/50'
+                    ? 'text-aliseus-950 dark:text-white font-bold bg-aliseus-50 dark:bg-aliseus-900 border border-aliseus-100 dark:border-aliseus-800 shadow-sm'
+                    : 'text-aliseus-400 dark:text-aliseus-500 hover:text-aliseus-900 dark:hover:text-aliseus-200 hover:bg-aliseus-50/50 dark:hover:bg-aliseus-900/50'
                 }`}
             aria-label="Notification Center"
         >
             <div className="relative">
                 <Bell
-                    className={`w-5 h-5 transition-all duration-300 ${isActive ? 'text-indigo-primary scale-110' : 'text-onyx-400 group-hover:text-onyx-600 group-hover:scale-110'
+                    className={`w-5 h-5 transition-all duration-300 ${isActive ? 'text-indigo-primary scale-110' : 'text-aliseus-400 group-hover:text-aliseus-600 group-hover:scale-110'
                         } ${unreadCount > 0 ? 'animate-[wiggle_1s_ease-in-out]' : ''}`}
                 />
                 <AnimatePresence>

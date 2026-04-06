@@ -21,7 +21,7 @@ const AvoidedWasteWidget: React.FC<AvoidedWasteWidgetProps> = ({ onNavigate }) =
     }, [pantryItems]);
 
     return (
-        <div className="bg-onyx-950 dark:bg-white p-8 rounded-[2.5rem] h-full flex flex-col text-white dark:text-onyx-950 shadow-2xl relative overflow-hidden group">
+        <div className="bg-aliseus-950 dark:bg-white p-8 rounded-[2.5rem] h-full flex flex-col text-white dark:text-aliseus-950 shadow-2xl relative overflow-hidden group">
             {/* Background elements for premium feel */}
             <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
                 <Leaf className="w-32 h-32" />
@@ -36,7 +36,7 @@ const AvoidedWasteWidget: React.FC<AvoidedWasteWidgetProps> = ({ onNavigate }) =
                             </span>
                             <p className="text-emerald-400 dark:text-emerald-600 text-[10px] font-black uppercase tracking-[0.3em]">Hito Impacto</p>
                         </div>
-                        <h3 className="text-2xl font-black tracking-tight text-white dark:text-onyx-950">Desperdicio Evitado</h3>
+                        <h3 className="text-2xl font-black tracking-tight text-white dark:text-aliseus-950">Desperdicio Evitado</h3>
                     </div>
                 </div>
 
@@ -57,7 +57,7 @@ const AvoidedWasteWidget: React.FC<AvoidedWasteWidgetProps> = ({ onNavigate }) =
                     </div>
                 </div>
 
-                <div className="mt-12 p-4 rounded-3xl bg-white/10 dark:bg-onyx-100 border border-white/10 dark:border-onyx-200">
+                <div className="mt-12 p-4 rounded-3xl bg-white/10 dark:bg-aliseus-100 border border-white/10 dark:border-aliseus-200">
                     <div className="flex items-center gap-4">
                         <div className="w-10 h-10 rounded-2xl bg-emerald-500 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)]">
                             <Sprout className="w-5 h-5 text-white" />
@@ -70,7 +70,7 @@ const AvoidedWasteWidget: React.FC<AvoidedWasteWidgetProps> = ({ onNavigate }) =
                 </div>
             </div>
 
-            <div className="mt-8 pt-6 border-t border-white/10 dark:border-onyx-200 flex justify-between items-center text-[10px] font-black uppercase tracking-widest cursor-pointer group/btn" onClick={() => onNavigate('life', 'kitchen-pantry')}>
+            <div className="mt-8 pt-6 border-t border-white/10 dark:border-aliseus-200 flex justify-between items-center text-[10px] font-black uppercase tracking-widest cursor-pointer group/btn" onClick={() => onNavigate('life', 'kitchen-pantry')}>
                 <span className="group-hover/btn:translate-x-1 transition-transform">Ver historial de ahorro</span>
                 <TrendingDown className="w-3.5 h-3.5 text-emerald-400 dark:text-emerald-600" />
             </div>

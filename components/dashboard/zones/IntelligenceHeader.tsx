@@ -76,7 +76,7 @@ export default function IntelligenceHeader({
                         onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
                         className={`flex items-center gap-2 px-4 py-2 rounded-2xl border transition-all duration-300 ${isDatePickerOpen
                             ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-500/30 shadow-md shadow-blue-100 dark:shadow-blue-950/50 text-blue-700 dark:text-blue-400'
-                            : 'bg-white/80 dark:bg-onyx-900/80 backdrop-blur-md border-slate-200/50 dark:border-onyx-700/50 hover:bg-white dark:hover:bg-onyx-800 hover:border-blue-300 dark:hover:border-blue-800/50 text-slate-700 dark:text-slate-200 shadow-sm hover:shadow'
+                            : 'bg-white/80 dark:bg-aliseus-900/80 backdrop-blur-md border-slate-200/50 dark:border-aliseus-700/50 hover:bg-white dark:hover:bg-aliseus-800 hover:border-blue-300 dark:hover:border-blue-800/50 text-slate-700 dark:text-slate-200 shadow-sm hover:shadow'
                             }`}
                     >
                         <Calendar className="w-4 h-4 opacity-70" />
@@ -93,10 +93,10 @@ export default function IntelligenceHeader({
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
                                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                                className="absolute right-0 top-full mt-2 w-64 bg-white dark:bg-onyx-900 rounded-3xl shadow-2xl shadow-blue-500/10 border border-slate-100 dark:border-onyx-800 p-4 z-50 overflow-hidden"
+                                className="absolute right-0 top-full mt-2 w-64 bg-white dark:bg-aliseus-900 rounded-3xl shadow-2xl shadow-blue-500/10 border border-slate-100 dark:border-aliseus-800 p-4 z-50 overflow-hidden"
                             >
                                 {/* Year Selector Header */}
-                                <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-100 dark:border-onyx-800">
+                                <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-100 dark:border-aliseus-800">
                                     {years.map(y => (
                                         <button
                                             key={y}

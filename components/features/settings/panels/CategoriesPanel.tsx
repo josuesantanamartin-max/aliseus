@@ -80,8 +80,8 @@ export const CategoriesPanel = () => {
             className="max-w-4xl space-y-12 pb-12"
         >
             {/* Category Form - Top Section */}
-            <section className="bg-white/40 dark:bg-onyx-950 p-10 md:p-14 rounded-[50px] border border-slate-200/50 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-2xl relative overflow-hidden group ring-1 ring-slate-200/50 dark:ring-indigo-500/20">
-                <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-blue-50/40 to-white/80 dark:from-[#0c0c1e] dark:via-indigo-950/20 dark:to-onyx-950" />
+            <section className="bg-white/40 dark:bg-aliseus-950 p-10 md:p-14 rounded-[50px] border border-slate-200/50 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-2xl relative overflow-hidden group ring-1 ring-slate-200/50 dark:ring-indigo-500/20">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-blue-50/40 to-white/80 dark:from-[#0c0c1e] dark:via-indigo-950/20 dark:to-aliseus-950" />
                 <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
                 
                 <div className="relative z-10">
@@ -194,7 +194,7 @@ export const CategoriesPanel = () => {
                         <motion.div 
                             key={cat.id}
                             whileHover={{ y: -5 }}
-                            className="group bg-white dark:bg-onyx-900 p-8 rounded-[40px] border border-gray-100 dark:border-white/5 shadow-xl hover:shadow-2xl transition-all relative overflow-hidden ring-1 ring-black/5"
+                            className="group bg-white dark:bg-aliseus-900 p-8 rounded-[40px] border border-gray-100 dark:border-white/5 shadow-xl hover:shadow-2xl transition-all relative overflow-hidden ring-1 ring-black/5"
                         >
                             <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
                             
@@ -243,7 +243,7 @@ export const CategoriesPanel = () => {
                         <motion.div 
                             key={cat.id}
                             whileHover={{ y: -5 }}
-                            className="group bg-white dark:bg-onyx-900 p-8 rounded-[40px] border border-gray-100 dark:border-white/5 shadow-xl hover:shadow-2xl transition-all relative overflow-hidden ring-1 ring-black/5"
+                            className="group bg-white dark:bg-aliseus-900 p-8 rounded-[40px] border border-gray-100 dark:border-white/5 shadow-xl hover:shadow-2xl transition-all relative overflow-hidden ring-1 ring-black/5"
                         >
                             <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
                             

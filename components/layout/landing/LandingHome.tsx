@@ -3,10 +3,12 @@ import {
     PiggyBank, Heart, ArrowRight, Check, Sparkles, LayoutDashboard,
     Smartphone, BarChart3, Fingerprint, Cloud, Zap, Shield, Users,
     TrendingUp, Clock, Globe, ChevronDown, ChevronUp, X, Minus, CheckCircle2,
-    TrendingDown, Utensils, Calendar, Archive, Target, CreditCard, ShoppingCart
+    TrendingDown, Utensils, Calendar, Archive, Target, CreditCard, ShoppingCart,
+    Lock, Monitor, ShieldCheck, FileUp
 } from 'lucide-react';
 import { Language } from '@/types';
 import { PRODUCT_DETAILS_BY_LANG } from './landingData';
+import { PaymentMethods } from '../../common/PaymentMethods';
 
 interface LandingHomeProps {
     t: any;
@@ -45,10 +47,10 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
         },
         {
             q: '¿Mis datos están seguros?',
-            a: 'Absolutamente. Utilizamos encriptación de extremo a extremo con los mismos estándares que los bancos (AES-256). Tus datos financieros y documentos personales están protegidos con autenticación biométrica.'
+            a: 'Absolutamente. Aliseus utiliza encriptación AES-256 (el estándar bancario) para proteger tus datos en reposo y en tránsito. La seguridad biométrica (FaceID/TouchID) está en nuestra hoja de ruta como una funcionalidad central de la futura aplicación móvil nativa.'
         },
         {
-            q: '¿Qué pasa si entro ahora en la Beta Privada?',
+            q: '¿Qué significa ser Socio Fundador?',
             a: 'Al entrar en la beta, bloqueas el acceso a una herramienta en constante evolución. Estos precios no son una oferta temporal; son nuestros precios estándar y éticos para siempre. Los usuarios de la beta recibiréis, además, beneficios exclusivos que os comunicaremos personalmente.'
         },
         {
@@ -119,7 +121,7 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-red-400"></span>
                         </span>
-                        <span className="text-[11px] font-bold text-white/80 tracking-widest uppercase">BETA PRIVADA ABIERTA</span>
+                        <span className="text-[11px] font-bold text-white/80 tracking-widest uppercase">SOCIOS FUNDADORES</span>
                     </div>
 
                     <h1 className="flex justify-center mb-8">
@@ -138,7 +140,7 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                             {t.ctaStart} <ArrowRight className="w-6 h-6" />
                         </button>
                     </div>
-                    <p className="text-sm text-white/40 mt-6">Sin tarjeta de crédito requerida • Configuración en 2 minutos</p>
+                    <p className="text-sm text-white/40 mt-6 font-medium">Acceso gratuito en fase Socio Fundador • Sin pagos iniciales • Configuración en 2 min</p>
 
                     {/* Dashboard Preview */}
                     <div className="mt-16 relative w-full max-w-5xl mx-auto rounded-t-xl shadow-2xl overflow-hidden border-t border-x border-white/10 ring-1 ring-white/5 bg-[#0A0A0A]">
@@ -256,7 +258,7 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                             </div>
                             <h2 className="text-3xl md:text-4xl font-bold mb-6">¿Qué puedes esperar hoy?</h2>
                             <p className="text-slate-300 text-lg mb-8 leading-relaxed">
-                                Aliseus está en fase de <strong className="text-white">Beta Privada</strong>. Esto significa que la plataforma base es 100% funcional y segura (cumplimos estrictamente con la GDPR y no vendemos tus datos), pero seguimos puliendo detalles basados en la retroalimentación de nuestros primeros usuarios.
+                                Aliseus está en fase de <strong className="text-white">Socio Fundador</strong>. Esto significa que la plataforma base es 100% funcional y segura (cumplimos estrictamente con la GDPR y no vendemos tus datos), pero seguimos puliendo detalles basados en la retroalimentación de nuestros primeros usuarios.
                             </p>
                             
                             <div className="space-y-4">
@@ -275,7 +277,7 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-white">Próximamente</h4>
-                                        <p className="text-sm text-slate-400 mt-1">Sincronización bancaria automática y conexión directa con supermercados.</p>
+                                        <p className="text-sm text-slate-400 mt-1">Sincronización bancaria automática, conexión directa con supermercados, App Nativa iOS/Android y Seguridad Biométrica Avanzada.</p>
                                     </div>
                                 </div>
                             </div>
@@ -680,14 +682,14 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {[
-                            { icon: Fingerprint, title: "Seguridad GDPR", desc: "Privacidad completa: consentimiento de cookies, exportación de datos y eliminación de cuenta con período de gracia." },
-                            { icon: Cloud, title: "Multi-Dispositivo", desc: "Sincronización instantánea entre tu móvil, tablet y ordenador." },
+                            { icon: ShieldCheck, title: "Cifrado AES-256", desc: "Tus datos están protegidos con encriptación de nivel bancario, la más segura del mundo hoy." },
+                            { icon: Lock, title: "Privacidad Absoluta", desc: "Tus datos financieros son solo tuyos. No vendemos información ni mostramos anuncios." },
                             { icon: BarChart3, title: "IA Proactiva", desc: "Presupuestos IA, análisis predictivo, categorización automática y simulador de jubilación." },
-                            { icon: Smartphone, title: "Diseño Nativo", desc: "Una experiencia fluida pensada para el uso diario e intuitivo." },
+                            { icon: Monitor, title: "Experiencia Web Pro", desc: "Una interfaz fluida y rápida optimizada para el uso diario desde tu ordenador o tablet." },
                             { icon: Users, title: "Modo Colaborativo", desc: "Hasta 5 miembros familiares con roles y permisos personalizables." },
-                            { icon: LayoutDashboard, title: "Dashboard Personalizable", desc: "Drag & drop para organizar tus widgets. Aliseus Insights con IA integrada." },
+                            { icon: Archive, title: "Bóveda Digital", desc: "Tus contratos, pasaportes y pólizas, protegidos con encriptación bancaria y siempre a mano." },
                             { icon: Globe, title: "Multilingüe", desc: "Disponible en Español, English y Français. Centro de Ayuda en 3 idiomas." },
-                            { icon: Shield, title: "Importación Flexible", desc: "Importa extractos bancarios CSV con vinculación automática a tus cuentas." }
+                            { icon: FileUp, title: "Importación Flexible", desc: "Importa extractos bancarios CSV con vinculación automática a tus cuentas de forma segura." }
                         ].map((benefit, i) => (
                             <div key={i} className="p-8 rounded-3xl bg-gray-50 border border-gray-100 hover:-translate-y-1 transition-all group">
                                 <div className="w-12 h-12 bg-gradient-to-br from-cyan-50 to-teal-100 rounded-2xl flex items-center justify-center mb-6 group-hover:from-cyan-100 group-hover:to-teal-200 transition-all">
@@ -769,24 +771,7 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                         </span>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-
-                        {/* TIER 1: TRIAL */}
-                        <div className="bg-white rounded-3xl p-8 border border-gray-200 hover:shadow-xl transition-all flex flex-col text-left group">
-                            <span className="bg-cyan-100 text-cyan-700 text-[10px] font-bold px-3 py-1 rounded-full uppercase mb-6 w-fit tracking-wider">{t.trialPeriod}</span>
-                            <h3 className="text-xl font-bold mb-2">{t.trialPlan}</h3>
-                            <div className="flex items-center gap-2 mb-2">
-                                <span className="text-5xl font-bold text-gray-900">{t.trialPrice}</span>
-                            </div>
-                            <p className="text-gray-500 text-sm mb-8">{t.trialDesc}</p>
-                            <div className="space-y-4 mb-8 flex-1">
-                                <div className="flex items-center gap-3"><Check className="w-5 h-5 text-cyan-600" /><span className="text-gray-700">{t.featUser1}</span></div>
-                                <div className="flex items-center gap-3"><Check className="w-5 h-5 text-cyan-600" /><span className="text-gray-700">{t.featAccess}</span></div>
-                                <div className="flex items-center gap-3"><Check className="w-5 h-5 text-cyan-600" /><span className="text-gray-700">14 días</span></div>
-                            </div>
-                            <button onClick={() => setShowLoginModal(true)} className="w-full py-4 rounded-2xl border-2 border-cyan-200 font-bold hover:bg-cyan-50 hover:border-cyan-300 transition-all text-cyan-700">{t.trialCta}</button>
-                        </div>
-
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                         {/* TIER 2: PERSONAL */}
                         <div className="bg-white rounded-3xl p-8 border border-gray-200 hover:shadow-xl transition-all flex flex-col text-left group relative">
                             {billingPeriod === 'annual' && (
@@ -814,7 +799,7 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                         </div>
 
                         {/* TIER 3: FAMILY — cyan premium */}
-                        <div className="bg-gradient-to-br from-cyan-900 to-teal-950 text-white rounded-3xl p-8 shadow-xl shadow-cyan-500/20 flex flex-col text-left relative transform md:-translate-y-4 md:scale-105 z-10">
+                        <div className="bg-gradient-to-br from-cyan-900 to-teal-950 text-white rounded-3xl p-8 shadow-xl shadow-cyan-500/20 flex flex-col text-left relative z-10 transition-all hover:scale-[1.02]">
                             <div className="absolute top-4 right-4 bg-white/20 backdrop-blur text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-white/30">BEST VALUE</div>
                             <span className="bg-white/10 text-white/80 text-[10px] font-bold px-3 py-1 rounded-full uppercase mb-6 w-fit tracking-wider border border-white/20">{t.familyPlan}</span>
                             <div className="flex items-center gap-2 mb-2">
@@ -832,7 +817,7 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                                 <div className="flex items-center gap-3"><Check className="w-5 h-5 text-emerald-400" /><span>{t.featJunior}</span></div>
                                 <div className="flex items-center gap-3"><Check className="w-5 h-5 text-emerald-400" /><span>{t.featPriority}</span></div>
                             </div>
-                            <button onClick={() => setShowLoginModal(true)} className="w-full py-4 rounded-2xl bg-white text-cyan-900 font-bold hover:bg-cyan-50 transition-all shadow-lg hover:scale-[1.02]">{t.familyCta}</button>
+                            <button onClick={() => setShowLoginModal(true)} className="w-full py-4 rounded-2xl bg-white text-cyan-900 font-bold hover:bg-cyan-50 transition-all shadow-lg">{t.familyCta}</button>
                             {billingPeriod === 'annual' && (
                                 <p className="text-[10px] text-cyan-400 text-center mt-4 uppercase tracking-widest font-bold">{t.singlePayment}</p>
                             )}
@@ -845,15 +830,9 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                         <p className="text-xl font-medium text-gray-900 mb-4 italic leading-relaxed">
                             "{t.pricingSavingsConnection}"
                         </p>
-                        <div className="flex flex-col md:flex-row items-center justify-center gap-6 mt-8">
-                            <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
-                                <Zap className="w-5 h-5 text-amber-500" />
-                                <span className="text-xs font-bold text-gray-600">{t.pricingBetaAdvantage}</span>
-                            </div>
-                            <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
-                                <Sparkles className="w-5 h-5 text-cyan-500" />
-                                <span className="text-xs font-bold text-gray-600">{t.pricingGoal}</span>
-                            </div>
+                        <div className="flex flex-col items-center gap-4 mt-12 pt-12 border-t border-gray-100">
+                            <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Pagos Seguros Procesados por Stripe</p>
+                            <PaymentMethods className="scale-110 opacity-80" />
                         </div>
                     </div>
                 </div>
@@ -876,7 +855,7 @@ export const LandingHome: React.FC<LandingHomeProps> = ({
                     >
                         {t.ctaStart} <ArrowRight className="w-6 h-6" />
                     </button>
-                    <p className="text-sm text-white/40 mt-6">Sin tarjeta de crédito requerida • Configuración en 2 minutos</p>
+                    <p className="text-sm text-white/40 mt-6 font-medium">Acceso gratuito en fase Socio Fundador • Sin pagos iniciales</p>
                 </div>
             </section>
         </div>

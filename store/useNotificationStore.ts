@@ -90,7 +90,7 @@ export const useNotificationStore = create<NotificationStore>()(
             activeNotifications: () => get().notifications.filter((n) => !n.dismissedAt),
         }),
         {
-            name: 'onyx_notifications',
+            name: 'aliseus_notifications',
             storage: createJSONStorage(() => localStorage),
         }
     )

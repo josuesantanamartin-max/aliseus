@@ -321,7 +321,7 @@ export const useLifeStore = create<LifeState & LifeActions>()(
             },
         }),
         {
-            name: 'onyx_life_store',
+            name: 'aliseus_life_store',
             storage: createJSONStorage(() => idbStorage),
             // Don't persist mock-only fields that should come from Supabase
             partialize: (state) => ({

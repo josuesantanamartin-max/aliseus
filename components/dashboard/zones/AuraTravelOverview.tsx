@@ -206,7 +206,7 @@ export default function AuraTravelOverview({ selectedDate: selectedDateProp, onN
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 
                 {/* 1. HÉROE: PRÓXIMO VIAJE */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full min-h-[400px] overflow-hidden relative group">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-6 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col h-full min-h-[400px] overflow-hidden relative group">
                     {smartHeader.hasTrips && nextTrip ? (
                         <>
                             <div className="flex items-center justify-between mb-4 relative z-10">
@@ -255,7 +255,7 @@ export default function AuraTravelOverview({ selectedDate: selectedDateProp, onN
                 </div>
 
                 {/* 2. BUSCADOR INTEGRADO */}
-                <div className="bg-slate-50 dark:bg-onyx-900/50 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-inner flex flex-col h-full min-h-[400px]">
+                <div className="bg-slate-50 dark:bg-aliseus-900/50 rounded-3xl p-6 border border-slate-100 dark:border-aliseus-800/80 shadow-inner flex flex-col h-full min-h-[400px]">
                     <div className="flex items-center justify-between mb-6">
                         <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
                             <Search className="w-4 h-4 text-slate-400" />
@@ -266,13 +266,13 @@ export default function AuraTravelOverview({ selectedDate: selectedDateProp, onN
                     <div className="space-y-4 flex-1">
                         <div className="space-y-1.5">
                             <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Origen</label>
-                            <input type="text" defaultValue="MAD - Madrid" className="w-full h-11 bg-white dark:bg-onyx-800 border border-slate-200 dark:border-onyx-700/50 rounded-xl px-4 text-sm font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500/20" />
+                            <input type="text" defaultValue="MAD - Madrid" className="w-full h-11 bg-white dark:bg-aliseus-800 border border-slate-200 dark:border-aliseus-700/50 rounded-xl px-4 text-sm font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500/20" />
                         </div>
 
                         <div className="space-y-1.5">
                             <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Destino</label>
                             <div className="relative">
-                                <input type="text" placeholder="¿A dónde vamos?" className="w-full h-11 bg-white dark:bg-onyx-800 border border-slate-200 dark:border-onyx-700/50 rounded-xl px-4 text-sm font-bold text-slate-900 dark:text-white placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500/20" />
+                                <input type="text" placeholder="¿A dónde vamos?" className="w-full h-11 bg-white dark:bg-aliseus-800 border border-slate-200 dark:border-aliseus-700/50 rounded-xl px-4 text-sm font-bold text-slate-900 dark:text-white placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500/20" />
                                 <MapPin className="w-4 h-4 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2" />
                             </div>
                         </div>
@@ -280,11 +280,11 @@ export default function AuraTravelOverview({ selectedDate: selectedDateProp, onN
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-1.5">
                                 <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Ida</label>
-                                <input type="date" className="w-full h-11 bg-white dark:bg-onyx-800 border border-slate-200 dark:border-onyx-700/50 rounded-xl px-4 text-sm font-bold text-slate-900 dark:text-white" />
+                                <input type="date" className="w-full h-11 bg-white dark:bg-aliseus-800 border border-slate-200 dark:border-aliseus-700/50 rounded-xl px-4 text-sm font-bold text-slate-900 dark:text-white" />
                             </div>
                             <div className="space-y-1.5">
                                 <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Vuelta</label>
-                                <input type="date" className="w-full h-11 bg-white dark:bg-onyx-800 border border-slate-200 dark:border-onyx-700/50 rounded-xl px-4 text-sm font-bold text-slate-900 dark:text-white" />
+                                <input type="date" className="w-full h-11 bg-white dark:bg-aliseus-800 border border-slate-200 dark:border-aliseus-700/50 rounded-xl px-4 text-sm font-bold text-slate-900 dark:text-white" />
                             </div>
                         </div>
                     </div>
@@ -298,7 +298,7 @@ export default function AuraTravelOverview({ selectedDate: selectedDateProp, onN
             {/* ROW 3: SNAPSHOTS / KPIs (Capa 2 - 4 Cols) */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* 1. Siguiente Parada */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-5 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
                     <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Siguiente Parada</h3>
                     <div className="text-2xl font-black text-slate-900 dark:text-white truncate mt-1">
                         {nextTrip ? nextTrip.destination : '—'}
@@ -309,7 +309,7 @@ export default function AuraTravelOverview({ selectedDate: selectedDateProp, onN
                 </div>
 
                 {/* 2. Inversión 2026 */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-5 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
                     <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Gasto Anual</h3>
                     <div className="text-2xl font-black text-slate-900 dark:text-white mt-1">
                         {formatCurrency(travelSpendingYear)}
@@ -320,7 +320,7 @@ export default function AuraTravelOverview({ selectedDate: selectedDateProp, onN
                 </div>
 
                 {/* 3. Alertas Activas */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-5 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
                     <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Radar Activo</h3>
                     <div className="text-2xl font-black text-slate-900 dark:text-white mt-1">
                         {priceAlerts.length} <span className="text-xs font-bold opacity-30 uppercase tracking-widest">Alertas</span>
@@ -331,7 +331,7 @@ export default function AuraTravelOverview({ selectedDate: selectedDateProp, onN
                 </div>
 
                 {/* 4. Wishlist */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-5 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-5 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
                     <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Wishlist</h3>
                     <div className="text-2xl font-black text-slate-900 dark:text-white mt-1">
                         {travelWishlist.length} <span className="text-xs font-bold opacity-30 uppercase tracking-widest">Hitos</span>
@@ -343,8 +343,8 @@ export default function AuraTravelOverview({ selectedDate: selectedDateProp, onN
             </div>
 
             {/* ROW 4: DESCUBRIMIENTO & WISHLIST (Ancho Completo) */}
-            <div className="bg-white dark:bg-onyx-900 rounded-3xl p-8 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col">
-                <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-100 dark:border-onyx-800/80">
+            <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-8 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col">
+                <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-100 dark:border-aliseus-800/80">
                     <div>
                         <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Destinos en Seguimiento</h3>
                     </div>
@@ -359,16 +359,16 @@ export default function AuraTravelOverview({ selectedDate: selectedDateProp, onN
                     ) : (
                         <div className="flex gap-4 min-w-max">
                             {discoveryItems.map((item) => (
-                                <div key={item.id} className="w-[280px] bg-slate-50 dark:bg-onyx-800/50 rounded-2xl p-5 border border-slate-100 dark:border-onyx-800 flex flex-col hover:border-brand-500/30 transition-all group">
+                                <div key={item.id} className="w-[280px] bg-slate-50 dark:bg-aliseus-800/50 rounded-2xl p-5 border border-slate-100 dark:border-aliseus-800 flex flex-col hover:border-brand-500/30 transition-all group">
                                     <div className="flex justify-between items-start mb-4">
-                                        <div className="w-10 h-10 rounded-xl bg-white dark:bg-onyx-700 flex items-center justify-center shadow-sm">
+                                        <div className="w-10 h-10 rounded-xl bg-white dark:bg-aliseus-700 flex items-center justify-center shadow-sm">
                                             {item.image ? <img src={item.image} className="w-full h-full object-cover rounded-xl" /> : <MapPin className="w-4 h-4 text-slate-400" />}
                                         </div>
                                         {item.alert?.isDrop && <span className="bg-rose-500 text-white text-[8px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider animate-pulse">Oportunidad</span>}
                                     </div>
                                     <h4 className="font-black text-slate-900 dark:text-white truncate">{item.name}</h4>
                                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 truncate">{item.country}</p>
-                                    <div className="mt-auto bg-white dark:bg-onyx-900 rounded-xl p-3 border border-slate-100 dark:border-onyx-800 flex justify-between items-center">
+                                    <div className="mt-auto bg-white dark:bg-aliseus-900 rounded-xl p-3 border border-slate-100 dark:border-aliseus-800 flex justify-between items-center">
                                         <div className="flex flex-col">
                                             <span className="text-[9px] font-bold text-slate-400 uppercase leading-none mb-1">Precio</span>
                                             <span className="text-sm font-black text-slate-900 dark:text-white">{formatCurrency(item.alert?.currentPrice || item.estimatedPrice)}</span>
@@ -385,12 +385,12 @@ export default function AuraTravelOverview({ selectedDate: selectedDateProp, onN
             {/* ROW 5: ANÁLISIS E INVERSIÓN (Capa 3 - 1/3 + 2/3) */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* 1. Próximas Salidas */}
-                <div className="bg-slate-50 dark:bg-onyx-900/30 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 flex flex-col">
+                <div className="bg-slate-50 dark:bg-aliseus-900/30 rounded-3xl p-6 border border-slate-100 dark:border-aliseus-800/80 flex flex-col">
                     <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-6">Próximas Salidas Confirmadas</h3>
                     <div className="space-y-3 flex-1 overflow-y-auto max-h-[300px] custom-scrollbar pr-1">
                         {upcomingTrips.length > 0 ? (
                             upcomingTrips.map(trip => (
-                                <div key={trip.id} className="flex justify-between items-center p-3 rounded-xl bg-white dark:bg-onyx-900 border border-slate-100 dark:border-onyx-800">
+                                <div key={trip.id} className="flex justify-between items-center p-3 rounded-xl bg-white dark:bg-aliseus-900 border border-slate-100 dark:border-aliseus-800">
                                     <div className="flex flex-col truncate mr-2">
                                         <span className="text-xs font-black text-slate-900 dark:text-white truncate">{trip.destination}</span>
                                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">{new Date(trip.startDate).toLocaleDateString()}</span>
@@ -408,12 +408,12 @@ export default function AuraTravelOverview({ selectedDate: selectedDateProp, onN
                 </div>
 
                 {/* 2. Gráfico Inversión */}
-                <div className="lg:col-span-2 bg-white dark:bg-onyx-900 rounded-3xl p-8 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col">
+                <div className="lg:col-span-2 bg-white dark:bg-aliseus-900 rounded-3xl p-8 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col">
                     <div className="flex justify-between items-center mb-8">
                         <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em]">Inversión en Viajes 2026</h3>
-                        <div className="flex bg-slate-50 dark:bg-onyx-800 rounded-lg p-1">
+                        <div className="flex bg-slate-50 dark:bg-aliseus-800 rounded-lg p-1">
                             {(['1m', '6m', '1y'] as const).map(tf => (
-                                <button key={tf} onClick={() => setChartTimeframe(tf)} className={cn("px-3 py-1 text-[10px] font-bold rounded-md transition-colors", chartTimeframe === tf ? "bg-white dark:bg-onyx-600 text-slate-900 dark:text-white shadow-sm" : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300")}>
+                                <button key={tf} onClick={() => setChartTimeframe(tf)} className={cn("px-3 py-1 text-[10px] font-bold rounded-md transition-colors", chartTimeframe === tf ? "bg-white dark:bg-aliseus-600 text-slate-900 dark:text-white shadow-sm" : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300")}>
                                     {tf}
                                 </button>
                             ))}

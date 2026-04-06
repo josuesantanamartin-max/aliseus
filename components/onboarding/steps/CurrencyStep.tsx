@@ -19,11 +19,11 @@ const CurrencyOption = ({
         onClick={onSelect}
         className={`p-6 rounded-2xl border-2 cursor-pointer transition-all flex items-center justify-between ${selected
             ? 'border-cyan-600 bg-cyan-50 dark:bg-cyan-900/20'
-            : 'border-gray-100 dark:border-onyx-800 bg-white dark:bg-onyx-800 hover:border-cyan-200 dark:hover:border-cyan-800'
+            : 'border-gray-100 dark:border-aliseus-800 bg-white dark:bg-aliseus-800 hover:border-cyan-200 dark:hover:border-cyan-800'
             }`}
     >
         <div className="flex items-center gap-4">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold ${selected ? 'bg-cyan-600 text-white' : 'bg-gray-100 dark:bg-onyx-700 text-gray-500'
+            <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold ${selected ? 'bg-cyan-600 text-white' : 'bg-gray-100 dark:bg-aliseus-700 text-gray-500'
                 }`}>
                 {symbol}
             </div>

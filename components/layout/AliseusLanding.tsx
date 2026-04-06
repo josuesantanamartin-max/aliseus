@@ -13,9 +13,10 @@ interface AliseusLandingProps {
   onLogin: (method: 'DEMO' | 'GOOGLE' | 'EMAIL' | 'NOTION', data?: { email: string, password: string, isRegister: boolean }) => void | Promise<void>;
   language: Language;
   setLanguage: (lang: Language) => void;
+  inviteToken?: string | null;
 }
 
-const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setLanguage }) => {
+const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setLanguage, inviteToken }) => {
   const [currentView, setCurrentView] = useState<'HOME' | 'FINANCE' | 'LIFE'>('HOME');
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
@@ -83,8 +84,8 @@ const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setL
               />
             </div>
 
-            {/* Beta Code Input - Only shown during registration */}
-            {isRegister && (
+            {/* Beta Code Input - Only shown during registration if no invite token exists */}
+            {isRegister && !inviteToken && (
               <div className="relative mb-2">
                 <input
                   type="text"
@@ -151,9 +152,10 @@ const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setL
             <button
               onClick={async () => {
                 if (isRegister) {
-                  const validCodes = ['ONYX2026', 'BETA2026', 'FAMILIA'];
-                  if (!validCodes.includes(betaCode)) {
-                    alert('Código de acceso inválido. Por favor, contacta con nosotros para obtener una invitación.');
+                  // Strict check: only ALISEUS2026 is allowed for full manual entry
+                  const validCodes = ['ALISEUS2026'];
+                  if (!validCodes.includes(betaCode) && !inviteToken) {
+                    alert('Código de acceso inválido. Por favor, asegúrate de escribir ALISEUS2026 o usar tu enlace de invitación.');
                     return;
                   }
                 }
@@ -161,10 +163,10 @@ const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setL
                 await onLogin('EMAIL', { email, password, isRegister });
                 setAuthLoading(false);
               }}
-              disabled={authLoading || !email || !password || (isRegister && (!acceptedTerms || !betaCode || !isAgeVerified))}
+              disabled={authLoading || !email || !password || (isRegister && (!acceptedTerms || (!betaCode && !inviteToken) || !isAgeVerified))}
               className="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-600 text-white font-bold text-sm hover:from-cyan-400 hover:to-teal-500 transition-all shadow-lg shadow-cyan-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {authLoading ? 'Procesando...' : (isRegister ? 'Crear Cuenta' : 'Entrar con Email')}
+              {authLoading ? 'Procesando...' : (isRegister ? 'Crear Cuenta de Socio Fundador' : 'Entrar con Email')}
             </button>
           </div>
 

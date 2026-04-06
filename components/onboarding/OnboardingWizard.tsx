@@ -43,7 +43,7 @@ const OnboardingWizard: React.FC = () => {
                 {/* Progress Bar (Hidden on Welcome Step) */}
                 {onboardingStep > 0 && (
                     <div className="w-full max-w-xl mb-8 flex items-center gap-2 animate-fade-in">
-                        <div className="flex-1 h-2 bg-gray-100 dark:bg-onyx-800 rounded-full overflow-hidden">
+                        <div className="flex-1 h-2 bg-gray-100 dark:bg-aliseus-800 rounded-full overflow-hidden">
                             <div
                                 className="h-full bg-cyan-600 transition-all duration-500 ease-out"
                                 style={{ width: `${(displayStep / totalStepsDisplay) * 100}%` }}

@@ -227,7 +227,7 @@ export default function AuraInvestmentsOverview({ onNavigate }: AuraInvestmentsO
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
                 {/* Patrimonio neto */}
-                <div className="bg-gradient-to-br from-white to-slate-50 dark:from-onyx-900 dark:to-onyx-800/80 border border-slate-100 dark:border-onyx-800 rounded-[2rem] p-6 shadow-sm group hover:shadow-md transition-all relative overflow-hidden">
+                <div className="bg-gradient-to-br from-white to-slate-50 dark:from-aliseus-900 dark:to-aliseus-800/80 border border-slate-100 dark:border-aliseus-800 rounded-[2rem] p-6 shadow-sm group hover:shadow-md transition-all relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-400/5 rounded-full blur-2xl -mr-16 -mt-16 transition-transform group-hover:scale-110" />
                     <div className="flex justify-between items-start mb-4 relative z-10">
                         <div className="w-11 h-11 bg-cyan-50 dark:bg-cyan-900/30 border border-cyan-100/50 dark:border-cyan-800/50 rounded-2xl flex items-center justify-center">
@@ -251,13 +251,13 @@ export default function AuraInvestmentsOverview({ onNavigate }: AuraInvestmentsO
                 </div>
 
                 {/* Salud financiera: ratio act/pas */}
-                <div className="bg-gradient-to-br from-white to-slate-50 dark:from-onyx-900 dark:to-onyx-800/80 border border-slate-100 dark:border-onyx-800 rounded-[2rem] p-6 shadow-sm group hover:shadow-md transition-all relative overflow-hidden">
+                <div className="bg-gradient-to-br from-white to-slate-50 dark:from-aliseus-900 dark:to-aliseus-800/80 border border-slate-100 dark:border-aliseus-800 rounded-[2rem] p-6 shadow-sm group hover:shadow-md transition-all relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-400/5 rounded-full blur-2xl -mr-16 -mt-16 transition-transform group-hover:scale-110" />
                     <div className="flex justify-between items-start mb-4 relative z-10">
                         <div className="w-11 h-11 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-100/50 dark:border-emerald-800/50 rounded-2xl flex items-center justify-center">
                             <Activity className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                         </div>
-                        <div className="px-2.5 py-1 bg-white/60 dark:bg-onyx-800/60 rounded-full border border-slate-200/50 dark:border-onyx-700 text-[11px] font-black text-emerald-600 dark:text-emerald-400">
+                        <div className="px-2.5 py-1 bg-white/60 dark:bg-aliseus-800/60 rounded-full border border-slate-200/50 dark:border-aliseus-700 text-[11px] font-black text-emerald-600 dark:text-emerald-400">
                             Ratio {assetLiabilityRatio}
                         </div>
                     </div>
@@ -265,10 +265,10 @@ export default function AuraInvestmentsOverview({ onNavigate }: AuraInvestmentsO
                         <p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400 mb-1.5">Estructura Patrimonial</p>
                         <div className="flex items-baseline gap-2 mb-3">
                             <span className="text-xl font-black text-slate-900 dark:text-white">{formatEUR(totalAssets)}</span>
-                            <span className="text-sm text-slate-300 dark:text-onyx-600">/</span>
+                            <span className="text-sm text-slate-300 dark:text-aliseus-600">/</span>
                             <span className="text-base font-bold text-slate-400">{formatEUR(totalLiabilities)}</span>
                         </div>
-                        <div className="h-2 w-full bg-slate-100 dark:bg-onyx-800 rounded-full overflow-hidden flex">
+                        <div className="h-2 w-full bg-slate-100 dark:bg-aliseus-800 rounded-full overflow-hidden flex">
                             <div className="h-full bg-gradient-to-r from-emerald-400 to-emerald-500 transition-all duration-1000"
                                 style={{ width: `${(totalAssets / (totalAssets + totalLiabilities || 1)) * 100}%` }} />
                             <div className="h-full bg-gradient-to-r from-red-400 to-red-500 transition-all duration-1000"
@@ -282,7 +282,7 @@ export default function AuraInvestmentsOverview({ onNavigate }: AuraInvestmentsO
                 </div>
 
                 {/* Capital activo */}
-                <div className="bg-gradient-to-br from-white to-slate-50 dark:from-onyx-900 dark:to-onyx-800/80 border border-slate-100 dark:border-onyx-800 rounded-[2rem] p-6 shadow-sm group hover:shadow-md transition-all relative overflow-hidden">
+                <div className="bg-gradient-to-br from-white to-slate-50 dark:from-aliseus-900 dark:to-aliseus-800/80 border border-slate-100 dark:border-aliseus-800 rounded-[2rem] p-6 shadow-sm group hover:shadow-md transition-all relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-400/5 rounded-full blur-2xl -mr-16 -mt-16 transition-transform group-hover:scale-110" />
                     <div className="flex justify-between items-start mb-4 relative z-10">
                         <div className="w-11 h-11 bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-100/50 dark:border-indigo-800/50 rounded-2xl flex items-center justify-center">
@@ -344,7 +344,7 @@ export default function AuraInvestmentsOverview({ onNavigate }: AuraInvestmentsO
                 </div>
 
                 {/* Recomendación de aportación */}
-                <div className="bg-white dark:bg-onyx-900 border border-slate-100 dark:border-onyx-800 rounded-[2rem] p-7 shadow-sm flex flex-col justify-between">
+                <div className="bg-white dark:bg-aliseus-900 border border-slate-100 dark:border-aliseus-800 rounded-[2rem] p-7 shadow-sm flex flex-col justify-between">
                     <div>
                         <div className="flex items-center gap-3 mb-4">
                             <div className="w-10 h-10 bg-violet-50 dark:bg-violet-900/30 rounded-2xl flex items-center justify-center border border-violet-100 dark:border-violet-800/50">
@@ -377,7 +377,7 @@ export default function AuraInvestmentsOverview({ onNavigate }: AuraInvestmentsO
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                 {/* Evolución del Capital */}
-                <div className="lg:col-span-2 bg-white dark:bg-onyx-900 border border-slate-100 dark:border-onyx-800 rounded-3xl p-6 shadow-sm">
+                <div className="lg:col-span-2 bg-white dark:bg-aliseus-900 border border-slate-100 dark:border-aliseus-800 rounded-3xl p-6 shadow-sm">
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 gap-4">
                         <div>
                             <p className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 mb-0.5">Evolución del Capital Invertido</p>
@@ -388,7 +388,7 @@ export default function AuraInvestmentsOverview({ onNavigate }: AuraInvestmentsO
                                 {chartTrend === 'estable' && '→ La curva es estable. Aumentar aportaciones acelera el ritmo.'}
                             </p>
                         </div>
-                        <div className="flex items-center gap-1 bg-slate-50 dark:bg-onyx-800 border border-slate-100 dark:border-onyx-700 rounded-xl p-1">
+                        <div className="flex items-center gap-1 bg-slate-50 dark:bg-aliseus-800 border border-slate-100 dark:border-aliseus-700 rounded-xl p-1">
                             {(['1m', '6m', '1y', '3y', '5y'] as const).map(tf => (
                                 <button
                                     key={tf}
@@ -396,7 +396,7 @@ export default function AuraInvestmentsOverview({ onNavigate }: AuraInvestmentsO
                                     className={cn(
                                         'px-3 py-1 text-[11px] font-black rounded-lg transition-all',
                                         chartTimeframe === tf
-                                            ? 'bg-white dark:bg-onyx-600 text-slate-900 dark:text-white shadow-sm'
+                                            ? 'bg-white dark:bg-aliseus-600 text-slate-900 dark:text-white shadow-sm'
                                             : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
                                     )}
                                 >
@@ -415,7 +415,7 @@ export default function AuraInvestmentsOverview({ onNavigate }: AuraInvestmentsO
                                         <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="text-slate-100 dark:text-onyx-800/50" />
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="text-slate-100 dark:text-aliseus-800/50" />
                                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#94a3b8' }} dy={8} minTickGap={20} />
                                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#94a3b8' }} tickFormatter={v => `${Math.round(v / 1000)}k`} width={50} dx={-6} />
                                 <RechartsTooltip
@@ -430,7 +430,7 @@ export default function AuraInvestmentsOverview({ onNavigate }: AuraInvestmentsO
                 </div>
 
                 {/* Distribución de cartera */}
-                <div className="bg-white dark:bg-onyx-900 border border-slate-100 dark:border-onyx-800 rounded-3xl p-6 shadow-sm flex flex-col">
+                <div className="bg-white dark:bg-aliseus-900 border border-slate-100 dark:border-aliseus-800 rounded-3xl p-6 shadow-sm flex flex-col">
                     <div className="mb-4">
                         <p className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 mb-0.5">Distribución de Cartera</p>
                         <p className="text-xs font-semibold text-slate-400">
@@ -478,7 +478,7 @@ export default function AuraInvestmentsOverview({ onNavigate }: AuraInvestmentsO
             </div>
 
             {/* ── CAPA 5: MIS CUENTAS ─────────────────────────────────────────── */}
-            <div className="bg-white dark:bg-onyx-900 border border-slate-100 dark:border-onyx-800 rounded-3xl p-6 shadow-sm">
+            <div className="bg-white dark:bg-aliseus-900 border border-slate-100 dark:border-aliseus-800 rounded-3xl p-6 shadow-sm">
                 <div className="flex justify-between items-center mb-6">
                     <div>
                         <p className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 mb-0.5">Mis Cuentas</p>
@@ -514,7 +514,7 @@ export default function AuraInvestmentsOverview({ onNavigate }: AuraInvestmentsO
                                             setActiveApp('finance');
                                             onNavigate?.('finance', 'accounts');
                                         }}
-                                        className="p-4 bg-slate-50/60 dark:bg-onyx-800/50 rounded-2xl border border-slate-100 dark:border-onyx-700 hover:border-indigo-200 dark:hover:border-indigo-800 hover:bg-white dark:hover:bg-onyx-800 transition-all cursor-pointer group"
+                                        className="p-4 bg-slate-50/60 dark:bg-aliseus-800/50 rounded-2xl border border-slate-100 dark:border-aliseus-700 hover:border-indigo-200 dark:hover:border-indigo-800 hover:bg-white dark:hover:bg-aliseus-800 transition-all cursor-pointer group"
                                     >
                                         <div className="flex justify-between items-start mb-3">
                                             <div className={cn('w-9 h-9 rounded-xl flex items-center justify-center',

@@ -21,7 +21,7 @@ export const EvolutionChartWidget: React.FC<EvolutionChartWidgetProps> = ({
     chartTimeframe, setChartTimeframe, accounts
 }) => {
     return (
-        <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col">
+        <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-6 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
                     <Activity className="w-4 h-4 text-slate-400" />
@@ -30,7 +30,7 @@ export const EvolutionChartWidget: React.FC<EvolutionChartWidgetProps> = ({
 
                 {/* Filters */}
                 <div className="flex flex-wrap items-center gap-2">
-                    <div className="bg-slate-50 dark:bg-onyx-800 border border-slate-100 dark:border-onyx-700 rounded-lg p-1 flex">
+                    <div className="bg-slate-50 dark:bg-aliseus-800 border border-slate-100 dark:border-aliseus-700 rounded-lg p-1 flex">
                         {(['1m', '6m', '1y', '3y', '5y'] as const).map(tf => (
                             <button
                                 key={tf}
@@ -38,7 +38,7 @@ export const EvolutionChartWidget: React.FC<EvolutionChartWidgetProps> = ({
                                 className={cn(
                                     "px-3 py-1 text-xs font-bold rounded-md transition-colors",
                                     chartTimeframe === tf
-                                        ? "bg-white dark:bg-onyx-600 text-slate-900 dark:text-white shadow-sm"
+                                        ? "bg-white dark:bg-aliseus-600 text-slate-900 dark:text-white shadow-sm"
                                         : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
                                 )}
                             >
@@ -51,7 +51,7 @@ export const EvolutionChartWidget: React.FC<EvolutionChartWidgetProps> = ({
                         <select
                             value={chartAccountId}
                             onChange={(e) => setChartAccountId(e.target.value)}
-                            className="appearance-none bg-slate-50 dark:bg-onyx-800 border border-slate-100 dark:border-onyx-700 rounded-lg px-3 py-1.5 pr-8 text-xs font-bold text-slate-700 dark:text-slate-300 outline-none cursor-pointer"
+                            className="appearance-none bg-slate-50 dark:bg-aliseus-800 border border-slate-100 dark:border-aliseus-700 rounded-lg px-3 py-1.5 pr-8 text-xs font-bold text-slate-700 dark:text-slate-300 outline-none cursor-pointer"
                         >
                             <option value="all">Todas las cuentas</option>
                             {accounts.map(a => (
@@ -73,7 +73,7 @@ export const EvolutionChartWidget: React.FC<EvolutionChartWidgetProps> = ({
                                 <stop offset="95%" stopColor={chartColor} stopOpacity={0} />
                             </linearGradient>
                         </defs>
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="text-slate-100 dark:text-onyx-800/50" />
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="text-slate-100 dark:text-aliseus-800/50" />
                         <XAxis
                             dataKey="name"
                             axisLine={false}

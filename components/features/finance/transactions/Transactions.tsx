@@ -350,7 +350,7 @@ const Transactions: React.FC<TransactionsProps> = ({
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-10 mb-12">
         <div>
           <h1 className="text-4xl font-bold text-cyan-900 tracking-tight">Movimientos</h1>
-          <p className="text-xs font-bold text-onyx-400 mt-3 uppercase tracking-[0.2em]">Gestión detallada de tu flujo de caja</p>
+          <p className="text-xs font-bold text-aliseus-400 mt-3 uppercase tracking-[0.2em]">Gestión detallada de tu flujo de caja</p>
         </div>
         <div className="flex items-center gap-6">
           <Button
@@ -359,7 +359,7 @@ const Transactions: React.FC<TransactionsProps> = ({
             className="p-5 group relative"
           >
             <Upload className="w-6 h-6" />
-            <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-cyan-900 text-white text-[10px] uppercase font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all translate-x-3 group-hover:translate-x-0 whitespace-nowrap pointer-events-none shadow-2xl border border-onyx-800">Importar CSV</span>
+            <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-cyan-900 text-white text-[10px] uppercase font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all translate-x-3 group-hover:translate-x-0 whitespace-nowrap pointer-events-none shadow-2xl border border-aliseus-800">Importar CSV</span>
           </Button>
           <ProgressiveTooltip
               id="tooltip-new-transaction"
@@ -417,8 +417,8 @@ const Transactions: React.FC<TransactionsProps> = ({
 
       {(isFormOpen || isEditModalOpen) && (
         <div className="fixed inset-0 bg-cyan-900/40 backdrop-blur-md z-[60] flex items-center justify-center p-4 animate-fade-in text-cyan-900">
-          <div className="bg-white rounded-onyx shadow-2xl w-full max-w-2xl overflow-hidden max-h-[90vh] flex flex-col border border-onyx-100 relative shadow-cyan-500/10">
-            <div className="bg-white px-10 py-8 flex justify-between items-center border-b border-onyx-50 sticky top-0 z-10">
+          <div className="bg-white rounded-Aliseus shadow-2xl w-full max-w-2xl overflow-hidden max-h-[90vh] flex flex-col border border-aliseus-100 relative shadow-cyan-500/10">
+            <div className="bg-white px-10 py-8 flex justify-between items-center border-b border-aliseus-50 sticky top-0 z-10">
               <div>
                 <h2 className="text-2xl font-bold tracking-tight flex items-center gap-4">
                   <div className={`p-3 rounded-xl shadow-sm ${isEditModalOpen ? 'bg-cyan-50 text-cyan-600' : 'bg-emerald-50 text-emerald-600'}`}>
@@ -426,7 +426,7 @@ const Transactions: React.FC<TransactionsProps> = ({
                   </div>
                   {isEditModalOpen ? 'Editar Movimiento' : 'Nueva Transacción'}
                 </h2>
-                <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mt-2 ml-16">Registro contable de flujos monetarios</p>
+                <p className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mt-2 ml-16">Registro contable de flujos monetarios</p>
               </div>
               <Button
                 variant="ghost"
@@ -439,25 +439,25 @@ const Transactions: React.FC<TransactionsProps> = ({
 
             <form onSubmit={isEditModalOpen ? handleUpdateTransaction : handleSubmit} className="p-10 space-y-10 overflow-y-auto custom-scrollbar">
               {!isEditModalOpen && (
-                <div className="flex bg-onyx-50 p-1.5 rounded-2xl border border-onyx-100 shadow-inner">
-                  <button type="button" onClick={() => setMode('EXPENSE')} className={`flex-1 py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${mode === 'EXPENSE' ? 'bg-white shadow-lg text-red-600 border border-red-50' : 'text-onyx-400 hover:text-onyx-600'}`}>Gasto</button>
-                  <button type="button" onClick={() => setMode('INCOME')} className={`flex-1 py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${mode === 'INCOME' ? 'bg-white shadow-lg text-emerald-600 border border-emerald-50' : 'text-onyx-400 hover:text-onyx-600'}`}>Ingreso</button>
-                  <button type="button" onClick={() => setMode('TRANSFER')} className={`flex-1 py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${mode === 'TRANSFER' ? 'bg-white shadow-lg text-cyan-600 border border-cyan-50' : 'text-onyx-400 hover:text-onyx-600'}`}>Traspaso</button>
+                <div className="flex bg-aliseus-50 p-1.5 rounded-2xl border border-aliseus-100 shadow-inner">
+                  <button type="button" onClick={() => setMode('EXPENSE')} className={`flex-1 py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${mode === 'EXPENSE' ? 'bg-white shadow-lg text-red-600 border border-red-50' : 'text-aliseus-400 hover:text-aliseus-600'}`}>Gasto</button>
+                  <button type="button" onClick={() => setMode('INCOME')} className={`flex-1 py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${mode === 'INCOME' ? 'bg-white shadow-lg text-emerald-600 border border-emerald-50' : 'text-aliseus-400 hover:text-aliseus-600'}`}>Ingreso</button>
+                  <button type="button" onClick={() => setMode('TRANSFER')} className={`flex-1 py-3.5 rounded-xl text-[10px] font-bold uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-2 ${mode === 'TRANSFER' ? 'bg-white shadow-lg text-cyan-600 border border-cyan-50' : 'text-aliseus-400 hover:text-aliseus-600'}`}>Traspaso</button>
                 </div>
               )}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div className="col-span-1 md:col-span-2">
-                  <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3">Cantidad</label>
+                  <label className="block text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-3">Cantidad</label>
                   <div className="relative group/input">
-                    <span className="absolute left-6 top-1/2 -translate-y-1/2 text-onyx-300 font-bold text-2xl group-focus-within/input:text-cyan-600 transition-colors">{symbol}</span>
+                    <span className="absolute left-6 top-1/2 -translate-y-1/2 text-aliseus-300 font-bold text-2xl group-focus-within/input:text-cyan-600 transition-colors">{symbol}</span>
                     <input
                       required
                       type="number"
                       step="0.01"
                       value={isEditModalOpen ? editAmount : amount}
                       onChange={e => isEditModalOpen ? setEditAmount(e.target.value) : setAmount(e.target.value)}
-                      className={`w-full p-6 pl-14 bg-onyx-50 border ${validationErrors.amount ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-3xl font-bold text-4xl text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 focus:border-cyan-500/20 transition-all outline-none text-center shadow-inner`}
+                      className={`w-full p-6 pl-14 bg-aliseus-50 border ${validationErrors.amount ? 'border-red-300 ring-2 ring-red-500/20' : 'border-aliseus-100'} rounded-3xl font-bold text-4xl text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 focus:border-cyan-500/20 transition-all outline-none text-center shadow-inner`}
                       placeholder="0.00"
                     />
                   </div>
@@ -466,23 +466,23 @@ const Transactions: React.FC<TransactionsProps> = ({
 
                 <div className="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
-                    <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3">Fecha</label>
+                    <label className="block text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-3">Fecha</label>
                     <input
                       required
                       type="date"
                       value={isEditModalOpen ? editDate : date}
                       onChange={e => isEditModalOpen ? setEditDate(e.target.value) : setDate(e.target.value)}
-                      className={`w-full p-5 bg-onyx-50 border ${validationErrors.date ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner uppercase tracking-widest text-[11px]`}
+                      className={`w-full p-5 bg-aliseus-50 border ${validationErrors.date ? 'border-red-300 ring-2 ring-red-500/20' : 'border-aliseus-100'} rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner uppercase tracking-widest text-[11px]`}
                     />
                     {validationErrors.date && <p className="text-red-500 text-[10px] mt-2 font-bold px-2">{validationErrors.date}</p>}
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3">{mode === 'TRANSFER' ? 'Cuenta de Origen' : 'Cuenta'}</label>
+                    <label className="block text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-3">{mode === 'TRANSFER' ? 'Cuenta de Origen' : 'Cuenta'}</label>
                     <select
                       required
                       value={isEditModalOpen ? editAccountId : accountId}
                       onChange={e => isEditModalOpen ? setEditAccountId(e.target.value) : setAccountId(e.target.value)}
-                      className={`w-full p-5 bg-onyx-50 border ${validationErrors.accountId ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner cursor-pointer`}
+                      className={`w-full p-5 bg-aliseus-50 border ${validationErrors.accountId ? 'border-red-300 ring-2 ring-red-500/20' : 'border-aliseus-100'} rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner cursor-pointer`}
                     >
                       <option value="">Seleccionar cuenta...</option>
                       {accounts.map(acc => (
@@ -495,7 +495,7 @@ const Transactions: React.FC<TransactionsProps> = ({
 
                 {mode === 'TRANSFER' && !isEditModalOpen && (
                   <div className="col-span-1 md:col-span-2">
-                    <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3">Cuenta de Destino</label>
+                    <label className="block text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-3">Cuenta de Destino</label>
                     <select
                       required
                       value={toAccountId}
@@ -514,12 +514,12 @@ const Transactions: React.FC<TransactionsProps> = ({
                 {mode !== 'TRANSFER' && (
                   <div className="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
-                      <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3">Categoría</label>
+                      <label className="block text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-3">Categoría</label>
                       <select
                         required
                         value={isEditModalOpen ? editCategory : category}
                         onChange={e => isEditModalOpen ? setEditCategory(e.target.value) : setCategory(e.target.value)}
-                        className={`w-full p-5 bg-onyx-50 border ${validationErrors.category ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner`}
+                        className={`w-full p-5 bg-aliseus-50 border ${validationErrors.category ? 'border-red-300 ring-2 ring-red-500/20' : 'border-aliseus-100'} rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner`}
                       >
                         <option value="">Seleccionar...</option>
                         {categories.filter(c => c.type === (isEditModalOpen ? editingTransaction?.type : mode)).map(c => (
@@ -529,11 +529,11 @@ const Transactions: React.FC<TransactionsProps> = ({
                       {validationErrors.category && <p className="text-red-500 text-[10px] mt-2 font-bold px-2">{validationErrors.category}</p>}
                     </div>
                     <div>
-                      <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3">Subcategoría</label>
+                      <label className="block text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-3">Subcategoría</label>
                       <select
                         value={isEditModalOpen ? editSubCategory : subCategory}
                         onChange={e => isEditModalOpen ? setEditSubCategory(e.target.value) : setSubCategory(e.target.value)}
-                        className={`w-full p-5 bg-onyx-50 border ${validationErrors.subCategory ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner`}
+                        className={`w-full p-5 bg-aliseus-50 border ${validationErrors.subCategory ? 'border-red-300 ring-2 ring-red-500/20' : 'border-aliseus-100'} rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner`}
                       >
                         <option value="">Opcional...</option>
                         {categories.find(c => c.name === (isEditModalOpen ? editCategory : category))?.subCategories.map(sc => (
@@ -547,14 +547,14 @@ const Transactions: React.FC<TransactionsProps> = ({
 
 
                 <div className="col-span-1 md:col-span-2">
-                  <label className="block text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-3">Descripción / Concepto</label>
+                  <label className="block text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-3">Descripción / Concepto</label>
                   <div className="relative">
                     <input
                       required
                       type="text"
                       value={isEditModalOpen ? editDescription : description}
                       onChange={e => isEditModalOpen ? setEditDescription(e.target.value) : setDescription(e.target.value)}
-                      className={`w-full p-5 bg-onyx-50 border ${validationErrors.description ? 'border-red-300 ring-2 ring-red-500/20' : 'border-onyx-100'} rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner placeholder:text-onyx-200 pr-12`}
+                      className={`w-full p-5 bg-aliseus-50 border ${validationErrors.description ? 'border-red-300 ring-2 ring-red-500/20' : 'border-aliseus-100'} rounded-2xl font-bold text-cyan-900 focus:bg-white focus:ring-4 focus:ring-cyan-500/5 outline-none transition-all shadow-inner placeholder:text-aliseus-200 pr-12`}
                       placeholder="Ej: Compra mensual en Mercadona"
                     />
                     <Button
@@ -572,12 +572,12 @@ const Transactions: React.FC<TransactionsProps> = ({
                 </div>
               </div>
 
-              <div className="bg-onyx-50/50 p-8 rounded-3xl border border-onyx-100 shadow-inner group/notes">
-                <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-5">Notas Adicionales</p>
+              <div className="bg-aliseus-50/50 p-8 rounded-3xl border border-aliseus-100 shadow-inner group/notes">
+                <p className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-5">Notas Adicionales</p>
                 <textarea
                   value={isEditModalOpen ? editNotes : notes}
                   onChange={e => isEditModalOpen ? setEditNotes(e.target.value) : setNotes(e.target.value)}
-                  className="w-full p-6 bg-white border border-onyx-100 rounded-2xl font-semibold text-onyx-700 focus:ring-4 focus:ring-cyan-500/5 focus:border-cyan-500/20 transition-all outline-none resize-none h-32 shadow-sm"
+                  className="w-full p-6 bg-white border border-aliseus-100 rounded-2xl font-semibold text-aliseus-700 focus:ring-4 focus:ring-cyan-500/5 focus:border-cyan-500/20 transition-all outline-none resize-none h-32 shadow-sm"
                   placeholder="Añade detalles relevantes sobre este movimiento..."
                 />
               </div>
@@ -585,9 +585,9 @@ const Transactions: React.FC<TransactionsProps> = ({
               <div className="flex bg-cyan-50/50 p-6 rounded-3xl border border-cyan-100/50 items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="relative flex items-center">
-                    <input type="checkbox" id="rec" checked={isEditModalOpen ? editRecurring : isRecurring} onChange={e => isEditModalOpen ? setEditRecurring(e.target.checked) : setIsRecurring(e.target.checked)} className="w-6 h-6 text-cyan-600 rounded-lg border-onyx-200 focus:ring-cyan-500/20 cursor-pointer" />
+                    <input type="checkbox" id="rec" checked={isEditModalOpen ? editRecurring : isRecurring} onChange={e => isEditModalOpen ? setEditRecurring(e.target.checked) : setIsRecurring(e.target.checked)} className="w-6 h-6 text-cyan-600 rounded-lg border-aliseus-200 focus:ring-cyan-500/20 cursor-pointer" />
                   </div>
-                  <label htmlFor="rec" className="text-[11px] font-bold text-onyx-700 uppercase tracking-widest cursor-pointer">Transacción Recurrente</label>
+                  <label htmlFor="rec" className="text-[11px] font-bold text-aliseus-700 uppercase tracking-widest cursor-pointer">Transacción Recurrente</label>
                 </div>
                 {(isEditModalOpen ? editRecurring : isRecurring) && (
                   <select value={isEditModalOpen ? editFrequency : recurrenceFrequency} onChange={e => isEditModalOpen ? setEditFrequency(e.target.value as any) : setRecurrenceFrequency(e.target.value as any)} className="bg-white border border-cyan-100 rounded-xl px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest text-cyan-600 outline-none focus:ring-4 focus:ring-cyan-500/5 shadow-sm">

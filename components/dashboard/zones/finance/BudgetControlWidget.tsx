@@ -10,7 +10,7 @@ export interface BudgetControlWidgetProps {
 
 export const BudgetControlWidget: React.FC<BudgetControlWidgetProps> = ({ globalBudgetLimit, globalBudgetSpent, globalBudgetRemaining }) => {
     return (
-        <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+        <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-6 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
             <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                     <Target className="w-4 h-4 text-blue-500" />
@@ -23,7 +23,7 @@ export const BudgetControlWidget: React.FC<BudgetControlWidgetProps> = ({ global
                     <span className="text-base font-bold text-slate-400">/ {formatCurrency(globalBudgetSpent)}</span>
                 </div>
 
-                <div className="mt-3 w-full bg-slate-100 dark:bg-onyx-800 rounded-full h-1.5 mb-2 overflow-hidden">
+                <div className="mt-3 w-full bg-slate-100 dark:bg-aliseus-800 rounded-full h-1.5 mb-2 overflow-hidden">
                     <div
                         className={cn("h-full rounded-full", globalBudgetSpent > globalBudgetLimit ? "bg-red-500" : "bg-blue-600")}
                         style={{ width: `${Math.min(100, (globalBudgetSpent / Math.max(1, globalBudgetLimit)) * 100)}% ` }}

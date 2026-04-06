@@ -62,8 +62,8 @@ export class SampleDataService {
         lifeStore.setShoppingList([]);
 
         // Mark that sample data has been loaded
-        localStorage.setItem('onyx_sample_data_loaded', 'true');
-        localStorage.setItem('onyx_sample_data_load_date', new Date().toISOString());
+        localStorage.setItem('Aliseus_sample_data_loaded', 'true');
+        localStorage.setItem('Aliseus_sample_data_load_date', new Date().toISOString());
     }
 
     /**
@@ -89,8 +89,8 @@ export class SampleDataService {
         lifeStore.setShoppingList([]);
 
         // Mark that sample data has been cleared
-        localStorage.setItem('onyx_sample_data_loaded', 'false');
-        localStorage.setItem('onyx_sample_data_dismissed', 'true');
+        localStorage.setItem('Aliseus_sample_data_loaded', 'false');
+        localStorage.setItem('Aliseus_sample_data_dismissed', 'true');
     }
 
     /**
@@ -98,21 +98,21 @@ export class SampleDataService {
      */
     static restoreSampleData(): void {
         this.loadSampleData();
-        localStorage.removeItem('onyx_sample_data_dismissed');
+        localStorage.removeItem('Aliseus_sample_data_dismissed');
     }
 
     /**
      * Checks if user has dismissed the sample data banner
      */
     static isSampleDataDismissed(): boolean {
-        return localStorage.getItem('onyx_sample_data_dismissed') === 'true';
+        return localStorage.getItem('Aliseus_sample_data_dismissed') === 'true';
     }
 
     /**
      * Marks the sample data banner as dismissed
      */
     static dismissSampleDataBanner(): void {
-        localStorage.setItem('onyx_sample_data_dismissed', 'true');
+        localStorage.setItem('Aliseus_sample_data_dismissed', 'true');
     }
 
     /**

@@ -97,11 +97,11 @@ const ProfileSelectionStep: React.FC = () => {
                             onClick={() => handleSelect(profile.id)}
                             className={`relative p-5 rounded-2xl border-2 transition-all cursor-pointer hover:scale-[1.02] ${isSelected
                                 ? 'border-cyan-600 bg-cyan-50 dark:bg-cyan-900/20 dark:border-cyan-500 shadow-md transform scale-[1.02]'
-                                : 'border-gray-100 dark:border-onyx-700 bg-white dark:bg-onyx-800 hover:border-cyan-200 dark:hover:border-cyan-800'
+                                : 'border-gray-100 dark:border-aliseus-700 bg-white dark:bg-aliseus-800 hover:border-cyan-200 dark:hover:border-cyan-800'
                                 }`}
                         >
                             <div className="absolute top-4 right-4 text-cyan-600 dark:text-cyan-400">
-                                <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${isSelected ? 'bg-cyan-600 border-cyan-600 dark:border-cyan-500' : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-onyx-800'}`}>
+                                <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${isSelected ? 'bg-cyan-600 border-cyan-600 dark:border-cyan-500' : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-aliseus-800'}`}>
                                     {isSelected && <CheckCircle2 className="w-4 h-4 text-white" />}
                                 </div>
                             </div>
@@ -133,7 +133,7 @@ const ProfileSelectionStep: React.FC = () => {
                         disabled={selected.length === 0}
                         className={`px-8 py-3 rounded-xl font-bold shadow-lg transition-all ${selected.length > 0
                             ? 'bg-cyan-600 text-white hover:bg-cyan-700 hover:scale-105'
-                            : 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-onyx-700 dark:text-gray-500'
+                            : 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-aliseus-700 dark:text-gray-500'
                             }`}
                     >
                         Continuar

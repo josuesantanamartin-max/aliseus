@@ -7,6 +7,7 @@ import { Logo } from './Logo';
 import NotificationBadge from '../common/notifications/NotificationBadge';
 import NotificationCenter from '../common/notifications/NotificationCenter';
 import { ProgressiveTooltip } from '@/components/common/ProgressiveTooltip';
+import BetaFeedbackWidget from '../dashboard/BetaFeedbackWidget';
 
 interface SidebarProps {
   onLogout?: () => void;
@@ -70,7 +71,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout }) => {
   return (
     <>
       {isOpen && (
-        <div className="fixed inset-0 bg-onyx-950/20 backdrop-blur-sm z-30 md:hidden" onClick={() => setIsOpen && setIsOpen(false)} />
+        <div className="fixed inset-0 bg-aliseus-950/20 backdrop-blur-sm z-30 md:hidden" onClick={() => setIsOpen && setIsOpen(false)} />
       )}
 
       <div className={`fixed inset-y-0 left-0 w-72 bg-white border-r border-gray-100 h-screen flex flex-col transition-all duration-500 ease-in-out z-30 ${isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'} md:translate-x-0 md:static`}>
@@ -103,14 +104,14 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout }) => {
                   onClick={() => handleLinkClick(item.id)}
                   className={`w-full flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-300 relative group overflow-hidden ${isActive
                     ? 'text-cyan-600 font-bold bg-transparent'
-                    : 'text-onyx-500 hover:text-cyan-600 bg-transparent'
+                    : 'text-aliseus-500 hover:text-cyan-600 bg-transparent'
                     }`}
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
                   {isActive && (
                     <motion.div layoutId="activeScreenIndicator" className="absolute left-0 w-1 h-6 bg-cyan-600 rounded-r-full" />
                   )}
-                  <Icon className={`w-5 h-5 transition-all duration-300 ${isActive ? 'text-cyan-600 scale-110' : 'text-onyx-400 group-hover:text-cyan-600 group-hover:scale-110'}`} />
+                  <Icon className={`w-5 h-5 transition-all duration-300 ${isActive ? 'text-cyan-600 scale-110' : 'text-aliseus-400 group-hover:text-cyan-600 group-hover:scale-110'}`} />
                   <span className="text-[13px] tracking-tight">{item.label}</span>
                 </motion.button>
               );
@@ -133,52 +134,36 @@ const Sidebar: React.FC<SidebarProps> = ({ onLogout }) => {
           </nav>
 
           <div className="mt-auto space-y-2">
+            <BetaFeedbackWidget variant="sidebar" />
+            
             <NotificationBadge
               onClick={() => setIsNotifOpen((prev) => !prev)}
               isActive={isNotifOpen}
             />
-            {/* Voice Assistant Button */}
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.96 }}
-              onClick={() => isListening ? stop() : listen()}
-              className={`w-full flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-300 group ${isListening ? 'text-indigo-600 font-bold bg-indigo-50/50 dark:bg-indigo-900/20' : 'text-onyx-500 hover:text-cyan-600 bg-transparent'}`}
-            >
-              <div className="relative">
-                {isListening ? (
-                  <MicOff className="w-5 h-5 text-indigo-600 animate-pulse" />
-                ) : (
-                  <Mic className="w-5 h-5 transition-transform duration-500 group-hover:scale-110 text-onyx-400 group-hover:text-cyan-600" />
-                )}
-                {isListening && (
-                   <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full animate-ping" />
-                )}
-              </div>
-              <span className="text-[13px] tracking-tight">{isListening ? 'Escuchando...' : 'Asistente IA'}</span>
-            </motion.button>
+
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.96 }}
               onClick={() => handleLinkClick('settings')}
-              className={`w-full flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-300 group ${activeApp === 'settings' ? 'text-cyan-600 font-bold bg-transparent' : 'text-onyx-500 hover:text-cyan-600 bg-transparent'}`}
+              className={`w-full flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-300 group ${activeApp === 'settings' ? 'text-cyan-600 font-bold bg-transparent' : 'text-aliseus-500 hover:text-cyan-600 bg-transparent'}`}
             >
-              <Settings className={`w-5 h-5 transition-transform duration-500 group-hover:rotate-90 ${activeApp === 'settings' ? 'text-cyan-600' : 'text-onyx-400'}`} />
+              <Settings className={`w-5 h-5 transition-transform duration-500 group-hover:rotate-90 ${activeApp === 'settings' ? 'text-cyan-600' : 'text-aliseus-400'}`} />
               <span className="text-[13px] tracking-tight">{t.settings}</span>
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.96 }}
               onClick={() => handleLinkClick('help')}
-              className={`w-full flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-300 group ${activeApp === 'help' ? 'text-cyan-600 font-bold bg-transparent' : 'text-onyx-500 hover:text-cyan-600 bg-transparent'}`}
+              className={`w-full flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-300 group ${activeApp === 'help' ? 'text-cyan-600 font-bold bg-transparent' : 'text-aliseus-500 hover:text-cyan-600 bg-transparent'}`}
             >
-              <HelpCircle className={`w-5 h-5 transition-all duration-300 ${activeApp === 'help' ? 'text-indigo-primary' : 'text-onyx-400 group-hover:text-onyx-600'}`} />
+              <HelpCircle className={`w-5 h-5 transition-all duration-300 ${activeApp === 'help' ? 'text-indigo-primary' : 'text-aliseus-400 group-hover:text-aliseus-600'}`} />
               <span className="text-[13px] tracking-tight">{t.help}</span>
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.96 }}
               onClick={onLogout}
-              className="w-full flex items-center gap-4 px-5 py-3.5 rounded-xl text-onyx-400 hover:bg-red-50 hover:text-red-600 transition-all duration-300 group"
+              className="w-full flex items-center gap-4 px-5 py-3.5 rounded-xl text-aliseus-400 hover:bg-red-50 hover:text-red-600 transition-all duration-300 group"
             >
               <LogOut className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" />
               <span className="text-[13px] tracking-tight">{t.logout}</span>

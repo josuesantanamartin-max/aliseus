@@ -18,7 +18,7 @@ const CookieConsent: React.FC = () => {
     const { language, cookiePreferences, setCookiePreferences } = useUserStore();
 
     useEffect(() => {
-        const stored = localStorage.getItem('onyx_cookie_preferences');
+        const stored = localStorage.getItem('Aliseus_cookie_preferences');
         if (stored) {
             try {
                 const prefs: CookiePreferences = JSON.parse(stored);
@@ -69,7 +69,7 @@ const CookieConsent: React.FC = () => {
     };
 
     const savePreferences = (prefs: CookiePreferences) => {
-        localStorage.setItem('onyx_cookie_preferences', JSON.stringify(prefs));
+        localStorage.setItem('Aliseus_cookie_preferences', JSON.stringify(prefs));
         setCookiePreferences(prefs);
         setIsVisible(false);
     };
@@ -156,9 +156,9 @@ const CookieConsent: React.FC = () => {
     if (showPreferences) {
         return (
             <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden">
                     {/* Header */}
-                    <div className="p-6 border-b border-gray-200 dark:border-onyx-800 flex items-center justify-between">
+                    <div className="p-6 border-b border-gray-200 dark:border-aliseus-800 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <div className="p-2 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl">
                                 <Cookie className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
@@ -170,7 +170,7 @@ const CookieConsent: React.FC = () => {
                         </div>
                         <button
                             onClick={() => setShowPreferences(false)}
-                            className="p-2 hover:bg-gray-100 dark:hover:bg-onyx-800 rounded-full transition-colors"
+                            className="p-2 hover:bg-gray-100 dark:hover:bg-aliseus-800 rounded-full transition-colors"
                         >
                             <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                         </button>
@@ -179,7 +179,7 @@ const CookieConsent: React.FC = () => {
                     {/* Preferences List */}
                     <div className="p-6 space-y-4 max-h-[60vh] overflow-y-auto">
                         {/* Essential Cookies */}
-                        <div className="p-4 bg-gray-50 dark:bg-onyx-800 rounded-xl border border-gray-200 dark:border-onyx-700">
+                        <div className="p-4 bg-gray-50 dark:bg-aliseus-800 rounded-xl border border-gray-200 dark:border-aliseus-700">
                             <div className="flex items-start justify-between mb-2">
                                 <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-1">
@@ -188,14 +188,14 @@ const CookieConsent: React.FC = () => {
                                     </div>
                                     <p className="text-xs text-gray-500 dark:text-gray-400">{t.essentialDesc}</p>
                                 </div>
-                                <span className="px-2 py-1 bg-gray-200 dark:bg-onyx-700 text-[10px] font-bold text-gray-600 dark:text-gray-400 rounded-md uppercase tracking-wider">
+                                <span className="px-2 py-1 bg-gray-200 dark:bg-aliseus-700 text-[10px] font-bold text-gray-600 dark:text-gray-400 rounded-md uppercase tracking-wider">
                                     {t.alwaysActive}
                                 </span>
                             </div>
                         </div>
 
                         {/* Analytics Cookies */}
-                        <div className="p-4 bg-white dark:bg-onyx-800 rounded-xl border border-gray-200 dark:border-onyx-700">
+                        <div className="p-4 bg-white dark:bg-aliseus-800 rounded-xl border border-gray-200 dark:border-aliseus-700">
                             <div className="flex items-start justify-between mb-2">
                                 <div className="flex-1">
                                     <h4 className="font-bold text-sm text-gray-900 dark:text-white mb-1">{t.analytics}</h4>
@@ -205,7 +205,7 @@ const CookieConsent: React.FC = () => {
                                     onClick={() => togglePreference('analytics')}
                                     className={`relative w-12 h-6 rounded-full transition-colors ${cookiePreferences?.analytics
                                             ? 'bg-indigo-600'
-                                            : 'bg-gray-300 dark:bg-onyx-700'
+                                            : 'bg-gray-300 dark:bg-aliseus-700'
                                         }`}
                                 >
                                     <div
@@ -217,7 +217,7 @@ const CookieConsent: React.FC = () => {
                         </div>
 
                         {/* Marketing Cookies */}
-                        <div className="p-4 bg-white dark:bg-onyx-800 rounded-xl border border-gray-200 dark:border-onyx-700">
+                        <div className="p-4 bg-white dark:bg-aliseus-800 rounded-xl border border-gray-200 dark:border-aliseus-700">
                             <div className="flex items-start justify-between mb-2">
                                 <div className="flex-1">
                                     <h4 className="font-bold text-sm text-gray-900 dark:text-white mb-1">{t.marketing}</h4>
@@ -227,7 +227,7 @@ const CookieConsent: React.FC = () => {
                                     onClick={() => togglePreference('marketing')}
                                     className={`relative w-12 h-6 rounded-full transition-colors ${cookiePreferences?.marketing
                                             ? 'bg-indigo-600'
-                                            : 'bg-gray-300 dark:bg-onyx-700'
+                                            : 'bg-gray-300 dark:bg-aliseus-700'
                                         }`}
                                 >
                                     <div
@@ -240,7 +240,7 @@ const CookieConsent: React.FC = () => {
                     </div>
 
                     {/* Footer */}
-                    <div className="p-6 border-t border-gray-200 dark:border-onyx-800 bg-gray-50 dark:bg-onyx-900">
+                    <div className="p-6 border-t border-gray-200 dark:border-aliseus-800 bg-gray-50 dark:bg-aliseus-900">
                         <button
                             onClick={handleSavePreferences}
                             className="w-full py-3 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2"
@@ -257,7 +257,7 @@ const CookieConsent: React.FC = () => {
     // Main Banner
     return (
         <div className="fixed bottom-0 left-0 right-0 z-[100] p-4 animate-fade-in-up">
-            <div className="max-w-4xl mx-auto bg-white dark:bg-onyx-900 rounded-2xl shadow-2xl border border-gray-100 dark:border-onyx-800 p-6 flex flex-col md:flex-row items-center gap-6">
+            <div className="max-w-4xl mx-auto bg-white dark:bg-aliseus-900 rounded-2xl shadow-2xl border border-gray-100 dark:border-aliseus-800 p-6 flex flex-col md:flex-row items-center gap-6">
                 <div className="bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded-full flex-shrink-0">
                     <Cookie className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
                 </div>
@@ -274,14 +274,14 @@ const CookieConsent: React.FC = () => {
                 <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
                     <button
                         onClick={() => setShowPreferences(true)}
-                        className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-gray-200 dark:border-onyx-700 text-xs font-bold text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-onyx-800 transition-colors flex items-center justify-center gap-2"
+                        className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-gray-200 dark:border-aliseus-700 text-xs font-bold text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-aliseus-800 transition-colors flex items-center justify-center gap-2"
                     >
                         <SettingsIcon className="w-3 h-3" />
                         {t.managePrefs}
                     </button>
                     <button
                         onClick={handleDeclineAll}
-                        className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-gray-200 dark:border-onyx-700 text-xs font-bold text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-onyx-800 transition-colors"
+                        className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-gray-200 dark:border-aliseus-700 text-xs font-bold text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-aliseus-800 transition-colors"
                     >
                         {t.declineAll}
                     </button>

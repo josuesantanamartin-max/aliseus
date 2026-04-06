@@ -35,11 +35,11 @@ const CostPerMealWidget: React.FC<CostPerMealWidgetProps> = ({ onNavigate }) => 
     }, [transactions, weeklyPlans]);
 
     return (
-        <div className="bg-white dark:bg-onyx-900 p-6 rounded-[2rem] h-full flex flex-col border border-onyx-100 dark:border-onyx-800 shadow-sm hover:shadow-md transition-all">
+        <div className="bg-white dark:bg-aliseus-900 p-6 rounded-[2rem] h-full flex flex-col border border-aliseus-100 dark:border-aliseus-800 shadow-sm hover:shadow-md transition-all">
             <div className="flex justify-between items-start mb-5">
                 <div>
                     <p className="text-emerald-600 dark:text-emerald-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Análisis de Gasto</p>
-                    <h3 className="text-lg font-black text-onyx-950 dark:text-white">Coste por Comida</h3>
+                    <h3 className="text-lg font-black text-aliseus-950 dark:text-white">Coste por Comida</h3>
                 </div>
                 <div className="p-2.5 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-900/30">
                     <Banknote className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
@@ -48,21 +48,21 @@ const CostPerMealWidget: React.FC<CostPerMealWidgetProps> = ({ onNavigate }) => 
 
             <div className="flex-1 flex flex-col justify-center">
                 <div className="flex items-baseline gap-2 mb-1">
-                    <span className="text-5xl font-black tracking-tighter text-onyx-950 dark:text-white">
+                    <span className="text-5xl font-black tracking-tighter text-aliseus-950 dark:text-white">
                         {stats.costPerMeal.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
-                    <span className="text-xl font-black text-onyx-400">€</span>
+                    <span className="text-xl font-black text-aliseus-400">€</span>
                 </div>
-                <p className="text-[10px] font-bold text-onyx-500 uppercase tracking-widest">Promedio Real</p>
+                <p className="text-[10px] font-bold text-aliseus-500 uppercase tracking-widest">Promedio Real</p>
 
                 <div className="mt-6 grid grid-cols-2 gap-4">
-                    <div className="p-3 rounded-2xl bg-onyx-50 dark:bg-onyx-800/50">
-                        <p className="text-[9px] font-black text-onyx-400 uppercase tracking-tighter mb-1">Gasto Mes</p>
-                        <p className="text-sm font-black text-onyx-900 dark:text-white">{stats.foodExpenses.toFixed(0)}€</p>
+                    <div className="p-3 rounded-2xl bg-aliseus-50 dark:bg-aliseus-800/50">
+                        <p className="text-[9px] font-black text-aliseus-400 uppercase tracking-tighter mb-1">Gasto Mes</p>
+                        <p className="text-sm font-black text-aliseus-900 dark:text-white">{stats.foodExpenses.toFixed(0)}€</p>
                     </div>
-                    <div className="p-3 rounded-2xl bg-onyx-50 dark:bg-onyx-800/50">
-                        <p className="text-[9px] font-black text-onyx-400 uppercase tracking-tighter mb-1">Comidas</p>
-                        <p className="text-sm font-black text-onyx-900 dark:text-white">{stats.plannedMealsCount}</p>
+                    <div className="p-3 rounded-2xl bg-aliseus-50 dark:bg-aliseus-800/50">
+                        <p className="text-[9px] font-black text-aliseus-400 uppercase tracking-tighter mb-1">Comidas</p>
+                        <p className="text-sm font-black text-aliseus-900 dark:text-white">{stats.plannedMealsCount}</p>
                     </div>
                 </div>
             </div>

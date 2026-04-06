@@ -21,10 +21,10 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
         const baseStyles = 'rounded-[2rem] overflow-hidden transition-all duration-300';
 
         const variants = {
-            default: 'bg-white dark:bg-onyx-900 border border-onyx-100 dark:border-onyx-800 shadow-soft hover:shadow-md',
-            glass: 'bg-white/80 dark:bg-onyx-900/80 backdrop-blur-xl border border-white/20 dark:border-onyx-800/50 shadow-glass',
-            elevated: 'bg-white dark:bg-onyx-900 shadow-glow hover:-translate-y-1',
-            outline: 'border-2 border-dashed border-onyx-200 dark:border-onyx-800 hover:border-indigo-400 dark:hover:border-indigo-500 bg-transparent',
+            default: 'bg-white dark:bg-aliseus-900 border border-aliseus-100 dark:border-aliseus-800 shadow-soft hover:shadow-md',
+            glass: 'bg-white/80 dark:bg-aliseus-900/80 backdrop-blur-xl border border-white/20 dark:border-aliseus-800/50 shadow-glass',
+            elevated: 'bg-white dark:bg-aliseus-900 shadow-glow hover:-translate-y-1',
+            outline: 'border-2 border-dashed border-aliseus-200 dark:border-aliseus-800 hover:border-indigo-400 dark:hover:border-indigo-500 bg-transparent',
         };
 
         const paddings = {

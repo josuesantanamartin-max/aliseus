@@ -24,7 +24,7 @@ const FamilyTasksWidget: React.FC<FamilyTasksWidgetProps> = ({ onNavigate }) => 
     const completedToday = tasksData.reduce((sum, data) => sum + data.completedToday, 0);
 
     return (
-        <div className="bg-white dark:bg-onyx-900 rounded-[2rem] p-8 shadow-sm border border-gray-100 dark:border-onyx-800 hover:shadow-lg transition-all h-full flex flex-col">
+        <div className="bg-white dark:bg-aliseus-900 rounded-[2rem] p-8 shadow-sm border border-gray-100 dark:border-aliseus-800 hover:shadow-lg transition-all h-full flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
@@ -59,7 +59,7 @@ const FamilyTasksWidget: React.FC<FamilyTasksWidgetProps> = ({ onNavigate }) => 
                             {totalTasks}
                         </p>
                     </div>
-                    <div className="w-16 h-16 rounded-full bg-white dark:bg-onyx-900 flex items-center justify-center shadow-inner">
+                    <div className="w-16 h-16 rounded-full bg-white dark:bg-aliseus-900 flex items-center justify-center shadow-inner">
                         <ListTodo className="w-8 h-8 text-purple-600 dark:text-purple-400" />
                     </div>
                 </div>
@@ -87,7 +87,7 @@ const FamilyTasksWidget: React.FC<FamilyTasksWidgetProps> = ({ onNavigate }) => 
                             <div
                                 key={member.id}
                                 onClick={() => onNavigate('life', 'family')}
-                                className="p-4 rounded-xl border border-gray-200 dark:border-onyx-700 bg-gray-50 dark:bg-onyx-800 hover:bg-white dark:hover:bg-onyx-700 hover:shadow-md transition-all cursor-pointer"
+                                className="p-4 rounded-xl border border-gray-200 dark:border-aliseus-700 bg-gray-50 dark:bg-aliseus-800 hover:bg-white dark:hover:bg-aliseus-700 hover:shadow-md transition-all cursor-pointer"
                             >
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-3">

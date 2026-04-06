@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { CreditCard, Check, AlertCircle, Calendar, Download, ExternalLink, Crown, Zap } from 'lucide-react';
+import { CreditCard, Check, AlertCircle, Calendar, Download, ExternalLink, Crown, Zap, ShieldCheck } from 'lucide-react';
 import { useSubscription } from '../../../hooks/useSubscription';
 import { SUBSCRIPTION_PLANS } from '../../../types/subscription';
 import { useUserStore } from '../../../store/useUserStore';
+import { PaymentMethods } from '../../common/PaymentMethods';
 
 const BillingPortal: React.FC = () => {
     const { language } = useUserStore();
@@ -402,6 +403,15 @@ const BillingPortal: React.FC = () => {
                         >
                             {t.upgrade}
                         </button>
+                    </div>
+
+                    {/* Accepted Payment Methods indicator for upgrade */}
+                    <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div className="flex items-center gap-2 text-blue-100/60">
+                            <ShieldCheck className="w-4 h-4" />
+                            <span className="text-[10px] font-bold uppercase tracking-widest">Pagos 100% Seguros con Stripe</span>
+                        </div>
+                        <PaymentMethods variant="light" className="opacity-90 scale-90" />
                     </div>
                 </div>
             )

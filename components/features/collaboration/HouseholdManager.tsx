@@ -25,7 +25,7 @@ export const HouseholdManager: React.FC = () => {
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
-                    <Home className="w-5 h-5 text-onyx-500" />
+                    <Home className="w-5 h-5 text-aliseus-500" />
                     Mis Hogares
                 </h2>
                 <button
@@ -44,14 +44,14 @@ export const HouseholdManager: React.FC = () => {
                         placeholder="Nombre del Hogar (ej. Familia Smith)"
                         value={newHouseholdName}
                         onChange={(e) => setNewHouseholdName(e.target.value)}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-800 outline-none focus:ring-2 focus:ring-onyx-500"
+                        className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 dark:bg-gray-800 outline-none focus:ring-2 focus:ring-aliseus-500"
                     />
                     <div className="flex flex-wrap gap-2">
                         {['EUR', 'USD', 'GBP', 'MXN', 'COP', 'ARS', 'CLP', 'CHF', 'CAD', 'AUD', 'INR'].map((curr) => (
                             <button
                                 key={curr}
                                 onClick={() => setCurrency(curr as any)}
-                                className={`px-3 py-1 text-sm rounded-md transition-colors ${currency === curr ? 'bg-onyx-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-600'}`}
+                                className={`px-3 py-1 text-sm rounded-md transition-colors ${currency === curr ? 'bg-aliseus-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-600'}`}
                             >
                                 {curr}
                             </button>
@@ -60,7 +60,7 @@ export const HouseholdManager: React.FC = () => {
                     <button
                         onClick={handleCreate}
                         disabled={!newHouseholdName.trim()}
-                        className="w-full py-2 bg-onyx-600 hover:bg-onyx-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        className="w-full py-2 bg-aliseus-600 hover:bg-aliseus-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
                         Crear Hogar
                     </button>
@@ -76,10 +76,10 @@ export const HouseholdManager: React.FC = () => {
                         <div
                             key={h.id}
                             onClick={() => setActiveHousehold(h.id)}
-                            className={`p-4 rounded-xl border cursor-pointer transition-all flex justify-between items-center group ${activeHouseholdId === h.id ? 'border-onyx-500 bg-onyx-50 dark:bg-onyx-900/20 shadow-sm' : 'border-gray-100 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}`}
+                            className={`p-4 rounded-xl border cursor-pointer transition-all flex justify-between items-center group ${activeHouseholdId === h.id ? 'border-aliseus-500 bg-aliseus-50 dark:bg-aliseus-900/20 shadow-sm' : 'border-gray-100 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}`}
                         >
                             <div>
-                                <h3 className={`font-semibold ${activeHouseholdId === h.id ? 'text-onyx-700 dark:text-onyx-300' : 'text-gray-700 dark:text-gray-300'}`}>
+                                <h3 className={`font-semibold ${activeHouseholdId === h.id ? 'text-aliseus-700 dark:text-aliseus-300' : 'text-gray-700 dark:text-gray-300'}`}>
                                     {h.name}
                                 </h3>
                                 <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -89,7 +89,7 @@ export const HouseholdManager: React.FC = () => {
                             </div>
 
                             {activeHouseholdId === h.id ? (
-                                <div className="bg-onyx-600 text-white p-1 rounded-full">
+                                <div className="bg-aliseus-600 text-white p-1 rounded-full">
                                     <Check className="w-4 h-4" />
                                 </div>
                             ) : (

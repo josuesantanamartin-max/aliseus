@@ -104,7 +104,7 @@ export const useRetirementStore = create<RetirementState & RetirementActions>()(
             }
         }),
         {
-            name: 'onyx_retirement_store',
+            name: 'aliseus_retirement_store',
             storage: createJSONStorage(() => localStorage),
             partialize: (state) => ({
                 activePlanId: state.activePlanId // Only persist active selection, plans are fetched

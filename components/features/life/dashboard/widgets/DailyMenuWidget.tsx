@@ -26,12 +26,12 @@ const DailyMenuWidget: React.FC<DailyMenuWidgetProps> = ({ onNavigate }) => {
     };
 
     return (
-        <div className="bg-white dark:bg-onyx-900 text-onyx-900 dark:text-white p-8 rounded-[2.5rem] relative overflow-hidden group border border-onyx-100 dark:border-onyx-800 shadow-sm hover:shadow-md transition-all h-full">
+        <div className="bg-white dark:bg-aliseus-900 text-aliseus-900 dark:text-white p-8 rounded-[2.5rem] relative overflow-hidden group border border-aliseus-100 dark:border-aliseus-800 shadow-sm hover:shadow-md transition-all h-full">
             <div className="relative z-10">
                 <div className="flex justify-between items-start mb-8">
                     <div>
                         <p className="text-emerald-600 dark:text-emerald-400 text-[10px] font-black uppercase tracking-[0.3em] mb-2">Plan Gourmet</p>
-                        <h3 className="text-2xl font-black tracking-tight text-onyx-950 dark:text-white">Menú de Hoy</h3>
+                        <h3 className="text-2xl font-black tracking-tight text-aliseus-950 dark:text-white">Menú de Hoy</h3>
                     </div>
                     <div className="p-3 bg-emerald-50 dark:bg-emerald-900/30 rounded-2xl border border-emerald-100 dark:border-emerald-900/50">
                         <Utensils className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
@@ -57,10 +57,10 @@ const DailyMenuWidget: React.FC<DailyMenuWidgetProps> = ({ onNavigate }) => {
                         >
                             <div className="flex justify-between items-center mb-3">
                                 <meal.icon className={`w-4 h-4 ${meal.color}`} />
-                                <span className="text-[10px] font-black text-onyx-400 dark:text-onyx-500 uppercase tracking-widest">{meal.time}</span>
+                                <span className="text-[10px] font-black text-aliseus-400 dark:text-aliseus-500 uppercase tracking-widest">{meal.time}</span>
                             </div>
-                            <p className="text-[10px] font-black text-onyx-400 dark:text-onyx-500 uppercase tracking-widest mb-1">{meal.label}</p>
-                            <p className="font-bold text-sm text-onyx-900 dark:text-white truncate group-hover/item:text-indigo-primary transition-colors">
+                            <p className="text-[10px] font-black text-aliseus-400 dark:text-aliseus-500 uppercase tracking-widest mb-1">{meal.label}</p>
+                            <p className="font-bold text-sm text-aliseus-900 dark:text-white truncate group-hover/item:text-indigo-primary transition-colors">
                                 {todayMeals[meal.key as keyof typeof todayMeals]?.length > 0
                                     ? todayMeals[meal.key as keyof typeof todayMeals][0].name
                                     : 'No planeado'}

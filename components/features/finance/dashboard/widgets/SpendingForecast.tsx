@@ -52,32 +52,32 @@ const SpendingForecast: React.FC<SpendingForecastProps> = ({ transactions }) => 
     }, [transactions]);
 
     return (
-        <div className="bg-white p-10 rounded-onyx border border-onyx-100 shadow-sm relative overflow-hidden group">
+        <div className="bg-white p-10 rounded-Aliseus border border-aliseus-100 shadow-sm relative overflow-hidden group">
             <div className="flex justify-between items-center mb-10 relative z-10">
                 <div>
                     <h3 className="text-xl font-bold text-cyan-900 tracking-tight flex items-center gap-3">
                         <div className="p-2 bg-amber-50 text-amber-600 rounded-lg"><TrendingDown className="w-5 h-5" /></div>
                         Proyección de Gastos
                     </h3>
-                    <p className="text-xs font-semibold text-onyx-400 mt-2 uppercase tracking-[0.15em]">Basado en tendencias del periodo actual</p>
+                    <p className="text-xs font-semibold text-aliseus-400 mt-2 uppercase tracking-[0.15em]">Basado en tendencias del periodo actual</p>
                 </div>
             </div>
 
             <div className="space-y-8 relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="p-6 bg-onyx-50/50 rounded-2xl border border-onyx-100 group-hover:bg-red-50/30 group-hover:border-red-100 transition-all">
-                        <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-[0.2em] mb-2 group-hover:text-red-700">Gastado hoy</p>
-                        <p className="text-2xl font-bold text-onyx-900 tracking-tight">{formatPrice(forecastData.currentMonthSpent)}</p>
-                        <p className="text-[10px] font-semibold text-onyx-400 mt-1 uppercase tracking-widest">{forecastData.currentDay} de {forecastData.daysInMonth} d</p>
+                    <div className="p-6 bg-aliseus-50/50 rounded-2xl border border-aliseus-100 group-hover:bg-red-50/30 group-hover:border-red-100 transition-all">
+                        <p className="text-[10px] font-bold text-aliseus-400 uppercase tracking-[0.2em] mb-2 group-hover:text-red-700">Gastado hoy</p>
+                        <p className="text-2xl font-bold text-aliseus-900 tracking-tight">{formatPrice(forecastData.currentMonthSpent)}</p>
+                        <p className="text-[10px] font-semibold text-aliseus-400 mt-1 uppercase tracking-widest">{forecastData.currentDay} de {forecastData.daysInMonth} d</p>
                     </div>
-                    <div className="p-6 bg-onyx-50/50 rounded-2xl border border-onyx-100 group-hover:bg-amber-50/30 group-hover:border-amber-100 transition-all">
-                        <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-[0.2em] mb-2 group-hover:text-amber-700">Proyección</p>
-                        <p className="text-2xl font-bold text-onyx-900 tracking-tight">{formatPrice(forecastData.projectedTotal)}</p>
-                        <p className="text-[10px] font-semibold text-onyx-400 mt-1 uppercase tracking-widest">{formatPrice(forecastData.dailyAverage)}/día</p>
+                    <div className="p-6 bg-aliseus-50/50 rounded-2xl border border-aliseus-100 group-hover:bg-amber-50/30 group-hover:border-amber-100 transition-all">
+                        <p className="text-[10px] font-bold text-aliseus-400 uppercase tracking-[0.2em] mb-2 group-hover:text-amber-700">Proyección</p>
+                        <p className="text-2xl font-bold text-aliseus-900 tracking-tight">{formatPrice(forecastData.projectedTotal)}</p>
+                        <p className="text-[10px] font-semibold text-aliseus-400 mt-1 uppercase tracking-widest">{formatPrice(forecastData.dailyAverage)}/día</p>
                     </div>
-                    <div className="p-6 bg-onyx-50/50 rounded-2xl border border-onyx-100 group-hover:bg-cyan-50/30 group-hover:border-cyan-100 transition-all">
-                        <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-[0.2em] mb-2 group-hover:text-cyan-700">Media 3 meses</p>
-                        <p className="text-2xl font-bold text-onyx-900 tracking-tight">{formatPrice(forecastData.avgLast3Months)}</p>
+                    <div className="p-6 bg-aliseus-50/50 rounded-2xl border border-aliseus-100 group-hover:bg-cyan-50/30 group-hover:border-cyan-100 transition-all">
+                        <p className="text-[10px] font-bold text-aliseus-400 uppercase tracking-[0.2em] mb-2 group-hover:text-cyan-700">Media 3 meses</p>
+                        <p className="text-2xl font-bold text-aliseus-900 tracking-tight">{formatPrice(forecastData.avgLast3Months)}</p>
                         <div className={`flex items-center gap-1.5 text-[10px] font-bold mt-1.5 ${forecastData.projectedTotal > forecastData.avgLast3Months ? 'text-red-600' : 'text-emerald-600'}`}>
                             {forecastData.projectedTotal > forecastData.avgLast3Months ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
                             {Math.abs(((forecastData.projectedTotal - forecastData.avgLast3Months) / forecastData.avgLast3Months) * 100).toFixed(1)}% vs Media
@@ -85,7 +85,7 @@ const SpendingForecast: React.FC<SpendingForecastProps> = ({ transactions }) => 
                     </div>
                 </div>
 
-                <div className="h-[220px] bg-onyx-50/30 rounded-3xl p-6 border border-onyx-100/50 h-full flex flex-col">
+                <div className="h-[220px] bg-aliseus-50/30 rounded-3xl p-6 border border-aliseus-100/50 h-full flex flex-col">
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={[
                             { name: 'Gasto Real', value: forecastData.currentMonthSpent },

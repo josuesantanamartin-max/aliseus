@@ -26,7 +26,7 @@ const RecipeFavoritesWidget: React.FC<RecipeFavoritesWidgetProps> = ({ onNavigat
     };
 
     return (
-        <div className="bg-white dark:bg-onyx-900 rounded-[2rem] p-8 shadow-sm border border-gray-100 dark:border-onyx-800 hover:shadow-lg transition-all h-full flex flex-col">
+        <div className="bg-white dark:bg-aliseus-900 rounded-[2rem] p-8 shadow-sm border border-gray-100 dark:border-aliseus-800 hover:shadow-lg transition-all h-full flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
@@ -67,14 +67,14 @@ const RecipeFavoritesWidget: React.FC<RecipeFavoritesWidgetProps> = ({ onNavigat
                         <div
                             key={recipe.id}
                             onClick={() => onNavigate('life', 'recipes')}
-                            className="p-4 rounded-xl border border-gray-200 dark:border-onyx-700 bg-gray-50 dark:bg-onyx-800 hover:bg-white dark:hover:bg-onyx-700 hover:shadow-md transition-all cursor-pointer group"
+                            className="p-4 rounded-xl border border-gray-200 dark:border-aliseus-700 bg-gray-50 dark:bg-aliseus-800 hover:bg-white dark:hover:bg-aliseus-700 hover:shadow-md transition-all cursor-pointer group"
                         >
                             <div className="flex items-start gap-3">
                                 {/* Ranking Badge */}
                                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${index === 0 ? 'bg-yellow-100 dark:bg-yellow-900/30' :
                                         index === 1 ? 'bg-gray-100 dark:bg-gray-800' :
                                             index === 2 ? 'bg-orange-100 dark:bg-orange-900/30' :
-                                                'bg-gray-50 dark:bg-onyx-900'
+                                                'bg-gray-50 dark:bg-aliseus-900'
                                     }`}>
                                     <span className={`text-sm font-black ${index === 0 ? 'text-yellow-600 dark:text-yellow-400' :
                                             index === 1 ? 'text-gray-600 dark:text-gray-400' :

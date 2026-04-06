@@ -364,7 +364,7 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
             })
         }),
         {
-            name: 'onyx_finance_store',
+            name: 'aliseus_finance_store',
             storage: createJSONStorage(() => idbStorage), // Explicitly use idbStorage (IndexedDB)
         }
     )

@@ -38,14 +38,14 @@ const TrendChart: React.FC<TrendChartProps> = ({ transactions }) => {
     }, [transactions]);
 
     return (
-        <div className="bg-white dark:bg-onyx-900 p-10 rounded-onyx border border-onyx-100 dark:border-onyx-800 shadow-sm hover:shadow-lg transition-all duration-500 group">
+        <div className="bg-white dark:bg-aliseus-900 p-10 rounded-Aliseus border border-aliseus-100 dark:border-aliseus-800 shadow-sm hover:shadow-lg transition-all duration-500 group">
             <div className="flex justify-between items-center mb-10">
                 <div>
                     <h3 className="text-xl font-bold text-cyan-900 dark:text-white tracking-tight flex items-center gap-3">
-                        <div className="p-2 bg-onyx-50 dark:bg-onyx-800 text-cyan-primary rounded-lg group-hover:bg-cyan-50 dark:group-hover:bg-cyan-900/50 transition-colors"><TrendingUp className="w-5 h-5" /></div>
+                        <div className="p-2 bg-aliseus-50 dark:bg-aliseus-800 text-cyan-primary rounded-lg group-hover:bg-cyan-50 dark:group-hover:bg-cyan-900/50 transition-colors"><TrendingUp className="w-5 h-5" /></div>
                         Tendencias Temporales
                     </h3>
-                    <p className="text-[10px] font-bold text-onyx-400 dark:text-onyx-500 mt-2 uppercase tracking-[0.2em]">Últimos 6 meses de actividad</p>
+                    <p className="text-[10px] font-bold text-aliseus-400 dark:text-aliseus-500 mt-2 uppercase tracking-[0.2em]">Últimos 6 meses de actividad</p>
                 </div>
             </div>
 

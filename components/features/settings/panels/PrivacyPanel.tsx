@@ -91,7 +91,7 @@ export const PrivacyPanel = () => {
             timestamp: new Date().toISOString()
         };
         setCookiePreferences(updated);
-        localStorage.setItem('onyx_cookie_preferences', JSON.stringify(updated));
+        localStorage.setItem('Aliseus_cookie_preferences', JSON.stringify(updated));
     };
 
     const toggleAIPreference = (key: 'enableRecommendations' | 'allowDataUsage') => {
@@ -108,7 +108,7 @@ export const PrivacyPanel = () => {
             className="max-w-4xl space-y-12 pb-12 w-full"
         >
             {/* Data Management Section */}
-            <section className="bg-white dark:bg-onyx-900/50 p-10 md:p-14 rounded-[50px] border border-slate-200 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-2xl relative overflow-hidden group">
+            <section className="bg-white dark:bg-aliseus-900/50 p-10 md:p-14 rounded-[50px] border border-slate-200 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-2xl relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 dark:bg-indigo-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
                 
                 <div className="relative z-10 space-y-10">
@@ -152,7 +152,7 @@ export const PrivacyPanel = () => {
             {/* Privacy Toggles Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Cookies */}
-                <section className="bg-white dark:bg-onyx-900/50 p-10 rounded-[40px] border border-slate-200 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-none relative overflow-hidden group">
+                <section className="bg-white dark:bg-aliseus-900/50 p-10 rounded-[40px] border border-slate-200 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-none relative overflow-hidden group">
                     <div className="relative z-10 space-y-8">
                         <div className="flex items-center gap-4">
                             <div className="p-3 bg-purple-500/10 text-purple-600 dark:text-purple-400 rounded-2xl border border-purple-500/20 shadow-inner">
@@ -186,7 +186,7 @@ export const PrivacyPanel = () => {
                 </section>
 
                 {/* AI Preferences */}
-                <section className="bg-white dark:bg-onyx-900/50 p-10 rounded-[40px] border border-slate-200 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-none relative overflow-hidden group">
+                <section className="bg-white dark:bg-aliseus-900/50 p-10 rounded-[40px] border border-slate-200 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-none relative overflow-hidden group">
                     <div className="relative z-10 space-y-8">
                         <div className="flex items-center gap-4">
                             <div className="p-3 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-2xl border border-blue-500/20 shadow-inner">

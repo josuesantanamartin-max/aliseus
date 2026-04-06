@@ -35,11 +35,11 @@ const NutritionalVarietyWidget: React.FC<NutritionalVarietyWidgetProps> = ({ onN
     }, [weeklyPlans, recipes]);
 
     return (
-        <div className="bg-white dark:bg-onyx-900 p-6 rounded-[2rem] h-full flex flex-col border border-onyx-100 dark:border-onyx-800 shadow-sm hover:shadow-md transition-all">
+        <div className="bg-white dark:bg-aliseus-900 p-6 rounded-[2rem] h-full flex flex-col border border-aliseus-100 dark:border-aliseus-800 shadow-sm hover:shadow-md transition-all">
             <div className="flex justify-between items-start mb-5">
                 <div>
                     <p className="text-violet-600 dark:text-violet-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Salud y Dieta</p>
-                    <h3 className="text-lg font-black text-onyx-950 dark:text-white">Variedad Nutricional</h3>
+                    <h3 className="text-lg font-black text-aliseus-950 dark:text-white">Variedad Nutricional</h3>
                 </div>
                 <div className="p-2.5 bg-violet-50 dark:bg-violet-900/20 rounded-xl border border-violet-100 dark:border-violet-900/30">
                     <PieChart className="w-4 h-4 text-violet-600 dark:text-violet-400" />
@@ -49,8 +49,8 @@ const NutritionalVarietyWidget: React.FC<NutritionalVarietyWidgetProps> = ({ onN
             <div className="flex-1 space-y-4">
                 {chartData.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center text-center">
-                        <Zap className="w-8 h-8 text-onyx-200 dark:text-onyx-700 mb-2" />
-                        <p className="text-xs font-bold text-onyx-400 dark:text-onyx-500">Planifica para ver balance</p>
+                        <Zap className="w-8 h-8 text-aliseus-200 dark:text-aliseus-700 mb-2" />
+                        <p className="text-xs font-bold text-aliseus-400 dark:text-aliseus-500">Planifica para ver balance</p>
                     </div>
                 ) : (
                     chartData.map((item, idx) => {
@@ -66,10 +66,10 @@ const NutritionalVarietyWidget: React.FC<NutritionalVarietyWidgetProps> = ({ onN
                         return (
                             <div key={item.name} className="space-y-1.5">
                                 <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-tight">
-                                    <span className="text-onyx-900 dark:text-white">{item.name}</span>
-                                    <span className="text-onyx-400">{percent}%</span>
+                                    <span className="text-aliseus-900 dark:text-white">{item.name}</span>
+                                    <span className="text-aliseus-400">{percent}%</span>
                                 </div>
-                                <div className="h-2 w-full bg-onyx-100 dark:bg-onyx-800 rounded-full overflow-hidden">
+                                <div className="h-2 w-full bg-aliseus-100 dark:bg-aliseus-800 rounded-full overflow-hidden">
                                     <div 
                                         className={`h-full ${colors[idx % colors.length]} transition-all duration-1000`} 
                                         style={{ width: `${percent}%` }}
@@ -81,12 +81,12 @@ const NutritionalVarietyWidget: React.FC<NutritionalVarietyWidgetProps> = ({ onN
                 )}
             </div>
 
-            <div className="mt-6 flex items-center justify-between p-3 rounded-2xl bg-onyx-50 dark:bg-onyx-800/50 border border-onyx-100 dark:border-onyx-700/50">
+            <div className="mt-6 flex items-center justify-between p-3 rounded-2xl bg-aliseus-50 dark:bg-aliseus-800/50 border border-aliseus-100 dark:border-aliseus-700/50">
                 <div className="flex items-center gap-2">
                     <Target className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
-                    <span className="text-[10px] font-black text-onyx-900 dark:text-white uppercase tracking-tighter">Estado: Balanceado</span>
+                    <span className="text-[10px] font-black text-aliseus-900 dark:text-white uppercase tracking-tighter">Estado: Balanceado</span>
                 </div>
-                <ArrowRight className="w-3 h-3 text-onyx-300" />
+                <ArrowRight className="w-3 h-3 text-aliseus-300" />
             </div>
         </div>
     );

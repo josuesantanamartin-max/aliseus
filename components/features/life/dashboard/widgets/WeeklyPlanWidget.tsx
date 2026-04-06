@@ -38,7 +38,7 @@ const WeeklyPlanWidget: React.FC<WeeklyPlanWidgetProps> = ({ onNavigate }) => {
     const today = new Date().getDay();
 
     return (
-        <div className="bg-white dark:bg-onyx-900 rounded-[2rem] p-8 shadow-sm border border-gray-100 dark:border-onyx-800 hover:shadow-lg transition-all h-full flex flex-col">
+        <div className="bg-white dark:bg-aliseus-900 rounded-[2rem] p-8 shadow-sm border border-gray-100 dark:border-aliseus-800 hover:shadow-lg transition-all h-full flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
@@ -76,8 +76,8 @@ const WeeklyPlanWidget: React.FC<WeeklyPlanWidgetProps> = ({ onNavigate }) => {
                             className={`p-2 rounded-xl border transition-all cursor-pointer ${isToday
                                     ? 'bg-green-50 dark:bg-green-900/20 border-green-300 dark:border-green-900/50'
                                     : hasPlans
-                                        ? 'bg-gray-50 dark:bg-onyx-800 border-gray-200 dark:border-onyx-700 hover:bg-white dark:hover:bg-onyx-700'
-                                        : 'bg-white dark:bg-onyx-900 border-gray-200 dark:border-onyx-700 opacity-50 hover:opacity-100'
+                                        ? 'bg-gray-50 dark:bg-aliseus-800 border-gray-200 dark:border-aliseus-700 hover:bg-white dark:hover:bg-aliseus-700'
+                                        : 'bg-white dark:bg-aliseus-900 border-gray-200 dark:border-aliseus-700 opacity-50 hover:opacity-100'
                                 }`}
                         >
                             {/* Day Name */}
@@ -97,7 +97,7 @@ const WeeklyPlanWidget: React.FC<WeeklyPlanWidgetProps> = ({ onNavigate }) => {
                                         </span>
                                     </>
                                 ) : (
-                                    <div className="w-4 h-4 rounded-full bg-gray-200 dark:bg-onyx-700" />
+                                    <div className="w-4 h-4 rounded-full bg-gray-200 dark:bg-aliseus-700" />
                                 )}
                             </div>
                         </div>

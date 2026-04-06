@@ -30,9 +30,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
         const variants = {
             primary: 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white hover:from-cyan-700 hover:to-teal-700 shadow-sm hover:shadow-md hover:shadow-cyan-500/20',
-            secondary: 'bg-onyx-100 text-onyx-900 hover:bg-onyx-200 dark:bg-onyx-800 dark:text-onyx-50 dark:hover:bg-onyx-700',
-            outline: 'border border-onyx-200 bg-transparent hover:bg-onyx-50 dark:border-onyx-700 dark:text-onyx-100 dark:hover:bg-onyx-800',
-            ghost: 'bg-transparent hover:bg-onyx-100 dark:hover:bg-onyx-800 dark:text-onyx-100 text-onyx-700',
+            secondary: 'bg-aliseus-100 text-aliseus-900 hover:bg-aliseus-200 dark:bg-aliseus-800 dark:text-aliseus-50 dark:hover:bg-aliseus-700',
+            outline: 'border border-aliseus-200 bg-transparent hover:bg-aliseus-50 dark:border-aliseus-700 dark:text-aliseus-100 dark:hover:bg-aliseus-800',
+            ghost: 'bg-transparent hover:bg-aliseus-100 dark:hover:bg-aliseus-800 dark:text-aliseus-100 text-aliseus-700',
             danger: 'bg-red-50 text-red-600 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40',
         };
 

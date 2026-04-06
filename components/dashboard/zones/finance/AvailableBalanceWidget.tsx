@@ -10,7 +10,7 @@ export interface AvailableBalanceWidgetProps {
 
 export const AvailableBalanceWidget: React.FC<AvailableBalanceWidgetProps> = ({ totalBalance, accounts, savingsAccounts }) => {
     return (
-        <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
+        <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-6 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between">
             <div>
                 <div className="flex items-center gap-2 mb-2">
                     <Wallet className="w-4 h-4 text-slate-400" />
@@ -21,7 +21,7 @@ export const AvailableBalanceWidget: React.FC<AvailableBalanceWidgetProps> = ({ 
                 </div>
             </div>
 
-            <div className="flex flex-col gap-1.5 mt-4 pt-4 border-t border-slate-100 dark:border-onyx-800/80">
+            <div className="flex flex-col gap-1.5 mt-4 pt-4 border-t border-slate-100 dark:border-aliseus-800/80">
                 {accounts
                     .filter(a => ['BANK', 'CASH', 'WALLET'].includes(a.type))
                     .filter(a => !savingsAccounts.some(sa => sa.id === a.id)) // EXCLUDE SAVINGS

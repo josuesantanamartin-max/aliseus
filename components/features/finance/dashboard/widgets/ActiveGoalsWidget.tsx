@@ -24,7 +24,7 @@ const ActiveGoalsWidget: React.FC<ActiveGoalsWidgetProps> = ({ goals, onNavigate
                     <div className="p-2 bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg"><Target className="w-5 h-5" /></div>
                     Metas de Ahorro
                 </h3>
-                <button onClick={() => onNavigate('finance', 'goals')} className="text-xs font-bold text-onyx-400 hover:text-cyan-900 flex items-center gap-2 transition-colors group">
+                <button onClick={() => onNavigate('finance', 'goals')} className="text-xs font-bold text-aliseus-400 hover:text-cyan-900 flex items-center gap-2 transition-colors group">
                     Ver todo <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </button>
             </div>
@@ -58,7 +58,7 @@ const ActiveGoalsWidget: React.FC<ActiveGoalsWidgetProps> = ({ goals, onNavigate
                         }
 
                         return (
-                            <div key={goal.id} onClick={() => onNavigate('finance', 'goals')} className="bg-white dark:bg-onyx-900 p-6 rounded-2xl border border-onyx-100 dark:border-onyx-800 shadow-sm hover:shadow-md transition-all cursor-pointer group relative overflow-hidden flex flex-col md:flex-row md:items-center gap-6 min-h-[160px] h-full flex flex-col">
+                            <div key={goal.id} onClick={() => onNavigate('finance', 'goals')} className="bg-white dark:bg-aliseus-900 p-6 rounded-2xl border border-aliseus-100 dark:border-aliseus-800 shadow-sm hover:shadow-md transition-all cursor-pointer group relative overflow-hidden flex flex-col md:flex-row md:items-center gap-6 min-h-[160px] h-full flex flex-col">
                                 <div className="absolute top-0 right-0 w-48 h-full bg-gradient-to-l from-purple-50/20 dark:from-purple-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
                                 <div className="flex items-center gap-5 md:w-1/3">
@@ -69,12 +69,12 @@ const ActiveGoalsWidget: React.FC<ActiveGoalsWidgetProps> = ({ goals, onNavigate
                                         <h4 className="text-xl font-black text-cyan-900 dark:text-white leading-none mb-1.5">{goal.name}</h4>
                                         <div className="flex items-center gap-2">
                                             {goal.deadline ? (
-                                                <p className="text-xs font-bold text-onyx-400 flex items-center gap-1.5">
+                                                <p className="text-xs font-bold text-aliseus-400 flex items-center gap-1.5">
                                                     <Clock className="w-3.5 h-3.5" />
                                                     {new Date(goal.deadline).toLocaleDateString('es-ES', { month: 'short', year: 'numeric' }).toUpperCase()}
                                                 </p>
                                             ) : (
-                                                <p className="text-xs font-bold text-onyx-300 flex items-center gap-1.5 italic">
+                                                <p className="text-xs font-bold text-aliseus-300 flex items-center gap-1.5 italic">
                                                     <Clock className="w-3.5 h-3.5" /> Sin fecha
                                                 </p>
                                             )}
@@ -86,20 +86,20 @@ const ActiveGoalsWidget: React.FC<ActiveGoalsWidgetProps> = ({ goals, onNavigate
                                     <div className="flex justify-between items-end">
                                         <div className="flex gap-6">
                                             <div>
-                                                <p className="text-[10px] font-black text-onyx-400 dark:text-onyx-500 uppercase tracking-widest mb-1">Ahorrado</p>
+                                                <p className="text-[10px] font-black text-aliseus-400 dark:text-aliseus-500 uppercase tracking-widest mb-1">Ahorrado</p>
                                                 <p className="text-3xl font-black text-cyan-900 dark:text-white tracking-tighter">{formatEUR(goal.currentAmount)}</p>
                                             </div>
-                                            <div className="h-10 w-px bg-onyx-100 self-end mb-1"></div>
+                                            <div className="h-10 w-px bg-aliseus-100 self-end mb-1"></div>
                                             <div>
-                                                <p className="text-[10px] font-black text-onyx-400 uppercase tracking-widest mb-1">Objetivo</p>
-                                                <p className="text-xl font-bold text-onyx-400 tracking-tight">{formatEUR(goal.targetAmount)}</p>
+                                                <p className="text-[10px] font-black text-aliseus-400 uppercase tracking-widest mb-1">Objetivo</p>
+                                                <p className="text-xl font-bold text-aliseus-400 tracking-tight">{formatEUR(goal.targetAmount)}</p>
                                             </div>
                                         </div>
                                         <div className="text-right">
                                             <span className="text-sm font-black text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30 px-3 py-1 rounded-full border border-purple-100 dark:border-purple-800">{progress.toLocaleString('es-ES', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}%</span>
                                         </div>
                                     </div>
-                                    <div className="w-full bg-onyx-50 dark:bg-onyx-700 h-3 rounded-full overflow-hidden border border-onyx-100/50 dark:border-onyx-600/50 relative">
+                                    <div className="w-full bg-aliseus-50 dark:bg-aliseus-700 h-3 rounded-full overflow-hidden border border-aliseus-100/50 dark:border-aliseus-600/50 relative">
                                         <div className="bg-gradient-to-r from-purple-500 to-purple-400 h-full transition-all duration-1000 shadow-[0_0_10px_rgba(168,85,247,0.3)]" style={{ width: `${progress}%` }}></div>
                                     </div>
 
@@ -114,12 +114,12 @@ const ActiveGoalsWidget: React.FC<ActiveGoalsWidgetProps> = ({ goals, onNavigate
                     })}
                 </div>
             ) : (
-                <div className="bg-white p-12 rounded-onyx border border-onyx-100 text-center shadow-sm">
-                    <div className="w-16 h-16 bg-onyx-50 text-onyx-200 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="bg-white p-12 rounded-Aliseus border border-aliseus-100 text-center shadow-sm">
+                    <div className="w-16 h-16 bg-aliseus-50 text-aliseus-200 rounded-full flex items-center justify-center mx-auto mb-6">
                         <Target className="w-8 h-8" />
                     </div>
-                    <h4 className="text-xl font-bold text-onyx-900 mb-2">No tienes metas activas</h4>
-                    <p className="text-sm text-onyx-400 mb-8 max-w-[280px] mx-auto">Comienza a ahorrar para tus sueños definiendo tu primer objetivo financiero.</p>
+                    <h4 className="text-xl font-bold text-aliseus-900 mb-2">No tienes metas activas</h4>
+                    <p className="text-sm text-aliseus-400 mb-8 max-w-[280px] mx-auto">Comienza a ahorrar para tus sueños definiendo tu primer objetivo financiero.</p>
                     <button onClick={() => onNavigate('finance', 'goals')} className="bg-cyan-900 text-white px-8 py-3.5 rounded-xl font-bold text-xs uppercase tracking-widest shadow-lg hover:bg-cyan-950 transition-all">Crear meta</button>
                 </div>
             )}

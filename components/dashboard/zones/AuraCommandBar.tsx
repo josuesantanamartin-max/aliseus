@@ -185,7 +185,7 @@ export default function AuraCommandBar({ onNavigate, activeModule }: AuraCommand
                 <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-indigo-500/50 to-purple-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-x-[-100%] group-hover:translate-x-[100%] ease-in-out" />
                 <div
                     onClick={() => setIsOpen(true)}
-                    className="relative w-full bg-white/80 dark:bg-onyx-900/80 backdrop-blur-xl border border-slate-200/50 dark:border-onyx-700/50 rounded-[2rem] h-16 flex items-center px-6 gap-4 cursor-text transition-colors shadow-sm"
+                    className="relative w-full bg-white/80 dark:bg-aliseus-900/80 backdrop-blur-xl border border-slate-200/50 dark:border-aliseus-700/50 rounded-[2rem] h-16 flex items-center px-6 gap-4 cursor-text transition-colors shadow-sm"
                 >
                     <Search className="w-5 h-5 text-indigo-400 group-hover:text-indigo-500 transition-colors flex-shrink-0" />
 
@@ -197,11 +197,11 @@ export default function AuraCommandBar({ onNavigate, activeModule }: AuraCommand
                         {placeholders[placeholderIdx]}
                     </span>
 
-                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-onyx-800 border-b-2 border-slate-200 dark:border-onyx-950 shadow-sm transition-transform group-hover:scale-105 flex-shrink-0">
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-aliseus-800 border-b-2 border-slate-200 dark:border-aliseus-950 shadow-sm transition-transform group-hover:scale-105 flex-shrink-0">
                         <Command className="w-3.5 h-3.5 text-slate-500" />
                         <span className="text-[11px] font-black text-slate-500 uppercase tracking-widest">K</span>
                     </div>
-                    <button className="p-3 rounded-full hover:bg-slate-100 dark:hover:bg-onyx-800 transition-colors ml-1 text-slate-400 hover:text-indigo-500 flex-shrink-0">
+                    <button className="p-3 rounded-full hover:bg-slate-100 dark:hover:bg-aliseus-800 transition-colors ml-1 text-slate-400 hover:text-indigo-500 flex-shrink-0">
                         <Mic className="w-5 h-5" />
                     </button>
                 </div>
@@ -214,9 +214,9 @@ export default function AuraCommandBar({ onNavigate, activeModule }: AuraCommand
                         className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"
                         onClick={() => setIsOpen(false)}
                     />
-                    <div className="w-full max-w-2xl bg-white dark:bg-onyx-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-onyx-700 overflow-hidden flex flex-col relative animate-in fade-in zoom-in-95 duration-200">
+                    <div className="w-full max-w-2xl bg-white dark:bg-aliseus-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-aliseus-700 overflow-hidden flex flex-col relative animate-in fade-in zoom-in-95 duration-200">
                         {/* Input row */}
-                        <div className="flex items-center px-6 h-18 border-b border-slate-100 dark:border-onyx-800">
+                        <div className="flex items-center px-6 h-18 border-b border-slate-100 dark:border-aliseus-800">
                             <Search className="w-6 h-6 text-brand-500 flex-shrink-0" />
                             <input
                                 autoFocus
@@ -231,7 +231,7 @@ export default function AuraCommandBar({ onNavigate, activeModule }: AuraCommand
                             />
                             <button
                                 onClick={() => setIsOpen(false)}
-                                className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-onyx-800 text-slate-400 transition-colors"
+                                className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-aliseus-800 text-slate-400 transition-colors"
                             >
                                 <X className="w-5 h-5" />
                             </button>
@@ -259,7 +259,7 @@ export default function AuraCommandBar({ onNavigate, activeModule }: AuraCommand
                                                         setQuery(sug.text);
                                                         handleExecute();
                                                     }}
-                                                    className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-onyx-800 text-left transition-colors border border-transparent hover:border-slate-100 dark:hover:border-onyx-700"
+                                                    className="flex items-center gap-3 p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-aliseus-800 text-left transition-colors border border-transparent hover:border-slate-100 dark:hover:border-aliseus-700"
                                                 >
                                                     <sug.icon className={cn('w-4 h-4 flex-shrink-0', sug.color)} />
                                                     <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">{sug.text}</span>
@@ -283,7 +283,7 @@ export default function AuraCommandBar({ onNavigate, activeModule }: AuraCommand
                                                         setQuery(h);
                                                         handleExecute();
                                                     }}
-                                                    className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-onyx-800 text-left transition-colors text-slate-500"
+                                                    className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-aliseus-800 text-left transition-colors text-slate-500"
                                                 >
                                                     <Command className="w-3.5 h-3.5 flex-shrink-0" />
                                                     <span className="text-xs font-medium">{h}</span>
@@ -313,20 +313,20 @@ export default function AuraCommandBar({ onNavigate, activeModule }: AuraCommand
                                 </div>
                             ) : (
                                 <div className="py-12 flex flex-col items-center justify-center text-center gap-2 animate-in fade-in">
-                                    <Command className="w-8 h-8 text-slate-200 dark:text-onyx-800" />
+                                    <Command className="w-8 h-8 text-slate-200 dark:text-aliseus-800" />
                                     <p className="text-sm font-medium text-slate-400">Pulsa Enter para preguntar a Aura</p>
                                 </div>
                             )}
                         </div>
 
                         {/* Footer */}
-                        <div className="px-6 py-4 bg-slate-50 dark:bg-onyx-950 border-t border-slate-100 dark:border-onyx-800 flex items-center justify-between">
+                        <div className="px-6 py-4 bg-slate-50 dark:bg-aliseus-950 border-t border-slate-100 dark:border-aliseus-800 flex items-center justify-between">
                             <div className="flex items-center gap-4">
                                 <span className="flex items-center gap-1.5 text-[10px] text-slate-400">
-                                    <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-onyx-800 border border-slate-200 dark:border-onyx-700 font-sans shadow-sm">Enter</kbd> Ejecutar
+                                    <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-aliseus-800 border border-slate-200 dark:border-aliseus-700 font-sans shadow-sm">Enter</kbd> Ejecutar
                                 </span>
                                 <span className="flex items-center gap-1.5 text-[10px] text-slate-400">
-                                    <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-onyx-800 border border-slate-200 dark:border-onyx-700 font-sans shadow-sm">Esc</kbd> Cerrar
+                                    <kbd className="px-1.5 py-0.5 rounded bg-white dark:bg-aliseus-800 border border-slate-200 dark:border-aliseus-700 font-sans shadow-sm">Esc</kbd> Cerrar
                                 </span>
                             </div>
                             <span className="text-[10px] text-slate-400 font-medium">Powered by Gemini AI</span>

@@ -36,11 +36,11 @@ const AcceptInvite: React.FC<AcceptInviteProps> = ({ token }) => {
             >
                 {status === 'loading' && (
                     <div className="flex flex-col items-center">
-                        <div className="w-16 h-16 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mb-6">
+                        <div className="w-16 h-16 bg-cyan-50 text-cyan-500 rounded-full flex items-center justify-center mb-6">
                             <Loader2 className="w-8 h-8 animate-spin" />
                         </div>
-                        <h2 className="text-2xl font-black text-gray-900 tracking-tighter mb-2">Procesando Invitación</h2>
-                        <p className="text-gray-500 font-medium text-sm">Validando tu acceso seguro al hogar...</p>
+                        <h2 className="text-2xl font-black text-gray-900 tracking-tighter mb-2">Validando Invitación</h2>
+                        <p className="text-gray-500 font-medium text-sm">Preparando tu acceso como Socio Fundador...</p>
                     </div>
                 )}
 
@@ -49,15 +49,15 @@ const AcceptInvite: React.FC<AcceptInviteProps> = ({ token }) => {
                         <div className="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mb-6">
                             <ShieldCheck className="w-8 h-8" />
                         </div>
-                        <h2 className="text-2xl font-black text-gray-900 tracking-tighter mb-2">¡Invitación Aceptada!</h2>
+                        <h2 className="text-2xl font-black text-gray-900 tracking-tighter mb-2">¡Bienvenido al Hogar!</h2>
                         <p className="text-gray-500 font-medium text-sm mb-8">
-                            Te has unido correctamente al hogar. Ahora podrás colaborar y compartir datos financieros.
+                            Tu invitación de Socio Fundador ha sido validada. Ahora formas parte de este espacio colaborativo.
                         </p>
                         <button
                             onClick={() => window.location.href = '/'}
-                            className="w-full py-4 bg-gray-900 text-white rounded-2xl font-bold hover:bg-black transition-colors flex items-center justify-center gap-2"
+                            className="w-full py-4 bg-gradient-to-r from-cyan-600 to-teal-700 text-white rounded-2xl font-bold hover:shadow-lg transition-all flex items-center justify-center gap-2"
                         >
-                            Ir a mi panel <ArrowRight className="w-4 h-4" />
+                            Acceder a mi panel <ArrowRight className="w-4 h-4" />
                         </button>
                     </div>
                 )}

@@ -97,10 +97,10 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ isOpen, onClose }) => {
             />
 
             {/* Modal */}
-            <div className="relative w-full max-w-2xl bg-white dark:bg-onyx-900 rounded-2xl shadow-2xl overflow-hidden border border-gray-100 dark:border-onyx-800 flex flex-col max-h-[70vh]">
+            <div className="relative w-full max-w-2xl bg-white dark:bg-aliseus-900 rounded-2xl shadow-2xl overflow-hidden border border-gray-100 dark:border-aliseus-800 flex flex-col max-h-[70vh]">
 
                 {/* Search Header */}
-                <div className="flex items-center gap-3 p-4 border-b border-gray-100 dark:border-onyx-800">
+                <div className="flex items-center gap-3 p-4 border-b border-gray-100 dark:border-aliseus-800">
                     <Search className="w-5 h-5 text-gray-400" />
                     <input
                         ref={inputRef}
@@ -125,14 +125,14 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ isOpen, onClose }) => {
                     <Button
                         variant="ghost"
                         onClick={startListening}
-                        className={`p-2 rounded-lg transition-colors ${isListening ? 'bg-cyan-100 text-cyan-600 dark:bg-cyan-900/30 dark:text-cyan-400 animate-pulse' : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-onyx-800'
+                        className={`p-2 rounded-lg transition-colors ${isListening ? 'bg-cyan-100 text-cyan-600 dark:bg-cyan-900/30 dark:text-cyan-400 animate-pulse' : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-aliseus-800'
                             }`}
                         title="Búsqueda por voz"
                     >
                         <Mic className="w-5 h-5" />
                     </Button>
 
-                    <div className="hidden md:flex items-center gap-1 text-[10px] font-bold text-gray-400 bg-gray-100 dark:bg-onyx-800 px-2 py-1 rounded border border-gray-200 dark:border-onyx-700">
+                    <div className="hidden md:flex items-center gap-1 text-[10px] font-bold text-gray-400 bg-gray-100 dark:bg-aliseus-800 px-2 py-1 rounded border border-gray-200 dark:border-aliseus-700">
                         <span>ESC</span>
                     </div>
                 </div>
@@ -147,7 +147,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ isOpen, onClose }) => {
                                 <button
                                     key={i}
                                     onClick={() => setQuery(term)}
-                                    className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-onyx-800 rounded-lg transition-colors text-left"
+                                    className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-aliseus-800 rounded-lg transition-colors text-left"
                                 >
                                     <Clock className="w-4 h-4 text-gray-400" />
                                     {term}
@@ -162,10 +162,10 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ isOpen, onClose }) => {
                             onClick={() => handleSelect(result)}
                             className={`w-full flex items-center gap-4 p-3 rounded-xl transition-all text-left group ${index === selectedIndex
                                 ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-900 dark:text-indigo-100'
-                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-onyx-800'
+                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-aliseus-800'
                                 }`}
                         >
-                            <div className={`p-2 rounded-lg ${index === selectedIndex ? 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600' : 'bg-gray-100 dark:bg-onyx-800 text-gray-500'
+                            <div className={`p-2 rounded-lg ${index === selectedIndex ? 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600' : 'bg-gray-100 dark:bg-aliseus-800 text-gray-500'
                                 }`}>
                                 <result.icon className="w-5 h-5" />
                             </div>
@@ -193,7 +193,7 @@ const GlobalSearch: React.FC<GlobalSearchProps> = ({ isOpen, onClose }) => {
                 </div>
 
                 {/* Footer */}
-                <div className="p-3 bg-gray-50 dark:bg-onyx-950 border-t border-gray-100 dark:border-onyx-800 flex items-center justify-between text-xs text-gray-400">
+                <div className="p-3 bg-gray-50 dark:bg-aliseus-950 border-t border-gray-100 dark:border-aliseus-800 flex items-center justify-between text-xs text-gray-400">
                     <div className="flex gap-4">
                         <span className="flex items-center gap-1"><Command className="w-3 h-3" /> <span>Navegar</span></span>
                         <span className="flex items-center gap-1"><span>↵</span> <span>Seleccionar</span></span>

@@ -138,7 +138,7 @@ const AccountsStep: React.FC = () => {
                     const cfg = ACCOUNT_TYPES.find(t => t.value === acc.type) || ACCOUNT_TYPES[0];
                     const Icon = cfg.icon;
                     return (
-                        <div key={idx} className="flex items-center justify-between p-4 bg-white dark:bg-onyx-800 rounded-xl border border-gray-100 dark:border-onyx-700 shadow-sm">
+                        <div key={idx} className="flex items-center justify-between p-4 bg-white dark:bg-aliseus-800 rounded-xl border border-gray-100 dark:border-aliseus-700 shadow-sm">
                             <div className="flex items-center gap-3">
                                 <div className={`w-9 h-9 rounded-xl flex items-center justify-center border ${cfg.color}`}><Icon className="w-4 h-4" /></div>
                                 <div>
@@ -154,7 +154,7 @@ const AccountsStep: React.FC = () => {
 
             {/* Add form */}
             {isAdding ? (
-                <div className="w-full bg-gray-50 dark:bg-onyx-800/50 p-6 rounded-2xl mb-6 border border-cyan-100 dark:border-cyan-900/30 space-y-5 animate-scale-in">
+                <div className="w-full bg-gray-50 dark:bg-aliseus-800/50 p-6 rounded-2xl mb-6 border border-cyan-100 dark:border-cyan-900/30 space-y-5 animate-scale-in">
                     {/* Step 1 — type selector */}
                     {formStep === 1 && (
                         <>

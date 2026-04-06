@@ -47,8 +47,8 @@ export const AutomationPanel = () => {
             className="max-w-4xl space-y-12 pb-12"
         >
             {/* New Rule Form */}
-            <section className="bg-white/40 dark:bg-onyx-950 p-10 md:p-14 rounded-[50px] border border-slate-200/50 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-2xl relative overflow-hidden group ring-1 ring-slate-200/50 dark:ring-indigo-500/20">
-                <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-blue-50/40 to-white/80 dark:from-[#0c0c1e] dark:via-indigo-950/20 dark:to-onyx-950" />
+            <section className="bg-white/40 dark:bg-aliseus-950 p-10 md:p-14 rounded-[50px] border border-slate-200/50 dark:border-white/5 shadow-xl shadow-slate-200/40 dark:shadow-2xl relative overflow-hidden group ring-1 ring-slate-200/50 dark:ring-indigo-500/20">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-blue-50/40 to-white/80 dark:from-[#0c0c1e] dark:via-indigo-950/20 dark:to-aliseus-950" />
                 <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
                 
                 <div className="relative z-10">
@@ -75,8 +75,8 @@ export const AutomationPanel = () => {
                                     onChange={(e) => setNewRuleTrigger(e.target.value as any)}
                                     className="w-full p-5 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-3xl font-bold text-slate-900 dark:text-white outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 hover:bg-slate-50 dark:hover:bg-white/10 transition-all shadow-sm appearance-none cursor-pointer"
                                 >
-                                    <option value="TRANSACTION_OVER_AMOUNT" className="bg-white dark:bg-onyx-950 text-slate-900 dark:text-white">{isSpanish ? 'Gasto superior a...' : 'Expense over...'}</option>
-                                    <option value="TRIP_CREATED" className="bg-white dark:bg-onyx-950 text-slate-900 dark:text-white">{isSpanish ? 'Nuevo viaje detectado' : 'New trip detected'}</option>
+                                    <option value="TRANSACTION_OVER_AMOUNT" className="bg-white dark:bg-aliseus-950 text-slate-900 dark:text-white">{isSpanish ? 'Gasto superior a...' : 'Expense over...'}</option>
+                                    <option value="TRIP_CREATED" className="bg-white dark:bg-aliseus-950 text-slate-900 dark:text-white">{isSpanish ? 'Nuevo viaje detectado' : 'New trip detected'}</option>
                                 </select>
                                 <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">
                                     <Plus className="w-4 h-4 text-slate-900 dark:text-white rotate-45" />
@@ -117,7 +117,7 @@ export const AutomationPanel = () => {
                             {isSpanish ? 'Reglas en Ejecución' : 'Running Rules'}
                         </h4>
                     </div>
-                    <span className="px-4 py-2 bg-slate-50 dark:bg-onyx-900 rounded-2xl text-[10px] font-black text-slate-400 uppercase tracking-widest border border-slate-200 dark:border-white/5">
+                    <span className="px-4 py-2 bg-slate-50 dark:bg-aliseus-900 rounded-2xl text-[10px] font-black text-slate-400 uppercase tracking-widest border border-slate-200 dark:border-white/5">
                         {automationRules.length} Total
                     </span>
                 </div>
@@ -130,7 +130,7 @@ export const AutomationPanel = () => {
                             animate={{ opacity: 1, x: 0 }}
                             className={`p-8 rounded-[40px] border transition-all duration-500 flex flex-col md:flex-row md:items-center justify-between gap-8 group relative overflow-hidden ${
                                 rule.isActive
-                                    ? 'bg-white/80 dark:bg-onyx-900 border-blue-100 dark:border-white/10 shadow-xl shadow-slate-200/40 dark:shadow-none hover:-translate-y-1 ring-1 ring-blue-500/5'
+                                    ? 'bg-white/80 dark:bg-aliseus-900 border-blue-100 dark:border-white/10 shadow-xl shadow-slate-200/40 dark:shadow-none hover:-translate-y-1 ring-1 ring-blue-500/5'
                                     : 'bg-slate-50 dark:bg-[#0c0c1e] border-slate-200 dark:border-white/5 opacity-60 grayscale'
                             }`}
                         >
@@ -142,7 +142,7 @@ export const AutomationPanel = () => {
                                 <div className={`w-16 h-16 rounded-[24px] flex items-center justify-center shrink-0 transition-all duration-500 shadow-inner ${
                                     rule.isActive 
                                         ? 'bg-blue-500/10 text-blue-600 ring-1 ring-blue-500/20' 
-                                        : 'bg-slate-200 dark:bg-onyx-800 text-slate-400'
+                                        : 'bg-slate-200 dark:bg-aliseus-800 text-slate-400'
                                 }`}>
                                     <Zap className={`w-7 h-7 ${rule.isActive ? 'animate-pulse' : ''}`} />
                                 </div>
@@ -165,7 +165,7 @@ export const AutomationPanel = () => {
                                 <button
                                     onClick={() => handleToggleRule(rule.id)}
                                     className={`relative w-20 h-10 rounded-2xl transition-all duration-500 flex items-center px-1.5 ${
-                                        rule.isActive ? 'bg-emerald-500 shadow-lg shadow-emerald-500/20' : 'bg-slate-300 dark:bg-onyx-800'
+                                        rule.isActive ? 'bg-emerald-500 shadow-lg shadow-emerald-500/20' : 'bg-slate-300 dark:bg-aliseus-800'
                                     }`}
                                 >
                                     <motion.div 
@@ -186,7 +186,7 @@ export const AutomationPanel = () => {
                     ))}
 
                     {automationRules.length === 0 && (
-                        <div className="text-center py-24 bg-white/60 dark:bg-onyx-900 rounded-[50px] border border-slate-100 dark:border-white/5 shadow-xl shadow-slate-200/40 relative overflow-hidden group">
+                        <div className="text-center py-24 bg-white/60 dark:bg-aliseus-900 rounded-[50px] border border-slate-100 dark:border-white/5 shadow-xl shadow-slate-200/40 relative overflow-hidden group">
                            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-50/50 dark:to-black/20" />
                             <div className="relative z-10">
                                 <div className="w-24 h-24 bg-blue-50 dark:bg-indigo-900/20 rounded-[32px] flex items-center justify-center mx-auto mb-8 border border-blue-100 dark:border-indigo-900/50 shadow-inner">

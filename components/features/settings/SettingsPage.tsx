@@ -11,8 +11,7 @@ import { PreferencesPanel } from './panels/PreferencesPanel';
 import { PersonalizationPanel } from './panels/PersonalizationPanel';
 import { CategoriesPanel } from './panels/CategoriesPanel';
 import { AutomationPanel } from './panels/AutomationPanel';
-import { SubscriptionPanel } from './panels/SubscriptionPanel';
-import { BillingPanel } from './panels/BillingPanel';
+import { PlanBillingPanel } from './panels/PlanBillingPanel';
 import { SecurityPanel } from './panels/SecurityPanel';
 import { PrivacyPanel } from './panels/PrivacyPanel';
 import InvitationManager from './InvitationManager';
@@ -26,7 +25,7 @@ const PanelPlaceholder: React.FC<{ title: string }> = ({ title }) => (
         transition={{ duration: 0.3, ease: 'easeOut' }}
         className="h-full flex items-center justify-center p-8"
     >
-        <div className="text-center p-12 bg-white dark:bg-onyx-900 rounded-[3rem] border border-gray-100 dark:border-onyx-800 shadow-xl shadow-gray-200/50 dark:shadow-none w-full max-w-lg mx-auto">
+        <div className="text-center p-12 bg-white dark:bg-aliseus-900 rounded-[3rem] border border-gray-100 dark:border-aliseus-800 shadow-xl shadow-gray-200/50 dark:shadow-none w-full max-w-lg mx-auto">
             <h2 className="text-3xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter uppercase">{title}</h2>
             <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Loading premium panel...</p>
         </div>
@@ -35,13 +34,12 @@ const PanelPlaceholder: React.FC<{ title: string }> = ({ title }) => (
 
 const MOBILE_MENU_ITEMS = [
     { id: 'profile', icon: User, labelES: 'Perfil', labelEN: 'Profile' },
+    { id: 'plan_billing', icon: Star, labelES: 'Suscripción y Pagos', labelEN: 'Subscription & Billing' },
     { id: 'family', icon: Users, labelES: 'Familia', labelEN: 'Family' },
     { id: 'general', icon: Globe, labelES: 'General', labelEN: 'General' },
     { id: 'personalization', icon: Layout, labelES: 'Diseño', labelEN: 'Layout' },
     { id: 'categories', icon: Layers, labelES: 'Categorías', labelEN: 'Categories' },
     { id: 'automation', icon: Zap, labelES: 'Reglas', labelEN: 'Rules' },
-    { id: 'subscription', icon: Star, labelES: 'Plan', labelEN: 'Plan' },
-    { id: 'billing', icon: CreditCard, labelES: 'Pagos', labelEN: 'Billing' },
     { id: 'security', icon: Lock, labelES: 'Seguridad', labelEN: 'Security' },
     { id: 'privacy', icon: Shield, labelES: 'Privacidad', labelEN: 'Privacy' },
     { id: 'invitations', icon: Ticket, labelES: 'Invitaciones', labelEN: 'Invitations' },
@@ -65,8 +63,7 @@ export const SettingsPage: React.FC<{ onMenuClick?: () => void }> = ({ onMenuCli
             case 'personalization': return <PersonalizationPanel key="personalization" />;
             case 'categories': return <CategoriesPanel key="categories" />;
             case 'automation': return <AutomationPanel key="automation" />;
-            case 'subscription': return <SubscriptionPanel key="subscription" />;
-            case 'billing': return <BillingPanel key="billing" />;
+            case 'plan_billing': return <PlanBillingPanel key="plan_billing" />;
             case 'security': return <SecurityPanel key="security" />;
             case 'privacy': return <PrivacyPanel key="privacy" />;
             case 'invitations': return <InvitationManager key="invitations" />;
@@ -75,13 +72,13 @@ export const SettingsPage: React.FC<{ onMenuClick?: () => void }> = ({ onMenuCli
     };
 
     return (
-        <div className="flex flex-col md:flex-row h-full bg-slate-50/50 dark:bg-onyx-950 relative overflow-hidden">
+        <div className="flex flex-col md:flex-row h-full bg-slate-50/50 dark:bg-aliseus-950 relative overflow-hidden">
             {/* Ambient Background Glows */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100/40 dark:bg-indigo-900/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-50/30 dark:bg-cyan-900/10 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
             {/* Mobile Header */}
-            <header className="md:hidden bg-white/80 dark:bg-onyx-950/80 backdrop-blur-xl border-b border-gray-100 dark:border-onyx-800 p-4 flex justify-between items-center z-30 sticky top-0 shrink-0">
+            <header className="md:hidden bg-white/80 dark:bg-aliseus-950/80 backdrop-blur-xl border-b border-gray-100 dark:border-aliseus-800 p-4 flex justify-between items-center z-30 sticky top-0 shrink-0">
                 <div className="flex items-center gap-3">
                     <div className="w-9 h-9 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-[12px] flex items-center justify-center shadow-lg shadow-indigo-500/20">
                         <Layout className="w-4.5 h-4.5 text-white" />
@@ -91,7 +88,7 @@ export const SettingsPage: React.FC<{ onMenuClick?: () => void }> = ({ onMenuCli
                         <p className="text-[10px] font-black text-indigo-500 uppercase tracking-widest">{activeLabel}</p>
                     </div>
                 </div>
-                <button onClick={onMenuClick} className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all p-2.5 bg-gray-50/50 dark:bg-onyx-900/50 rounded-2xl border border-gray-100 dark:border-onyx-800 shadow-sm active:scale-90">
+                <button onClick={onMenuClick} className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all p-2.5 bg-gray-50/50 dark:bg-aliseus-900/50 rounded-2xl border border-gray-100 dark:border-aliseus-800 shadow-sm active:scale-90">
                     <Menu className="w-5 h-5" />
                 </button>
             </header>
@@ -107,7 +104,7 @@ export const SettingsPage: React.FC<{ onMenuClick?: () => void }> = ({ onMenuCli
             </aside>
 
             {/* Mobile Horizontal Scroll Menu */}
-            <nav className="md:hidden flex overflow-x-auto px-4 py-3 bg-white/40 dark:bg-onyx-950/40 backdrop-blur-md border-b border-gray-100/50 dark:border-onyx-800/50 gap-2.5 shrink-0 no-scrollbar z-20 sticky top-[73px]">
+            <nav className="md:hidden flex overflow-x-auto px-4 py-3 bg-white/40 dark:bg-aliseus-950/40 backdrop-blur-md border-b border-gray-100/50 dark:border-aliseus-800/50 gap-2.5 shrink-0 no-scrollbar z-20 sticky top-[73px]">
                 {visibleMenuItems.map((item) => {
                     const isActive = activeSection === item.id;
                     const label = language === 'ES' ? item.labelES : item.labelEN;
@@ -117,7 +114,7 @@ export const SettingsPage: React.FC<{ onMenuClick?: () => void }> = ({ onMenuCli
                             onClick={() => setActiveSection(item.id)}
                             className={`flex-shrink-0 px-4 py-2.5 rounded-[14px] text-[10px] uppercase font-black tracking-[0.1em] transition-all duration-500 flex items-center gap-2 border ${isActive
                                 ? 'bg-gray-900 dark:bg-white text-white dark:text-black border-gray-900 dark:border-white shadow-xl shadow-gray-900/10 dark:shadow-white/5 scale-105'
-                                : 'bg-white/50 dark:bg-onyx-900/50 text-gray-400 dark:text-gray-500 border-gray-100 dark:border-onyx-800 hover:bg-white dark:hover:bg-onyx-800'
+                                : 'bg-white/50 dark:bg-aliseus-900/50 text-gray-400 dark:text-gray-500 border-gray-100 dark:border-aliseus-800 hover:bg-white dark:hover:bg-aliseus-800'
                                 }`}
                         >
                             <item.icon className={`w-3.5 h-3.5 ${isActive ? 'scale-110' : ''}`} />

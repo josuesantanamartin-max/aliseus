@@ -161,6 +161,7 @@ CREATE TABLE IF NOT EXISTS public.household_invites (
   household_id uuid NOT NULL REFERENCES public.households(id) ON DELETE CASCADE,
   email text NOT NULL,
   role text NOT NULL CHECK (role IN ('ADMIN', 'MEMBER', 'VIEWER')),
+  status text NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'ACCEPTED', 'EXPIRED')),
   token uuid NOT NULL DEFAULT gen_random_uuid(),
   expires_at timestamptz NOT NULL DEFAULT (now() + interval '7 days'),
   created_by uuid NOT NULL REFERENCES auth.users(id),
@@ -217,6 +218,20 @@ CREATE POLICY "Members can send messages"
       AND user_id = auth.uid()
     )
   );
+
+-- Create Secure View for Output (joining with auth.users)
+CREATE OR REPLACE VIEW public.vw_household_members AS
+SELECT 
+    hm.household_id,
+    hm.user_id,
+    hm.role,
+    hm.joined_at,
+    u.email,
+    u.raw_user_meta_data->>'full_name' AS full_name
+FROM 
+    public.household_members hm
+JOIN 
+    auth.users u ON hm.user_id = u.id;
 
 
 

@@ -6,10 +6,10 @@ interface OnboardingLayoutProps {
 
 const OnboardingLayout: React.FC<OnboardingLayoutProps> = ({ children }) => {
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-onyx-950 flex flex-col items-center justify-center p-6">
-            <div className="w-full max-w-4xl bg-white dark:bg-onyx-900 rounded-3xl shadow-xl overflow-hidden border border-gray-100 dark:border-onyx-800">
+        <div className="min-h-screen bg-gray-50 dark:bg-aliseus-950 flex flex-col items-center justify-center p-6">
+            <div className="w-full max-w-4xl bg-white dark:bg-aliseus-900 rounded-3xl shadow-xl overflow-hidden border border-gray-100 dark:border-aliseus-800">
                 {/* Logo Header */}
-                <div className="p-8 border-b border-gray-100 dark:border-onyx-800 flex justify-center">
+                <div className="p-8 border-b border-gray-100 dark:border-aliseus-800 flex justify-center">
                     <div className="flex items-center gap-3">
                         <img
                             src="/logo.png"

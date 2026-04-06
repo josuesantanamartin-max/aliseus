@@ -26,7 +26,7 @@ const SampleDataSection: React.FC = () => {
     };
 
     return (
-        <div className="bg-white dark:bg-onyx-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-onyx-800">
+        <div className="bg-white dark:bg-aliseus-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-aliseus-800">
             <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg text-purple-600 dark:text-purple-400">
                     <Database className="w-5 h-5" />
@@ -40,7 +40,7 @@ const SampleDataSection: React.FC = () => {
             {/* Status Indicator */}
             <div className={`p-4 rounded-xl mb-4 ${isSampleDataLoaded
                     ? 'bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800'
-                    : 'bg-gray-50 dark:bg-onyx-800 border border-gray-200 dark:border-onyx-700'
+                    : 'bg-gray-50 dark:bg-aliseus-800 border border-gray-200 dark:border-aliseus-700'
                 }`}>
                 <div className="flex items-center gap-2 mb-1">
                     <Sparkles className={`w-4 h-4 ${isSampleDataLoaded ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-400'}`} />

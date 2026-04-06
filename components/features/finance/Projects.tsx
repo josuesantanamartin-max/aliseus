@@ -122,7 +122,7 @@ const Projects: React.FC<ProjectsProps> = () => {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
                     <h2 className="text-3xl font-bold text-cyan-900 tracking-tight">Proyectos y Eventos</h2>
-                    <p className="text-xs font-semibold text-onyx-400 mt-2 uppercase tracking-[0.2em]">Presupuestos Puntuales — Reformas, Bodas, Viajes…</p>
+                    <p className="text-xs font-semibold text-aliseus-400 mt-2 uppercase tracking-[0.2em]">Presupuestos Puntuales — Reformas, Bodas, Viajes…</p>
                 </div>
                 <button onClick={() => openNewProject()}
                     className="flex items-center gap-2.5 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white px-6 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-widest transition-all duration-300 shadow-lg shadow-cyan-900/20 active:scale-95">
@@ -131,13 +131,13 @@ const Projects: React.FC<ProjectsProps> = () => {
             </div>
 
             {rootProjects.length === 0 ? (
-                <div className="flex flex-col items-center justify-center p-16 border border-dashed border-onyx-200 rounded-3xl bg-onyx-50/50">
+                <div className="flex flex-col items-center justify-center p-16 border border-dashed border-aliseus-200 rounded-3xl bg-aliseus-50/50">
                     <Sparkles className="w-16 h-16 text-cyan-200 mb-6" />
                     <h3 className="text-xl font-bold text-cyan-900 mb-2">Sin proyectos aún</h3>
-                    <p className="text-onyx-500 text-center max-w-md text-sm leading-relaxed mb-6">
+                    <p className="text-aliseus-500 text-center max-w-md text-sm leading-relaxed mb-6">
                         Crea un proyecto (ej. "Reforma Casa"), añade sub-proyectos por zonas ("Baño", "Cocina") y dentro de cada uno, tus partidas: mampara, alicatado, plato de ducha… con su presupuesto y coste real.
                     </p>
-                    <button onClick={() => openNewProject()} className="px-6 py-3 bg-white border border-onyx-200 rounded-xl shadow-sm hover:shadow-md hover:border-cyan-200 text-cyan-700 font-bold text-xs uppercase tracking-widest transition-all">
+                    <button onClick={() => openNewProject()} className="px-6 py-3 bg-white border border-aliseus-200 rounded-xl shadow-sm hover:shadow-md hover:border-cyan-200 text-cyan-700 font-bold text-xs uppercase tracking-widest transition-all">
                         Crear mi primer proyecto
                     </button>
                 </div>
@@ -175,8 +175,8 @@ const Projects: React.FC<ProjectsProps> = () => {
                         </div>
                     )}
                     {completedRoots.length > 0 && (
-                        <div className="space-y-6 pt-6 border-t border-onyx-100">
-                            <h3 className="text-[11px] font-bold text-onyx-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                        <div className="space-y-6 pt-6 border-t border-aliseus-100">
+                            <h3 className="text-[11px] font-bold text-aliseus-400 uppercase tracking-[0.2em] flex items-center gap-2">
                                 <Check className="w-4 h-4" /> Finalizados
                             </h3>
                             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 opacity-75 hover:opacity-100 transition-opacity">

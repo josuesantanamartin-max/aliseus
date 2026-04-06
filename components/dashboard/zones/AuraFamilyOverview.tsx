@@ -174,7 +174,7 @@ export default function AuraFamilyOverview({ onNavigate }: AuraFamilyOverviewPro
                 </div>
                 
                 <div className="shrink-0 flex items-center self-start xl:self-center relative z-10">
-                    <button className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-onyx-950 font-black text-xs uppercase tracking-widest shadow-xl shadow-black/10 hover:shadow-brand-500/20 active:scale-95 transition-all group">
+                    <button className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-aliseus-950 font-black text-xs uppercase tracking-widest shadow-xl shadow-black/10 hover:shadow-brand-500/20 active:scale-95 transition-all group">
                         Ver Prioridades
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </button>
@@ -185,7 +185,7 @@ export default function AuraFamilyOverview({ onNavigate }: AuraFamilyOverviewPro
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 
                 {/* 1. SALUD Y CUIDADOS (OPERATIVA) */}
-                <div className="bg-white dark:bg-onyx-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-onyx-800/80 shadow-sm flex flex-col h-full min-h-[440px] group hover:border-rose-500/20 transition-all">
+                <div className="bg-white dark:bg-aliseus-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-aliseus-800/80 shadow-sm flex flex-col h-full min-h-[440px] group hover:border-rose-500/20 transition-all">
                     <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center">
@@ -200,7 +200,7 @@ export default function AuraFamilyOverview({ onNavigate }: AuraFamilyOverviewPro
                         {medicalAlerts.length > 0 ? (
                             medicalAlerts.map((alert, idx) => (
                                 <div key={idx} className={cn(
-                                    "p-5 rounded-3xl border transition-all hover:bg-slate-50 dark:hover:bg-onyx-800/50",
+                                    "p-5 rounded-3xl border transition-all hover:bg-slate-50 dark:hover:bg-aliseus-800/50",
                                     alert.priority === 'high' 
                                         ? "bg-rose-50/50 dark:bg-rose-500/5 border-rose-100 dark:border-rose-500/10" 
                                         : "bg-amber-50/50 dark:bg-amber-500/5 border-amber-100 dark:border-amber-500/10"
@@ -229,7 +229,7 @@ export default function AuraFamilyOverview({ onNavigate }: AuraFamilyOverviewPro
                 </div>
 
                 {/* 2. AGENDA FAMILIAR (OPERATIVA) */}
-                <div className="bg-slate-50/50 dark:bg-onyx-950/20 rounded-[2.5rem] p-8 border border-slate-100 dark:border-onyx-800/80 shadow-inner flex flex-col h-full min-h-[440px]">
+                <div className="bg-slate-50/50 dark:bg-aliseus-950/20 rounded-[2.5rem] p-8 border border-slate-100 dark:border-aliseus-800/80 shadow-inner flex flex-col h-full min-h-[440px]">
                     <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center">
@@ -243,8 +243,8 @@ export default function AuraFamilyOverview({ onNavigate }: AuraFamilyOverviewPro
                     <div className="space-y-3 flex-1">
                         {upcomingEvents.length > 0 ? (
                             upcomingEvents.slice(0, 4).map((event) => (
-                                <div key={event.id} className="flex items-center gap-4 p-4 bg-white dark:bg-onyx-900 border border-slate-100 dark:border-onyx-800 rounded-[1.5rem] shadow-sm hover:shadow-md transition-all group cursor-pointer">
-                                    <div className="flex flex-col items-center justify-center w-12 h-12 rounded-2xl bg-slate-50 dark:bg-onyx-800 text-slate-400 group-hover:bg-brand-500 group-hover:text-white transition-all shadow-sm">
+                                <div key={event.id} className="flex items-center gap-4 p-4 bg-white dark:bg-aliseus-900 border border-slate-100 dark:border-aliseus-800 rounded-[1.5rem] shadow-sm hover:shadow-md transition-all group cursor-pointer">
+                                    <div className="flex flex-col items-center justify-center w-12 h-12 rounded-2xl bg-slate-50 dark:bg-aliseus-800 text-slate-400 group-hover:bg-brand-500 group-hover:text-white transition-all shadow-sm">
                                         <span className="text-[10px] font-black uppercase tracking-tighter">{new Intl.DateTimeFormat('es-ES', { weekday: 'short' }).format(new Date(event.time))}</span>
                                         <span className="text-base font-black leading-none">{new Date(event.time).getDate()}</span>
                                     </div>
@@ -278,19 +278,19 @@ export default function AuraFamilyOverview({ onNavigate }: AuraFamilyOverviewPro
             {/* CAPA 2: SNAPSHOTS / KPIs (4 Cols) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* 1. Misiones */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_4px_12px_-6px_rgba(0,0,0,0.05)] flex flex-col justify-between group hover:shadow-xl transition-all duration-500">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-6 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_4px_12px_-6px_rgba(0,0,0,0.05)] flex flex-col justify-between group hover:shadow-xl transition-all duration-500">
                     <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Misiones Hoy</h3>
                     <div className="flex items-baseline gap-2">
                         <span className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">{tasksCompletionAverage}%</span>
                         <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Ritmo</span>
                     </div>
-                    <div className="w-full bg-slate-50 dark:bg-onyx-800 h-1.5 rounded-full mt-4 overflow-hidden">
+                    <div className="w-full bg-slate-50 dark:bg-aliseus-800 h-1.5 rounded-full mt-4 overflow-hidden">
                         <div className="bg-emerald-500 h-full transition-all duration-1000" style={{ width: `${tasksCompletionAverage}%` }} />
                     </div>
                 </div>
 
                 {/* 2. Finanzas Hogar */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_4px_12px_-6px_rgba(0,0,0,0.05)] flex flex-col justify-between group hover:shadow-xl transition-all duration-500">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-6 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_4px_12px_-6px_rgba(0,0,0,0.05)] flex flex-col justify-between group hover:shadow-xl transition-all duration-500">
                     <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Salud Financiera</h3>
                     <div className="flex items-baseline gap-2">
                         <span className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">{formatCurrency(2450)}</span>
@@ -301,7 +301,7 @@ export default function AuraFamilyOverview({ onNavigate }: AuraFamilyOverviewPro
                 </div>
 
                 {/* 3. Salud Familiar */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_4px_12px_-6px_rgba(0,0,0,0.05)] flex flex-col justify-between group hover:shadow-xl transition-all duration-500">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-6 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_4px_12px_-6px_rgba(0,0,0,0.05)] flex flex-col justify-between group hover:shadow-xl transition-all duration-500">
                     <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Seguridad Vital</h3>
                     <div className="flex items-baseline gap-2">
                         <span className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">{medicalAlerts.length}</span>
@@ -313,7 +313,7 @@ export default function AuraFamilyOverview({ onNavigate }: AuraFamilyOverviewPro
                 </div>
 
                 {/* 4. Suministros/Doc */}
-                <div className="bg-white dark:bg-onyx-900 rounded-3xl p-6 border border-slate-100 dark:border-onyx-800/80 shadow-[0_4px_12px_-6px_rgba(0,0,0,0.05)] flex flex-col justify-between group hover:shadow-xl transition-all duration-500">
+                <div className="bg-white dark:bg-aliseus-900 rounded-3xl p-6 border border-slate-100 dark:border-aliseus-800/80 shadow-[0_4px_12px_-6px_rgba(0,0,0,0.05)] flex flex-col justify-between group hover:shadow-xl transition-all duration-500">
                     <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Burocracia</h3>
                     <div className="flex items-baseline gap-2">
                         <span className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">{urgentDocsCount}</span>
@@ -328,7 +328,7 @@ export default function AuraFamilyOverview({ onNavigate }: AuraFamilyOverviewPro
             {/* CAPA 3: PROFUNDIZACIÓN (Analysis Grid) */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 {/* ESTATUS ECONÓMICO GLOBAL */}
-                <div className="bg-white dark:bg-onyx-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-onyx-800/80 shadow-sm flex flex-col h-full group hover:border-brand-500/20 transition-all">
+                <div className="bg-white dark:bg-aliseus-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-aliseus-800/80 shadow-sm flex flex-col h-full group hover:border-brand-500/20 transition-all">
                     <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-brand-500/10 flex items-center justify-center">
@@ -353,13 +353,13 @@ export default function AuraFamilyOverview({ onNavigate }: AuraFamilyOverviewPro
                             </div>
                         </div>
 
-                        <div className="space-y-4 border-t border-slate-50 dark:border-onyx-800 pt-8">
+                        <div className="space-y-4 border-t border-slate-50 dark:border-aliseus-800 pt-8">
                             <h6 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Cuentas Líquidas</h6>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                  {accounts.filter(acc => ['BANK', 'SAVINGS', 'CASH', 'WALLET'].includes(acc.type)).map(acc => (
-                                    <div key={acc.id} className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-onyx-900 border border-slate-100 dark:border-onyx-800 hover:shadow-md transition-all shadow-sm">
+                                    <div key={acc.id} className="flex items-center justify-between p-3 rounded-2xl bg-white dark:bg-aliseus-900 border border-slate-100 dark:border-aliseus-800 hover:shadow-md transition-all shadow-sm">
                                         <div className="flex items-center gap-2.5">
-                                            <div className="w-6 h-6 rounded-lg bg-slate-50 dark:bg-onyx-800 flex items-center justify-center shadow-sm">
+                                            <div className="w-6 h-6 rounded-lg bg-slate-50 dark:bg-aliseus-800 flex items-center justify-center shadow-sm">
                                                 <Wallet className="w-3 h-3 text-slate-400" />
                                             </div>
                                             <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 truncate max-w-[80px]">{acc.name}</span>
@@ -381,10 +381,10 @@ export default function AuraFamilyOverview({ onNavigate }: AuraFamilyOverviewPro
             </div>
 
             {/* CAPA 4: TRAZABILIDAD (ACTIVITY FEED) */}
-            <div className="bg-white dark:bg-onyx-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-onyx-800/80 shadow-sm flex flex-col">
+            <div className="bg-white dark:bg-aliseus-900 rounded-[2.5rem] p-8 border border-slate-100 dark:border-aliseus-800/80 shadow-sm flex flex-col">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-6">
                     <div className="flex items-center gap-3">
-                         <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-onyx-800 flex items-center justify-center">
+                         <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-aliseus-800 flex items-center justify-center">
                             <Activity className="w-5 h-5 text-slate-500" />
                         </div>
                         <div>
@@ -393,7 +393,7 @@ export default function AuraFamilyOverview({ onNavigate }: AuraFamilyOverviewPro
                         </div>
                     </div>
                     
-                    <div className="flex items-center gap-1 bg-slate-50 dark:bg-onyx-800 p-1 rounded-xl self-start">
+                    <div className="flex items-center gap-1 bg-slate-50 dark:bg-aliseus-800 p-1 rounded-xl self-start">
                         {(['all', 'finance', 'tasks', 'calendar'] as const).map(filter => (
                             <button
                                 key={filter}
@@ -401,7 +401,7 @@ export default function AuraFamilyOverview({ onNavigate }: AuraFamilyOverviewPro
                                 className={cn(
                                     "px-3 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all",
                                     feedFilter === filter 
-                                        ? "bg-white dark:bg-onyx-700 text-slate-900 dark:text-white shadow-sm" 
+                                        ? "bg-white dark:bg-aliseus-700 text-slate-900 dark:text-white shadow-sm" 
                                         : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
                                 )}
                             >
@@ -417,9 +417,9 @@ export default function AuraFamilyOverview({ onNavigate }: AuraFamilyOverviewPro
                         .map((activity) => {
                             const Icon = activity.icon;
                             return (
-                                <div key={activity.id} className="flex items-center gap-4 p-4 rounded-2xl hover:bg-slate-50 dark:hover:bg-onyx-800/50 transition-colors group">
+                                <div key={activity.id} className="flex items-center gap-4 p-4 rounded-2xl hover:bg-slate-50 dark:hover:bg-aliseus-800/50 transition-colors group">
                                     <div className={cn(
-                                        "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border border-slate-100 dark:border-onyx-700 shadow-sm transition-transform group-hover:scale-110",
+                                        "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border border-slate-100 dark:border-aliseus-700 shadow-sm transition-transform group-hover:scale-110",
                                         activity.color === 'emerald' ? "bg-emerald-50 text-emerald-500 dark:bg-emerald-500/10" :
                                         activity.color === 'brand' ? "bg-brand-50 text-brand-500 dark:bg-brand-500/10" :
                                         "bg-indigo-50 text-indigo-500 dark:bg-indigo-500/10"
@@ -441,13 +441,13 @@ export default function AuraFamilyOverview({ onNavigate }: AuraFamilyOverviewPro
             </div>
 
             {/* GESTIÓN DE FAMILIA (Bottom Structural section) */}
-            <div className="flex flex-col gap-6 pt-10 border-t border-slate-100 dark:border-onyx-800 mt-12">
+            <div className="flex flex-col gap-6 pt-10 border-t border-slate-100 dark:border-aliseus-800 mt-12">
                 <div className="flex items-center justify-between">
                     <div>
                         <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Gestión de Familia</h3>
                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">Miembros y permisos</p>
                     </div>
-                    <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-50 dark:bg-onyx-800 text-slate-500 hover:text-brand-500 transition-colors">
+                    <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-50 dark:bg-aliseus-800 text-slate-500 hover:text-brand-500 transition-colors">
                         <Plus className="w-3.5 h-3.5" />
                         <span className="text-[10px] font-black uppercase tracking-widest">Añadir Miembro</span>
                     </button>
@@ -455,12 +455,12 @@ export default function AuraFamilyOverview({ onNavigate }: AuraFamilyOverviewPro
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {familyMembers.map((member) => (
-                        <div key={member.id} className="bg-white dark:bg-onyx-900 rounded-[2rem] p-6 border border-slate-100 dark:border-onyx-800/80 flex items-center gap-4 hover:shadow-lg transition-all cursor-pointer group">
-                            <div className="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-onyx-800 overflow-hidden border-2 border-white dark:border-onyx-900 shadow-sm shrink-0 group-hover:border-brand-500/30 transition-all">
+                        <div key={member.id} className="bg-white dark:bg-aliseus-900 rounded-[2rem] p-6 border border-slate-100 dark:border-aliseus-800/80 flex items-center gap-4 hover:shadow-lg transition-all cursor-pointer group">
+                            <div className="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-aliseus-800 overflow-hidden border-2 border-white dark:border-aliseus-900 shadow-sm shrink-0 group-hover:border-brand-500/30 transition-all">
                                 {member.avatar ? (
                                     <img src={member.avatar} alt={member.name} className="w-full h-full object-cover" />
                                 ) : (
-                                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 dark:from-onyx-800 dark:to-onyx-700 text-slate-600 dark:text-white font-black text-xl">
+                                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 dark:from-aliseus-800 dark:to-aliseus-700 text-slate-600 dark:text-white font-black text-xl">
                                         {member.name.charAt(0)}
                                     </div>
                                 )}

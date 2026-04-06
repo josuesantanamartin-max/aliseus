@@ -95,7 +95,7 @@ const AuraDashboard: React.FC = () => {
 
     return (
         <div
-            className="h-full bg-onyx-50 dark:bg-onyx-950 overflow-y-auto custom-scrollbar relative flex flex-col pb-12"
+            className="h-full bg-aliseus-50 dark:bg-aliseus-950 overflow-y-auto custom-scrollbar relative flex flex-col pb-12"
         >
             <div className="p-4 md:p-8 max-w-7xl mx-auto w-full space-y-6 lg:space-y-8">
                 {/* --- HEADER --- */}
@@ -113,7 +113,7 @@ const AuraDashboard: React.FC = () => {
 
                 {/* --- DYNAMIC VIEWS --- */}
                 <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-                    <React.Suspense fallback={<div className="flex items-center justify-center p-12 text-onyx-400 font-bold m-auto">Loading...</div>}>
+                    <React.Suspense fallback={<div className="flex items-center justify-center p-12 text-aliseus-400 font-bold m-auto">Loading...</div>}>
 
                         {activeTheme === 'finances' && (
                             <div className="mx-auto w-full space-y-8 pb-12">
@@ -148,10 +148,7 @@ const AuraDashboard: React.FC = () => {
                 </div>
             </div>
 
-            {/* --- FEEDBACK WIDGET --- */}
-            <div className="fixed bottom-6 right-6 z-[100]">
-                <BetaFeedbackWidget />
-            </div>
+
 
         </div>
     );

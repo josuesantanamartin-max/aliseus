@@ -17,7 +17,7 @@ const CashflowWidget: React.FC<CashflowWidgetProps> = ({ transactions, monthlyIn
 
     return (
         <div className="flex flex-col h-full w-full">
-            <h3 className="text-xs font-black text-onyx-400 dark:text-onyx-500 uppercase tracking-widest mb-2 flex justify-between">
+            <h3 className="text-xs font-black text-aliseus-400 dark:text-aliseus-500 uppercase tracking-widest mb-2 flex justify-between">
                 <span>Flujo de Caja</span>
                 <span className="text-emerald-500">{formatCurrency(monthlyIncome - monthlyExpenses)} Neto</span>
             </h3>

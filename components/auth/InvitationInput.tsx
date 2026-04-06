@@ -79,7 +79,7 @@ export const InvitationInput: React.FC<InvitationInputProps> = ({ onValidCode, o
                         ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
                         : validationState === 'invalid'
                             ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
-                            : 'border-gray-300 dark:border-gray-600 focus:border-onyx-500 dark:focus:border-onyx-400'
+                            : 'border-gray-300 dark:border-gray-600 focus:border-aliseus-500 dark:focus:border-aliseus-400'
                         } dark:bg-gray-800 dark:text-white`}
                     disabled={isValidating}
                 />
@@ -107,7 +107,7 @@ export const InvitationInput: React.FC<InvitationInputProps> = ({ onValidCode, o
             <button
                 onClick={handleValidate}
                 disabled={isValidating || code.replace(/-/g, '').length !== 12}
-                className="w-full py-3 bg-onyx-600 hover:bg-onyx-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
+                className="w-full py-3 bg-aliseus-600 hover:bg-aliseus-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
             >
                 {isValidating ? (
                     <>

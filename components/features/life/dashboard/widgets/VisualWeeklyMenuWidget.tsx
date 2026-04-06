@@ -29,11 +29,11 @@ const VisualWeeklyMenuWidget: React.FC<VisualWeeklyMenuWidgetProps> = ({ onNavig
     };
 
     return (
-        <div className="bg-white dark:bg-onyx-900 p-6 rounded-[2rem] h-full flex flex-col border border-onyx-100 dark:border-onyx-800 shadow-sm hover:shadow-md transition-all">
+        <div className="bg-white dark:bg-aliseus-900 p-6 rounded-[2rem] h-full flex flex-col border border-aliseus-100 dark:border-aliseus-800 shadow-sm hover:shadow-md transition-all">
             <div className="flex justify-between items-start mb-5">
                 <div>
                     <p className="text-indigo-600 dark:text-indigo-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Planificación</p>
-                    <h3 className="text-lg font-black text-onyx-950 dark:text-white">Menú Semanal Visual</h3>
+                    <h3 className="text-lg font-black text-aliseus-950 dark:text-white">Menú Semanal Visual</h3>
                 </div>
                 <div className="p-2.5 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-100 dark:border-indigo-900/30">
                     <LayoutGrid className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
@@ -46,7 +46,7 @@ const VisualWeeklyMenuWidget: React.FC<VisualWeeklyMenuWidgetProps> = ({ onNavig
                         <div className="col-span-1"></div>
                         {days.map(day => (
                             <div key={day} className="text-center">
-                                <span className="text-[9px] font-black text-onyx-400 uppercase tracking-tighter">{day}</span>
+                                <span className="text-[9px] font-black text-aliseus-400 uppercase tracking-tighter">{day}</span>
                             </div>
                         ))}
                     </div>
@@ -55,7 +55,7 @@ const VisualWeeklyMenuWidget: React.FC<VisualWeeklyMenuWidgetProps> = ({ onNavig
                         {mealTypes.map(type => (
                             <div key={type} className="grid grid-cols-8 gap-1.5 items-center">
                                 <div className="col-span-1">
-                                    <span className="text-[8px] font-black text-onyx-500 dark:text-onyx-400 uppercase tracking-tighter">
+                                    <span className="text-[8px] font-black text-aliseus-500 dark:text-aliseus-400 uppercase tracking-tighter">
                                         {type === 'breakfast' ? 'Des.' : type === 'lunch' ? 'Com.' : 'Cen.'}
                                     </span>
                                 </div>
@@ -68,12 +68,12 @@ const VisualWeeklyMenuWidget: React.FC<VisualWeeklyMenuWidgetProps> = ({ onNavig
                                             className={`aspect-square rounded-lg border transition-all cursor-pointer flex items-center justify-center group/cell ${
                                                 meal 
                                                     ? 'bg-emerald-500 border-emerald-600 dark:border-emerald-400 shadow-sm' 
-                                                    : 'bg-onyx-50 dark:bg-onyx-800 border-dashed border-onyx-200 dark:border-onyx-700 hover:border-indigo-400 dark:hover:border-indigo-500'
+                                                    : 'bg-aliseus-50 dark:bg-aliseus-800 border-dashed border-aliseus-200 dark:border-aliseus-700 hover:border-indigo-400 dark:hover:border-indigo-500'
                                             }`}
                                             title={meal ? `${meal.recipeName}` : 'No planeado'}
                                         >
                                             {!meal && (
-                                                <Plus className="w-3 h-3 text-onyx-300 dark:text-onyx-600 group-hover/cell:text-indigo-500 transition-colors" />
+                                                <Plus className="w-3 h-3 text-aliseus-300 dark:text-aliseus-600 group-hover/cell:text-indigo-500 transition-colors" />
                                             )}
                                         </div>
                                     );
@@ -87,11 +87,11 @@ const VisualWeeklyMenuWidget: React.FC<VisualWeeklyMenuWidgetProps> = ({ onNavig
             <div className="mt-5 flex items-center gap-4">
                 <div className="flex items-center gap-1.5">
                     <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-                    <span className="text-[9px] font-bold text-onyx-500">Completado</span>
+                    <span className="text-[9px] font-bold text-aliseus-500">Completado</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                    <div className="w-2 h-2 rounded-full bg-onyx-200 dark:bg-onyx-700"></div>
-                    <span className="text-[9px] font-bold text-onyx-500">Vacio</span>
+                    <div className="w-2 h-2 rounded-full bg-aliseus-200 dark:bg-aliseus-700"></div>
+                    <span className="text-[9px] font-bold text-aliseus-500">Vacio</span>
                 </div>
             </div>
         </div>

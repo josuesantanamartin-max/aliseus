@@ -33,7 +33,7 @@ export const DebtDetailMain: React.FC<DebtDetailMainProps> = ({
 
     return (
         <div className="md:col-span-8 space-y-6">
-            <div className="bg-white rounded-[2rem] p-8 border border-onyx-100 shadow-xl shadow-onyx-200/20 relative overflow-hidden">
+            <div className="bg-white rounded-[2rem] p-8 border border-aliseus-100 shadow-xl shadow-aliseus-200/20 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-50 rounded-full blur-3xl -mx-32 -my-32 opacity-50 pointer-events-none"></div>
 
                 <div className="flex justify-between items-start mb-8 relative z-10">
@@ -44,7 +44,7 @@ export const DebtDetailMain: React.FC<DebtDetailMainProps> = ({
                                 {progress.toFixed(1)}% Pagado
                             </span>
                         </div>
-                        <p className="text-sm font-semibold text-onyx-400 flex items-center gap-2">
+                        <p className="text-sm font-semibold text-aliseus-400 flex items-center gap-2">
                             Tipo de deuda: <span className="text-cyan-700 bg-cyan-50 px-2 py-0.5 rounded-md">{selectedDebt.type}</span>
                         </p>
                     </div>
@@ -59,19 +59,19 @@ export const DebtDetailMain: React.FC<DebtDetailMainProps> = ({
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                    <div className="bg-onyx-50 p-4 rounded-2xl border border-onyx-100">
-                        <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-1 flex items-center gap-2">
+                    <div className="bg-aliseus-50 p-4 rounded-2xl border border-aliseus-100">
+                        <p className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-1 flex items-center gap-2">
                             <Target className="w-3 h-3 text-cyan-600" /> Restante
                         </p>
                         <p className="text-2xl font-black text-cyan-900">{formatEUR(selectedDebt.remainingBalance)}</p>
-                        <p className="text-xs font-bold text-onyx-400 mt-1">de {formatEUR(selectedDebt.originalAmount)}</p>
+                        <p className="text-xs font-bold text-aliseus-400 mt-1">de {formatEUR(selectedDebt.originalAmount)}</p>
                     </div>
-                    <div className="bg-onyx-50 p-4 rounded-2xl border border-onyx-100">
-                        <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-1 flex items-center gap-2">
+                    <div className="bg-aliseus-50 p-4 rounded-2xl border border-aliseus-100">
+                        <p className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-1 flex items-center gap-2">
                             <Banknote className="w-3 h-3 text-emerald-500" /> Pago Min.
                         </p>
                         <p className="text-2xl font-black text-cyan-900">{formatEUR(selectedDebt.minPayment)}</p>
-                        <p className="text-xs font-bold text-onyx-400 mt-1">Mensual</p>
+                        <p className="text-xs font-bold text-aliseus-400 mt-1">Mensual</p>
                     </div>
                     <div className="bg-red-50 p-4 rounded-2xl border border-red-100">
                         <p className="text-[10px] font-bold text-red-500 uppercase tracking-widest mb-1 flex items-center gap-2">
@@ -93,10 +93,10 @@ export const DebtDetailMain: React.FC<DebtDetailMainProps> = ({
 
                 <div className="mb-8">
                     <div className="flex justify-between items-end mb-2">
-                        <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest">Progreso de liquidación</p>
+                        <p className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest">Progreso de liquidación</p>
                         <p className="font-bold text-cyan-900 text-sm">{formatEUR(selectedDebt.originalAmount - selectedDebt.remainingBalance)} Pagado</p>
                     </div>
-                    <div className="w-full h-4 bg-onyx-100 rounded-full overflow-hidden shadow-inner flex">
+                    <div className="w-full h-4 bg-aliseus-100 rounded-full overflow-hidden shadow-inner flex">
                         <div
                             className="h-full bg-gradient-to-r from-emerald-400 to-emerald-500 relative"
                             style={{ width: `${progress}%` }}

@@ -26,7 +26,7 @@ vi.mock('../../store/useFinanceStore', () => ({
 }));
 
 vi.mock('../layout/AliseusLanding', () => ({
-    default: ({ onLogin }: any) => <div data-testid="onyx-landing">Landing Page</div>
+    default: ({ onLogin }: any) => <div data-testid="aliseus-landing">Landing Page</div>
 }));
 
 vi.mock('../onboarding/OnboardingWizard', () => ({
@@ -71,7 +71,7 @@ describe('AuthGate Component', () => {
 
         render(<AuthGate><div>Protected</div></AuthGate>);
 
-        expect(screen.getByTestId('onyx-landing')).toBeInTheDocument();
+        expect(screen.getByTestId('aliseus-landing')).toBeInTheDocument();
         expect(screen.queryByText('Protected')).not.toBeInTheDocument();
     });
 
@@ -110,7 +110,7 @@ describe('AuthGate Component', () => {
         render(<AuthGate><div>Protected Content</div></AuthGate>);
 
         expect(screen.getByText('Protected Content')).toBeInTheDocument();
-        expect(screen.queryByTestId('onyx-landing')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('aliseus-landing')).not.toBeInTheDocument();
         expect(screen.queryByTestId('onboarding-wizard')).not.toBeInTheDocument();
     });
 
@@ -148,7 +148,7 @@ describe('AuthGate Component', () => {
         (useUserStore as any).mockReturnValue(mockStore);
 
         const { rerender } = render(<AuthGate><div>Content</div></AuthGate>);
-        expect(screen.getByTestId('onyx-landing')).toBeInTheDocument();
+        expect(screen.getByTestId('aliseus-landing')).toBeInTheDocument();
 
         // Simulate authentication
         mockStore.isAuthenticated = true;

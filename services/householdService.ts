@@ -59,7 +59,7 @@ export const householdService = {
         if (!user.user) throw new Error('Not authenticated');
 
         const { data, error } = await supabase
-            .from('household_invitations')
+            .from('household_invites')
             .insert({
                 household_id: householdId,
                 email: email.toLowerCase().trim(),
@@ -84,7 +84,7 @@ export const householdService = {
 
         // 1. Fetch the invitation
         const { data: invite, error: fetchError } = await supabase
-            .from('household_invitations')
+            .from('household_invites')
             .select('*')
             .eq('token', token)
             .eq('status', 'PENDING')
@@ -110,7 +110,7 @@ export const householdService = {
 
         // 3. Update invite status
         await supabase
-            .from('household_invitations')
+            .from('household_invites')
             .update({ status: 'ACCEPTED' })
             .eq('id', invite.id);
 

@@ -25,7 +25,7 @@ const ActiveProjectsWidget: React.FC<ActiveProjectsWidgetProps> = ({ projects, t
     };
 
     return (
-        <div className="bg-white p-6 rounded-[2rem] border border-onyx-100 shadow-sm hover:shadow-lg transition-all flex flex-col relative overflow-hidden group/widget">
+        <div className="bg-white p-6 rounded-[2rem] border border-aliseus-100 shadow-sm hover:shadow-lg transition-all flex flex-col relative overflow-hidden group/widget">
             <div className="flex justify-between items-center mb-4 shrink-0 relative z-10">
                 <div>
                     <div className="flex items-center gap-3 mb-2">
@@ -34,7 +34,7 @@ const ActiveProjectsWidget: React.FC<ActiveProjectsWidgetProps> = ({ projects, t
                         </div>
                         <h3 className="text-lg font-black text-cyan-900 tracking-tight">Proyectos Activos</h3>
                     </div>
-                    <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest">
+                    <p className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest">
                         Reformas, Eventos y Más
                     </p>
                 </div>
@@ -50,7 +50,7 @@ const ActiveProjectsWidget: React.FC<ActiveProjectsWidgetProps> = ({ projects, t
                         <div
                             key={project.id}
                             onClick={() => onViewProject(project.id)}
-                            className="p-4 bg-onyx-50/50 rounded-2xl border border-onyx-100 hover:bg-white hover:border-cyan-200 hover:shadow-md cursor-pointer transition-all flex flex-col relative overflow-hidden"
+                            className="p-4 bg-aliseus-50/50 rounded-2xl border border-aliseus-100 hover:bg-white hover:border-cyan-200 hover:shadow-md cursor-pointer transition-all flex flex-col relative overflow-hidden"
                         >
                             <div className="absolute top-0 right-0 w-24 h-24 opacity-5 rounded-full blur-xl -mr-6 -mt-6 pointer-events-none" style={{ backgroundColor: project.color || '#06b6d4' }}></div>
 
@@ -61,12 +61,12 @@ const ActiveProjectsWidget: React.FC<ActiveProjectsWidgetProps> = ({ projects, t
 
                             <div className="flex justify-between items-end mt-2">
                                 <div>
-                                    <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-1">Gastado</p>
+                                    <p className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-1">Gastado</p>
                                     <p className="text-lg font-black text-cyan-900 tracking-tighter">{formatEUR(spent)}</p>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-[10px] font-bold text-onyx-400 uppercase tracking-widest mb-1">Presupuesto</p>
-                                    <p className="text-xs font-bold text-onyx-500">{project.limit > 0 ? formatEUR(project.limit) : 'Sin límite'}</p>
+                                    <p className="text-[10px] font-bold text-aliseus-400 uppercase tracking-widest mb-1">Presupuesto</p>
+                                    <p className="text-xs font-bold text-aliseus-500">{project.limit > 0 ? formatEUR(project.limit) : 'Sin límite'}</p>
                                 </div>
                             </div>
 
@@ -74,9 +74,9 @@ const ActiveProjectsWidget: React.FC<ActiveProjectsWidgetProps> = ({ projects, t
                                 <div className="mt-3 space-y-1.5">
                                     <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
                                         <span className={isExceeded ? 'text-red-500' : 'text-cyan-600'}>{percentage.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%</span>
-                                        <span className="text-onyx-400">Restante: {formatEUR(Math.max(0, project.limit - spent))}</span>
+                                        <span className="text-aliseus-400">Restante: {formatEUR(Math.max(0, project.limit - spent))}</span>
                                     </div>
-                                    <div className="w-full bg-onyx-100 h-1.5 rounded-full overflow-hidden">
+                                    <div className="w-full bg-aliseus-100 h-1.5 rounded-full overflow-hidden">
                                         <div
                                             className={`h-full rounded-full transition-all duration-1000 ${isExceeded ? 'bg-red-500' : 'bg-gradient-to-r from-cyan-400 to-cyan-500'}`}
                                             style={{ width: `${Math.min(percentage, 100)}%` }}

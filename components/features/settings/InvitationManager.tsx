@@ -133,7 +133,7 @@ export const InvitationManager: React.FC = () => {
                 </div>
                 <button
                     onClick={() => setShowCreateModal(true)}
-                    className="bg-onyx-600 hover:bg-onyx-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+                    className="bg-aliseus-600 hover:bg-aliseus-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
                 >
                     <Plus className="w-4 h-4" />
                     Crear Código
@@ -318,7 +318,7 @@ export const InvitationManager: React.FC = () => {
                                 </button>
                                 <button
                                     onClick={handleCreate}
-                                    className="px-4 py-2 bg-onyx-600 text-white rounded-lg hover:bg-onyx-700"
+                                    className="px-4 py-2 bg-aliseus-600 text-white rounded-lg hover:bg-aliseus-700"
                                 >
                                     Crear
                                 </button>
