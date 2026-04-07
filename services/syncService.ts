@@ -535,8 +535,8 @@ export const syncService = {
 
     async fetchWeeklyPlan() {
         if (!supabase) return [];
-        const { data, error } = await supabase.from('life_weekly_plan').select('*').single();
-        if (error && error.code !== 'PGRST116') throw error; // PGRST116 = no rows returned
+        const { data, error } = await supabase.from('life_weekly_plan').select('*').maybeSingle();
+        if (error) throw error; // maybeSingle doesn't throw PGRST116 as an error
         return (data?.plan_data || []) as WeeklyPlan[];
     },
 

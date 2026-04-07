@@ -31,7 +31,7 @@ const Transactions: React.FC<TransactionsProps> = ({
 }) => {
   const { transactions, accounts, debts, goals, categories, projectBudgets, deduplicateTransactions } = useFinanceStore();
   const { activeHouseholdId } = useHouseholdStore();
-  const { currency, quickAction, setQuickAction } = useUserStore();
+  const { currency, quickAction, setQuickAction, viewDate, setViewDate } = useUserStore();
   const { addTransaction, transfer, editTransaction, deleteTransaction } = useFinanceControllers();
   const { formatPrice: formatEUR, symbol } = useCurrency();
 
@@ -45,7 +45,8 @@ const Transactions: React.FC<TransactionsProps> = ({
 
   const [viewMode, setViewMode] = useState<'MONTH' | 'YEAR'>('MONTH');
 
-  const [filterDate, setFilterDate] = useState<Date>(new Date());
+  const filterDate = useMemo(() => new Date(viewDate), [viewDate]);
+  const setFilterDate = setViewDate;
   const [filterCategory, setFilterCategory] = useState<string>('');
   const [filterSubCategory, setFilterSubCategory] = useState<string>('');
   const [filterType, setFilterType] = useState<'' | 'INCOME' | 'EXPENSE'>('');
@@ -111,7 +112,7 @@ const Transactions: React.FC<TransactionsProps> = ({
     if (initialFilters) {
       if (initialFilters.initialDate) {
         const d = new Date(initialFilters.initialDate);
-        if (!isNaN(d.getTime())) setFilterDate(d);
+        if (!isNaN(d.getTime())) setViewDate(d);
       }
       if (initialFilters.category) setFilterCategory(initialFilters.category);
       if (initialFilters.subCategory) setFilterSubCategory(initialFilters.subCategory);
@@ -449,6 +450,7 @@ const Transactions: React.FC<TransactionsProps> = ({
 
         <TransactionList
           transactions={filteredTransactions}
+          totalCount={transactions.length}
           onEdit={openEditModal}
           onDelete={deleteTransaction}
           accounts={accounts}
@@ -459,6 +461,7 @@ const Transactions: React.FC<TransactionsProps> = ({
         isOpen={isImportModalOpen}
         onClose={() => setIsImportModalOpen(false)}
         onImport={handleBatchImport}
+        onDateRangeDetected={(min, max) => setViewDate(max)}
       />
 
       {(isFormOpen || isEditModalOpen) && (

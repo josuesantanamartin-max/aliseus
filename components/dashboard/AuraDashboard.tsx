@@ -27,7 +27,7 @@ const formatCurrency = (val: number) =>
 const AuraDashboard: React.FC = () => {
     const { 
         theme, setTheme, setActiveApp, setFinanceActiveTab, setLifeActiveTab,
-        language
+        language, viewDate
     } = useUserStore();
 
 
@@ -35,19 +35,31 @@ const AuraDashboard: React.FC = () => {
         transactions = [], accounts = [], debts = [], categories = [], goals = [], budgets = []
     } = useFinanceStore();
 
+    const viewingDate = useMemo(() => new Date(viewDate), [viewDate]);
+
     const monthlyIncome = useMemo(() => {
-        const now = new Date();
         return transactions
-            .filter((t: Transaction) => new Date(t.date).getMonth() === now.getMonth() && t.type === 'INCOME' && t.category !== 'Transferencia')
+            .filter((t: Transaction) => {
+                const tDate = new Date(t.date);
+                return tDate.getMonth() === viewingDate.getMonth() && 
+                       tDate.getFullYear() === viewingDate.getFullYear() && 
+                       t.type === 'INCOME' && 
+                       t.category !== 'Transferencia';
+            })
             .reduce((sum: number, t: Transaction) => sum + t.amount, 0);
-    }, [transactions]);
+    }, [transactions, viewingDate]);
 
     const monthlyExpenses = useMemo(() => {
-        const now = new Date();
         return transactions
-            .filter((t: Transaction) => new Date(t.date).getMonth() === now.getMonth() && t.type === 'EXPENSE' && t.category !== 'Transferencia')
+            .filter((t: Transaction) => {
+                const tDate = new Date(t.date);
+                return tDate.getMonth() === viewingDate.getMonth() && 
+                       tDate.getFullYear() === viewingDate.getFullYear() && 
+                       t.type === 'EXPENSE' && 
+                       t.category !== 'Transferencia';
+            })
             .reduce((sum: number, t: Transaction) => sum + t.amount, 0);
-    }, [transactions]);
+    }, [transactions, viewingDate]);
 
     const {
         pantryItems = [], shoppingList = [], trips = [], weeklyPlans = [], recipes = [], familyMembers = [], vaultDocuments = [], homeAssets = []
@@ -89,7 +101,7 @@ const AuraDashboard: React.FC = () => {
         monthlyIncome,
         monthlyExpenses,
         onNavigate: handleNavigate,
-        selectedDate: currentTime,
+        selectedDate: viewingDate,
         timeMode: 'MONTH',
     };
 

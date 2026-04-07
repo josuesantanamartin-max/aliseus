@@ -787,8 +787,8 @@ export default function AuraFinanceOverview({ selectedDate: selectedDateProp }: 
                         </div>
 
                         {/* Chart */}
-                        <div className="h-[280px] md:h-[350px] w-full mt-auto">
-                            <ResponsiveContainer width="100%" height="100%">
+                        <div className="h-[280px] md:h-[350px] min-h-[280px] md:min-h-[350px] w-full mt-auto relative">
+                            <ResponsiveContainer width="99%" height="100%">
                                 <AreaChart data={chartData} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
                                     <defs>
                                         <linearGradient id="colorBalance" x1="0" y1="0" x2="0" y2="1">

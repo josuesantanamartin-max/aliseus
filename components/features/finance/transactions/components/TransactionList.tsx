@@ -8,6 +8,7 @@ import { useCurrency } from '../../../../../hooks/useCurrency';
 
 interface TransactionListProps {
     transactions: Transaction[];
+    totalCount: number;
     onEdit: (t: Transaction) => void;
     onDelete: (id: string) => void;
     // We need to know account names for transfer display if needed, but for now we have accountId
@@ -15,7 +16,7 @@ interface TransactionListProps {
 }
 
 
-const TransactionList: React.FC<TransactionListProps> = ({ transactions, onEdit, onDelete, accounts }) => {
+const TransactionList: React.FC<TransactionListProps> = ({ transactions, totalCount, onEdit, onDelete, accounts }) => {
     const { setQuickAction } = useUserStore();
     const { formatPrice } = useCurrency();
 
@@ -100,19 +101,32 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions, onEdit,
                 </AnimatedListItem>
             ))}
             {sortedDates.length === 0 && (
-                <div className="text-center py-40 bg-white rounded-Aliseus border border-aliseus-100 border-dashed group/empty">
-                    <div className="w-24 h-24 bg-aliseus-50 rounded-full flex items-center justify-center mx-auto mb-8 text-aliseus-300 group-hover/empty:scale-110 group-hover/empty:bg-cyan-50 group-hover/empty:text-cyan-600 transition-all duration-500">
+                <div className="text-center py-40 bg-white dark:bg-aliseus-900 rounded-Aliseus border border-aliseus-100 dark:border-white/10 border-dashed group/empty">
+                    <div className="w-24 h-24 bg-aliseus-50 dark:bg-white/5 rounded-full flex items-center justify-center mx-auto mb-8 text-aliseus-300 dark:text-aliseus-600 group-hover/empty:scale-110 group-hover/empty:bg-cyan-50 dark:group-hover/empty:bg-cyan-900/30 group-hover/empty:text-cyan-600 dark:group-hover/empty:text-cyan-400 transition-all duration-500">
                         <Search className="w-10 h-10" />
                     </div>
-                    <p className="text-2xl font-bold text-cyan-900 tracking-tight">No se encontraron movimientos</p>
-                    <p className="text-xs font-bold text-aliseus-400 mt-4 mb-8 uppercase tracking-[0.2em]">Intenta ajustar los filtros o el periodo de búsqueda</p>
-                    <button
-                        onClick={() => setQuickAction({ type: 'ADD_EXPENSE', timestamp: Date.now() })}
-                        className="px-8 py-4 bg-cyan-900 hover:bg-cyan-950 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl hover:-translate-y-1 transition-all flex items-center gap-3 mx-auto"
-                    >
-                        <PlusCircle className="w-5 h-5 text-cyan-400" />
-                        Añadir Transacción
-                    </button>
+                    <p className="text-2xl font-bold text-cyan-900 dark:text-white tracking-tight">No se encontraron movimientos</p>
+                    {totalCount > 0 ? (
+                        <div className="space-y-6">
+                            <p className="text-[10px] font-bold text-amber-600 dark:text-amber-400 mt-4 uppercase tracking-[0.2em] bg-amber-50 dark:bg-amber-900/20 px-8 py-3 rounded-2xl border border-amber-100 dark:border-amber-500/20 inline-block">
+                                Atención: Tienes {totalCount} movimientos registrados, pero ninguno coincide con los filtros actuales (mes/año/búsqueda).
+                            </p>
+                            <p className="text-[9px] font-bold text-aliseus-400 uppercase tracking-widest max-w-xs mx-auto">
+                                Si has importado datos y no los ves, prueba a cambiar el mes arriba o usa el botón de "Eliminar Duplicados" en la cabecera.
+                            </p>
+                        </div>
+                    ) : (
+                        <p className="text-xs font-bold text-aliseus-400 dark:text-aliseus-500 mt-4 mb-8 uppercase tracking-[0.2em]">Intenta ajustar los filtros o el periodo de búsqueda</p>
+                    )}
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-8">
+                        <button
+                            onClick={() => setQuickAction({ type: 'ADD_EXPENSE', timestamp: Date.now() })}
+                            className="px-8 py-4 bg-cyan-900 hover:bg-cyan-950 dark:bg-cyan-600 dark:hover:bg-cyan-700 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl hover:-translate-y-1 transition-all flex items-center gap-3"
+                        >
+                            <PlusCircle className="w-5 h-5 text-cyan-400" />
+                            Nueva Transacción
+                        </button>
+                    </div>
                 </div>
             )}
         </AnimatedList>

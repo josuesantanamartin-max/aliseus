@@ -27,10 +27,11 @@ export const detectDelimiter = (csvText: string): string => {
  */
 export const findHeaderRow = (data: any[][]): number => {
     const FINANCIAL_KEYWORDS = [
-        'fecha', 'date', 'time', 'operación', 'operacion',
-        'importe', 'amount', 'cantidad', 'monto', 'valor', 'cargos', 'abonos',
-        'concepto', 'descripción', 'descripcion', 'memo', 'detail', 'payee',
-        'saldo', 'balance', 'disponible', 'valor'
+        'fecha', 'date', 'time', 'operación', 'operacion', 'anotación', 'anotacion',
+        'importe', 'amount', 'cantidad', 'monto', 'valor', 'cargos', 'abonos', 'cargo/abono',
+        'cargo', 'abono', 'saldo', 'balance', 'disponible', 'movimiento', 'mov.', 'detalle',
+        'concepto', 'descripción', 'descripcion', 'memo', 'detail', 'payee', 'referencia',
+        'beneficiario', 'pagador', 'sucursal', 'referencia univoca', 'referencia unívoca'
     ];
 
     let bestRow = 0;

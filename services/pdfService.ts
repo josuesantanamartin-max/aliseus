@@ -1,35 +1,36 @@
 import * as pdfjs from 'pdfjs-dist';
 import { createWorker } from 'tesseract.js';
 
-// More robust worker loading for Vite/ESM
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url
-).toString();
+// Configuration for Vite/ESM environment
+const PDFJS_VERSION = '4.0.379'; // Ensure consistency with package version
+pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.worker.min.mjs`;
 
 interface TextItem {
     str: string;
     x: number;
     y: number;
     width: number;
+    height: number;
 }
+
+export type ExtractionProgress = {
+    status: 'LOADING' | 'EXTRACTING' | 'OCR' | 'DONE';
+    page: number;
+    totalPages: number;
+    message: string;
+};
 
 /**
  * Extracts text from a PDF file preserving tabular layout or using OCR if necessary.
  */
-export const extractTextFromPDF = async (file: File): Promise<string> => {
-    console.log("[Aliseus PDF Service] Starting extraction for:", file.name, file.size, "bytes");
+export const extractTextFromPDF = async (
+    file: File, 
+    onProgress?: (progress: ExtractionProgress) => void,
+    forceOCR: boolean = false
+): Promise<string> => {
+    console.log("[Aliseus PDF Service] Starting extraction for:", file.name, file.size, "bytes", "ForceOCR:", forceOCR);
     
-    // Ensure worker is set (using both local and CDN fallback)
-    try {
-        pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-            'pdfjs-dist/build/pdf.worker.min.mjs',
-            import.meta.url
-        ).toString();
-    } catch (e) {
-        console.warn("[Aliseus PDF Service] Local worker path failed, falling back to CDN");
-        pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.mjs`;
-    }
+    onProgress?.({ status: 'LOADING', page: 0, totalPages: 0, message: 'Cargando lector de PDF...' });
 
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -37,108 +38,111 @@ export const extractTextFromPDF = async (file: File): Promise<string> => {
         reader.onload = async () => {
             try {
                 const typedArray = new Uint8Array(reader.result as ArrayBuffer);
-                const loadingTask = pdfjs.getDocument({ data: typedArray });
+                const loadingTask = pdfjs.getDocument({ 
+                    data: typedArray,
+                    cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/cmaps/',
+                    cMapPacked: true
+                });
                 
-                // Add a timeout for the loading task
                 const timeout = setTimeout(() => {
-                    reject(new Error("La carga del PDF ha tardado demasiado (posible error de worker)."));
-                }, 15000);
+                    reject(new Error("La carga del PDF ha tardado demasiado."));
+                }, 20000);
 
                 const pdf = await loadingTask.promise;
                 clearTimeout(timeout);
                 
-                console.log("[Aliseus PDF Service] PDF loaded. Pages:", pdf.numPages);
-                
+                onProgress?.({ status: 'EXTRACTING', page: 0, totalPages: pdf.numPages, message: 'Analizando páginas...' });
+
                 let fullText = '';
                 let totalTextLength = 0;
                 
-                for (let i = 1; i <= pdf.numPages; i++) {
-                    const page = await pdf.getPage(i);
-                    const textContent = await page.getTextContent();
-                    
-                    console.log(`[Aliseus PDF Service] Page ${i}: Found ${textContent.items.length} text items`);
-                    
-                    const items: TextItem[] = textContent.items
-                        .filter((item: any) => item.str !== undefined)
-                        .map((item: any) => ({
-                            str: item.str,
-                            x: item.transform[4],
-                            y: item.transform[5],
-                            width: item.width
-                        }));
+                if (!forceOCR) {
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        onProgress?.({ status: 'EXTRACTING', page: i, totalPages: pdf.numPages, message: `Extrayendo texto de página ${i}...` });
+                        const page = await pdf.getPage(i);
+                        const textContent = await page.getTextContent();
+                        
+                        const items: TextItem[] = textContent.items
+                            .filter((item: any) => item.str !== undefined)
+                            .map((item: any) => ({
+                                str: item.str,
+                                x: item.transform[4],
+                                y: item.transform[5],
+                                width: item.width,
+                                height: item.transform[0] // Approximation of font size
+                            }));
 
-                    if (items.length > 0) {
-                        const pageText = reconstructSpatialText(items);
-                        fullText += `--- Página ${i} ---\n${pageText}\n\n`;
-                        totalTextLength += pageText.trim().length;
+                        if (items.length > 0) {
+                            const pageText = reconstructSpatialText(items);
+                            fullText += `--- Página ${i} ---\n${pageText}\n\n`;
+                            totalTextLength += pageText.trim().length;
+                        }
                     }
                 }
 
-                console.log("[Aliseus PDF Service] Native Extraction Total Length:", totalTextLength);
-
-                if (totalTextLength < 100) {
-                    console.log("[Aliseus PDF Service] PDF appears to be an image or protected. Starting OCR fallback...");
-                    const ocrResult = await performOCR(pdf);
-                    fullText = ocrResult;
-                    console.log("[Aliseus PDF Service] OCR Results Length:", ocrResult.length);
+                // Threshold check: If less than 100 characters extracted, or forceOCR is TRUE
+                if (forceOCR || totalTextLength < 100) {
+                    console.log("[Aliseus PDF Service] Image PDF or ForceOCR detected. Running OCR...");
+                    onProgress?.({ status: 'OCR', page: 0, totalPages: pdf.numPages, message: 'Detectando texto en imágenes (OCR)...' });
+                    fullText = await performOCR(pdf, onProgress);
                 }
                 
+                onProgress?.({ status: 'DONE', page: pdf.numPages, totalPages: pdf.numPages, message: 'Extracción completada.' });
                 resolve(fullText);
-            } catch (error) {
+            } catch (error: any) {
                 console.error('[Aliseus PDF Service] Critical Error:', error);
-                reject(error);
+                reject(new Error(error.message || 'Error al procesar el PDF.'));
             }
         };
 
-        reader.onerror = () => reject(new Error('Error al cargar el archivo en el lector.'));
+        reader.onerror = () => reject(new Error('Error al leer el archivo.'));
         reader.readAsArrayBuffer(file);
     });
 };
 
 function reconstructSpatialText(items: TextItem[]): string {
-    // PDF Y starts from bottom, so we sort by Y (descending) 
-    const ROW_THRESHOLD = 8; // Increased threshold for slightly misaligned rows
+    // Dynamic threshold based on average item height
+    const avgHeight = items.reduce((acc, it) => acc + (it.height || 10), 0) / items.length;
+    const ROW_THRESHOLD = Math.max(4, avgHeight * 0.6); 
     
-    // Sort primarily by Y (descending) and secondarily by X (ascending)
-    // We use a "quantized" Y to group items into the same row
-    items.sort((a, b) => {
-        const yDiff = Math.abs(a.y - b.y);
-        if (yDiff <= ROW_THRESHOLD) {
-            return a.x - b.x;
-        }
-        return b.y - a.y;
-    });
+    // Sort primarily by Y descending (top to bottom)
+    items.sort((a, b) => b.y - a.y);
 
     let rows: TextItem[][] = [];
-    let currentRow: TextItem[] = [];
-    let lastY = -1;
+    if (items.length === 0) return "";
 
-    for (const item of items) {
-        if (lastY === -1 || Math.abs(item.y - lastY) <= ROW_THRESHOLD) {
+    let currentRow: TextItem[] = [items[0]];
+    let lastY = items[0].y;
+
+    for (let i = 1; i < items.length; i++) {
+        const item = items[i];
+        // If Y is close enough to lastY, it's the same row
+        if (Math.abs(item.y - lastY) <= ROW_THRESHOLD) {
             currentRow.push(item);
         } else {
+            // Sort previous row by X and add to results
+            currentRow.sort((a, b) => a.x - b.x);
             rows.push(currentRow);
+            
             currentRow = [item];
+            lastY = item.y;
         }
-        lastY = item.y;
     }
-    if (currentRow.length > 0) rows.push(currentRow);
+    currentRow.sort((a, b) => a.x - b.x);
+    rows.push(currentRow);
 
-    // Format rows into structured lines
+    // Format rows into structured lines with tab delimiters for columns
     return rows.map(row => {
-        // Sort items in row by X coordinate definitively
-        row.sort((a, b) => a.x - b.x);
-        
         let line = "";
         let lastX = -1;
         
         for (const item of row) {
             if (lastX !== -1) {
                 const gap = item.x - lastX;
-                // Heuristic: If gap is more than 3x the average character width (assumed ~6), it's a new column
-                if (gap > 15) {
-                    line += "\t"; // Use Tab as a strong delimiter for AI
-                } else if (gap > 1) {
+                // Strong column detection: if gap is large, use Tab
+                if (gap > 20) {
+                    line += "\t";
+                } else if (gap > 2) {
                     line += " ";
                 }
             }
@@ -150,16 +154,17 @@ function reconstructSpatialText(items: TextItem[]): string {
 }
 
 /**
- * Performs OCR on all pages of the PDF.
+ * Performs OCR on all pages.
  */
-async function performOCR(pdf: pdfjs.PDFDocumentProxy): Promise<string> {
+async function performOCR(pdf: pdfjs.PDFDocumentProxy, onProgress?: (p: ExtractionProgress) => void): Promise<string> {
     let ocrText = "--- RESULTADO OCR (Imagen Detectada) ---\n\n";
-    const worker = await createWorker('spa'); // Spanish
+    const worker = await createWorker('spa'); 
 
     try {
         for (let i = 1; i <= pdf.numPages; i++) {
+            onProgress?.({ status: 'OCR', page: i, totalPages: pdf.numPages, message: `Procesando OCR en página ${i}...` });
             const page = await pdf.getPage(i);
-            const viewport = page.getViewport({ scale: 2.0 }); // Higher scale for better OCR
+            const viewport = page.getViewport({ scale: 2.5 }); // Higher quality
             
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');

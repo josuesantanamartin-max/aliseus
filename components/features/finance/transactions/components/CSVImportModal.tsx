@@ -1,20 +1,29 @@
 import React, { useState, useCallback } from 'react';
 import Papa from 'papaparse';
 import { read, utils } from 'xlsx';
-import { Upload, X, ArrowRight, Check, AlertCircle, FileText, Settings, Database, Building2, AlertTriangle, CreditCard, ArrowRightLeft } from 'lucide-react';
+import { 
+    X, Upload, FileText, Check, AlertCircle, Database, 
+    ArrowRight, ArrowLeft, Filter, AlertTriangle, Building2, 
+    CreditCard, ArrowRightLeft, ScanEye 
+} from 'lucide-react';
 import { Transaction } from '../../../../../types';
-import { parseDate, normalizeAmount, detectDuplicates, validateTransactions, getTransactionStats, ValidationError, cleanDescription, mapCategory, detectSubCategory, calculateBalanceImpact, detectCategoryFromDescription, findHeaderRow } from '../../../../../utils/csvUtils';
+import { 
+    parseDate, normalizeAmount, detectDuplicates, validateTransactions, 
+    getTransactionStats, ValidationError, cleanDescription, mapCategory, 
+    detectSubCategory, calculateBalanceImpact, detectCategoryFromDescription, findHeaderRow 
+} from '../../../../../utils/csvUtils';
 import { getAllBankTemplates, getBankTemplate, BankTemplate } from '../../../../../config/bankTemplates';
 import { useFinanceStore } from '../../../../../store/useFinanceStore';
 import { useFinanceControllers } from '../../../../../hooks/useFinanceControllers';
 import { parseTransactionsFromText } from '../../../../../services/geminiFinancial';
-import { extractTextFromPDF } from '../../../../../services/pdfService';
+import * as pdfService from '../../../../../services/pdfService';
 import { useToastStore } from '../../../../../store/toastStore';
 
 interface CSVImportModalProps {
     isOpen: boolean;
     onClose: () => void;
     onImport: (transactions: Partial<Transaction>[]) => void;
+    onDateRangeDetected?: (min: Date, max: Date) => void;
 }
 
 interface ColumnMapping {
@@ -49,7 +58,7 @@ const isCreditCardPaymentRow = (description: string): boolean => {
     return CREDIT_CARD_PAYMENT_KEYWORDS.some(kw => lower.includes(kw));
 };
 
-const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImport }) => {
+const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImport, onDateRangeDetected }) => {
     const { transactions: existingTransactions, accounts, categories } = useFinanceStore();
     const { transfer } = useFinanceControllers();
     const { addToast } = useToastStore();
@@ -84,6 +93,8 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
     const [importMethod, setImportMethod] = useState<'FILE' | 'TEXT'>('FILE');
     const [rawText, setRawText] = useState('');
     const [isExtracting, setIsExtracting] = useState(false);
+    const [extractionProgress, setExtractionProgress] = useState(0);
+    const [forceOCR, setForceOCR] = useState(false);
     const [headerRowIndex, setHeaderRowIndex] = useState<number>(0);
     const [initialRawRows, setInitialRawRows] = useState<any[][]>([]);
 
@@ -116,43 +127,50 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
 
     const handlePDFUpload = async (file: File) => {
         setIsExtracting(true);
+        setExtractionProgress(0);
         setImportMethod('TEXT');
         try {
             // Step 1: Extract Text from PDF
-            const text = await extractTextFromPDF(file);
-                if (text && text.trim().length > 0) {
-                    // Step 2: Use Gemini to parse the extracted text
-                    console.log("[Aliseus PDF Debug] Successfully extracted text length:", text.length);
-                    const parsed = await parseTransactionsFromText(text);
+            const text = await pdfService.extractTextFromPDF(
+                file, 
+                (progress) => setExtractionProgress((progress.page / (progress.totalPages || 1)) * 100),
+                forceOCR
+            );
+            
+            if (text && text.trim().length > 0) {
+                // Step 2: Use Gemini to parse the extracted text
+                console.log("[Aliseus PDF Debug] Successfully extracted text length:", text.length);
+                const parsed = await parseTransactionsFromText(text);
+                
+                if (parsed && parsed.length > 0) {
+                    const withMeta = parsed.map(tx => ({
+                        ...tx,
+                        accountId: selectedAccount || '',
+                        _autoDetected: true,
+                        _isCreditCardPayment: isCreditCardPaymentRow(tx.description || ''),
+                    }));
+                    setPreviewData(withMeta);
                     
-                    if (parsed && parsed.length > 0) {
-                        const withMeta = parsed.map(tx => ({
-                            ...tx,
-                            accountId: selectedAccount || '',
-                            _autoDetected: true,
-                            _isCreditCardPayment: isCreditCardPaymentRow(tx.description || ''),
-                        }));
-                        setPreviewData(withMeta);
-                        
-                        if (accounts.length > 0) {
-                            setStep(STEPS.ACCOUNT_SELECT);
-                        } else {
-                            setStep(STEPS.PREVIEW);
-                        }
-                        addToast({ message: `PDF escaneado: Detectadas ${parsed.length} transacciones`, type: 'success' });
+                    if (accounts.length > 0) {
+                        setStep(STEPS.ACCOUNT_SELECT);
                     } else {
-                        console.warn("[Aliseus PDF Debug] Extraction finished but AI found no transactions. Text Snippet:", text.substring(0, 500));
-                        addToast({ message: "La IA no pudo encontrar movimientos. Comprueba que el PDF sea un extracto bancario legible.", type: 'warning' });
+                        setStep(STEPS.PREVIEW);
                     }
+                    addToast({ message: `PDF escaneado: Detectadas ${parsed.length} transacciones`, type: 'success' });
                 } else {
-                    console.error("[Aliseus PDF Debug] Extraction returned NULL or EMPTY string.");
-                    addToast({ message: "No se pudo extraer texto del PDF. ¿Está protegido con contraseña?", type: 'error' });
+                    console.warn("[Aliseus PDF Debug] Extraction finished but AI found no transactions. Text Snippet:", text.substring(0, 500));
+                    addToast({ message: "La IA no pudo encontrar movimientos. Comprueba que el PDF sea un extracto bancario legible o prueba el modo OCR.", type: 'warning' });
                 }
+            } else {
+                console.error("[Aliseus PDF Debug] Extraction returned NULL or EMPTY string.");
+                addToast({ message: "No se pudo extraer texto del PDF. Prueba activando el modo OCR.", type: 'error' });
+            }
         } catch (error: any) {
             console.error("[Aliseus PDF Debug] Critical Error:", error);
             addToast({ message: `Error en PDF: ${error.message || 'Error desconocido'}`, type: 'error' });
         } finally {
             setIsExtracting(false);
+            setExtractionProgress(100);
         }
     };
 
@@ -491,6 +509,20 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
             updateAccountBalance(selectedAccount, balanceInfo.impact);
         }
 
+        // Calculate and report date range of the new transactions
+        if (onDateRangeDetected && toImport.length > 0) {
+            const dates = toImport
+                .map(t => t.date ? new Date(t.date).getTime() : NaN)
+                .filter(d => !isNaN(d));
+            
+            if (dates.length > 0) {
+                const minDate = new Date(Math.min(...dates));
+                const maxDate = new Date(Math.max(...dates));
+                onDateRangeDetected(minDate, maxDate);
+                console.log("[Aliseus Import] Date range detected:", minDate, "to", maxDate);
+            }
+        }
+
         onClose();
         resetState();
     };
@@ -622,6 +654,37 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
                                         {isExtracting ? 'Procesando...' : 'Seleccionar Archivo'}
                                         <input type="file" onChange={handleFileUpload} accept=".csv, .xlsx, .xls, .pdf" className="hidden" disabled={isExtracting} />
                                     </label>
+
+                                    {/* OCR TOGGLE */}
+                                    <div className="mt-8 flex items-center justify-center gap-6">
+                                        <div className={`flex items-center gap-2 px-4 py-2 rounded-xl border-2 transition-all cursor-pointer ${forceOCR ? 'border-cyan-500 bg-cyan-50' : 'border-aliseus-100 bg-transparent opacity-60'}`}
+                                             onClick={() => setForceOCR(!forceOCR)}>
+                                            <ScanEye className={`w-4 h-4 ${forceOCR ? 'text-cyan-600' : 'text-aliseus-400'}`} />
+                                            <span className={`text-[10px] font-bold uppercase tracking-wider ${forceOCR ? 'text-cyan-800' : 'text-aliseus-500'}`}>
+                                                Forzar OCR (Escaneados)
+                                            </span>
+                                            <div className={`w-8 h-4 rounded-full relative transition-colors ${forceOCR ? 'bg-cyan-600' : 'bg-aliseus-200'}`}>
+                                                <div className={`absolute top-0.5 w-3 h-3 bg-white rounded-full transition-all ${forceOCR ? 'left-4.5' : 'left-0.5'}`} />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* PROGRESS BAR */}
+                                    {isExtracting && (
+                                        <div className="mt-8 w-full max-w-md animate-fade-in">
+                                            <div className="flex justify-between items-center mb-2">
+                                                <span className="text-[10px] font-black text-cyan-900 uppercase tracking-widest">Analizando documento...</span>
+                                                <span className="text-[10px] font-black text-cyan-600">{Math.round(extractionProgress)}%</span>
+                                            </div>
+                                            <div className="h-2 w-full bg-cyan-100 rounded-full overflow-hidden">
+                                                <div 
+                                                    className="h-full bg-cyan-600 transition-all duration-300 ease-out"
+                                                    style={{ width: `${extractionProgress}%` }}
+                                                />
+                                            </div>
+                                            <p className="text-[10px] text-aliseus-400 mt-2 italic">Reconstruyendo movimientos y columnas...</p>
+                                        </div>
+                                    )}
                                 </div>
                             ) : (
                                 <div className="space-y-4 animate-fade-in">

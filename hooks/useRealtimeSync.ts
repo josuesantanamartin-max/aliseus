@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { supabase } from '../services/supabaseClient';
 import { useLifeStore } from '../store/useLifeStore';
 import { useUserStore } from '../store/useUserStore';
+import { useFinanceStore } from '../store/useFinanceStore';
 import { useHouseholdStore } from '../store/useHouseholdStore';
 import { FamilyEvent } from '../types/life';
 import { ShoppingItem } from '../types';
@@ -89,6 +90,52 @@ export const useRealtimeSync = () => {
                         useLifeStore.setState((state) => ({
                             familyEvents: state.familyEvents.filter(e => e.id !== oldRec.id)
                         }));
+                    }
+                }
+            )
+            .on(
+                'postgres_changes',
+                {
+                    event: '*',
+                    schema: 'public',
+                    table: 'finance_transactions',
+                    filter: `household_id=eq.${activeHouseholdId}`
+                },
+                (payload) => {
+                    const { eventType, new: newRec, old: oldRec } = payload;
+                    const store = useFinanceStore.getState();
+
+                    if (eventType === 'INSERT') {
+                        if (!store.transactions.some(t => t.id === newRec.id)) {
+                            store.setTransactions(prev => [newRec as any, ...prev]);
+                        }
+                    } else if (eventType === 'UPDATE') {
+                        store.updateTransaction(newRec.id, newRec as any);
+                    } else if (eventType === 'DELETE') {
+                        store.deleteTransaction(oldRec.id);
+                    }
+                }
+            )
+            .on(
+                'postgres_changes',
+                {
+                    event: '*',
+                    schema: 'public',
+                    table: 'finance_budgets',
+                    filter: `household_id=eq.${activeHouseholdId}`
+                },
+                (payload) => {
+                    const { eventType, new: newRec, old: oldRec } = payload;
+                    const store = useFinanceStore.getState();
+
+                    if (eventType === 'INSERT') {
+                        if (!store.budgets.some(b => b.id === newRec.id)) {
+                            store.setBudgets(prev => [...prev, newRec as any]);
+                        }
+                    } else if (eventType === 'UPDATE') {
+                        store.updateBudget(newRec.id, newRec as any);
+                    } else if (eventType === 'DELETE') {
+                        store.deleteBudget(oldRec.id);
                     }
                 }
             )

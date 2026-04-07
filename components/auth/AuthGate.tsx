@@ -39,7 +39,7 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                         .from('user_profiles')
                         .select('full_name, avatar_url')
                         .eq('id', userProfile.id)
-                        .single();
+                        .maybeSingle();
 
                     if (profile?.full_name) {
                         setUserProfile({
@@ -87,6 +87,7 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
     // the auth initialization effect (which would cause duplicate listeners and
     // potentially clearAllData() firing after Google OAuth sets isDemoMode to false).
     const isDemoModeRef = useRef(isDemoMode);
+    const initialLoadRef = useRef(false);
 
     // --- AUTH INITIALIZATION --- runs ONCE on mount ---
     useEffect(() => {
@@ -121,11 +122,15 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                     }
 
                     // Await loadAll so we don't flash the onboarding screen if it's going to be bypassed
-                    loadAll().then(() => {
-                        addSyncLog({ message: "Conectado a Aliseus Cloud (Supabase)", timestamp: Date.now(), type: "SYSTEM" });
-                        realtimeService.startSync();
+                    if (!initialLoadRef.current) {
+                        initialLoadRef.current = true;
+                        loadAll().then(() => {
+                            addSyncLog({ message: "Conectado a Aliseus Cloud (Supabase)", timestamp: Date.now(), type: "SYSTEM" });
+                            setIsInitializing(false);
+                        });
+                    } else {
                         setIsInitializing(false);
-                    });
+                    }
                 } else {
                     console.log("[AuthGate] No active session found.");
                     // Only apply demo mode if NO real session exists AND we are not handling a redirect hash

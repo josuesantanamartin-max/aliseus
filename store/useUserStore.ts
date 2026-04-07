@@ -80,6 +80,7 @@ interface UserState {
     aiPreferences: AIPreferences;
     accountDeletionScheduled: string | null; // ISO timestamp
     lastDataExport: string | null; // ISO timestamp
+    viewDate: string; // Global date context for Dashboard/Transactions (ISO)
 }
 
 export interface SavedFilter {
@@ -133,6 +134,7 @@ interface UserActions {
     scheduleAccountDeletion: () => void;
     cancelAccountDeletion: () => void;
     setLastDataExport: (date: string) => void;
+    setViewDate: (date: Date) => void;
     // Referral Actions
     generateReferralCode: () => void;
     applyReferral: (code: string) => void;
@@ -189,6 +191,7 @@ export const useUserStore = create<UserState & UserActions>()(
             },
             accountDeletionScheduled: null,
             lastDataExport: null,
+            viewDate: new Date().toISOString(),
 
             setAuthenticated: (v) => set({ isAuthenticated: v }),
             setDemoMode: (v) => set({ isDemoMode: v }),
@@ -245,6 +248,7 @@ export const useUserStore = create<UserState & UserActions>()(
             }),
             cancelAccountDeletion: () => set({ accountDeletionScheduled: null }),
             setLastDataExport: (date) => set({ lastDataExport: date }),
+            setViewDate: (date) => set({ viewDate: date.toISOString() }),
 
             generateReferralCode: () => set((state) => {
                 if (state.referral.code) return state;
@@ -302,6 +306,7 @@ export const useUserStore = create<UserState & UserActions>()(
                 aiPreferences: state.aiPreferences,
                 accountDeletionScheduled: state.accountDeletionScheduled,
                 lastDataExport: state.lastDataExport,
+                viewDate: state.viewDate,
             }),
         }
     )
