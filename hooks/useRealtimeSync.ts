@@ -4,6 +4,7 @@ import { useLifeStore } from '../store/useLifeStore';
 import { useUserStore } from '../store/useUserStore';
 import { useFinanceStore } from '../store/useFinanceStore';
 import { useHouseholdStore } from '../store/useHouseholdStore';
+import { fromDbTransaction, fromDbBudget } from '../services/syncService';
 import { FamilyEvent } from '../types/life';
 import { ShoppingItem } from '../types';
 
@@ -107,10 +108,10 @@ export const useRealtimeSync = () => {
 
                     if (eventType === 'INSERT') {
                         if (!store.transactions.some(t => t.id === newRec.id)) {
-                            store.setTransactions(prev => [newRec as any, ...prev]);
+                            store.setTransactions(prev => [fromDbTransaction(newRec), ...prev]);
                         }
                     } else if (eventType === 'UPDATE') {
-                        store.updateTransaction(newRec.id, newRec as any);
+                        store.updateTransaction(newRec.id, fromDbTransaction(newRec));
                     } else if (eventType === 'DELETE') {
                         store.deleteTransaction(oldRec.id);
                     }
@@ -130,10 +131,10 @@ export const useRealtimeSync = () => {
 
                     if (eventType === 'INSERT') {
                         if (!store.budgets.some(b => b.id === newRec.id)) {
-                            store.setBudgets(prev => [...prev, newRec as any]);
+                            store.setBudgets(prev => [...prev, fromDbBudget(newRec)]);
                         }
                     } else if (eventType === 'UPDATE') {
-                        store.updateBudget(newRec.id, newRec as any);
+                        store.updateBudget(newRec.id, fromDbBudget(newRec));
                     } else if (eventType === 'DELETE') {
                         store.deleteBudget(oldRec.id);
                     }

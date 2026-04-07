@@ -79,7 +79,7 @@ const toDbTransaction = (t: Transaction, userId: string) => ({
     updated_at: new Date().toISOString(),
 });
 
-const fromDbTransaction = (row: any): Transaction => ({
+export const fromDbTransaction = (row: any): Transaction => ({
     id: row.id,
     accountId: row.account_id,
     amount: Number(row.amount),
@@ -110,7 +110,7 @@ const toDbGoal = (g: Goal, userId: string) => ({
     updated_at: new Date().toISOString(),
 });
 
-const fromDbGoal = (row: any): Goal => ({
+export const fromDbGoal = (row: any): Goal => ({
     id: row.id,
     name: row.name,
     targetAmount: Number(row.target_amount),
@@ -139,7 +139,7 @@ const toDbBudget = (b: Budget, userId: string) => ({
     updated_at: new Date().toISOString(),
 });
 
-const fromDbBudget = (row: any): Budget => ({
+export const fromDbBudget = (row: any): Budget => ({
     id: row.id,
     category: row.category,
     subCategory: row.sub_category ?? undefined,

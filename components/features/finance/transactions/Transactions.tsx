@@ -128,14 +128,13 @@ const Transactions: React.FC<TransactionsProps> = ({
     return transactions.filter(t => {
       if (!t.date) return false;
       
-      const tDate = new Date(t.date);
-      if (isNaN(tDate.getTime())) return false;
-
-      // Use local month/year for filtering to match user intent
+      // Use a more robust date comparison that isn't as sensitive to timezone shifts at 00:00:00
+      // Since we store as YYYY-MM-DD now, we can parse the parts
+      const [y, m] = t.date.split('-').map(Number);
       if (viewMode === 'MONTH') {
-        if (tDate.getMonth() !== targetMonth || tDate.getFullYear() !== targetYear) return false;
+        if (m - 1 !== targetMonth || y !== targetYear) return false;
       } else {
-        if (tDate.getFullYear() !== targetYear) return false;
+        if (y !== targetYear) return false;
       }
 
       if (filterCategory && t.category !== filterCategory) return false;
@@ -311,8 +310,8 @@ const Transactions: React.FC<TransactionsProps> = ({
       const transactionData = {
         id: crypto.randomUUID(),
         type: (t.type as 'INCOME' | 'EXPENSE') || 'EXPENSE',
-        amount: t.amount || 0,
-        date: txDate.toISOString(),
+        amount: Math.abs(t.amount || 0),
+        date: txDate.toISOString().split('T')[0], // CRITICAL: Schema expects YYYY-MM-DD
         category: t.category || 'Otros',
         subCategory: t.subCategory || '',
         accountId: targetAccountId,
@@ -324,6 +323,8 @@ const Transactions: React.FC<TransactionsProps> = ({
       const result = validateTransaction(transactionData);
       if (result.success) {
         transactionsToSave.push(result.data as Transaction);
+      } else {
+        console.error('[handleBatchImport] Transaction validation failed:', result.error.format(), transactionData);
       }
     });
 

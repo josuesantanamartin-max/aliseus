@@ -339,7 +339,12 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                             ? cloudAccounts.sort((a, b) => ((a as any).sortOrder ?? 999) - ((b as any).sortOrder ?? 999))
                             : state.accounts,
                         transactions: cloudTransactions.length > 0
-                            ? cloudTransactions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                            ? (() => {
+                                // Safe merge: prioritize cloud transactions, but keep local ones that aren't in the cloud yet
+                                const cloudIds = new Set(cloudTransactions.map(t => t.id));
+                                const localOnly = state.transactions.filter(t => !cloudIds.has(t.id));
+                                return [...cloudTransactions, ...localOnly].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+                            })()
                             : state.transactions,
                         budgets: cloudBudgets.length > 0 ? cloudBudgets : state.budgets,
                         projectBudgets: cloudProjectBudgets.length > 0 ? cloudProjectBudgets : state.projectBudgets,
