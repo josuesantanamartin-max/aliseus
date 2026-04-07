@@ -108,7 +108,8 @@ Your goal is to accurately extract ALL transactions from the provided text into 
 3. **Dates**: Convert all dates to ISO format (YYYY-MM-DD). If year is missing, assume 2024 or 2025 based on surrounding context.
 4. **Description**: Clean the description by removing IBANs, internal codes, or excessive whitespace, but keep the core vendor name or concept.
 5. **Categorization**: Use one of these exact categories: [Food, Transport, Housing, Health, Entertainment, Shopping, Income, Education, Insurance, Savings, Others].
-6. **Language**: The text is likely in Spanish.
+6. **Spatial Layout**: The text might look like a table with large gaps (multiple spaces or tabs) between columns. Each row is a new line. Usually columns are: Date, Concept/Description, and Amount. Some banks use separate columns for Debit and Credit.
+7. **Language**: The text is likely in Spanish.
 
 ### DATA TO PARSE:
 """

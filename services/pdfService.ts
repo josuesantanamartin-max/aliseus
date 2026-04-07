@@ -1,13 +1,19 @@
 import * as pdfjs from 'pdfjs-dist';
-// @ts-ignore - this is a Vite-specific import for the worker URL
+// @ts-ignore - Vite-specific worker URL
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.mjs?url';
+import { createWorker } from 'tesseract.js';
 
 pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
+interface TextItem {
+    str: string;
+    x: number;
+    y: number;
+    width: number;
+}
+
 /**
- * Extracts text from a PDF file.
- * @param file The PDF file to process
- * @returns A promise that resolves to the full text content of the PDF
+ * Extracts text from a PDF file preserving tabular layout or using OCR if necessary.
  */
 export const extractTextFromPDF = async (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -20,29 +26,127 @@ export const extractTextFromPDF = async (file: File): Promise<string> => {
                 const pdf = await loadingTask.promise;
                 
                 let fullText = '';
+                let totalTextLength = 0;
                 
-                // Iterate through all pages
+                // --- Step 1: Attempt Text Extraction with Spatial Awareness ---
                 for (let i = 1; i <= pdf.numPages; i++) {
                     const page = await pdf.getPage(i);
                     const textContent = await page.getTextContent();
-                    const pageText = textContent.items
-                        .map((item: any) => item.str)
-                        .join(' ');
                     
-                    fullText += `--- Página ${i} ---\n${pageText}\n\n`;
+                    const items: TextItem[] = textContent.items.map((item: any) => ({
+                        str: item.str,
+                        x: item.transform[4], // e
+                        y: item.transform[5], // f
+                        width: item.width
+                    }));
+
+                    if (items.length > 0) {
+                        const pageText = reconstructSpatialText(items);
+                        fullText += `--- Página ${i} ---\n${pageText}\n\n`;
+                        totalTextLength += pageText.trim().length;
+                    }
+                }
+
+                // --- Step 2: OCR Fallback if text is missing (Scanned PDF) ---
+                if (totalTextLength < 100) {
+                    console.log("PDF appears to be an image. Starting OCR...");
+                    fullText = await performOCR(pdf);
                 }
                 
                 resolve(fullText);
             } catch (error) {
-                console.error('Error extracting PDF text:', error);
-                reject(new Error('No se pudo leer el archivo PDF. Asegúrate de que no esté protegido.'));
+                console.error('Error in PDF Service:', error);
+                reject(new Error('Error crítico al procesar el PDF. Intenta con un archivo más sencillo o CSV.'));
             }
         };
 
-        reader.onerror = () => {
-            reject(new Error('Error al cargar el archivo.'));
-        };
-
+        reader.onerror = () => reject(new Error('Error al cargar el archivo.'));
         reader.readAsArrayBuffer(file);
     });
 };
+
+/**
+ * Groups text items by row and sorts them by column to preserve layout.
+ */
+function reconstructSpatialText(items: TextItem[]): string {
+    // Sort by Y coordinate (top to bottom) - PDF Y starts from bottom
+    // So we group by roughly the same Y value
+    const ROW_THRESHOLD = 5; // pixels tolerance for a row
+    
+    // Sort primarily by Y (descending) and secondarily by X (ascending)
+    items.sort((a, b) => b.y - a.y || a.x - b.x);
+
+    let rows: TextItem[][] = [];
+    let currentRow: TextItem[] = [];
+    let lastY = -1;
+
+    for (const item of items) {
+        if (lastY === -1 || Math.abs(item.y - lastY) < ROW_THRESHOLD) {
+            currentRow.push(item);
+        } else {
+            rows.push(currentRow);
+            currentRow = [item];
+        }
+        lastY = item.y;
+    }
+    if (currentRow.length > 0) rows.push(currentRow);
+
+    // Format rows into structured lines
+    return rows.map(row => {
+        // Sort items in row by X coordinate
+        row.sort((a, b) => a.x - b.x);
+        
+        // Build a string for the row, inserting extra spaces for large horizontal gaps
+        let line = "";
+        let lastX = -1;
+        
+        for (const item of row) {
+            if (lastX !== -1) {
+                const gap = item.x - lastX;
+                // If gap is large, treat as new column
+                if (gap > 20) {
+                    line += "    "; // 4 spaces as column delimiter
+                } else if (gap > 2) {
+                    line += " ";
+                }
+            }
+            line += item.str;
+            lastX = item.x + item.width;
+        }
+        return line;
+    }).join('\n');
+}
+
+/**
+ * Performs OCR on all pages of the PDF.
+ */
+async function performOCR(pdf: pdfjs.PDFDocumentProxy): Promise<string> {
+    let ocrText = "--- RESULTADO OCR (Imagen Detectada) ---\n\n";
+    const worker = await createWorker('spa'); // Spanish
+
+    try {
+        for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const viewport = page.getViewport({ scale: 2.0 }); // Higher scale for better OCR
+            
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            if (!context) continue;
+
+            await page.render({
+                canvasContext: context,
+                viewport: viewport
+            }).promise;
+
+            const { data: { text } } = await worker.recognize(canvas);
+            ocrText += `--- Página ${i} (OCR) ---\n${text}\n\n`;
+        }
+    } finally {
+        await worker.terminate();
+    }
+
+    return ocrText;
+}
