@@ -110,6 +110,17 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                     offlineQueueService.enqueue('saveTransaction', tx);
                 }
             },
+            addTransactionsBatch: async (txs) => {
+                set((state) => ({ transactions: [...txs, ...state.transactions] }));
+                try {
+                    await syncService.saveTransactionsBatch(txs);
+                } catch (e) {
+                    console.warn("[useFinanceStore] Failed to sync transactions batch, enqueuing.", e);
+                    // For now, enqueue as single transaction calls if batch fails, 
+                    // or ideally we could have a saveTransactionsBatch entry in offline queue
+                    txs.forEach(tx => offlineQueueService.enqueue('saveTransaction', tx));
+                }
+            },
             addAccount: async (account) => {
                 set((state) => {
                     // Assign sortOrder = end of list so new accounts appear last

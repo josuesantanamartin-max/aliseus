@@ -22,7 +22,7 @@ import { useToastStore } from '../../../../../store/toastStore';
 interface CSVImportModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onImport: (transactions: Partial<Transaction>[]) => void;
+    onImport: (transactions: Partial<Transaction>[], selectedAccountId?: string) => void;
     onDateRangeDetected?: (min: Date, max: Date) => void;
 }
 
@@ -484,7 +484,7 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
         const regularRows = toImport.filter((r: any) => !r._isCreditCardPayment);
 
         // Import regular transactions
-        onImport(regularRows);
+        onImport(regularRows, selectedAccount || undefined);
 
         // Convert credit card payment rows into transfers: bank account → credit card account
         if (creditCardRows.length > 0 && selectedAccount && creditCardPaymentAccount) {
@@ -509,17 +509,17 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
             updateAccountBalance(selectedAccount, balanceInfo.impact);
         }
 
-        // Calculate and report date range of the new transactions
-        if (onDateRangeDetected && toImport.length > 0) {
-            const dates = toImport
-                .map(t => t.date ? new Date(t.date).getTime() : NaN)
+        // Detect date range for UI synchronization (auto-month focus)
+        if (onDateRangeDetected && regularRows.length > 0) {
+            const dates = regularRows
+                .map(r => r.date ? new Date(r.date).getTime() : NaN)
                 .filter(d => !isNaN(d));
             
             if (dates.length > 0) {
                 const minDate = new Date(Math.min(...dates));
                 const maxDate = new Date(Math.max(...dates));
                 onDateRangeDetected(minDate, maxDate);
-                console.log("[Aliseus Import] Date range detected:", minDate, "to", maxDate);
+                console.log("[Aliseus Import] Syncing global date focus to:", maxDate.getMonth() + 1, "/", maxDate.getFullYear());
             }
         }
 

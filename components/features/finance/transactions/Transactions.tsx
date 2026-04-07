@@ -32,7 +32,7 @@ const Transactions: React.FC<TransactionsProps> = ({
   const { transactions, accounts, debts, goals, categories, projectBudgets, deduplicateTransactions } = useFinanceStore();
   const { activeHouseholdId } = useHouseholdStore();
   const { currency, quickAction, setQuickAction, viewDate, setViewDate } = useUserStore();
-  const { addTransaction, transfer, editTransaction, deleteTransaction } = useFinanceControllers();
+  const { addTransaction, addTransactionsBatch, transfer, editTransaction, deleteTransaction } = useFinanceControllers();
   const { formatPrice: formatEUR, symbol } = useCurrency();
 
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -283,36 +283,34 @@ const Transactions: React.FC<TransactionsProps> = ({
     setIsEditModalOpen(true);
   };
 
-  const handleBatchImport = (importedTransactions: Partial<Transaction>[]) => {
+  const handleBatchImport = (importedTransactions: Partial<Transaction>[], selectedAccountId?: string) => {
     if (!activeHouseholdId) {
       showError(new Error('No hay un "Hogar" activo. Por favor, selecciona o crea un Hogar para que tus datos se guarden en la nube.'));
     }
 
-    const targetAccountId = filterAccountId || accounts[0]?.id;
+    const targetAccountId = selectedAccountId || filterAccountId || accounts[0]?.id;
     if (!targetAccountId) return;
 
-    // Find the newest transaction date to adjust the view
-    let newestDate = filterDate;
+    const transactionsToSave: Transaction[] = [];
 
-    importedTransactions.forEach((t: Partial<Transaction>) => {
-      // Robust date parsing: ensure we use the date from the import or fallback to today
-      const rawDate = t.date as any;
+    importedTransactions.forEach((t) => {
+      // Robust date parsing
+      const rawDate = t.date;
       let txDate: Date;
       
-      if (rawDate && typeof rawDate === 'object' && rawDate instanceof Date) {
-        txDate = rawDate;
+      if ((rawDate as any) instanceof Date) {
+        txDate = rawDate as any;
       } else if (typeof rawDate === 'string') {
         txDate = new Date(rawDate);
       } else {
         txDate = new Date();
       }
 
-      // If invalid date, fallback to today
       if (isNaN(txDate.getTime())) txDate = new Date();
 
       const transactionData = {
         id: crypto.randomUUID(),
-        type: t.type as 'INCOME' | 'EXPENSE',
+        type: (t.type as 'INCOME' | 'EXPENSE') || 'EXPENSE',
         amount: t.amount || 0,
         date: txDate.toISOString(),
         category: t.category || 'Otros',
@@ -325,17 +323,20 @@ const Transactions: React.FC<TransactionsProps> = ({
 
       const result = validateTransaction(transactionData);
       if (result.success) {
-        addTransaction(result.data as Transaction);
+        transactionsToSave.push(result.data as Transaction);
       }
     });
 
-    // Import modal handles onDateRangeDetected which updates viewDate
-    // so we don't need to manually set it here anymore.
-    // Instead, clear active filters so user can see what they just imported
+    if (transactionsToSave.length > 0) {
+      addTransactionsBatch(transactionsToSave);
+    }
+
+    // Clear active filters
     setSearchTerm('');
     setFilterCategory('');
     setFilterSubCategory('');
     setFilterType('');
+    setFilterAccountId('');
     
     showSuccess(`${importedTransactions.length} transacciones procesadas correctamente.`);
     setIsImportModalOpen(false);
@@ -451,13 +452,6 @@ const Transactions: React.FC<TransactionsProps> = ({
           accounts={accounts}
         />
       </div>
-
-      <CSVImportModal
-        isOpen={isImportModalOpen}
-        onClose={() => setIsImportModalOpen(false)}
-        onImport={handleBatchImport}
-        onDateRangeDetected={(min, max) => setViewDate(max)}
-      />
 
       {(isFormOpen || isEditModalOpen) && (
         <div className="fixed inset-0 bg-cyan-900/40 backdrop-blur-md z-[60] flex items-center justify-center p-4 animate-fade-in text-cyan-900">
@@ -655,6 +649,16 @@ const Transactions: React.FC<TransactionsProps> = ({
           </div>
         </div>
       )}
+
+      <CSVImportModal
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+        onImport={handleBatchImport}
+        onDateRangeDetected={(min, max) => {
+          setFilterDate(max);
+          setViewDate(max);
+        }}
+      />
     </div>
   );
 };

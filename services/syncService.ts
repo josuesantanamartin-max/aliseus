@@ -324,6 +324,22 @@ export const syncService = {
         console.log('[syncService] saveTransaction OK:', transaction.id);
     },
 
+    async saveTransactionsBatch(transactions: Transaction[]) {
+        if (!supabase || transactions.length === 0) return;
+        const userId = await getCurrentUserId();
+        if (!userId) { console.warn('[syncService] saveTransactionsBatch: no authenticated user, skipping.'); return; }
+
+        const dbObjs = transactions.map(t => toDbTransaction(t, userId));
+        console.log(`[syncService] saveTransactionsBatch Attempt: saving ${transactions.length} transactions`);
+
+        const { error } = await supabase.from('finance_transactions').upsert(dbObjs);
+        if (error) {
+            console.error('[syncService] saveTransactionsBatch FAILED:', error.message, error.details, error.hint);
+            throw error;
+        }
+        console.log('[syncService] saveTransactionsBatch OK');
+    },
+
     async deleteTransaction(id: string) {
         if (!supabase) return;
         const { error } = await supabase.from('finance_transactions').delete().eq('id', id);

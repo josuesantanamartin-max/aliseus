@@ -222,7 +222,7 @@ export const useFinanceControllers = () => {
             }
             // CREDIT: revert on card + statementBalance
             if (account?.type === 'CREDIT' && acc.id === transaction.accountId) {
-                const newBalance = acc.balance - (transaction.type === 'INCOME' ? transaction.amount : -transaction.amount);
+                const newBalance = acc.balance - (transaction.type === 'INCOME' ? transaction.amount : -transaction.amount) ;
                 const newStatement = transaction.type === 'EXPENSE'
                     ? Math.max(0, (acc.statementBalance ?? 0) - transaction.amount)
                     : (acc.statementBalance ?? 0);
@@ -245,8 +245,74 @@ export const useFinanceControllers = () => {
         addSyncLog({ message: `Transacción eliminada: ${transaction.description}`, timestamp: Date.now(), type: "FINANCE" });
     };
 
+    const addTransactionsBatch = async (newTxs: Transaction[]) => {
+        if (newTxs.length === 0) return;
+
+        // Add to local store
+        setTransactions((prev) => [...newTxs, ...prev]);
+
+        // Calculate balance impacts per account
+        // We need to know which account ID's balance to touch for each transaction
+        const finalAccountImpacts: Record<string, number> = {};
+        const creditStatementImpacts: Record<string, number> = {};
+
+        newTxs.forEach(tx => {
+            const txAcc = accounts.find(a => a.id === tx.accountId);
+            if (!txAcc) return;
+
+            const impact = tx.type === 'INCOME' ? tx.amount : -tx.amount;
+            
+            if (txAcc.type === 'DEBIT' && txAcc.linkedAccountId) {
+                // Impact goes to linked account
+                finalAccountImpacts[txAcc.linkedAccountId] = (finalAccountImpacts[txAcc.linkedAccountId] || 0) + impact;
+            } else if (txAcc.type === 'CREDIT') {
+                // Impact goes to card balance
+                finalAccountImpacts[txAcc.id] = (finalAccountImpacts[txAcc.id] || 0) + impact;
+                // Also track statement impact
+                const statementImpact = tx.type === 'EXPENSE' ? tx.amount : -tx.amount;
+                creditStatementImpacts[txAcc.id] = (creditStatementImpacts[txAcc.id] || 0) + statementImpact;
+            } else {
+                // Standard impact
+                finalAccountImpacts[txAcc.id] = (finalAccountImpacts[txAcc.id] || 0) + impact;
+            }
+        });
+
+        // Update balances in a single state update
+        setAccounts((prev) => prev.map(acc => {
+            const balanceImpact = finalAccountImpacts[acc.id] || 0;
+            const statementImpact = creditStatementImpacts[acc.id] || 0;
+
+            if (balanceImpact === 0 && statementImpact === 0) return acc;
+
+            const updated = { 
+                ...acc, 
+                balance: acc.balance + balanceImpact,
+                statementBalance: acc.type === 'CREDIT' 
+                    ? Math.max(0, (acc.statementBalance || 0) + statementImpact)
+                    : acc.statementBalance
+            };
+            
+            syncService.saveAccount(updated).catch(e => console.error("Failed to sync account batch update:", e));
+            return updated;
+        }));
+
+        // Sync transactions to cloud in bulk
+        try {
+            await syncService.saveTransactionsBatch(newTxs);
+        } catch (e) {
+            console.error("Failed to sync transactions batch:", e);
+        }
+
+        addSyncLog({ 
+            message: `Importación masiva completada: ${newTxs.length} transacciones`, 
+            timestamp: Date.now(), 
+            type: "FINANCE" 
+        });
+    };
+
     return {
         addTransaction,
+        addTransactionsBatch,
         transfer,
         editTransaction,
         deleteTransaction
