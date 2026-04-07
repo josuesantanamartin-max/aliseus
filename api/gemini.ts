@@ -10,7 +10,7 @@ import { validateOrigin } from './middleware/validateOrigin';
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Handle CORS preflight
     if (req.method === 'OPTIONS') {
-        const { headers } = validateOrigin(req.headers.origin);
+        const { headers } = validateOrigin(req.headers.origin || '');
         Object.entries(headers).forEach(([key, value]) => {
             res.setHeader(key, value);
         });
@@ -23,7 +23,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // Validate origin
-    const { valid, headers } = validateOrigin(req.headers.origin);
+    const { valid, headers } = validateOrigin(req.headers.origin || '');
     if (!valid) {
         return res.status(403).json({ error: 'Forbidden: Invalid origin' });
     }
@@ -54,10 +54,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     try {
         // Validate request body
-        const { model, contents, config } = req.body;
+        const { model, contents } = req.body;
 
         if (!contents) {
             return res.status(400).json({ error: 'Missing required field: contents' });
+        }
+
+        // Map contents and check for empty strings
+        let parts = Array.isArray(contents) ? contents : (contents.parts || contents);
+        
+        // Ensure parts is not just an empty string or empty array of empty strings
+        const isActuallyEmpty = Array.isArray(parts) 
+            ? (parts.length === 0 || parts.every((p: any) => typeof p === 'string' && p.trim() === ''))
+            : (typeof parts === 'string' && parts.trim() === '');
+
+        if (isActuallyEmpty) {
+            return res.status(400).json({ error: 'Contents cannot be empty' });
         }
 
         // Get API key from environment
@@ -78,9 +90,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         // Use the requested model or fallback
         const modelName = model || 'gemini-2.0-flash';
         const genModel = genAI.getGenerativeModel({ model: modelName });
-
-        // Map contents if necessary (handle both parts array and parts wrapping)
-        let parts = Array.isArray(contents) ? contents : contents.parts || contents;
 
         // Make request to Gemini API
         const result = await genModel.generateContent(parts);

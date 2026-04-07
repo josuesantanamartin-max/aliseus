@@ -117,30 +117,34 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
         try {
             // Step 1: Extract Text from PDF
             const text = await extractTextFromPDF(file);
-            setRawText(text);
-            
-            // Step 2: Use Gemini to parse the extracted text
-            const parsed = await parseTransactionsFromText(text);
-            
-            if (parsed && parsed.length > 0) {
-                const withMeta = parsed.map(tx => ({
-                    ...tx,
-                    accountId: selectedAccount || '',
-                    _autoDetected: true,
-                    _isCreditCardPayment: isCreditCardPaymentRow(tx.description || ''),
-                }));
-                setPreviewData(withMeta);
-                
-                if (accounts.length > 0) {
-                    setStep(STEPS.ACCOUNT_SELECT);
+                if (text && text.trim().length > 0) {
+                    // Step 2: Use Gemini to parse the extracted text
+                    console.log("[Aliseus PDF Debug] Successfully extracted text length:", text.length);
+                    const parsed = await parseTransactionsFromText(text);
+                    
+                    if (parsed && parsed.length > 0) {
+                        const withMeta = parsed.map(tx => ({
+                            ...tx,
+                            accountId: selectedAccount || '',
+                            _autoDetected: true,
+                            _isCreditCardPayment: isCreditCardPaymentRow(tx.description || ''),
+                        }));
+                        setPreviewData(withMeta);
+                        
+                        if (accounts.length > 0) {
+                            setStep(STEPS.ACCOUNT_SELECT);
+                        } else {
+                            setStep(STEPS.PREVIEW);
+                        }
+                        addToast({ message: `PDF escaneado: Detectadas ${parsed.length} transacciones`, type: 'success' });
+                    } else {
+                        console.warn("[Aliseus PDF Debug] Extraction finished but AI found no transactions. Text Snippet:", text.substring(0, 500));
+                        addToast({ message: "La IA no pudo encontrar movimientos. Comprueba que el PDF sea un extracto bancario legible.", type: 'warning' });
+                    }
                 } else {
-                    setStep(STEPS.PREVIEW);
+                    console.error("[Aliseus PDF Debug] Extraction returned NULL or EMPTY string.");
+                    addToast({ message: "No se pudo extraer texto del PDF. ¿Está protegido con contraseña?", type: 'error' });
                 }
-                addToast({ message: `PDF escaneado: Detectadas ${parsed.length} transacciones`, type: 'success' });
-            } else {
-                console.warn("[Aliseus PDF Debug] Raw Text:", rawText);
-                addToast({ message: "La IA no pudo encontrar movimientos en este texto. Comprueba que el PDF sea un extracto bancario.", type: 'warning' });
-            }
         } catch (error: any) {
             console.error("[Aliseus PDF Debug] Critical Error:", error);
             addToast({ message: `Error en PDF: ${error.message || 'Error desconocido'}`, type: 'error' });
