@@ -79,6 +79,25 @@ const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setL
             </button>
           </div>
 
+          {/* Botón de Google Principal */}
+          <div className="mb-6">
+            <button 
+              onClick={() => onLogin('GOOGLE')} 
+              className="w-full py-4 rounded-xl border border-gray-200 bg-white shadow-sm hover:bg-gray-50 flex items-center justify-center gap-3 transition-all group"
+            >
+              <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-6 h-6 group-hover:scale-110 transition-transform" alt="Google" />
+              <span className="font-bold text-gray-700 text-sm">
+                {isRegister ? 'Registrarse con Google' : 'Continuar con Google'}
+              </span>
+            </button>
+            <p className="mt-2 text-[10px] text-gray-400 text-center uppercase tracking-widest font-medium">Recomendado para socios fundadores</p>
+          </div>
+
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-gray-100"></span></div>
+            <div className="relative flex justify-center text-[10px] uppercase font-bold tracking-widest"><span className="bg-white px-4 text-gray-300">o con tu email</span></div>
+          </div>
+
           <div className="space-y-2 text-left mb-6">
             <div className="relative">
               <input
@@ -175,11 +194,7 @@ const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setL
             <button
               onClick={async () => {
                 if (isRegister) {
-                  // If we have an inviteToken from a family invite, it's typically a UUID (> 30 chars).
-                  // Beta codes are ~12-14 chars (e.g., format XXXX-XXXX-XXXX).
                   const isFamilyInvite = inviteToken && inviteToken.length > 20;
-
-                  // If not a family invite, we need a beta code (either from URL or from input)
                   const codeToValidate = isFamilyInvite ? null : (inviteToken || betaCode);
 
                   if (!isFamilyInvite && !codeToValidate) {
@@ -215,28 +230,14 @@ const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setL
                 setAuthLoading(false);
               }}
               disabled={authLoading || !email || !password || (isRegister && (!acceptedTerms || (!betaCode && !inviteToken) || !isAgeVerified))}
-              className="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-600 text-white font-bold text-sm hover:from-cyan-400 hover:to-teal-500 transition-all shadow-lg shadow-cyan-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-4 rounded-xl bg-gradient-to-base from-gray-800 to-black text-white font-bold text-sm hover:from-black hover:to-gray-900 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {authLoading ? 'Procesando...' : (isRegister ? 'Crear Cuenta de Socio Fundador' : 'Entrar con Email')}
+              {authLoading ? 'Procesando...' : (isRegister ? 'Crear Cuenta Fundadora' : 'Entrar con Email')}
             </button>
           </div>
 
-          <div className="relative py-2">
-            <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-gray-100"></span></div>
-            <div className="relative flex justify-center text-[10px] uppercase font-bold tracking-widest"><span className="bg-white px-2 text-gray-400">Otras opciones</span></div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2">
-            <button onClick={() => onLogin('GOOGLE')} className="py-3 rounded-xl border border-gray-200 font-bold text-xs hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
-              <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-4 h-4" alt="Google" />
-            </button>
-            <button onClick={() => onLogin('NOTION')} className="py-3 rounded-xl border border-gray-200 font-bold text-xs hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png" className="w-4 h-4" alt="Notion" />
-            </button>
-          </div>
-
-          <div className="pt-2">
-            <button onClick={() => onLogin('DEMO')} className="w-full py-2 text-gray-400 font-bold text-[10px] uppercase tracking-widest hover:text-gray-600 transition-all">
+          <div className="pt-4 border-t border-gray-100">
+            <button onClick={() => onLogin('DEMO')} className="w-full py-2 text-gray-400 font-bold text-[10px] uppercase tracking-widest hover:text-cyan-600 transition-all">
               {t.ctaDemo}
             </button>
           </div>

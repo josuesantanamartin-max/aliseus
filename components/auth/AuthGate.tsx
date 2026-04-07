@@ -221,20 +221,6 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                 console.error("[AuthGate] Caught Google Login Error:", error);
                 alert(`Error al iniciar sesión con Google: ${error.message}`);
             }
-        } else if (method === 'NOTION' && supabase) {
-            try {
-                console.log("[AuthGate] Initiating Notion OAuth Login...");
-                const { error } = await supabase.auth.signInWithOAuth({
-                    provider: 'notion',
-                    options: {
-                        redirectTo: window.location.origin
-                    }
-                });
-                if (error) throw error;
-            } catch (error: any) {
-                alert(`Error al iniciar sesión con Notion: ${error.message}`);
-                console.error(error);
-            }
         } else if (method === 'EMAIL' && supabase && data) {
             try {
                 console.log(`[AuthGate] Attempting ${data.isRegister ? 'Signup' : 'Login'} with Email: ${data.email}`);
