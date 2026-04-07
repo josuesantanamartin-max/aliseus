@@ -113,19 +113,15 @@ Your goal is to accurately extract ALL transactions from the provided text into 
 
 ### DATA TO PARSE:
 """
-${rawText.slice(0, 8000)}
+${rawText.slice(0, 6000)}
 """
 
 ### OUTPUT FORMAT:
-Return ONLY a valid JSON array of objects. Do not include markdown blocks or extra text.
-Example: 
-[
-  { "date": "2024-03-12", "amount": -4.50, "description": "STARBUCKS COFFEE", "category": "Food", "type": "EXPENSE" },
-  { "date": "2024-03-15", "amount": 2500.00, "description": "NOMINA EMPRESA S.A.", "category": "Income", "type": "INCOME" }
-]
+Return ONLY a valid JSON array of objects.
+Example: [{ "date": "2024-03-12", "amount": -4.50, "description": "STARBUCKS", "category": "Food", "type": "EXPENSE" }]
 
-Respond strictly with the JSON. Currency is ${currency}.
-${language === 'ES' ? 'Responde estrictamente en español.' : ''}
+Respond ONLY with JSON. Currency: ${currency}.
+${language === 'ES' ? 'Responde en español.' : ''}
 `;
 
     const result = await generateContent(prompt);
