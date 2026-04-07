@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useHouseholdStore } from '@/store/useHouseholdStore';
 import { useFinanceStore } from '@/store/useFinanceStore';
 import { useUserStore } from '@/store/useUserStore';
 import { useFinanceControllers } from '@/hooks/useFinanceControllers';
@@ -28,7 +29,8 @@ const Transactions: React.FC<TransactionsProps> = ({
   initialFilters,
   onClearFilters,
 }) => {
-  const { transactions, accounts, debts, goals, categories, projectBudgets } = useFinanceStore();
+  const { transactions, accounts, debts, goals, categories, projectBudgets, deduplicateTransactions } = useFinanceStore();
+  const { activeHouseholdId } = useHouseholdStore();
   const { currency, quickAction, setQuickAction } = useUserStore();
   const { addTransaction, transfer, editTransaction, deleteTransaction } = useFinanceControllers();
   const { formatPrice: formatEUR, symbol } = useCurrency();
@@ -276,6 +278,10 @@ const Transactions: React.FC<TransactionsProps> = ({
   };
 
   const handleBatchImport = (importedTransactions: Partial<Transaction>[]) => {
+    if (!activeHouseholdId) {
+      showError(new Error('No hay un "Hogar" activo. Por favor, selecciona o crea un Hogar para que tus datos se guarden en la nube.'));
+    }
+
     const targetAccountId = filterAccountId || accounts[0]?.id;
     if (!targetAccountId) return;
 
@@ -283,10 +289,21 @@ const Transactions: React.FC<TransactionsProps> = ({
     let newestDate = filterDate;
 
     importedTransactions.forEach((t: Partial<Transaction>) => {
-      const txDateStr = (t.date as unknown as string) || new Date().toISOString().split('T')[0];
-      const txDate = new Date(txDateStr);
+      // Robust date parsing: ensure we use the date from the import or fallback to today
+      const rawDate = t.date as any;
+      let txDate: Date;
+      
+      if (rawDate && typeof rawDate === 'object' && rawDate instanceof Date) {
+        txDate = rawDate;
+      } else if (typeof rawDate === 'string') {
+        txDate = new Date(rawDate);
+      } else {
+        txDate = new Date();
+      }
 
-      // Better: collect all months and pick the most frequent or highest one
+      // If invalid date, fallback to today
+      if (isNaN(txDate.getTime())) txDate = new Date();
+
       const transactionData = {
         id: crypto.randomUUID(),
         type: t.type as 'INCOME' | 'EXPENSE',
@@ -308,18 +325,37 @@ const Transactions: React.FC<TransactionsProps> = ({
 
     // Auto-adjust filterDate if imported transactions are in a different month
     if (importedTransactions.length > 0) {
-      const dates = importedTransactions.map(t => t.date).filter(Boolean) as string[];
-      if (dates.length > 0) {
-        const latestImported = dates.sort().reverse()[0];
-        const latestMonthDate = new Date(latestImported);
+      const validDates = importedTransactions
+        .map(t => t.date ? new Date(t.date) : null)
+        .filter(d => d && !isNaN(d.getTime())) as Date[];
+      
+      if (validDates.length > 0) {
+        // Find most common month/year in the import
+        const latestMonthDate = validDates.sort((a, b) => b.getTime() - a.getTime())[0];
+        
         if (latestMonthDate.getMonth() !== filterDate.getMonth() || latestMonthDate.getFullYear() !== filterDate.getFullYear()) {
           setFilterDate(latestMonthDate);
+          showSuccess(`${importedTransactions.length} transacciones importadas. Hemos cambiado la vista a ${latestMonthDate.toLocaleString('default', { month: 'long', year: 'numeric' })} para que puedas verlas.`);
+        } else {
+          showSuccess(`${importedTransactions.length} transacciones importadas correctamente.`);
         }
       }
     }
 
     setIsImportModalOpen(false);
-    showSuccess(`${importedTransactions.length} transacciones importadas. Vista actualizada al mes de los movimientos.`);
+  };
+
+  const handleManualDeduplicate = () => {
+    const totalBefore = transactions.length;
+    deduplicateTransactions();
+    const totalAfter = useFinanceStore.getState().transactions.length;
+    const removed = totalBefore - totalAfter;
+    
+    if (removed > 0) {
+      showSuccess(`Se han eliminado ${removed} transacciones duplicadas.`);
+    } else {
+      showSuccess('No se han encontrado duplicados exactos.');
+    }
   };
 
   const [isSuggesting, setIsSuggesting] = useState(false);
@@ -360,6 +396,16 @@ const Transactions: React.FC<TransactionsProps> = ({
           >
             <Upload className="w-6 h-6" />
             <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-cyan-900 text-white text-[10px] uppercase font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all translate-x-3 group-hover:translate-x-0 whitespace-nowrap pointer-events-none shadow-2xl border border-aliseus-800">Importar CSV</span>
+          </Button>
+          
+          <Button
+            variant="outline"
+            onClick={handleManualDeduplicate}
+            className="p-5 group relative border-amber-200 text-amber-700 hover:bg-amber-50"
+            title="Limpiar duplicados"
+          >
+            <Repeat className="w-6 h-6" />
+            <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-cyan-900 text-white text-[10px] uppercase font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-all translate-x-3 group-hover:translate-x-0 whitespace-nowrap pointer-events-none shadow-2xl border border-aliseus-800">Eliminar Duplicados</span>
           </Button>
           <ProgressiveTooltip
               id="tooltip-new-transaction"

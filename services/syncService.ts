@@ -284,7 +284,10 @@ export const syncService = {
         const userId = await getCurrentUserId();
         if (!userId) { console.warn('[syncService] saveAccount: no authenticated user, skipping.'); return; }
 
-        const { error } = await supabase.from('finance_accounts').upsert(toDbAccount(account, userId));
+        const data = toDbAccount(account, userId);
+        console.log('[syncService] saveAccount Attempt:', { id: account.id, name: account.name, userId, householdId: data.household_id });
+        
+        const { error } = await supabase.from('finance_accounts').upsert(data);
         if (error) {
             console.error('[syncService] saveAccount FAILED:', error.message, error.details, error.hint);
             throw error;
@@ -310,7 +313,10 @@ export const syncService = {
         const userId = await getCurrentUserId();
         if (!userId) { console.warn('[syncService] saveTransaction: no authenticated user, skipping.'); return; }
 
-        const { error } = await supabase.from('finance_transactions').upsert(toDbTransaction(transaction, userId));
+        const dbObj = toDbTransaction(transaction, userId);
+        console.log('[syncService] saveTransaction Attempt:', { id: transaction.id, desc: transaction.description, userId, householdId: dbObj.household_id });
+
+        const { error } = await supabase.from('finance_transactions').upsert(dbObj);
         if (error) {
             console.error('[syncService] saveTransaction FAILED:', error.message, error.details, error.hint);
             throw error;

@@ -58,6 +58,7 @@ interface FinanceActions {
     loadFromCloud: () => Promise<void>;
     setMockData: () => void;
     clearAllData: () => void;
+    deduplicateTransactions: () => void;
 }
 
 export const useFinanceStore = create<FinanceState & FinanceActions>()(
@@ -361,6 +362,26 @@ export const useFinanceStore = create<FinanceState & FinanceActions>()(
                 projectItems: [],
                 goals: [],
                 debts: [],
+            }),
+            deduplicateTransactions: () => set((state) => {
+                const unique = new Map<string, Transaction>();
+                state.transactions.forEach(tx => {
+                    // Create a composite key to identify "business" duplicates
+                    // description + amount + date + type
+                    const key = `${tx.description.trim()}_${tx.amount}_${tx.date}_${tx.type}_${tx.accountId}`;
+                    if (!unique.has(key)) {
+                        unique.set(key, tx);
+                    }
+                });
+                
+                const deduplicated = Array.from(unique.values());
+                const removedCount = state.transactions.length - deduplicated.length;
+                
+                if (removedCount > 0) {
+                    console.log(`[deduplicateTransactions] Removed ${removedCount} duplicates.`);
+                }
+                
+                return { transactions: deduplicated };
             })
         }),
         {
