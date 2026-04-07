@@ -9,7 +9,8 @@ import { LandingHome } from './landing/LandingHome';
 import { LandingFinance } from './landing/LandingFinance';
 import { LandingLife } from './landing/LandingLife';
 import { LegalPage } from '../legal/LegalPage';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Users, Home } from 'lucide-react';
+import { householdService } from '../../services/householdService';
 
 interface AliseusLandingProps {
   onLogin: (method: 'DEMO' | 'GOOGLE' | 'EMAIL' | 'NOTION', data?: { email: string, password: string, isRegister: boolean, invitationCode?: string }) => void | Promise<void>;
@@ -30,6 +31,17 @@ const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setL
   const [isAgeVerified, setIsAgeVerified] = useState(false);
   const [showLegalModal, setShowLegalModal] = useState<'privacy' | 'terms' | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [inviteInfo, setInviteInfo] = useState<{ householdName: string } | null>(null);
+
+  React.useEffect(() => {
+    if (inviteToken && inviteToken.length > 20) { // Likely a family UUID invite
+      householdService.getInviteDetails(inviteToken).then(details => {
+        if (details) {
+          setInviteInfo({ householdName: details.householdName });
+        }
+      });
+    }
+  }, [inviteToken]);
 
   const t = LANDING_TEXTS[language];
 
@@ -240,6 +252,31 @@ const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setL
 
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 overflow-x-hidden selection:bg-cyan-600 selection:text-white">
+      {inviteInfo && (
+        <div className="fixed top-0 left-0 right-0 z-[110] animate-slide-down">
+          <div className="bg-white/80 backdrop-blur-md border-b border-cyan-100 px-4 py-3 shadow-sm">
+            <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="bg-cyan-100 p-2 rounded-lg">
+                  <Users className="w-5 h-5 text-cyan-700" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-cyan-800 uppercase tracking-wider">Invitación Familiar</p>
+                  <p className="text-sm text-gray-600">
+                    Has sido invitado a unirte al hogar <span className="font-bold text-cyan-700">"{inviteInfo.householdName}"</span>
+                  </p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setShowLoginModal(true)}
+                className="bg-cyan-700 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-cyan-800 transition-all shadow-lg shadow-cyan-700/20"
+              >
+                ACEPTAR Y ENTRAR
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {showLegalModal && (
         <LegalPage
           document={showLegalModal}

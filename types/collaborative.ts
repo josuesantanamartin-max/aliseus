@@ -30,6 +30,7 @@ export interface Household {
     ownerId: string; // The creator/owner
     currency: 'EUR' | 'USD' | 'GBP' | 'MXN' | 'COP' | 'ARS' | 'CLP' | 'CHF' | 'CAD' | 'AUD' | 'INR';
     members: HouseholdMember[];
+    membersCount?: number; // Optional count from the server
     sharedAccounts: string[]; // List of Account IDs shared in this household
     permissions: PermissionMatrix;
     createdAt: string;

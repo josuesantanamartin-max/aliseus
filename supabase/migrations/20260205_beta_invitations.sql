@@ -1,6 +1,6 @@
 -- Beta Invitations Table
 CREATE TABLE IF NOT EXISTS beta_invitations (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     code VARCHAR(20) UNIQUE NOT NULL,
     email VARCHAR(255),
     max_uses INTEGER DEFAULT 1,

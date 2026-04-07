@@ -17,6 +17,7 @@ interface HouseholdActions {
     createHousehold: (name: string, currency: 'EUR' | 'USD' | 'GBP' | 'MXN' | 'COP' | 'ARS' | 'CLP' | 'CHF' | 'CAD' | 'AUD' | 'INR') => Promise<void>;
     fetchMembers: (householdId: string) => Promise<void>;
     inviteMember: (email: string, role: 'ADMIN' | 'MEMBER' | 'VIEWER') => Promise<any>;
+    joinHousehold: (token: string) => Promise<void>;
     leaveHousehold: (id: string) => Promise<void>;
     deleteHousehold: (id: string) => Promise<void>;
 }
@@ -86,6 +87,18 @@ export const useHouseholdStore = create<HouseholdState & HouseholdActions>()(
                 if (!activeHouseholdId) throw new Error("No active household");
                 const invite = await householdService.inviteMember(activeHouseholdId, email, role);
                 return invite;
+            },
+
+            joinHousehold: async (token: string) => {
+                set({ isLoading: true, error: null });
+                try {
+                    await householdService.acceptInvitation(token);
+                    await get().fetchHouseholds();
+                    set({ isLoading: false });
+                } catch (error: any) {
+                    set({ error: error.message, isLoading: false });
+                    throw error;
+                }
             },
 
             leaveHousehold: async (id) => {

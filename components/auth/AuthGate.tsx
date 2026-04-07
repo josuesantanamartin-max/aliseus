@@ -30,6 +30,42 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
             await useHouseholdStore.getState().fetchHouseholds();
             await loadFromCloud();
             await loadLifeFromCloud();
+
+            // Try to recover name from user_profiles if standard metadata is missing
+            const { setUserProfile, userProfile } = useUserStore.getState();
+            if (userProfile && (userProfile.full_name === 'Usuario Aliseus' || !userProfile.full_name)) {
+                try {
+                    const { data: profile } = await supabase!
+                        .from('user_profiles')
+                        .select('full_name, avatar_url')
+                        .eq('id', userProfile.id)
+                        .single();
+
+                    if (profile?.full_name) {
+                        setUserProfile({
+                            ...userProfile,
+                            full_name: profile.full_name,
+                            avatar_url: profile.avatar_url || userProfile.avatar_url
+                        });
+                    }
+                } catch (e) {
+                    console.warn('[AuthGate] Failed to recover name from profile:', e);
+                }
+            }
+
+            // Check for pending invitation in localStorage
+            const pendingInvite = localStorage.getItem('aliseus_pending_invite');
+            if (pendingInvite) {
+                console.log("[AuthGate] Processing pending invitation from localStorage:", pendingInvite);
+                try {
+                    await useHouseholdStore.getState().joinHousehold(pendingInvite);
+                    console.log("[AuthGate] Successfully joined household from pending invite");
+                } catch (e) {
+                    console.error("[AuthGate] Error processing pending invite:", e);
+                } finally {
+                    localStorage.removeItem('aliseus_pending_invite');
+                }
+            }
         } catch (error) {
             console.error('[AuthGate] Error loadAll:', error);
         }
@@ -162,6 +198,14 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
         } else if (method === 'GOOGLE' && supabase) {
             try {
                 console.log("[AuthGate] Initiating Google OAuth Login...");
+                
+                // Persist invitation code if present in URL
+                const inviteToken = getInvitationCodeFromUrl();
+                if (inviteToken) {
+                    localStorage.setItem('aliseus_pending_invite', inviteToken);
+                    console.log("[AuthGate] Persisted invite token for Google OAuth:", inviteToken);
+                }
+
                 const { error } = await supabase.auth.signInWithOAuth({
                     provider: 'google',
                     options: {

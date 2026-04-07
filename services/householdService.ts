@@ -26,11 +26,23 @@ export const householdService = {
 
         const { data, error } = await supabase
             .from('households')
-            .select('*')
+            .select(`
+                *,
+                members:household_members(user_id)
+            `)
             .order('created_at', { ascending: false });
 
         if (error) throw error;
-        return data as Household[];
+        
+        // Ensure data matches our expected interface and fix camelCase
+        return (data || []).map(h => ({
+            ...h,
+            ownerId: h.owner_id, // Fix camelCase mapping manually if needed
+            createdAt: h.created_at,
+            updatedAt: h.updated_at,
+            members: h.members || [],
+            membersCount: (h.members || []).length
+        })) as Household[];
     },
 
     /**
@@ -115,6 +127,38 @@ export const householdService = {
             .eq('id', invite.id);
 
         return invite.household_id;
+    },
+
+    /**
+     * Get basic household details for an invitation token without being logged in.
+     */
+    async getInviteDetails(token: string) {
+        if (!supabase) throw new Error('Supabase client not initialized');
+
+        // 1. Fetch the invitation
+        const { data: invite, error: fetchError } = await supabase
+            .from('household_invites')
+            .select(`
+                id,
+                email,
+                role,
+                household:household_id(name)
+            `)
+            .eq('token', token)
+            .eq('status', 'PENDING')
+            .single();
+
+        if (fetchError || !invite) {
+            console.error('[HouseholdService] Invite fetch error:', fetchError);
+            return null;
+        }
+
+        return {
+            id: invite.id,
+            email: invite.email,
+            role: invite.role,
+            householdName: (invite.household as any)?.name || 'Hogar Familiar'
+        };
     },
 
     /**

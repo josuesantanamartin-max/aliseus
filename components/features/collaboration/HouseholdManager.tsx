@@ -103,7 +103,7 @@ export const HouseholdManager: React.FC = () => {
                                 </h3>
                                 <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mt-1">
                                     <span className="bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded-full font-bold">{h.currency}</span>
-                                    <span>• {h.members?.length || 1} Miembros</span>
+                                    <span>• {(h.membersCount || h.members?.length || 1)} { (h.membersCount === 1 || (!h.membersCount && h.members?.length === 1)) ? 'Miembro' : 'Miembros' }</span>
                                 </div>
                             </div>
 
