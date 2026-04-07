@@ -204,13 +204,17 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
                     // Consume invitation code if we have one
                     const inviteToken = data.invitationCode || getInvitationCodeFromUrl();
                     if (inviteToken && signUpData.user) {
-                        try {
-                            const success = await invitationService.useCode(inviteToken, signUpData.user.id);
-                            if (!success) {
-                                console.warn('[AuthGate] Failed to mark invitation code as used, but registration continued.');
+                        // Beta codes are usually around ~12-14 characters (XXXX-XXXX-XXXX).
+                        // Family tokens are UUIDs (36 characters).
+                        if (inviteToken.length <= 20) {
+                            try {
+                                const success = await invitationService.useCode(inviteToken, signUpData.user.id);
+                                if (!success) {
+                                    console.warn('[AuthGate] Failed to mark invitation code as used, but registration continued.');
+                                }
+                            } catch (invError) {
+                                console.error('[AuthGate] Error consuming invitation code:', invError);
                             }
-                        } catch (invError) {
-                            console.error('[AuthGate] Error consuming invitation code:', invError);
                         }
                     }
 

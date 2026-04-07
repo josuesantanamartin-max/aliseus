@@ -9,6 +9,7 @@ import { LandingHome } from './landing/LandingHome';
 import { LandingFinance } from './landing/LandingFinance';
 import { LandingLife } from './landing/LandingLife';
 import { LegalPage } from '../legal/LegalPage';
+import { Eye, EyeOff } from 'lucide-react';
 
 interface AliseusLandingProps {
   onLogin: (method: 'DEMO' | 'GOOGLE' | 'EMAIL' | 'NOTION', data?: { email: string, password: string, isRegister: boolean, invitationCode?: string }) => void | Promise<void>;
@@ -28,6 +29,7 @@ const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setL
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [isAgeVerified, setIsAgeVerified] = useState(false);
   const [showLegalModal, setShowLegalModal] = useState<'privacy' | 'terms' | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const t = LANDING_TEXTS[language];
 
@@ -77,12 +79,20 @@ const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setL
             </div>
             <div className="relative">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Contraseña"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-200 transition-all text-sm"
+                className="w-full px-4 pr-12 py-3 rounded-xl border border-gray-200 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-200 transition-all text-sm"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-cyan-600 transition-colors"
+                tabIndex={-1}
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
             </div>
 
             {/* Beta Code Input - Only shown during registration if no invite token exists */}
@@ -153,25 +163,33 @@ const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setL
             <button
               onClick={async () => {
                 if (isRegister) {
-                  const codeToValidate = inviteToken || betaCode;
-                  if (!codeToValidate) {
+                  // If we have an inviteToken from a family invite, it's typically a UUID (> 30 chars).
+                  // Beta codes are ~12-14 chars (e.g., format XXXX-XXXX-XXXX).
+                  const isFamilyInvite = inviteToken && inviteToken.length > 20;
+
+                  // If not a family invite, we need a beta code (either from URL or from input)
+                  const codeToValidate = isFamilyInvite ? null : (inviteToken || betaCode);
+
+                  if (!isFamilyInvite && !codeToValidate) {
                     alert('Se requiere un código de invitación para registrarse.');
                     return;
                   }
                   
-                  setAuthLoading(true);
-                  try {
-                    const validation = await invitationService.validateCode(codeToValidate);
-                    if (!validation.valid) {
-                      alert(validation.message || 'Código de invitación inválido.');
+                  if (codeToValidate) {
+                    setAuthLoading(true);
+                    try {
+                      const validation = await invitationService.validateCode(codeToValidate);
+                      if (!validation.valid) {
+                        alert(validation.message || 'Código de invitación inválido.');
+                        setAuthLoading(false);
+                        return;
+                      }
+                    } catch (error) {
+                      console.error('[AliseusLanding] Validation error:', error);
+                      alert('Error al validar el código. Por favor, inténtalo de nuevo.');
                       setAuthLoading(false);
                       return;
                     }
-                  } catch (error) {
-                    console.error('[AliseusLanding] Validation error:', error);
-                    alert('Error al validar el código. Por favor, inténtalo de nuevo.');
-                    setAuthLoading(false);
-                    return;
                   }
                 }
 
