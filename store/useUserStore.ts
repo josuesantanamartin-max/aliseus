@@ -248,7 +248,12 @@ export const useUserStore = create<UserState & UserActions>()(
             }),
             cancelAccountDeletion: () => set({ accountDeletionScheduled: null }),
             setLastDataExport: (date) => set({ lastDataExport: date }),
-            setViewDate: (date) => set({ viewDate: date.toISOString() }),
+            setViewDate: (date) => {
+                const normalizedDate = typeof date === 'string' ? new Date(date) : date;
+                if (!isNaN(normalizedDate.getTime())) {
+                    set({ viewDate: normalizedDate.toISOString() });
+                }
+            },
 
             generateReferralCode: () => set((state) => {
                 if (state.referral.code) return state;

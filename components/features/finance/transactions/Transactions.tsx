@@ -126,7 +126,12 @@ const Transactions: React.FC<TransactionsProps> = ({
     const targetYear = filterDate.getFullYear();
 
     return transactions.filter(t => {
+      if (!t.date) return false;
+      
       const tDate = new Date(t.date);
+      if (isNaN(tDate.getTime())) return false;
+
+      // Use local month/year for filtering to match user intent
       if (viewMode === 'MONTH') {
         if (tDate.getMonth() !== targetMonth || tDate.getFullYear() !== targetYear) return false;
       } else {
@@ -324,25 +329,15 @@ const Transactions: React.FC<TransactionsProps> = ({
       }
     });
 
-    // Auto-adjust filterDate if imported transactions are in a different month
-    if (importedTransactions.length > 0) {
-      const validDates = importedTransactions
-        .map(t => t.date ? new Date(t.date) : null)
-        .filter(d => d && !isNaN(d.getTime())) as Date[];
-      
-      if (validDates.length > 0) {
-        // Find most common month/year in the import
-        const latestMonthDate = validDates.sort((a, b) => b.getTime() - a.getTime())[0];
-        
-        if (latestMonthDate.getMonth() !== filterDate.getMonth() || latestMonthDate.getFullYear() !== filterDate.getFullYear()) {
-          setFilterDate(latestMonthDate);
-          showSuccess(`${importedTransactions.length} transacciones importadas. Hemos cambiado la vista a ${latestMonthDate.toLocaleString('default', { month: 'long', year: 'numeric' })} para que puedas verlas.`);
-        } else {
-          showSuccess(`${importedTransactions.length} transacciones importadas correctamente.`);
-        }
-      }
-    }
-
+    // Import modal handles onDateRangeDetected which updates viewDate
+    // so we don't need to manually set it here anymore.
+    // Instead, clear active filters so user can see what they just imported
+    setSearchTerm('');
+    setFilterCategory('');
+    setFilterSubCategory('');
+    setFilterType('');
+    
+    showSuccess(`${importedTransactions.length} transacciones procesadas correctamente.`);
     setIsImportModalOpen(false);
   };
 

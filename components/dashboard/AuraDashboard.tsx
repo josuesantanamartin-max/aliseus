@@ -27,7 +27,7 @@ const formatCurrency = (val: number) =>
 const AuraDashboard: React.FC = () => {
     const { 
         theme, setTheme, setActiveApp, setFinanceActiveTab, setLifeActiveTab,
-        language, viewDate
+        language, viewDate, setViewDate
     } = useUserStore();
 
 
@@ -66,7 +66,6 @@ const AuraDashboard: React.FC = () => {
     } = useLifeStore();
 
     const [currentTime, setCurrentTime] = useState(() => new Date());
-    const [selectedDate, setSelectedDate] = useState(() => new Date());
 
     useEffect(() => {
         const interval = setInterval(() => setCurrentTime(new Date()), 60000);
@@ -74,6 +73,22 @@ const AuraDashboard: React.FC = () => {
     }, []);
 
     const hour = currentTime.getHours();
+
+    const [selectedDate, setSelectedDate] = useState(() => new Date(viewDate));
+
+    // Sync local selectedDate with global viewDate when it changes
+    useEffect(() => {
+        const synced = new Date(viewDate);
+        if (synced.getTime() !== selectedDate.getTime()) {
+            setSelectedDate(synced);
+        }
+    }, [viewDate]);
+
+    // When user changes date in the dashboard header, update global state
+    const handleDateChange = (date: Date) => {
+        setSelectedDate(date);
+        setViewDate(date);
+    };
 
     // Aura Thematic View State
     const [activeTheme, setActiveTheme] = useState<AuraTheme>(() => {
@@ -113,7 +128,7 @@ const AuraDashboard: React.FC = () => {
                 {/* --- HEADER --- */}
                 <IntelligenceHeader
                     selectedDate={activeTheme === 'finances' ? selectedDate : undefined}
-                    onDateChange={activeTheme === 'finances' ? setSelectedDate : undefined}
+                    onDateChange={activeTheme === 'finances' ? handleDateChange : undefined}
                     onNavigate={handleNavigate}
                     activeModule={activeTheme}
                 />
