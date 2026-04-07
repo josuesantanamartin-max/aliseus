@@ -113,7 +113,7 @@ Your goal is to accurately extract ALL transactions from the provided text into 
 
 ### DATA TO PARSE:
 """
-${rawText.slice(0, 6000)}
+${rawText.slice(0, 12000)}
 """
 
 ### OUTPUT FORMAT:

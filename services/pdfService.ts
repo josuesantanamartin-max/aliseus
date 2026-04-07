@@ -95,23 +95,26 @@ export const extractTextFromPDF = async (file: File): Promise<string> => {
     });
 };
 
-/**
- * Groups text items by row and sorts them by column to preserve layout.
- */
 function reconstructSpatialText(items: TextItem[]): string {
-    // Sort by Y coordinate (top to bottom) - PDF Y starts from bottom
-    // So we group by roughly the same Y value
-    const ROW_THRESHOLD = 5; // pixels tolerance for a row
+    // PDF Y starts from bottom, so we sort by Y (descending) 
+    const ROW_THRESHOLD = 8; // Increased threshold for slightly misaligned rows
     
     // Sort primarily by Y (descending) and secondarily by X (ascending)
-    items.sort((a, b) => b.y - a.y || a.x - b.x);
+    // We use a "quantized" Y to group items into the same row
+    items.sort((a, b) => {
+        const yDiff = Math.abs(a.y - b.y);
+        if (yDiff <= ROW_THRESHOLD) {
+            return a.x - b.x;
+        }
+        return b.y - a.y;
+    });
 
     let rows: TextItem[][] = [];
     let currentRow: TextItem[] = [];
     let lastY = -1;
 
     for (const item of items) {
-        if (lastY === -1 || Math.abs(item.y - lastY) < ROW_THRESHOLD) {
+        if (lastY === -1 || Math.abs(item.y - lastY) <= ROW_THRESHOLD) {
             currentRow.push(item);
         } else {
             rows.push(currentRow);
@@ -123,25 +126,24 @@ function reconstructSpatialText(items: TextItem[]): string {
 
     // Format rows into structured lines
     return rows.map(row => {
-        // Sort items in row by X coordinate
+        // Sort items in row by X coordinate definitively
         row.sort((a, b) => a.x - b.x);
         
-        // Build a string for the row, inserting extra spaces for large horizontal gaps
         let line = "";
         let lastX = -1;
         
         for (const item of row) {
             if (lastX !== -1) {
                 const gap = item.x - lastX;
-                // If gap is large, treat as new column
-                if (gap > 20) {
-                    line += "    "; // 4 spaces as column delimiter
-                } else if (gap > 2) {
+                // Heuristic: If gap is more than 3x the average character width (assumed ~6), it's a new column
+                if (gap > 15) {
+                    line += "\t"; // Use Tab as a strong delimiter for AI
+                } else if (gap > 1) {
                     line += " ";
                 }
             }
             line += item.str;
-            lastX = item.x + item.width;
+            lastX = item.x + (item.width || 0);
         }
         return line;
     }).join('\n');

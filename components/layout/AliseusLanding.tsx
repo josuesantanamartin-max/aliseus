@@ -9,7 +9,7 @@ import { LandingHome } from './landing/LandingHome';
 import { LandingFinance } from './landing/LandingFinance';
 import { LandingLife } from './landing/LandingLife';
 import { LegalPage } from '../legal/LegalPage';
-import { Eye, EyeOff, Users, Home } from 'lucide-react';
+import { Eye, EyeOff, Users, Home, Check } from 'lucide-react';
 import { householdService } from '../../services/householdService';
 
 interface AliseusLandingProps {
@@ -55,15 +55,15 @@ const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setL
         <h3 className="text-2xl font-black text-cyan-700 mb-2">Bienvenido a Aliseus</h3>
         <p className="text-gray-500 text-sm mb-8">Selecciona tu método de acceso</p>
 
-        <div className="space-y-3">
-          <div className="flex bg-gray-100 p-1 rounded-xl mb-4">
+        <div className="space-y-4">
+          <div className="flex bg-gray-100 p-1.5 rounded-2xl mb-2">
             <button
               onClick={() => {
                 setIsRegister(false);
                 setAcceptedTerms(false);
                 setIsAgeVerified(false);
               }}
-              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${!isRegister ? 'bg-white shadow-sm text-cyan-700' : 'text-gray-500 hover:text-gray-700'}`}
+              className={`flex-1 py-2.5 text-xs font-black rounded-xl transition-all ${!isRegister ? 'bg-white shadow-md text-aliseus-700' : 'text-gray-500 hover:text-gray-700'}`}
             >
               INICIAR SESIÓN
             </button>
@@ -73,37 +73,40 @@ const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setL
                 setAcceptedTerms(false);
                 setIsAgeVerified(false);
               }}
-              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${isRegister ? 'bg-white shadow-sm text-cyan-700' : 'text-gray-500 hover:text-gray-700'}`}
+              className={`flex-1 py-2.5 text-xs font-black rounded-xl transition-all ${isRegister ? 'bg-white shadow-md text-aliseus-700' : 'text-gray-500 hover:text-gray-700'}`}
             >
               REGISTRARSE
             </button>
           </div>
 
-          {/* Botón de Google Principal */}
-          <div className="mb-6">
+          {/* Botón de Google Principal y Gigante */}
+          <div className="pt-4">
             <button 
               onClick={() => onLogin('GOOGLE')} 
-              className="w-full py-4 rounded-xl border border-gray-200 bg-white shadow-sm hover:bg-gray-50 flex items-center justify-center gap-3 transition-all group"
+              className="w-full py-5 rounded-[1.5rem] border-2 border-aliseus-100 bg-white shadow-xl hover:shadow-aliseus-500/10 hover:border-aliseus-300 flex items-center justify-center gap-4 transition-all duration-300 group active:scale-95"
             >
-              <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-6 h-6 group-hover:scale-110 transition-transform" alt="Google" />
-              <span className="font-bold text-gray-700 text-sm">
-                {isRegister ? 'Registrarse con Google' : 'Continuar con Google'}
+              <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-8 h-8 group-hover:rotate-12 transition-transform" alt="Google" />
+              <span className="font-black text-gray-800 text-lg tracking-tight">
+                {isRegister ? 'Crear cuenta con Google' : 'Entrar con Google'}
               </span>
             </button>
-            <p className="mt-2 text-[10px] text-gray-400 text-center uppercase tracking-widest font-medium">Recomendado para socios fundadores</p>
+            <div className="mt-4 flex items-center justify-center gap-2">
+              <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+              <p className="text-[11px] text-gray-400 text-center uppercase tracking-[0.2em] font-black">Acceso seguro con Google</p>
+            </div>
           </div>
 
-          <div className="relative mb-6">
+          <div className="relative py-6">
             <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-gray-100"></span></div>
-            <div className="relative flex justify-center text-[10px] uppercase font-bold tracking-widest"><span className="bg-white px-4 text-gray-300">o con tu email</span></div>
+            <div className="relative flex justify-center text-[10px] uppercase font-black tracking-[0.3em]"><span className="bg-white px-6 text-gray-300">o método tradicional</span></div>
           </div>
 
-          <div className="space-y-2 text-left mb-6">
+          <div className="space-y-3 text-left">
             <div className="relative">
               <input
                 type="email"
-                placeholder="Email"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-200 transition-all text-sm"
+                placeholder="Tu email principal"
+                className="w-full px-5 py-4 rounded-[1.2rem] border-2 border-gray-50 focus:border-aliseus-500 focus:bg-white bg-gray-50/50 transition-all text-sm outline-none font-medium"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -111,81 +114,51 @@ const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setL
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder="Contraseña"
-                className="w-full px-4 pr-12 py-3 rounded-xl border border-gray-200 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-200 transition-all text-sm"
+                placeholder="Tu contraseña secreta"
+                className="w-full px-5 pr-14 py-4 rounded-[1.2rem] border-2 border-gray-50 focus:border-aliseus-500 focus:bg-white bg-gray-50/50 transition-all text-sm outline-none font-medium"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-cyan-600 transition-colors"
+                className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-300 hover:text-aliseus-600 transition-colors"
                 tabIndex={-1}
               >
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
             </div>
 
-            {/* Beta Code Input - Only shown during registration if no invite token exists */}
+            {/* Beta Code Input */}
             {isRegister && !inviteToken && (
-              <div className="relative mb-2">
+              <div className="relative animate-fadeIn">
                 <input
                   type="text"
-                  placeholder="Código de Acceso Beta"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-black focus:ring-0 transition-all text-sm uppercase tracking-widest font-bold text-center"
+                  placeholder="Código Fundador"
+                  className="w-full px-5 py-4 rounded-[1.2rem] border-2 border-gray-50 focus:border-black bg-gray-50/50 transition-all text-sm uppercase font-black text-center tracking-widest"
                   value={betaCode}
                   onChange={(e) => setBetaCode(e.target.value.toUpperCase())}
                 />
               </div>
             )}
 
-            {/* Terms Acceptance & Age Verification - Only shown during registration */}
             {isRegister && (
-              <div className="space-y-2 py-2">
-                <div className="flex items-start gap-2">
-                  <input
-                    type="checkbox"
-                    id="terms-checkbox"
-                    checked={acceptedTerms}
-                    onChange={(e) => setAcceptedTerms(e.target.checked)}
-                    className="mt-1 w-4 h-4 rounded border-gray-300 text-cyan-600 focus:ring-cyan-500 cursor-pointer"
-                  />
-                  <label htmlFor="terms-checkbox" className="text-xs text-gray-600 leading-tight cursor-pointer">
-                    Acepto los{' '}
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setShowLegalModal('terms');
-                      }}
-                      className="text-cyan-700 font-semibold hover:underline"
-                    >
-                      Términos de Servicio
-                    </button>
-                    {' '}y la{' '}
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setShowLegalModal('privacy');
-                      }}
-                      className="text-cyan-700 font-semibold hover:underline"
-                    >
-                      Política de Privacidad
-                    </button>
+              <div className="space-y-4 py-4 px-2">
+                <div className="flex items-start gap-3 group cursor-pointer" onClick={() => setAcceptedTerms(!acceptedTerms)}>
+                  <div className={`mt-0.5 w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all ${acceptedTerms ? 'bg-aliseus-600 border-aliseus-600' : 'border-gray-200 bg-white'}`}>
+                    {acceptedTerms && <Check className="w-3 h-3 text-white stroke-[4]" />}
+                  </div>
+                  <label className="text-xs text-gray-500 font-medium leading-relaxed pointer-events-none">
+                    Acepto los <span className="text-aliseus-700 font-bold underline">Términos</span> y la <span className="text-aliseus-700 font-bold underline">Privacidad</span>
                   </label>
                 </div>
 
-                <div className="flex items-start gap-2">
-                  <input
-                    type="checkbox"
-                    id="age-checkbox"
-                    checked={isAgeVerified}
-                    onChange={(e) => setIsAgeVerified(e.target.checked)}
-                    className="mt-1 w-4 h-4 rounded border-gray-300 text-cyan-600 focus:ring-cyan-500 cursor-pointer"
-                  />
-                  <label htmlFor="age-checkbox" className="text-xs text-gray-600 leading-tight cursor-pointer">
-                    Confirmo que tengo 16 años o más.
+                <div className="flex items-start gap-3 group cursor-pointer" onClick={() => setIsAgeVerified(!isAgeVerified)}>
+                  <div className={`mt-0.5 w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all ${isAgeVerified ? 'bg-aliseus-600 border-aliseus-600' : 'border-gray-200 bg-white'}`}>
+                    {isAgeVerified && <Check className="w-3 h-3 text-white stroke-[4]" />}
+                  </div>
+                  <label className="text-xs text-gray-500 font-medium leading-relaxed pointer-events-none">
+                    Confirmo mi mayoría de edad (+16)
                   </label>
                 </div>
               </div>
@@ -221,27 +194,23 @@ const AliseusLanding: React.FC<AliseusLandingProps> = ({ onLogin, language, setL
                 }
 
                 setAuthLoading(true);
-                await onLogin('EMAIL', { 
-                  email, 
-                  password, 
-                  isRegister, 
-                  invitationCode: inviteToken || betaCode 
-                });
+                await onLogin('EMAIL', { email, password, isRegister, invitationCode: inviteToken || betaCode });
                 setAuthLoading(false);
               }}
               disabled={authLoading || !email || !password || (isRegister && (!acceptedTerms || (!betaCode && !inviteToken) || !isAgeVerified))}
-              className="w-full py-4 rounded-xl bg-gradient-to-base from-gray-800 to-black text-white font-bold text-sm hover:from-black hover:to-gray-900 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-5 rounded-[1.5rem] bg-gray-900 text-white font-black text-sm uppercase tracking-widest hover:bg-black transition-all shadow-xl disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed transform active:scale-95"
             >
-              {authLoading ? 'Procesando...' : (isRegister ? 'Crear Cuenta Fundadora' : 'Entrar con Email')}
+              {authLoading ? 'CONECTANDO...' : (isRegister ? 'CREAR CUENTA' : 'ENTRAR')}
             </button>
           </div>
 
-          <div className="pt-4 border-t border-gray-100">
-            <button onClick={() => onLogin('DEMO')} className="w-full py-2 text-gray-400 font-bold text-[10px] uppercase tracking-widest hover:text-cyan-600 transition-all">
+          <div className="pt-6">
+            <button onClick={() => onLogin('DEMO')} className="text-gray-400 font-bold text-[10px] uppercase tracking-[0.4em] hover:text-aliseus-600 transition-all">
               {t.ctaDemo}
             </button>
           </div>
         </div>
+
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import Papa from 'papaparse';
 import { read, utils } from 'xlsx';
 import { Upload, X, ArrowRight, Check, AlertCircle, FileText, Settings, Database, Building2, AlertTriangle, CreditCard, ArrowRightLeft } from 'lucide-react';
 import { Transaction } from '../../../../../types';
-import { parseDate, normalizeAmount, detectDuplicates, validateTransactions, getTransactionStats, ValidationError, cleanDescription, mapCategory, detectSubCategory, calculateBalanceImpact, detectCategoryFromDescription } from '../../../../../utils/csvUtils';
+import { parseDate, normalizeAmount, detectDuplicates, validateTransactions, getTransactionStats, ValidationError, cleanDescription, mapCategory, detectSubCategory, calculateBalanceImpact, detectCategoryFromDescription, findHeaderRow } from '../../../../../utils/csvUtils';
 import { getAllBankTemplates, getBankTemplate, BankTemplate } from '../../../../../config/bankTemplates';
 import { useFinanceStore } from '../../../../../store/useFinanceStore';
 import { useFinanceControllers } from '../../../../../hooks/useFinanceControllers';
@@ -29,9 +29,10 @@ interface ColumnMapping {
 const STEPS = {
     UPLOAD: 0,
     BANK_SELECT: 1,
-    ACCOUNT_SELECT: 2,
-    MAPPING: 3,
-    PREVIEW: 4,
+    RAW_DATA_REVIEW: 2,
+    ACCOUNT_SELECT: 3,
+    MAPPING: 4,
+    PREVIEW: 5,
 };
 
 
@@ -79,10 +80,12 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
         expenseTotal: number;
     } | null>(null);
 
-    // New Smart Import State
+    // New UI States
     const [importMethod, setImportMethod] = useState<'FILE' | 'TEXT'>('FILE');
     const [rawText, setRawText] = useState('');
     const [isExtracting, setIsExtracting] = useState(false);
+    const [headerRowIndex, setHeaderRowIndex] = useState<number>(0);
+    const [initialRawRows, setInitialRawRows] = useState<any[][]>([]);
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const uploadedFile = event.target.files?.[0];
@@ -160,45 +163,95 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
             const firstSheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[firstSheetName];
 
-            // Get raw JSON data as strings depending on format (header: 1 returns array of arrays)
+            // Get raw JSON data as array of arrays to find header
             const jsonData = utils.sheet_to_json<any[]>(worksheet, { header: 1, defval: '', raw: false });
 
             if (jsonData.length > 0) {
-                // First row is headers
-                const sheetHeaders = jsonData[0] as string[];
-                const validHeaders = sheetHeaders.map(h => h ? String(h).trim() : `Column_${Math.random().toString(36).substr(2, 5)}`);
-
-                // Rest is data - map arrays to objects using headers
-                const rows = jsonData.slice(1).map(row => {
-                    const obj: any = {};
-                    validHeaders.forEach((header, index) => {
-                        obj[header] = row[index] !== undefined ? row[index] : '';
-                    });
-                    return obj;
-                }).filter(row => Object.values(row).some(val => val !== '')); // Filter out empty rows
-
-                setRawData(rows);
-                setHeaders(validHeaders);
+                setInitialRawRows(jsonData);
+                const suggestedHeader = findHeaderRow(jsonData);
+                setHeaderRowIndex(suggestedHeader);
                 setStep(STEPS.BANK_SELECT);
             }
         } catch (error) {
             console.error("Error parsing Excel file:", error);
+            addToast({ message: "Error al leer el archivo Excel. Prueba convirtiéndolo a CSV.", type: 'error' });
         }
     };
 
     const parseCSV = (file: File, delimiter?: string) => {
         Papa.parse(file, {
-            header: true,
+            header: false, // We handle header detection manually now
             skipEmptyLines: true,
             delimiter: delimiter,
             complete: (results) => {
-                setRawData(results.data);
-                if (results.meta.fields) {
-                    setHeaders(results.meta.fields);
+                if (results.data && results.data.length > 0) {
+                    const data = results.data as any[][];
+                    setInitialRawRows(data);
+                    const suggestedHeader = findHeaderRow(data);
+                    setHeaderRowIndex(suggestedHeader);
+                    setStep(STEPS.BANK_SELECT);
                 }
-                setStep(STEPS.BANK_SELECT);
             },
         });
+    };
+
+    const confirmHeaderRow = (index: number) => {
+        setHeaderRowIndex(index);
+        const headerRow = initialRawRows[index];
+        const validHeaders = headerRow.map((h, i) => h ? String(h).trim() : `Columna ${i + 1}`);
+        
+        // Convert the rest of the data (from index + 1) into objects
+        const rows = initialRawRows.slice(index + 1).map(row => {
+            const obj: any = {};
+            validHeaders.forEach((header, i) => {
+                obj[header] = row[i] !== undefined ? row[i] : '';
+            });
+            return obj;
+        }).filter(row => Object.values(row).some(val => val !== ''));
+
+        setHeaders(validHeaders);
+        setRawData(rows);
+        
+        // If bank selected, apply template, else auto-map
+        if (selectedBank) {
+            const template = getBankTemplate(selectedBank);
+            if (template) {
+                applyBankTemplateFromHeaders(template, validHeaders);
+            }
+        } else {
+            autoMapColumns(validHeaders);
+        }
+
+        // Navigate
+        if (accounts.length === 1) {
+            setSelectedAccount(accounts[0].id);
+            setStep(STEPS.ACCOUNT_SELECT); // Force account confirmation anyway for safety
+        } else {
+            setStep(STEPS.ACCOUNT_SELECT);
+        }
+    };
+
+    const applyBankTemplateFromHeaders = (template: BankTemplate, currentHeaders: string[]) => {
+        const findHeader = (templateVal: string | undefined): string => {
+            if (!templateVal) return '';
+            if (currentHeaders.includes(templateVal)) return templateVal;
+            
+            const lowerVal = templateVal.toLowerCase();
+            const match = currentHeaders.find(h => 
+                h.toLowerCase().includes(lowerVal) || lowerVal.includes(h.toLowerCase())
+            );
+            return match || templateVal;
+        };
+
+        const newMapping: ColumnMapping = {
+            date: findHeader(template.columns.date),
+            amount: findHeader(template.columns.amount),
+            description: findHeader(template.columns.description),
+            category: findHeader(template.columns.category) || '',
+            subCategory: '',
+            type: findHeader(template.columns.type),
+        };
+        setMapping(newMapping);
     };
 
     const handleSmartExtract = async () => {
@@ -236,24 +289,7 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
 
     const handleBankSelect = (bankId: string | null) => {
         setSelectedBank(bankId);
-
-        if (bankId) {
-            const template = getBankTemplate(bankId);
-            if (template) {
-                applyBankTemplate(template);
-            }
-        } else {
-            // Manual mapping
-            autoMapColumns(headers);
-        }
-
-        // Auto-select account if there is only one
-        if (accounts.length === 1) {
-            setSelectedAccount(accounts[0].id);
-            setStep(STEPS.MAPPING);
-        } else {
-            setStep(STEPS.ACCOUNT_SELECT);
-        }
+        setStep(STEPS.RAW_DATA_REVIEW);
     };
 
     const handleAccountSelect = (accountId: string) => {
@@ -472,6 +508,8 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
         setBalanceInfo(null);
         setRawText('');
         setImportMethod('FILE');
+        setInitialRawRows([]);
+        setHeaderRowIndex(0);
     };
 
     if (!isOpen) return null;
@@ -496,9 +534,10 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
                             <p className="text-xs font-medium text-aliseus-400 mt-1 uppercase tracking-wider">
                                 {step === STEPS.UPLOAD && '1. Sube tu archivo CSV o Excel'}
                                 {step === STEPS.BANK_SELECT && '2. Selecciona tu banco'}
-                                {step === STEPS.ACCOUNT_SELECT && '3. Selecciona la cuenta'}
-                                {step === STEPS.MAPPING && '4. Asigna las columnas'}
-                                {step === STEPS.PREVIEW && '5. Verifica y confirma'}
+                                {step === STEPS.RAW_DATA_REVIEW && '3. Verifica los datos brutos'}
+                                {step === STEPS.ACCOUNT_SELECT && '4. Selecciona la cuenta'}
+                                {step === STEPS.MAPPING && '5. Asigna las columnas'}
+                                {step === STEPS.PREVIEW && '6. Verifica y confirma'}
                             </p>
                         </div>
                     </div>
@@ -628,8 +667,8 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
                             <div className="bg-cyan-50/50 p-6 rounded-2xl border border-cyan-100 flex items-start gap-4">
                                 <Building2 className="w-5 h-5 text-cyan-600 mt-0.5" />
                                 <div>
-                                    <h4 className="font-bold text-aliseus-900 text-sm">¿Tu banco está en la lista?</h4>
-                                    <p className="text-xs text-aliseus-500 mt-1">Selecciona tu banco para mapear automáticamente las columnas, o continúa manualmente.</p>
+                                    <h4 className="font-bold text-aliseus-900 text-sm">¿De qué banco es el archivo?</h4>
+                                    <p className="text-xs text-aliseus-500 mt-1">Selecciona tu banco para usar una plantilla automática, o continúa manualmente.</p>
                                 </div>
                             </div>
 
@@ -649,8 +688,59 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
                                 onClick={() => handleBankSelect(null)}
                                 className="w-full p-4 border-2 border-dashed border-aliseus-300 rounded-2xl hover:border-aliseus-400 hover:bg-aliseus-50 transition-all text-center font-bold text-sm text-aliseus-600"
                             >
-                                Mi banco no está en la lista (mapeo manual)
+                                Mi banco no está en la lista (configuración manual)
                             </button>
+                        </div>
+                    )}
+
+                    {/* STEP 3: RAW DATA REVIEW (Header Selection) */}
+                    {step === STEPS.RAW_DATA_REVIEW && (
+                        <div className="space-y-6 animate-fade-in">
+                            <div className="bg-cyan-50/50 p-6 rounded-2xl border border-cyan-100 flex items-start gap-4">
+                                <AlertCircle className="w-5 h-5 text-cyan-600 mt-0.5" />
+                                <div>
+                                    <h4 className="font-bold text-aliseus-900 text-sm">Verifica el encabezado</h4>
+                                    <p className="text-xs text-aliseus-500 mt-1">Hemos detectado la fila {headerRowIndex + 1} como el inicio de los datos. Si no es correcta, haz clic en la fila que contiene los títulos (ej. "Fecha", "Concepto").</p>
+                                </div>
+                            </div>
+
+                            <div className="overflow-hidden border border-aliseus-100 rounded-2xl bg-white shadow-sm">
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-[10px] text-left">
+                                        <tbody className="divide-y divide-aliseus-100">
+                                            {initialRawRows.slice(0, 15).map((row, idx) => (
+                                                <tr 
+                                                    key={idx} 
+                                                    onClick={() => setHeaderRowIndex(idx)}
+                                                    className={`cursor-pointer transition-colors ${
+                                                        headerRowIndex === idx 
+                                                        ? 'bg-cyan-600 text-white font-bold' 
+                                                        : 'hover:bg-cyan-50 text-aliseus-600'
+                                                    }`}
+                                                >
+                                                    <td className={`px-4 py-3 text-center border-r ${headerRowIndex === idx ? 'border-cyan-500' : 'border-aliseus-50'} bg-black/5 w-8`}>
+                                                        {idx === headerRowIndex ? <Check className="w-3 h-3 mx-auto" /> : idx + 1}
+                                                    </td>
+                                                    {row.map((cell: any, cIdx: number) => (
+                                                        <td key={cIdx} className="px-4 py-3 truncate max-w-[150px]">
+                                                            {String(cell || '')}
+                                                        </td>
+                                                    ))}
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-center">
+                                <button
+                                    onClick={() => confirmHeaderRow(headerRowIndex)}
+                                    className="bg-cyan-900 text-white px-8 py-3 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-aliseus-800 transition-all flex items-center gap-2"
+                                >
+                                    Confirmar Encabezado <ArrowRight className="w-4 h-4" />
+                                </button>
+                            </div>
                         </div>
                     )}
 
