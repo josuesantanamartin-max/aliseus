@@ -1,6 +1,6 @@
 import * as pdfjs from 'pdfjs-dist';
 // @ts-ignore - Vite-specific worker URL
-import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.mjs?url';
+import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { createWorker } from 'tesseract.js';
 
 pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;

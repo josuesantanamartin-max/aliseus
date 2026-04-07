@@ -138,11 +138,12 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
                 }
                 addToast({ message: `PDF escaneado: Detectadas ${parsed.length} transacciones`, type: 'success' });
             } else {
-                addToast({ message: "No pudimos extraer transacciones legibles de este PDF.", type: 'error' });
+                console.warn("[Aliseus PDF Debug] Raw Text:", rawText);
+                addToast({ message: "La IA no pudo encontrar movimientos en este texto. Comprueba que el PDF sea un extracto bancario.", type: 'warning' });
             }
         } catch (error: any) {
-            console.error("PDF Extraction/AI Error:", error);
-            addToast({ message: error.message || "Error al procesar el PDF.", type: 'error' });
+            console.error("[Aliseus PDF Debug] Critical Error:", error);
+            addToast({ message: `Error en PDF: ${error.message || 'Error desconocido'}`, type: 'error' });
         } finally {
             setIsExtracting(false);
         }
