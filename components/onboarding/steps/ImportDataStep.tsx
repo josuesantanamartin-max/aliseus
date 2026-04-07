@@ -46,7 +46,7 @@ const ImportDataStep: React.FC = () => {
                 ¿Tienes datos anteriores?
             </h2>
             <p className="text-gray-500 dark:text-gray-400 mb-8 text-center text-balance">
-                Importa tus transacciones desde Excel, CSV o <b>PDF bancario</b> ahora, o hazlo más tarde desde Ajustes.
+                Importa tus transacciones desde Excel, CSV o <b>PDF bancario ✨</b> ahora (procedimiento automático con IA), o hazlo más tarde desde Ajustes.
             </p>
 
             <input 

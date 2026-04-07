@@ -8,6 +8,7 @@ import { getAllBankTemplates, getBankTemplate, BankTemplate } from '../../../../
 import { useFinanceStore } from '../../../../../store/useFinanceStore';
 import { useFinanceControllers } from '../../../../../hooks/useFinanceControllers';
 import { parseTransactionsFromText } from '../../../../../services/geminiFinancial';
+import { extractTextFromPDF } from '../../../../../services/pdfService';
 import { useToastStore } from '../../../../../store/toastStore';
 
 interface CSVImportModalProps {
@@ -91,14 +92,59 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
         }
     };
 
-    const processFile = (file: File) => {
-        const isExcel = file.name.match(/\.(xlsx|xls)$/i) ||
+    const processFile = async (file: File) => {
+        const name = file.name.toLowerCase();
+        
+        if (name.endsWith('.pdf')) {
+            handlePDFUpload(file);
+            return;
+        }
+
+        const isExcel = name.match(/\.(xlsx|xls)$/i) ||
             file.type.includes('spreadsheetml') ||
             file.type.includes('excel');
+            
         if (isExcel) {
             parseExcel(file);
         } else {
             parseCSV(file);
+        }
+    };
+
+    const handlePDFUpload = async (file: File) => {
+        setIsExtracting(true);
+        setImportMethod('TEXT');
+        try {
+            // Step 1: Extract Text from PDF
+            const text = await extractTextFromPDF(file);
+            setRawText(text);
+            
+            // Step 2: Use Gemini to parse the extracted text
+            const parsed = await parseTransactionsFromText(text);
+            
+            if (parsed && parsed.length > 0) {
+                const withMeta = parsed.map(tx => ({
+                    ...tx,
+                    accountId: selectedAccount || '',
+                    _autoDetected: true,
+                    _isCreditCardPayment: isCreditCardPaymentRow(tx.description || ''),
+                }));
+                setPreviewData(withMeta);
+                
+                if (accounts.length > 0) {
+                    setStep(STEPS.ACCOUNT_SELECT);
+                } else {
+                    setStep(STEPS.PREVIEW);
+                }
+                addToast({ message: `PDF escaneado: Detectadas ${parsed.length} transacciones`, type: 'success' });
+            } else {
+                addToast({ message: "No pudimos extraer transacciones legibles de este PDF.", type: 'error' });
+            }
+        } catch (error: any) {
+            console.error("PDF Extraction/AI Error:", error);
+            addToast({ message: error.message || "Error al procesar el PDF.", type: 'error' });
+        } finally {
+            setIsExtracting(false);
         }
     };
 
@@ -259,11 +305,14 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
         e.preventDefault();
         const droppedFile = e.dataTransfer.files[0];
         if (droppedFile) {
-            const isCsvOrExcel = droppedFile.type === 'text/csv' ||
-                droppedFile.name.match(/\.(csv|xlsx|xls)$/i) ||
+            const name = droppedFile.name.toLowerCase();
+            const isSupported = name.endsWith('.pdf') || 
+                name.match(/\.(csv|xlsx|xls)$/i) ||
+                droppedFile.type === 'text/csv' ||
                 droppedFile.type.includes('spreadsheetml') ||
                 droppedFile.type.includes('excel');
-            if (isCsvOrExcel) {
+                
+            if (isSupported) {
                 setFile(droppedFile);
                 processFile(droppedFile);
             }
@@ -454,7 +503,38 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
                 </div>
 
                 {/* Content */}
-                <div className="p-8 overflow-y-auto custom-scrollbar flex-1">
+                <div className="p-8 overflow-y-auto custom-scrollbar flex-1 relative">
+                    {/* Scanning Overlay */}
+                    {isExtracting && (
+                        <div className="absolute inset-0 bg-white/80 backdrop-blur-md z-50 flex flex-col items-center justify-center animate-fade-in">
+                            <div className="relative w-48 h-48 mb-6">
+                                {/* Outer Glow */}
+                                <div className="absolute inset-0 bg-cyan-100/50 rounded-full animate-ping opacity-25" />
+                                {/* Scanning Circle */}
+                                <div className="absolute inset-0 border-4 border-aliseus-100 rounded-full" />
+                                <div className="absolute inset-0 border-4 border-cyan-500 rounded-full border-t-transparent animate-spin" />
+                                {/* Dynamic Scanner Beam */}
+                                <div className="absolute top-1/2 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent animate-scan shadow-[0_0_15px_rgba(34,211,238,0.5)]" />
+                                
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <FileText className="w-16 h-16 text-cyan-600 animate-pulse" />
+                                </div>
+                            </div>
+                            <h3 className="text-xl font-black text-cyan-900 mb-2">Escaneando tu extracto bancario...</h3>
+                            <p className="text-sm text-aliseus-500 font-medium max-w-xs text-center">Nuestra Inteligencia Artificial está extrayendo los movimientos de tu PDF para que no tengas que hacer nada.</p>
+                            
+                            <style>{`
+                                @keyframes scan {
+                                    0%, 100% { transform: translateY(-30px); opacity: 0.1; }
+                                    50% { transform: translateY(30px); opacity: 1; }
+                                }
+                                .animate-scan {
+                                    animation: scan 2s ease-in-out infinite;
+                                }
+                            `}</style>
+                        </div>
+                    )}
+
                     {/* STEP 1: UPLOAD */}
                     {step === STEPS.UPLOAD && (
                         <div className="space-y-6">
@@ -494,9 +574,9 @@ const CSVImportModal: React.FC<CSVImportModalProps> = ({ isOpen, onClose, onImpo
                                     <h3 className="text-lg font-bold text-cyan-900 mb-2">Arrastra tu archivo CSV o Excel aquí</h3>
                                     <p className="text-aliseus-500 mb-8 max-w-sm">O haz clic para seleccionar un archivo desde tu ordenador. Asegúrate de que tenga encabezados.</p>
 
-                                    <label className="bg-cyan-900 hover:bg-aliseus-800 text-white px-8 py-4 rounded-xl font-bold text-xs uppercase tracking-widest cursor-pointer transition-all shadow-lg shadow-cyan-900/20 active:scale-95">
-                                        Seleccionar Archivo
-                                        <input type="file" onChange={handleFileUpload} accept=".csv, .xlsx, .xls" className="hidden" />
+                                    <label className="bg-cyan-900 hover:bg-aliseus-800 text-white px-8 py-4 rounded-xl font-bold text-xs uppercase tracking-widest cursor-pointer transition-all shadow-lg shadow-cyan-900/20 active:scale-95 disabled:opacity-50">
+                                        {isExtracting ? 'Procesando...' : 'Seleccionar Archivo'}
+                                        <input type="file" onChange={handleFileUpload} accept=".csv, .xlsx, .xls, .pdf" className="hidden" disabled={isExtracting} />
                                     </label>
                                 </div>
                             ) : (

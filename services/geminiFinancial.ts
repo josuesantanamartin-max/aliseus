@@ -94,27 +94,36 @@ export const parseTransactionsFromText = async (
 ): Promise<Partial<Transaction>[]> => {
   try {
     const prompt = `
-You are a financial data extractor. I will provide you with raw text extracted from a bank statement or a website.
-Your task is to extract all transactions found in the text.
+You are a professional financial data extraction expert localized for the European market (specifically Spain). 
+I will provide you with raw text extracted from a bank statement (PDF or copy-paste). 
 
-For each transaction, find:
-- date (ISO format YYYY-MM-DD)
-- amount (positive for income, negative for expense)
-- description (clean, readable title)
-- category (one of: Food, Transport, Housing, Health, Entertainment, Shopping, Income, Others)
-- type ('INCOME' or 'EXPENSE')
+Your goal is to accurately extract ALL transactions from the provided text into a clean, structured JSON array.
 
-Text to parse:
+### EXTRACTION RULES:
+1. **Precision**: Extract the exact date, the full original description, and the numeric amount.
+2. **Amounts**: 
+   - Expenses (cargos) MUST be negative numbers.
+   - Income (abonos) MUST be positive numbers.
+   - Look for context clues like "D/H", "Debe/Haber", "Cargo/Abono" or separate columns for debits/credits.
+3. **Dates**: Convert all dates to ISO format (YYYY-MM-DD). If year is missing, assume 2024 or 2025 based on surrounding context.
+4. **Description**: Clean the description by removing IBANs, internal codes, or excessive whitespace, but keep the core vendor name or concept.
+5. **Categorization**: Use one of these exact categories: [Food, Transport, Housing, Health, Entertainment, Shopping, Income, Education, Insurance, Savings, Others].
+6. **Language**: The text is likely in Spanish.
+
+### DATA TO PARSE:
 """
-${rawText.slice(0, 5000)}
+${rawText.slice(0, 8000)}
 """
 
-Important:
-- Be precise with amounts and dates.
-- If the text is in Spanish, use appropriate categories.
-- Respond ONLY with a JSON array of transaction objects.
-- Currency is ${currency}.
+### OUTPUT FORMAT:
+Return ONLY a valid JSON array of objects. Do not include markdown blocks or extra text.
+Example: 
+[
+  { "date": "2024-03-12", "amount": -4.50, "description": "STARBUCKS COFFEE", "category": "Food", "type": "EXPENSE" },
+  { "date": "2024-03-15", "amount": 2500.00, "description": "NOMINA EMPRESA S.A.", "category": "Income", "type": "INCOME" }
+]
 
+Respond strictly with the JSON. Currency is ${currency}.
 ${language === 'ES' ? 'Responde estrictamente en español.' : ''}
 `;
 
