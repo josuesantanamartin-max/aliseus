@@ -14,6 +14,9 @@ import { AccountDetailPanel } from './accounts/AccountDetailPanel';
 import { validateAccount } from '@/schemas/account.schema';
 import { formatZodErrors } from '@/utils/validation';
 import { useErrorHandler } from '@/hooks/useErrorHandler';
+import { BankSelector } from './banking/BankSelector';
+import { Landmark, RefreshCw } from 'lucide-react';
+import { bankingService } from '@/services/bankingService';
 interface AccountsProps {
   onViewTransactions: (accountId: string) => void;
 }
@@ -29,6 +32,8 @@ const Accounts: React.FC<AccountsProps> = ({ onViewTransactions }) => {
 
   // ── Modal state ──
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isBankSelectorOpen, setIsBankSelectorOpen] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [step, setStep] = useState<1 | 2>(1);
   const [selectedType, setSelectedType] = useState<Account['type']>('BANK');
@@ -130,6 +135,18 @@ const Accounts: React.FC<AccountsProps> = ({ onViewTransactions }) => {
       setCadastralError('Error consultando Catastro');
     } finally {
       setIsFetchingCadastral(false);
+    }
+  };
+
+  const handleSyncAllBanks = async () => {
+    setIsSyncing(true);
+    try {
+      await bankingService.syncAll();
+      showSuccess('Cuentas sincronizadas correctamente');
+    } catch (error) {
+      showError(error);
+    } finally {
+      setIsSyncing(false);
     }
   };
 
@@ -278,12 +295,40 @@ const Accounts: React.FC<AccountsProps> = ({ onViewTransactions }) => {
           <h2 className="text-3xl font-bold text-cyan-900 tracking-tight">Cuentas y Activos</h2>
           <p className="text-xs font-semibold text-aliseus-400 mt-2 uppercase tracking-[0.2em]">Gestión integral de tu patrimonio</p>
         </div>
-        {!isModalOpen && (
-          <button onClick={openNew} className="flex items-center gap-2.5 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-widest transition-all duration-300 shadow-lg shadow-cyan-900/20 active:scale-95">
-            <Plus className="w-5 h-5" /> Nueva Cuenta
+        <div className="flex flex-wrap items-center gap-4">
+          <button 
+            onClick={handleSyncAllBanks} 
+            disabled={isSyncing}
+            className={`flex items-center gap-2.5 px-6 py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-widest transition-all duration-300 border border-cyan-100 ${isSyncing ? 'bg-cyan-50 text-cyan-300' : 'bg-white text-cyan-600 hover:bg-cyan-50 hover:border-cyan-200 shadow-sm active:scale-95'}`}
+          >
+            <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />
+            {isSyncing ? 'Sincronizando...' : 'Actualizar Bancos'}
           </button>
-        )}
+
+          {!isModalOpen && !isBankSelectorOpen && (
+            <div className="flex gap-3">
+              <button 
+                onClick={() => setIsBankSelectorOpen(true)} 
+                className="flex items-center gap-2.5 bg-white border border-cyan-100 hover:bg-cyan-50 hover:border-cyan-200 text-cyan-600 px-6 py-3.5 rounded-xl font-bold text-[10px] uppercase tracking-widest transition-all duration-300 shadow-sm active:scale-95"
+              >
+                <Landmark className="w-4 h-4" /> Conectar Banco
+              </button>
+              
+              <button onClick={openNew} className="flex items-center gap-2.5 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white px-8 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-widest transition-all duration-300 shadow-lg shadow-cyan-900/20 active:scale-95">
+                <Plus className="w-5 h-5" /> Nueva Cuenta
+              </button>
+            </div>
+          )}
+        </div>
       </div>
+
+      {isBankSelectorOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-cyan-900/20 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="w-full max-w-2xl transform transition-all">
+            <BankSelector onClose={() => setIsBankSelectorOpen(false)} />
+          </div>
+        </div>
+      )}
 
       <AccountStatsCards netWorth={netWorth} totalAssets={totalAssets} totalLiabilities={totalLiabilities} />
 

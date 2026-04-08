@@ -1,0 +1,47 @@
+
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { Configuration, PlaidApi, PlaidEnvironments, Products, CountryCode } from "https://esm.sh/plaid@21.0.0"
+import { corsHeaders } from "../_shared/cors.ts"
+
+serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
+
+  try {
+    const PLAID_CLIENT_ID = Deno.env.get('PLAID_CLIENT_ID')
+    const PLAID_SECRET = Deno.env.get('PLAID_SECRET')
+    const PLAID_ENV = Deno.env.get('PLAID_ENV') || 'sandbox'
+
+    const configuration = new Configuration({
+      basePath: PlaidEnvironments[PLAID_ENV],
+      baseOptions: {
+        headers: {
+          'PLAID-CLIENT-ID': PLAID_CLIENT_ID,
+          'PLAID-SECRET': PLAID_SECRET,
+        },
+      },
+    })
+
+    const plaidClient = new PlaidApi(configuration)
+
+    // Crear el link_token
+    const linkTokenResponse = await plaidClient.linkTokenCreate({
+      user: { client_user_id: 'aliseus-user' }, // En prod usar ID real del usuario
+      client_name: 'Aliseus',
+      products: [Products.Transactions],
+      country_codes: [CountryCode.Es],
+      language: 'es',
+    })
+
+    return new Response(JSON.stringify(linkTokenResponse.data), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    })
+
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      status: 400
+    })
+  }
+})
