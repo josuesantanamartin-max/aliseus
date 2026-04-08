@@ -48,13 +48,18 @@ export const BankSelector: React.FC<BankSelectorProps> = ({ onClose }) => {
     };
     initPlaid();
   }, [showError]);
-
   const handleOpenPlaid = useCallback(() => {
     if (!window.Plaid || !linkToken) return;
+
+    monitoringService.addBreadcrumb('Opening Plaid Link', 'banking', { linkToken: linkToken.substring(0, 10) + '...' });
 
     const handler = window.Plaid.create({
       token: linkToken,
       onSuccess: async (public_token: string, metadata: any) => {
+        monitoringService.addBreadcrumb('Plaid Link Success', 'banking', { 
+          institution: metadata.institution?.name,
+          institutionId: metadata.institution?.institution_id
+        });
         try {
           setLinking(true);
           await bankingService.exchangePublicToken(public_token, metadata.institution);
@@ -65,8 +70,11 @@ export const BankSelector: React.FC<BankSelectorProps> = ({ onClose }) => {
         }
       },
       onExit: (err: any, metadata: any) => {
+        monitoringService.addBreadcrumb('Plaid Link Exit', 'banking', { 
+          status: metadata.status,
+          error: err ? err.message : 'User cancelled' 
+        });
         if (err != null) {
-          // El usuario cerró con error o canceló
           console.error(err);
         }
       },
