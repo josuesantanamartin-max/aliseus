@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { bankingService } from '@/services/bankingService';
+import { monitoringService } from '@/services/monitoringService';
 import { Loader2, ShieldCheck, Landmark, ArrowRight } from 'lucide-react';
 import { useErrorHandler } from '@/hooks/useErrorHandler';
 
