@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Last Updated:** February 4, 2026  
+**Last Updated:** April 9, 2026  
 **Effective Date:** February 4, 2026
 
 ## 1. Introduction
@@ -137,6 +137,7 @@ We work with trusted third-party service providers:
 - **Vercel:** Hosting and deployment
 - **Sentry:** Error tracking and monitoring
 - **Vercel Analytics:** Usage analytics and performance monitoring
+- **Plaid Technologies, Inc.:** Banking data connectivity. When you choose to link your bank accounts, we use Plaid to securely retrieve your account information, balances, and transaction history directly from your financial institution. Plaid acts as a data processor under our instruction. Your banking credentials are never transmitted to or stored by Aliseus — they are submitted directly to your bank through Plaid's encrypted infrastructure. Plaid's access to your data is governed by [Plaid's Privacy Policy](https://plaid.com/legal/) and Plaid's End User Privacy Policy. Bank connections made through Plaid comply with the Payment Services Directive 2 (PSD2) and expire after 180 days, at which point you will be prompted to re-authorise the connection.
 
 All service providers are contractually obligated to protect your data and use it only for specified purposes.
 
@@ -335,9 +336,7 @@ Email: support@aliseus.com
 
 **Mailing Address:**  
 Aliseus  
-[Your Business Address]  
-[City, Postal Code]  
-[Country]
+España
 
 ## 17. Supervisory Authority
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLifeStore } from '@/store/useLifeStore';
 import { useUserStore } from '@/store/useUserStore';
 import { Ingredient } from '@/types';
-import { Search, Clock, Plus, Minus, X, ChevronLeft, ChevronRight, Wand2, Coffee, Sunset, Moon, Loader2, BookOpen, GripVertical, ChefHat, MoreHorizontal, Package, AlertTriangle, ScanLine } from 'lucide-react';
+import { Search, Clock, Plus, Minus, X, Package, AlertTriangle, ScanLine, ShoppingBag, RefrigeratorIcon } from 'lucide-react';
 import { ReceiptScannerModal } from './ReceiptScannerModal';
 
 interface PantryProps {
@@ -42,6 +42,7 @@ export const Pantry: React.FC<PantryProps> = () => {
    const [pantrySort, setPantrySort] = useState<'NAME' | 'EXPIRY' | 'QTY'>('EXPIRY'); // This state is no longer used for sorting in the new UI
    const [isAddPantryItemOpen, setIsAddPantryItemOpen] = useState(false);
    const [isScannerOpen, setIsScannerOpen] = useState(false);
+   const [scanMode, setScanMode] = useState<'RECEIPT' | 'PANTRY'>('RECEIPT');
    const [pantryItemName, setPantryItemName] = useState('');
    const [pantryItemQty, setPantryItemQty] = useState<string>('');
    const [pantryItemUnit, setPantryItemUnit] = useState('pcs');
@@ -52,6 +53,7 @@ export const Pantry: React.FC<PantryProps> = () => {
    useEffect(() => {
       if (quickAction) {
          if (quickAction.type === 'SCAN_RECEIPT') {
+            setScanMode('RECEIPT');
             setIsScannerOpen(true);
             setQuickAction(null);
          } else if (quickAction.type === 'ADD_INGREDIENT') {
@@ -178,9 +180,26 @@ export const Pantry: React.FC<PantryProps> = () => {
                   ))}
                </div>
             </div>
-            <button onClick={() => { setIsAddPantryItemOpen(true); resetForm(); }} className="bg-emerald-950 text-white px-6 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg flex items-center gap-2 hover:bg-emerald-900 transition-all">
-               <Plus className="w-4 h-4" /> Añadir a Despensa
-            </button>
+            {/* Action buttons */}
+            <div className="flex items-center gap-2 shrink-0">
+               <button
+                  onClick={() => { setScanMode('RECEIPT'); setIsScannerOpen(true); }}
+                  title="Escanear ticket de compra"
+                  className="flex items-center gap-1.5 bg-white text-cyan-700 border border-cyan-200 px-3 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest shadow-sm flex items-center gap-2 hover:bg-cyan-50 hover:border-cyan-400 transition-all"
+               >
+                  <ShoppingBag className="w-4 h-4" /> Ticket
+               </button>
+               <button
+                  onClick={() => { setScanMode('PANTRY'); setIsScannerOpen(true); }}
+                  title="Foto de nevera o despensa"
+                  className="flex items-center gap-1.5 bg-white text-emerald-700 border border-emerald-200 px-3 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest shadow-sm hover:bg-emerald-50 hover:border-emerald-400 transition-all"
+               >
+                  <RefrigeratorIcon className="w-4 h-4" /> Foto
+               </button>
+               <button onClick={() => { setIsAddPantryItemOpen(true); resetForm(); }} className="bg-emerald-950 text-white px-4 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg flex items-center gap-2 hover:bg-emerald-900 transition-all">
+                  <Plus className="w-4 h-4" /> Añadir
+               </button>
+            </div>
          </div>
 
          {/* Pantry Grid */}
@@ -290,6 +309,7 @@ export const Pantry: React.FC<PantryProps> = () => {
                onClose={() => setIsScannerOpen(false)}
                onSaveToPantry={handleSaveScannedItems}
                onOpenManualEntry={() => setIsAddPantryItemOpen(true)}
+               initialMode={scanMode}
             />
          )}
       </div>

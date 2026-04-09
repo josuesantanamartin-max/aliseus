@@ -4,33 +4,12 @@ import { UploadCloud, CheckCircle, ArrowRight } from 'lucide-react';
 // import { useNavigate } from 'react-router-dom';
 
 const ImportDataStep: React.FC = () => {
-    const { setOnboardingStep, completeOnboarding, setSubscription } = useUserStore();
+    const { setOnboardingStep } = useUserStore();
     const fileInputRef = React.useRef<HTMLInputElement>(null);
     const [fileName, setFileName] = React.useState<string | null>(null);
 
-    const handleComplete = async () => {
-        completeOnboarding();
-        // Give users Familia Premium status for the beta
-        setSubscription({ 
-            plan: 'FAMILIA', 
-            status: 'ACTIVE', 
-            isBetaExtraApplied: true // Mark as beta benefit
-        });
-
-        // Save onboarding completion to Supabase user_metadata
-        try {
-            const { supabase } = await import('@/services/supabaseClient');
-            if (supabase) {
-                await supabase.auth.updateUser({
-                    data: { 
-                        hasCompletedOnboarding: true,
-                        betaPlanApplied: 'FAMILIA'
-                    }
-                });
-            }
-        } catch (error) {
-            console.error("Failed to save onboarding state to Supabase:", error);
-        }
+    const handleContinue = () => {
+        setOnboardingStep(8);
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,16 +66,16 @@ const ImportDataStep: React.FC = () => {
                 </button>
 
                 <button
-                    onClick={handleComplete}
+                    onClick={handleContinue}
                     className="px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-xl font-bold shadow-lg hover:scale-105 transition-all flex items-center gap-2"
                 >
-                    Finalizar y Entrar
+                    Continuar
                     <ArrowRight className="w-5 h-5" />
                 </button>
             </div>
 
             <button
-                onClick={handleComplete}
+                onClick={handleContinue}
                 className="mt-4 text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 underline"
             >
                 Omitir importación por ahora

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useUserStore } from '@/store/useUserStore';
 import OnboardingLayout from './OnboardingLayout';
+import { settingsT } from '@/i18n/settingsTexts';
 import WelcomeStep from './steps/WelcomeStep';
 import { MagicDemoStep } from './steps/MagicDemoStep';
 import ProfileSelectionStep from './steps/ProfileSelectionStep';
@@ -9,17 +10,19 @@ import CurrencyStep from './steps/CurrencyStep';
 import AccountsStep from './steps/AccountsStep';
 import ImportDataStep from './steps/ImportDataStep';
 import FocusPickerStep from './steps/FocusPickerStep';
+import QuickStartStep from './steps/QuickStartStep';
 
 const OnboardingWizard: React.FC = () => {
-    const { onboardingStep, userProfile, subscription } = useUserStore();
+    const { onboardingStep, userProfile, subscription, language } = useUserStore();
+    const t = settingsT[(language as keyof typeof settingsT) || 'ES'];
 
     const isFamilyPlan = subscription.plan === 'FAMILIA';
     const hasFamilyPersona = userProfile?.persona_type?.some(p => p === 'FAMILY' || p === 'COUPLE');
     const isFamily = isFamilyPlan || hasFamilyPersona;
 
     // Full onboarding sequence (numeric IDs are stable identifiers, NOT display order):
-    // 0:Welcome → 1:Demo → 2:Profile → 7:FocusPicker → [3:FamilySetup if isFamily] → 4:Currency → 5:Accounts → 6:Import
-    const activeSteps = [1, 2, 7, isFamily ? 3 : null, 4, 5, 6].filter(Boolean) as number[];
+    // 0:Welcome → 1:Demo → 2:Profile → 7:FocusPicker → [3:FamilySetup if isFamily] → 4:Currency → 5:Accounts → 6:Import → 8:QuickStart
+    const activeSteps = [1, 2, 7, isFamily ? 3 : null, 4, 5, 6, 8].filter(Boolean) as number[];
     const displayStep = activeSteps.indexOf(onboardingStep) + 1;
     const totalStepsDisplay = activeSteps.length;
 
@@ -33,6 +36,7 @@ const OnboardingWizard: React.FC = () => {
             case 5: return <AccountsStep />;
             case 6: return <ImportDataStep />;
             case 7: return <FocusPickerStep />;
+            case 8: return <QuickStartStep />;
             default: return <WelcomeStep />;
         }
     };
@@ -50,7 +54,7 @@ const OnboardingWizard: React.FC = () => {
                             />
                         </div>
                         <span className="text-xs font-bold text-gray-400">
-                            Paso {displayStep} de {totalStepsDisplay}
+                            {t.common.step(displayStep, totalStepsDisplay)}
                         </span>
                     </div>
                 )}

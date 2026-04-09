@@ -12,6 +12,24 @@ const handler = async (req: Request) => {
   const PLAID_SECRET = Deno.env.get('PLAID_SECRET')
   const PLAID_ENV = Deno.env.get('PLAID_ENV') || 'sandbox'
 
+  // Opcional: Intentar obtener el ID del usuario si hay un token
+  const authHeader = req.headers.get('Authorization')
+  let clientUserId = 'anonymous'
+
+  if (authHeader) {
+    try {
+      const supabase = createClient(
+        Deno.env.get('SUPABASE_URL') ?? '',
+        Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+        { global: { headers: { Authorization: authHeader } } }
+      )
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) clientUserId = user.id
+    } catch (e) {
+      console.warn("Could not get user from auth header:", e.message)
+    }
+  }
+
   const configuration = new Configuration({
     basePath: PlaidEnvironments[PLAID_ENV],
     baseOptions: {
@@ -26,7 +44,7 @@ const handler = async (req: Request) => {
 
   // Crear el link_token
   const linkTokenResponse = await plaidClient.linkTokenCreate({
-    user: { client_user_id: 'aliseus-user' }, // En prod usar ID real del usuario
+    user: { client_user_id: clientUserId }, 
     client_name: 'Aliseus',
     products: [Products.Transactions],
     country_codes: [CountryCode.Es],

@@ -3,6 +3,8 @@ import { Account } from '@/types';
 import { Pencil, Trash2, TrendingUp, ArrowUpRight, ArrowDownRight, ArrowRight, CreditCard, Plus, Landmark } from 'lucide-react';
 import { getTypeLabel, formatEUR } from './accountConstants';
 import { LinkedCardTile } from './LinkedCardTile';
+import { BankingConsentBanner } from '../banking/BankingConsentBanner';
+import { useBankingConsent } from '@/hooks/useBankingConsent';
 
 interface AccountStats {
     monthDiff: number;
@@ -22,12 +24,15 @@ interface AccountDetailPanelProps {
     onViewTransactions: (accountId: string) => void;
     onSettle: (e: React.MouseEvent, card: Account) => void;
     onOpenNew: () => void;
+    onReconnectBank?: () => void;
 }
 
 export const AccountDetailPanel: React.FC<AccountDetailPanelProps> = ({
     account, stats, linkedCards,
-    onEdit, onDelete, onViewTransactions, onSettle, onOpenNew,
+    onEdit, onDelete, onViewTransactions, onSettle, onOpenNew, onReconnectBank,
 }) => {
+    const consent = useBankingConsent();
+    const isPlaidLinked = !!(account as any)?.external_id && account?.type === 'BANK';
     if (!account) {
         return (
             <div className="h-full flex flex-col items-center justify-center text-aliseus-300 min-h-[400px]">
@@ -89,6 +94,16 @@ export const AccountDetailPanel: React.FC<AccountDetailPanelProps> = ({
                 </div>
                 <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-50/30 rounded-full blur-[80px] -mr-32 -mt-32 pointer-events-none" />
             </div>
+
+            {/* PSD2 consent countdown — only for Plaid-linked bank accounts */}
+            {isPlaidLinked && !consent.isLoading && consent.isLinked && (
+                <BankingConsentBanner
+                    daysRemaining={consent.daysRemaining}
+                    urgency={consent.urgency}
+                    expiresAt={consent.expiresAt}
+                    onReconnect={onReconnectBank || (() => {})}
+                />
+            )}
 
             {/* Associated cards */}
             {linkedCards.length > 0 && (

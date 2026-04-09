@@ -22,6 +22,19 @@
                     "value": "Content-Type, Authorization"
                 }
             ]
+        },
+        {
+            "source": "/legal/(.*)",
+            "headers": [
+                {
+                    "key": "Content-Type",
+                    "value": "text/plain; charset=utf-8"
+                },
+                {
+                    "key": "Cache-Control",
+                    "value": "public, max-age=3600"
+                }
+            ]
         }
     ],
     "rewrites": [
@@ -30,8 +43,16 @@
             "destination": "/api/:path*"
         },
         {
-            "source": "/((?!api/.*).*)",
+            "source": "/legal/privacy",
+            "destination": "/legal/PRIVACY_POLICY.md"
+        },
+        {
+            "source": "/legal/terms",
+            "destination": "/legal/TERMS_OF_SERVICE.md"
+        },
+        {
+            "source": "/((?!api/|legal/).*)",
             "destination": "/index.html"
         }
     ]
-}
+}

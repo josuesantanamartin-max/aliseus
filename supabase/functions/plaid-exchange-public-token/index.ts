@@ -9,21 +9,45 @@ const handler = async (req: Request) => {
     return new Response('ok', { headers: corsHeaders })
   }
 
-  const { publicToken, institutionId } = await req.json()
   const authHeader = req.headers.get('Authorization')
+  if (!authHeader) {
+    throw new Error('Falta cabecera de autorización')
+  }
 
-  const supabase = createClient(
+  // Extraer token y limpiar posibles espacios/caracteres extraños
+  const token = authHeader.replace('Bearer ', '').trim()
+  console.log(`[Exchange] Token received (prefix): ${token.substring(0, 10)}...`)
+
+  // Cliente para verificar al usuario (usa ANON_KEY)
+  const authClient = createClient(
     Deno.env.get('SUPABASE_URL') ?? '',
-    Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-    { global: { headers: { Authorization: authHeader } } }
+    Deno.env.get('SUPABASE_ANON_KEY') ?? ''
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Usuario no autenticado')
+  // Cliente para operaciones de DB (usa SERVICE_ROLE_KEY)
+  const supabaseAdmin = createClient(
+    Deno.env.get('SUPABASE_URL') ?? '',
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+  )
+
+  // Validar el token directamente
+  const { data: { user }, error: authError } = await authClient.auth.getUser(token)
+  
+  if (authError || !user) {
+    console.error("[Exchange] Auth validation failed:", authError)
+    const detailMessage = authError ? ` (${authError.message})` : ''
+    throw new Error(`Usuario no autenticado o sesión inválida${detailMessage}`)
+  }
+
+  console.log(`[Exchange] Authenticated user metadata: ${user.id} | ${user.email}`)
+
+  const { publicToken, institutionId } = await req.json()
+  console.log(`[Exchange] Exchanging public token for institution: ${institutionId}`)
 
   // 1. Configurar Plaid
+  const PLAID_ENV = Deno.env.get('PLAID_ENV') || 'sandbox'
   const configuration = new Configuration({
-    basePath: PlaidEnvironments[Deno.env.get('PLAID_ENV') || 'sandbox'],
+    basePath: PlaidEnvironments[PLAID_ENV],
     baseOptions: {
       headers: {
         'PLAID-CLIENT-ID': Deno.env.get('PLAID_CLIENT_ID'),
@@ -34,15 +58,25 @@ const handler = async (req: Request) => {
   const plaidClient = new PlaidApi(configuration)
 
   // 2. Intercambiar public_token
+  console.log("[Exchange] Calling Plaid itemPublicTokenExchange...")
   const exchangeResponse = await plaidClient.itemPublicTokenExchange({
     public_token: publicToken,
   })
 
   const accessToken = exchangeResponse.data.access_token
   const itemId = exchangeResponse.data.item_id
+  console.log(`[Exchange] Plaid exchange successful. Item ID: ${itemId}`)
 
-  // 3. Guardar en la base de datos
-  const { error: dbError } = await supabase
+  // 3. Obtener metadatos de las cuentas para guardarlas localmente
+  console.log("[Exchange] Fetching accounts metadata from Plaid...")
+  const accountsResponse = await plaidClient.accountsGet({ access_token: accessToken })
+  const plaidAccounts = accountsResponse.data.accounts
+
+  // 4. Guardar conexión y cuentas en la base de datos
+  console.log("[Exchange] Saving connection and accounts to DB...")
+  
+  // Usamos una transacción o varias llamadas (Supabase Edge permitiendo múltiples await es seguro)
+  const { error: dbError } = await supabaseAdmin
     .from('banking_connections')
     .upsert({
       user_id: user.id,
@@ -55,7 +89,34 @@ const handler = async (req: Request) => {
 
   if (dbError) throw dbError
 
-  return new Response(JSON.stringify({ success: true, item_id: itemId }), {
+  // Mapear y guardar cuentas
+  const accountsToUpsert = plaidAccounts.map((pa: any) => ({
+    user_id: user.id,
+    name: pa.official_name || pa.name,
+    type: 'BANK',
+    balance: pa.balances.current || 0,
+    currency: pa.balances.iso_currency_code || 'EUR',
+    external_id: pa.account_id,
+    bank_name: institutionId || 'Plaid Bank',
+    updated_at: new Date().toISOString()
+  }))
+
+  const { error: accountsError } = await supabaseAdmin
+    .from('finance_accounts')
+    .upsert(accountsToUpsert, { onConflict: 'external_id' })
+
+  if (accountsError) {
+    console.error("[Exchange] Error saving accounts:", accountsError)
+    // No lanzamos error aquí para no romper el flujo principal si el intercambio fue bien
+  }
+
+  console.log("[Exchange] Connection and accounts saved successfully.")
+
+  return new Response(JSON.stringify({ 
+    success: true, 
+    item_id: itemId,
+    accounts_synced: plaidAccounts.length 
+  }), {
     headers: { ...corsHeaders, 'Content-Type': 'application/json' }
   })
 }

@@ -24,15 +24,27 @@ export const BankSelector: React.FC<BankSelectorProps> = ({ onClose }) => {
 
   // 1. Cargar el script de Plaid Link
   useEffect(() => {
+    // Evitar cargar el script múltiples veces si ya existe
+    if (window.Plaid) {
+      setPlaidReady(true);
+      return;
+    }
+
+    const existingScript = document.getElementById('plaid-link-script');
+    if (existingScript) {
+      setPlaidReady(true);
+      return;
+    }
+
     const script = document.createElement('script');
+    script.id = 'plaid-link-script';
     script.src = 'https://cdn.plaid.com/link/v2/stable/link-initialize.js';
     script.async = true;
     script.onload = () => setPlaidReady(true);
     document.body.appendChild(script);
 
-    return () => {
-      document.body.removeChild(script);
-    };
+    // No lo removemos al desmontar para que esté disponible si se vuelve a abrir el modal
+    // pero mantenemos la lógica de carga segura.
   }, []);
 
   // 2. Obtener el link_token del backend

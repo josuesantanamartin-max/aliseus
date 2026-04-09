@@ -1,5 +1,5 @@
-
 import * as Sentry from "https://esm.sh/@sentry/deno@8.0.0";
+import { corsHeaders } from "./cors.ts";
 
 /**
  * Initializes Sentry for the Edge Function
@@ -34,18 +34,23 @@ export function withMonitoredHandler(handler: (req: Request) => Promise<Response
 
       if (isSentryInitialized) {
         Sentry.captureException(error);
-        // Ensure the event is sent before the function terminates
         await Sentry.flush(2000);
       }
+
+      // Intentar extraer un mensaje útil del error
+      const errorMessage = error.response?.data?.error_message || 
+                          error.message || 
+                          "Internal Server Error";
 
       return new Response(
         JSON.stringify({
           error: "Internal Server Error",
-          message: error.message,
+          message: errorMessage,
+          details: error.response?.data || null,
         }),
         {
           status: 500,
-          headers: { "Content-Type": "application/json" },
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
         }
       );
     }

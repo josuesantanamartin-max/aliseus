@@ -368,6 +368,7 @@ const Accounts: React.FC<AccountsProps> = ({ onViewTransactions }) => {
               onViewTransactions={onViewTransactions}
               onSettle={handleSettle}
               onOpenNew={openNew}
+              onReconnectBank={() => setIsBankSelectorOpen(true)}
             />
           )}
         </div>

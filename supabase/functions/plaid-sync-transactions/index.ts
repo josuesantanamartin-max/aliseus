@@ -12,17 +12,31 @@ const handler = async (req: Request) => {
   const authHeader = req.headers.get('Authorization')
   if (!authHeader) throw new Error('No se encontró el token de autorización')
 
-  const supabase = createClient(
+  const token = authHeader.replace('Bearer ', '').trim()
+
+  // Cliente para verificar al usuario (usa ANON_KEY)
+  const authClient = createClient(
     Deno.env.get('SUPABASE_URL') ?? '',
-    Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-    { global: { headers: { Authorization: authHeader } } }
+    Deno.env.get('SUPABASE_ANON_KEY') ?? ''
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Usuario no autenticado')
+  // Cliente para operaciones de DB (usa SERVICE_ROLE_KEY)
+  const supabaseAdmin = createClient(
+    Deno.env.get('SUPABASE_URL') ?? '',
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+  )
 
-  // 1. Obtener conexiones de Plaid activas del usuario
-  const { data: connections, error: connError } = await supabase
+  // Validar el token directamente
+  const { data: { user }, error: authError } = await authClient.auth.getUser(token)
+  if (authError || !user) {
+    console.error("[Sync] Auth validation failed:", authError)
+    throw new Error('Usuario no autenticado o sesión inválida')
+  }
+
+  console.log(`[Sync] Syncing for user: ${user.id} (${user.email})`)
+
+  // 1. Obtener conexiones de Plaid activas del usuario usando supabaseAdmin
+  const { data: connections, error: connError } = await supabaseAdmin
     .from('banking_connections')
     .select('access_token, item_id')
     .eq('user_id', user.id)
@@ -75,7 +89,7 @@ const handler = async (req: Request) => {
   }
 
   // 4. Actualizar fecha de sincronización
-  await supabase
+  await supabaseAdmin
     .from('banking_connections')
     .update({ last_sync: new Date().toISOString() })
     .eq('user_id', user.id)
